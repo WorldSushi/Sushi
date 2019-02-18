@@ -5,9 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\Calls\" />
     <Folder Include="Enums\" />
     <Folder Include="Services\Abstract\" />
     <Folder Include="Services\Concrete\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Base.csproj" />
   </ItemGroup>
 
 </Project>
