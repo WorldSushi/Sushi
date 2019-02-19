@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Base;
 using Data;
+using Data.Services.Abstract;
+using Data.Services.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,10 +27,17 @@ namespace WebUI
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Index");
                 });
 
+            var connection = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Илья\\Documents\\SushiWorldDB.mdf;Integrated Security=True;Connect Timeout=30";
+
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(connection, b => b.MigrationsAssembly("Data")));
+
             #region Services
 
             services.AddTransient<DbContext, ApplicationContext>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddTransient<IManagerService, ManagerService>();
 
             #endregion
 

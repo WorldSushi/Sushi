@@ -30,10 +30,23 @@
 
 </head>
 
-<body>
+<body style="background-color: #ede4e4">
 
-    1
-
+    <div class="login-wrapper">
+        <div class="form-wrapper">
+            <form method="post" action="/Account/Login">
+                <h1>Вход в систему</h1>
+                <img class="img-responsive" src="~/app/img/face-control.png" />
+                <div class="form-group m-b20">
+                    <input type="text" class="form-control" placeholder="Имя пользователя" name="login"/>
+                </div>
+                <div class="form-group m-b40">
+                    <input type="password" class="form-control" placeholder="Пароль" name="password"/>
+                </div>
+                <button class="button button-default account-button">Войти</button>
+            </form>           
+        </div>
+    </div>
 
     <script src="@Url.Content("js/scripts.min.js")"></script>
 
