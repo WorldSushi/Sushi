@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<div class="content">
+    <div class="page-header">
+        <h1>Список Менеджеров</h1>
+        <p>Здесь представлена информация о менеджерах в компании</p>
+    </div>
+    <section class="table">
+        <div class="portlet">
+            <div class="portlet-header">
+                Менеджеры
+            </div>
+            <div class="portlet-body">
+                <div class="table-header">
+                    <a href="/Manager/Create" class="button button-default">Добавить</a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Логин</th>
+                            <th>Пароль</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var manager in Model)
+                        {
+                            <tr>
+                                <td>@manager.Login</td>
+                                <td>@manager.Password</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+

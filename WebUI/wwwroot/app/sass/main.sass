@@ -28,6 +28,18 @@
 	transition: 0.3s
 	&:hover 
 		background-color: #007ac1
+		color: #fff
+
+ul
+	margin: 0
+	padding: 0
+	li
+		list-style: none
+
+a
+	color: inherit
+	&:hover
+		text-decoration: none
 
 body, html
 	width: 100%
@@ -97,5 +109,194 @@ b, strong
 	background-repeat: no-repeat
 	opacity: 0.6
 
+aside
+	position: fixed
+	top: 0
+	bottom: 0
+	left: 0
+	z-index: 40
+	color: #fff
+	height: 100vh
+	box-shadow: 2px 10px 30px 0 rgba(0,0,0,.42), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2)
+	width: 250px
+	background-color: #ff8d60
+	&:before
+		display: block
+		content: ""
+		position: absolute
+		z-index: 30
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		opacity: .3
+	.aside-menu
+		li
+			padding: 15px 0px	
+			transition: 0.7s	
+			a
+				display: table
+				width: 100%
+				padding-left: 20px
+				height: 27px
+				i, span
+					display: table-cell
+					vertical-align: middle
+					color: #fff
+				span
+					text-align: left
+			&:hover
+				background-color: #e39daf
+				opacity: 0.93
+	.sidebar-wrapper
+		position: absolute
+		z-index: 50
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+	.aside-background
+		position: absolute
+		z-index: 10
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		background-size: cover
+		background-repeat: no-repeat
+		background-position: center center
+		&:after
+			content: ""
+			background-color: #c8899a
+			position: absolute
+			top: 0
+			left: 0
+			right: 0
+			bottom: 0
+			display: block
+			z-index: 30
+			opacity: 0.93
+	.logo
+		height: 80px
+		text-align: left
+		padding: 
+			top: 20px
+			left: 40px
+		text-transform: uppercase
+		h2
+			font-size: 1.5rem
+			font-weight: normal
 
+nav 
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	z-index: 30
+	background-color: #fff
+	height: 70px
+	.nav-menu
+		padding-right: 40px
+		float: right
+		text-align: right
+		display: table
+		height: 70px
+		li
+			display: table-cell
+			height: 70px
+			vertical-align: middle
+
+main
+	position: relative
+	height: 100vh
+	.content-wrapper
+		position: relative
+		max-height: 100%
+		height: 100%
+		min-height: 100%
+		width: 100%
+		padding-top: 85px
+		padding-left: 250px
+
+.page-header
+	line-height: 1.2
+	h1
+		font-size: 1.5rem
+	p 
+		font-size: 1rem
+
+.content
+	padding: 0px 40px
+
+.portlet
+	margin:
+		top: 80px
+		right: 0px
+		bottom: 20px
+		left: 0px
+	box-shadow: 0 6px 0 0 rgba(0,0,0,.01), 0 15px 32px 0 rgba(0,0,0,.06)
+    border-radius: 5px
+	background-color: #fff
+	position: relative
+	.portlet-header
+		font-size: 1.3em
+		letter-spacing: .05rem
+		background-color: #03a9f4
+		color: #fff
+		padding: 10px 20px
+		height: 55px
+		position: absolute
+		top: -40px
+		left: 40px
+	.portlet-body
+		padding: 2rem 1.5rem
+
+.table-header
+	float: right
+	margin: 20px 0px
+
+.table
+	width: 100%
+	thead
+		th
+			vertical-align: bottom
+			border-bottom: 1px solid #dee2e6
+			padding: 0.8rem
+
+	tbody
+		td 
+			vertical-align: top
+			border-bottom: 1px solid #dee2e6
+			padding: 0.8rem
+
+.form-group
+	padding: 20px 0px
+	label
+		width: 100%
+		text-align: right 
+		padding: 
+			top: 10px
+			left: 15px
+			right: 15px
+	.form-control
+		color: #1e1e1e
+		display: block
+		width: 100%
+		height: calc(2.25rem + 2px)
+		margin-top: 10px
+		padding: .375rem .75rem
+		font-size: 1rem
+		background-color: #fff
+		border-radius: 10px
+		line-height: 1.6
+
+.form-footer
+	text-align: right
+	margin-top: 20px
+
+
+.form-group:nth-child(odd)
+	background-color: #f5f7fa
+	border-bottom: 1px solid #ebeff5			
 @import "media" // Always at the end
+

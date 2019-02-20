@@ -18,5 +18,14 @@ namespace Data.Services.Concrete
         {
             return _managerRepository.All();
         }
+
+        public Manager Create(string login, string password)
+        {
+            return _managerRepository.Create(new Manager
+            {
+                Login = login,
+                Password = password
+            });
+        }
     }
 }

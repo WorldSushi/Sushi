@@ -27,7 +27,7 @@ namespace WebUI.Controllers
                 var user = _managerService.GetAll().FirstOrDefault(x => x.Login == userLogin);
 
                 if (user is Manager)
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Manager");
 
                 return RedirectToAction("Index", "Account");
             }

@@ -6,5 +6,7 @@ namespace Data.Services.Abstract
     public interface IManagerService
     {
         IQueryable<Manager> GetAll();
+
+        Manager Create(string login, string password);
     }
 }
