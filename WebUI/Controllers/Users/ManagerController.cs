@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Data.DTO.Users;
 using Data.Entities.Users;
 using Data.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.Users
 {
+    [Authorize]
     public class ManagerController : Controller
     {
         private readonly IManagerService _managerService;
