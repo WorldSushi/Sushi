@@ -19,12 +19,13 @@ namespace Data.Services.Concrete
             return _managerRepository.All();
         }
 
-        public Manager Create(string login, string password)
+        public Manager Create(string login, string password, string phone)
         {
             return _managerRepository.Create(new Manager
             {
                 Login = login,
-                Password = password
+                Password = password,
+                Phone = phone
             });
         }
     }

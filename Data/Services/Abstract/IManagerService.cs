@@ -7,6 +7,6 @@ namespace Data.Services.Abstract
     {
         IQueryable<Manager> GetAll();
 
-        Manager Create(string login, string password);
+        Manager Create(string login, string password, string phone);
     }
 }

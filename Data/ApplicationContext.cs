@@ -1,4 +1,5 @@
-﻿using Data.Entities.Users;
+﻿using Data.Entities.Clients;
+using Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -13,6 +14,7 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Manager>();
+            modelBuilder.Entity<Client>();
         }
     }
 }

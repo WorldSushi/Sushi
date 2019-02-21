@@ -38,7 +38,7 @@ namespace WebUI
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
 
             services.AddTransient<IManagerService, ManagerService>();
-
+            services.AddTransient<IClientService, ClientService>();
             #endregion
 
             services.AddMvc();

@@ -6,31 +6,23 @@
 
 <div class="content">
     <div class="page-header">
-        <h1>Создание менеджера</h1>
-        <p>Здесь создается новый менеджер</p>
+        <h1>Создание клиента</h1>
+        <p>Здесь создается новый клиент</p>
     </div>
     <section class="table">
         <div class="portlet">
             <div class="portlet-header">
-                Данные учетной записи
+                Данные клиента
             </div>
             <div class="portlet-body">
-                <form action="/Manager/Create" method="post">
+                <form action="/Client/Create" method="post">
                     <div class="form-group-wrapper">
                         <div class="form-group row">
                             <div class="col-md-3">
-                                <label>Имя пользователя</label>
+                                <label>Имя</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="login" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <label>Пароль</label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" name="password" />
+                                <input type="text" class="form-control" name="title" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -44,7 +36,7 @@
                         <div class="form-footer">
                             <button type="submit" class="button button-default">Отправить</button>
                         </div>
-                    </div>                  
+                    </div>
                 </form>
             </div>
         </div>

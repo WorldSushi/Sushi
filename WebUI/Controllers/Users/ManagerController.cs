@@ -24,7 +24,8 @@ namespace WebUI.Controllers.Users
                 .Select(x => new ManagerDTO
                 {
                     Login = x.Login,
-                    Password = x.Password
+                    Password = x.Password,
+                    Phone = x.Phone
                 });
 
             return View(response);
@@ -36,9 +37,9 @@ namespace WebUI.Controllers.Users
         }
 
         [HttpPost]
-        public IActionResult Create(string login, string password)
+        public IActionResult Create(string login, string password, string phone)
         {
-            _managerService.Create(login, password);
+            _managerService.Create(login, password, phone);
 
             return RedirectToAction("Index");
         }

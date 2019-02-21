@@ -2,6 +2,6 @@
 {
     public class Manager : User
     {
-        
+        public string Phone { get; set; }
     }
 }
