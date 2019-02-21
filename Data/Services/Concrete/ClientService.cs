@@ -1,4 +1,5 @@
 ﻿using Base;
+using Base.Extensions;
 using Data.Entities.Clients;
 using Data.Services.Abstract;
 using System.Linq;
@@ -24,8 +25,14 @@ namespace Data.Services.Concrete
             return _clientRepository.Create(new Client
             {
                 Title = title,
-                Phone = phone
+                Phone = phone.PhoneFormat()
             });
+        }
+
+        public Client GetClientByPhone(string phone)
+        {
+            return GetAll().Where(x => x.Phone.PhoneFormat() == phone.PhoneFormat())
+                .FirstOrDefault();
         }
     }
 }

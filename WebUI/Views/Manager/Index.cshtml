@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach(var manager in Model)
                         {
-                            <tr>
+                            <tr class="row-anchor" data-href="/Manager/Detail/@manager.Id">
                                 <td>@manager.Login</td>
                                 <td>@manager.Password</td>
                                 <td>@manager.Phone</td>
@@ -41,5 +41,4 @@
         </div>
     </section>
 </div>
-
 

@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<div class="content">
+    <section class="manager-info row">
+        <div class="col-md-6">
+            <div class="portlet">
+                <div class="portlet-header">
+                    О Менеджере
+                </div>
+                <div class="portlet-body">
+                    <div class="form-group-wrapper">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label>Имя</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="login" value="@Model.Login" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label>Пароль</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="password" value="@Model.Password" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label>Телефон</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="phone" value="@Model.Phone" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <section class="table">
+        <div class="portlet">
+            <div class="portlet-header">
+                Звонки менеджера
+            </div>
+            <div id="calls" class="portlet-body">
+                <div class="table-header">
+                    <div class="form-group">
+                        <input class="form-control" type="date" v-model="dateForFilter" />
+                    </div>                  
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Дата Звонка</th>
+                            <th>Клиент</th>
+                            <th>Номер Клиента</th>
+                            <th>Длительность</th>
+                            <th>Запись</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="call in calls">
+                            <td>{{call.date}}</td>
+                            <td>{{call.clientTitle}}</td>
+                            <td>{{call.src_Number}}</td>
+                            <td>{{call.duration}}</td>
+                            <td>
+                                <a :href="call.recording" class="button button-default">Прослушать</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    const managerId = @Model.Id;
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const options = {
+        method: "POST",
+        headers: headers,
+        credentials: "include"
+    }
+
+    const calls = new Vue({
+        el: "#calls",
+        data: {
+            calls: [],
+            dateForFilter: moment().format("DD.MM.YYYY")
+        },
+        watch: {
+            dateForFilter: function () {
+                this.calls = [];
+
+                options.body = JSON.stringify({
+                    date: moment(this.dateForFilter, "YYYY-MM-DD").format("DD.MM.YYYY"),
+                    managerId: managerId
+                });
+
+                fetch("/Manager/GetCalls", options)
+                    .then(response => response.json())
+                    .then(data => data.forEach(item => {
+                        this.calls.push({
+                            date: item.date,
+                            clientTitle: item.clientTitle,
+                            src_Number: item.src_Number,
+                            duration: item.duration.replace(/\,/g, ':'),
+                            recording: item.recording
+                        });
+                    }))
+            }
+        },
+        created: function () {
+            options.body = JSON.stringify({
+                date: moment().format("DD.MM.YYYY"),
+                managerId: managerId
+            })
+
+            fetch("/Manager/GetCalls", options)
+                .then(response => response.json())
+                .then(data => data.forEach(item => {
+                    this.calls.push({
+                        date: item.date,
+                        clientTitle: item.clientTitle,
+                        src_Number: item.src_Number,
+                        duration: item.duration.replace(/\,/g, ':'),
+                        recording: item.recording
+                    });
+                }))
+
+        }
+    })
+</script>

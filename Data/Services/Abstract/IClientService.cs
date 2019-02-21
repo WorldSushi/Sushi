@@ -7,5 +7,7 @@ namespace Data.Services.Abstract
     {
         IQueryable<Client> GetAll();
         Client Create(string title, string phone);
+
+        Client GetClientByPhone(string phone);
     }
 }

@@ -39,6 +39,7 @@ namespace WebUI
 
             services.AddTransient<IManagerService, ManagerService>();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IMyCallsAPIService, MyCallsAPIService>();
             #endregion
 
             services.AddMvc();

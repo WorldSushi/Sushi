@@ -226,7 +226,7 @@ main
 		font-size: 1rem
 
 .content
-	padding: 0px 40px
+	padding: 0px 40px 80px 40px
 
 .portlet
 	margin:
@@ -264,10 +264,14 @@ main
 			padding: 0.8rem
 
 	tbody
-		td 
-			vertical-align: top
-			border-bottom: 1px solid #dee2e6
-			padding: 0.8rem
+		tr 
+			cursor: pointer
+			&:hover
+				background-color: #f6f6f6
+			td 
+				vertical-align: top
+				border-bottom: 1px solid #dee2e6
+				padding: 0.8rem
 .form-group-wrapper
 	.form-group
 		padding: 20px 0px
@@ -297,6 +301,20 @@ main
 
 	.form-group:nth-child(odd)
 		background-color: #f5f7fa
-		border-bottom: 1px solid #ebeff5			
+		border-bottom: 1px solid #ebeff5		
+
+
+.table-header
+	.form-control
+		color: #1e1e1e
+		display: block
+		width: 100%
+		height: calc(2.25rem + 2px)
+		margin-top: 10px
+		padding: .375rem .75rem
+		font-size: 1rem
+		background-color: #fff
+		border-radius: 10px
+		line-height: 1.6	
 @import "media" // Always at the end
 
