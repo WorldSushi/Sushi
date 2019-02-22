@@ -29,7 +29,7 @@ namespace WebUI
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Index");
                 });
 
-            var connection = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Илья\\Documents\\SushiWorldDB.mdf;Integrated Security=True;Connect Timeout=30";
+            var connection = "Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=SushiWorld;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("Data")));
