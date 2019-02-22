@@ -1,7 +1,8 @@
-﻿
+﻿@using WebUI.Services.Abstract
 @{
     ViewData["Title"] = "Detail";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = account.GetLayout();
+    @inject IAccountInformationService account
 }
 
 <div class="content">
@@ -18,7 +19,7 @@
                                 <label>Имя</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="login" value="@Model.Login" readonly/>
+                                <input type="text" class="form-control" name="login" value="@Model.Login" readonly />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -34,13 +35,13 @@
                                 <label>Телефон</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="phone" value="@Model.Phone" readonly/>
+                                <input type="text" class="form-control" name="phone" value="@Model.Phone" readonly />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
     <section class="table">
@@ -52,7 +53,7 @@
                 <div class="table-header">
                     <div class="form-group">
                         <input class="form-control" type="date" v-model="dateForFilter" />
-                    </div>                  
+                    </div>
                 </div>
                 <table class="table">
                     <thead>

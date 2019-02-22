@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebUI.Services.Abstract;
+using WebUI.Services.Concrete;
 
 namespace WebUI
 {
@@ -38,8 +40,11 @@ namespace WebUI
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
 
             services.AddTransient<IManagerService, ManagerService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAccountInformationService, AccountInformationService>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IMyCallsAPIService, MyCallsAPIService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             #endregion
 
             services.AddMvc();

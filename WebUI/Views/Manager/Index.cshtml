@@ -1,7 +1,8 @@
-﻿
+﻿@using WebUI.Services.Abstract
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = account.GetLayout();
+    @inject IAccountInformationService account
 }
 
 <div class="content">
@@ -27,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var manager in Model)
+                        @foreach (var manager in Model)
                         {
                             <tr class="row-anchor" data-href="/Manager/Detail/@manager.Id">
                                 <td>@manager.Login</td>

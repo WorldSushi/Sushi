@@ -10,11 +10,11 @@ namespace WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IManagerService _managerService;
+        private readonly IUserService _userService;
 
-        public HomeController(IManagerService managerService)
+        public HomeController(IUserService userService)
         {
-            _managerService = managerService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -24,9 +24,11 @@ namespace WebUI.Controllers
                 var userLogin = HttpContext.User.Identity.Name;
 
                 //Юзер берется из бд
-                var user = _managerService.GetAll().FirstOrDefault(x => x.Login == userLogin);
+                var user = _userService.GetAll().FirstOrDefault(x => x.Login == userLogin);
 
                 if (user is Manager)
+                    return RedirectToAction("Index", "Client");
+                else if (user is Admin)
                     return RedirectToAction("Index", "Manager");
 
                 return RedirectToAction("Index", "Account");

@@ -14,6 +14,8 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Manager>();
+            modelBuilder.Entity<Admin>();
+            modelBuilder.Entity<User>();
             modelBuilder.Entity<Client>();
         }
     }

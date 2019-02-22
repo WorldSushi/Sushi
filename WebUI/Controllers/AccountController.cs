@@ -13,11 +13,11 @@ namespace WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IManagerService _managerService;
+        private readonly IUserService _userService;
 
-        public AccountController(IManagerService managerService)
+        public AccountController(IUserService userService)
         {
-            _managerService = managerService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -30,7 +30,8 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _managerService.GetAll().FirstOrDefault(x => x.Login == login && x.Password == password);
+                var test = _userService.GetAll();
+                var user = _userService.GetAll().FirstOrDefault(x => x.Login == login && x.Password == password);
 
                 if (user != null)
                 {
