@@ -80,20 +80,62 @@ namespace WebUI.Controllers.Users
         [HttpPost]
         public IActionResult GetCalls([FromBody]GetCallsOptions options)
         {
-            var response = _myCallsApiService.GetCallsByDateAndManager(
-                    DateTime.ParseExact(options.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    options.ManagerId)
+            if (options.DateFrom != null && options.DateFor != null)
+            {
+                var dateFrom = DateTime.ParseExact(options.DateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                var dateFor = DateTime.ParseExact(options.DateFor, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+
+                var response = _myCallsApiService.GetCallsByDateAndManager(dateFrom, dateFor, options.ManagerId)
                     .Results
                     .Select(x => new CallVM
                     {
-                        Date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(x.Start_time).ToShortDateString(),
+                        Date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(x.Start_time).AddHours(3).ToString("dd.MM.yyyy HH:ss"),
                         Duration = TimeSpan.FromSeconds(x.Duration).ToString(@"mm\:ss"),
                         Recording = x.Recording,
                         ClientTitle = _clientService.GetClientByPhone(x.Src_number)?.Title ?? "",
                         Src_Number = x.Src_number.PhoneFormat()
                     });
 
-            return Ok(response);
+                return Ok(response);
+            }
+            else if (options.DateFrom != null && options.DateFor == null)
+            {
+                var dateFrom = DateTime.ParseExact(options.DateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                var dateFor = DateTime.Now.AddDays(1);
+
+                var response = _myCallsApiService.GetCallsByDateAndManager(dateFrom, dateFor, options.ManagerId)
+                    .Results
+                    .Select(x => new CallVM
+                    {
+                        Date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(x.Start_time).AddHours(3).ToShortTimeString(),
+                        Duration = TimeSpan.FromSeconds(x.Duration).ToString(@"mm\:ss"),
+                        Recording = x.Recording,
+                        ClientTitle = _clientService.GetClientByPhone(x.Src_number)?.Title ?? "",
+                        Src_Number = x.Src_number.PhoneFormat()
+                    });
+
+                return Ok(response);
+            }
+            else if(options.DateFrom == null && options.DateFor != null)
+            {
+                var dateFrom = _myCallsApiService.GetReferencePoint();
+                var dateFor = DateTime.Now.AddDays(1);
+
+                var response = _myCallsApiService.GetCallsByDateAndManager(dateFrom, dateFor, options.ManagerId)
+                    .Results
+                    .Select(x => new CallVM
+                    {
+                        Date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(x.Start_time).AddHours(3).ToString("dd.MM.yyyy HH:ss"),
+                        Duration = TimeSpan.FromSeconds(x.Duration).ToString(@"mm\:ss"),
+                        Recording = x.Recording,
+                        ClientTitle = _clientService.GetClientByPhone(x.Src_number)?.Title ?? "",
+                        Src_Number = x.Src_number.PhoneFormat()
+                    });
+
+                return Ok(response);
+            }
+
+            return BadRequest();
         }
     }
 }
