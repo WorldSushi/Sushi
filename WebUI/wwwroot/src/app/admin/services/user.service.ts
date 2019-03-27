@@ -9,8 +9,7 @@ export class UserService {
   private url = 'api/user';
 
   getAll(){
-    return this.http.get(this.url)
-      //.subscribe(res => console.log(res));
+    return this.http.get(this.url);
   }
 
   constructor(private http: HttpClient) { }
