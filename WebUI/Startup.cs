@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebUI.Services.Abstract;
@@ -26,7 +27,7 @@ namespace WebUI
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Index");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/login");
                 });
 
             var connection = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Илья\\Documents\\SushiWorldDB.mdf;Integrated Security=True;Connect Timeout=30";
@@ -68,6 +69,15 @@ namespace WebUI
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "wwwroot";
+
+                spa.UseAngularCliServer(npmScript: "start");
+
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
         }
     }
