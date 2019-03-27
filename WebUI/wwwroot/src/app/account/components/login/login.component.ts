@@ -9,7 +9,7 @@ import { AuthorizeCommand } from '../../commands/authorize.command';
 })
 export class LoginComponent {
 
-  @Output() authorizeCommand = new EventEmitter();
+  @Output() authorizeCommand = new EventEmitter<AuthorizeCommand>();
 
   loginForm = new FormGroup({
     login: new FormControl(''),
@@ -17,8 +17,10 @@ export class LoginComponent {
   })
 
   onSubmit(){
-    console.log(this.loginForm.value);
-    this.authorizeCommand.emit(1);
+    this.authorizeCommand.emit(new AuthorizeCommand(
+      this.loginForm.value.login,
+      this.loginForm.value.password
+    ));
   }
 
   constructor() { }
