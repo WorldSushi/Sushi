@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Data.Commands.Account;
 using Data.Entities.Users;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Authentication;
@@ -26,12 +27,13 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string login, string password)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             if (ModelState.IsValid)
             {
-                var test = _userService.GetAll();
-                var user = _userService.GetAll().FirstOrDefault(x => x.Login == login && x.Password == password);
+                var user = _userService.GetAll()
+                    .FirstOrDefault(x => x.Login == command.Login
+                                         && x.Password == command.Password);
 
                 if (user != null)
                 {

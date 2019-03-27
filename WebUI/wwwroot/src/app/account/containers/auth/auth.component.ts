@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthorizeService } from '../../services/authorize.service';
+import { AuthorizeCommand } from '../../commands/authorize.command';
 
 @Component({
   selector: 'app-auth',
@@ -7,9 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AuthComponent {
 
-  authorize($event){
-    console.log($event);
+  authorize(event: AuthorizeCommand){
+    this.authorizeService.authorize(event);
   }
 
-  constructor() { }
+  constructor(private authorizeService: AuthorizeService) { }
 }
