@@ -10,10 +10,10 @@ export class AuthorizeService {
   url = "/account/login";
 
   authorize(command: AuthorizeCommand){
-    this.http.post(
-      this.url,
-      command
-    ).subscribe(res => console.log(res));
+    return this.http.post(
+        this.url,
+        command
+      ).subscribe(res => console.log(res));
   }
 
   constructor(private http: HttpClient) { }
