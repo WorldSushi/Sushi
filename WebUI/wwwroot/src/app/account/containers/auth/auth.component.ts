@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AuthComponent {
 
-  authorize(event){
-    console.log(event);
+  authorize($event){
+    console.log($event);
   }
 
   constructor() { }

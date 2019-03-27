@@ -9,7 +9,7 @@ import { AuthorizeCommand } from '../../commands/authorize.command';
 })
 export class LoginComponent {
 
-  @Output() authorizeCommand = new EventEmitter();
+  @Output() authorizeCommand = new EventEmitter<any>();
 
   loginForm = new FormGroup({
     login: new FormControl(''),
