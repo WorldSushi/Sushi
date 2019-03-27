@@ -6,9 +6,15 @@ namespace Data.Services.Abstract
 {
     public interface IMyCallsAPIService
     {
-        CallsDTO GetCallsByDate(DateTime date);
+        DateTime GetReferencePoint();
 
-        CallsDTO GetCallsByDateAndManager(DateTime date, int managerId);
+        CallsDTO GetCallsByDate(DateTime dateFrom, int results_next_offset);
+
+        CallsDTO GetCallsByDate(DateTime dateFrom, DateTime dateFor, int results_next_offset);
+
+        CallsDTO GetCallsByDateAndManager(DateTime dateFrom, int managerId);
+
+        CallsDTO GetCallsByDateAndManager(DateTime dateFrom, DateTime dateFor, int managerId);
 
     }
 }

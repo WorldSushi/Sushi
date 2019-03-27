@@ -2,7 +2,8 @@
 {
     public class GetCallsOptions
     {
-        public string Date { get; set; }
+        public string DateFrom { get; set; }
+        public string DateFor { get; set; }
         public int ManagerId { get; set; }
     }
 }
