@@ -1,18 +1,18 @@
 import { User } from '../../models/user/user.models';
 import { Action } from '@ngrx/store';
-import { ActionTypes, AdminActionsUnion } from '../../actions/user/user.actions';
+import { UserActionTypes, UserActionsUnion } from '../../actions/user/user.actions';
 
-export interface AdminState {
+export interface IAdminState {
     users: User[]
 }
 
-export const initialState: AdminState = {
+export const initialAdminState: IAdminState = {
     users: []
 }
 
-export function adminReducer(state = initialState, action: AdminActionsUnion){
+export function adminReducer(state = initialAdminState, action: UserActionsUnion){
     switch (action.type){
-        case ActionTypes.GetAllComplete:
+        case UserActionTypes.GetAllComplete:
             return {...this.state, users: action.payload};
         default: 
             return state;

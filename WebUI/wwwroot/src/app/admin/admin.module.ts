@@ -7,13 +7,16 @@ import { UserListComponent } from './components/user/user-list/user-list.compone
 import { UserService } from './services/user.service';
 import { StoreModule } from '@ngrx/store';
 import { adminReducer } from './reducers/user/user.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './effects/user/user.effects';
 
 @NgModule({
   declarations: [UserComponent, UserListComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    StoreModule.forFeature('admin', adminReducer)
+    StoreModule.forFeature('admin', adminReducer),
+    EffectsModule.forFeature([UserEffects])
   ],
   providers: [
     UserService

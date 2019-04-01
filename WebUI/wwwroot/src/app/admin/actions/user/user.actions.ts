@@ -1,24 +1,24 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user/user.models';
 
-export enum ActionTypes {
+export enum UserActionTypes {
     GetAll = "GetAll",
     GetAllComplete = "GetAllComplete",
     GetAllError = "GetAllError"
 }
 
 export class GetAll implements Action {
-    readonly type = ActionTypes.GetAll;
+    readonly type = UserActionTypes.GetAll;
 }
 
 export class GetAllComplete implements Action {
-    readonly type = ActionTypes.GetAllComplete;
+    readonly type = UserActionTypes.GetAllComplete;
 
     constructor(public payload: User[]){}
 }
 
 export class GetAllError implements Action {
-    readonly type = ActionTypes.GetAllError;
+    readonly type = UserActionTypes.GetAllError;
 }
 
-export type AdminActionsUnion = GetAll | GetAllComplete | GetAllError;
+export type UserActionsUnion = GetAll | GetAllComplete | GetAllError;

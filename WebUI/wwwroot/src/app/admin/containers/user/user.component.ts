@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { IAdminState } from '../../reducers/user/user.reducers';
+import { Store, select } from '@ngrx/store';
+import { GetAll } from '../../actions/user/user.actions';
+import { selectUserList } from '../../selectors/user.selector';
+import { IAppState } from 'src/app/reducers';
 
 @Component({
   selector: 'app-user',
@@ -7,10 +11,15 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./user.component.sass']
 })
 export class UserComponent {
+    
+  users$ = this.store.pipe(select(selectUserList))
 
-  users = [];
+  showUsers() {
+    console.log(this.users$);
+  }
 
-  constructor(private userService: UserService) {
-    this.userService.getAll().subscribe(res => console.log(res));
+  constructor(private store: Store<IAppState>) {
+    this.store.dispatch(new GetAll());
+    setInterval(() => console.log(this.users$), 2000);
   }
 }
