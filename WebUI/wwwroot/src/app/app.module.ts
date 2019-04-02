@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
-import { appReducers } from './reducers';
+import { appReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
@@ -14,9 +14,10 @@ import { EffectsModule } from '@ngrx/effects';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    StoreModule.forRoot(appReducers)
+    AppRoutingModule,  
+    StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [],
   bootstrap: [AppComponent]

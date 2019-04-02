@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Entities.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,19 @@ namespace WebUI.ApiControllers
     {
         // GET: api/User
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ICollection<User> Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = new List<User>();
+            response.Add(new Manager
+            {
+                Id = 0,
+                Login = "Test",
+                Password = "Test",
+                Phone = "555-35-35"
+            });
+
+            return response;
+
         }
 
         // GET: api/User/5

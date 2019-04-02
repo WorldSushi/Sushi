@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { UserComponent } from './containers/user/user.component';
-import { UserListComponent } from './components/user/user-list/user-list.component';
-import { UserService } from './services/user.service';
-import { StoreModule } from '@ngrx/store';
-import { adminReducer } from './reducers/user/user.reducers';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { adminReducers } from './store/reducers';
+import { ManagerService } from './services/manager.service';
 import { EffectsModule } from '@ngrx/effects';
-import { UserEffects } from './effects/user/user.effects';
+import { ManagerEffects } from './store/effects/manager.effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [UserComponent, UserListComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    StoreModule.forFeature('admin', adminReducer),
-    EffectsModule.forFeature([UserEffects])
+    HttpClientModule,
+    StoreModule.forFeature('admin', adminReducers),
+    EffectsModule.forFeature([ManagerEffects])
   ],
-  providers: [
-    UserService
-  ]
+  providers: [ManagerService]
 })
 export class AdminModule { }
