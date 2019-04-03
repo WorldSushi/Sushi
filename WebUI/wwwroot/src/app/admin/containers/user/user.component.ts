@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { IManagerState } from '../../store/states/manager.state';
 import { GetAll } from '../../store/actions/user.action';
 
