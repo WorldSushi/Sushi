@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './containers/user/user.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'user', pathMatch: '' },
+    { path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: 'user', component: UserComponent }
 ];
 

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Manager } from '../../models/manager.model';
 
 @Component({
   selector: 'app-user-list',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-list.component.sass']
 })
 export class UserListComponent implements OnInit {
+
+  @Input()
+  managers: Manager[]
 
   constructor() { }
 
