@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Data.Entities.Users;
+using Data.Entities.Clients;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,38 +10,44 @@ namespace WebUI.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ClientController : ControllerBase
     {
-        // GET: api/User
+        // GET: api/Client
         [HttpGet]
-        public ICollection<User> Get()
+        public IEnumerable<Client> Get()
         {
-            var response = new List<User>();
-            response.Add(new Manager
+            var response = new List<Client>()
             {
-                Id = 0,
-                Login = "Test",
-                Password = "Test",
-                Phone = "555-35-35"
-            });
+                new Client()
+                {
+                    Id = 0,
+                    Title = "Client1",
+                    Phone = "555-35-35"
+                }
+            };
 
             return response;
         }
 
-        // GET: api/User/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/Client/5
+        [HttpGet("{id}")]
+        public Client Get(int id)
         {
-            return "value";
+            return new Client()
+            {
+                Id = 0,
+                Title = "Client1",
+                Phone = "555-35-35"
+            };
         }
 
-        // POST: api/User
+        // POST: api/Client
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/User/5
+        // PUT: api/Client/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

@@ -1,4 +1,5 @@
-﻿using Data.Entities.Clients;
+﻿using Data.Entities.ClientContacts;
+using Data.Entities.Clients;
 using Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ namespace Data
             modelBuilder.Entity<Admin>();
             modelBuilder.Entity<User>();
             modelBuilder.Entity<Client>();
+            modelBuilder.Entity<MonthlyCallPlan>();
+            modelBuilder.Entity<MonthlyBusinessTripPlan>();
         }
     }
 }

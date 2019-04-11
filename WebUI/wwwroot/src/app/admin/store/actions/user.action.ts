@@ -26,6 +26,4 @@ export class GetAllFailure implements Action {
     constructor(public payload: {error: string}) {}
 }
 
-export type ManagerActions = GetAll |
-    GetAllSuccess |
-    GetAllFailure
+export type ManagerActions = GetAll | GetAllSuccess | GetAllFailure
