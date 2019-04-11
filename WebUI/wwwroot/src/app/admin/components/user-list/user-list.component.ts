@@ -9,7 +9,10 @@ import { Manager } from '../../models/manager.model';
 export class UserListComponent implements OnInit {
 
   @Input()
-  managers: Manager[]
+  managers: Manager[];
+  
+
+  displayedColumns: string[] = ["id", "login", "password", "phone"];
 
   constructor() { }
 

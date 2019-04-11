@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CLientService {
-    clientApi = "http://localhost:58743/api/Client";
+    clientApi = "http://localhost:59295/api/Client";
 
     getClients(): Observable<Client[]> {
         return this.http.get<Client[]>(this.clientApi);

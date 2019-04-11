@@ -6,7 +6,7 @@ import { Manager } from '../models/manager.model';
 
 @Injectable()
 export class ManagerService {
-    userApi =  "http://localhost:58743/api/";
+    userApi =  "http://localhost:59295/api/";
 
     getManagers(): Observable<Manager[]> {
 

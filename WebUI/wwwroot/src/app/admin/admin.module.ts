@@ -10,6 +10,7 @@ import { ManagerService } from './services/manager.service';
 import { EffectsModule } from '@ngrx/effects';
 import { ManagerEffects } from './store/effects/manager.effects';
 import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   declarations: [UserComponent, UserListComponent],
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     AdminRoutingModule,
     HttpClientModule,
     StoreModule.forFeature('admin', adminReducers),
-    EffectsModule.forFeature([ManagerEffects])
+    EffectsModule.forFeature([ManagerEffects]),
+    MaterialModule
   ],
   providers: [ManagerService]
 })

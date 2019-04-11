@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { appReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { EffectsModule } from '@ngrx/effects';
     AppRoutingModule,  
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
