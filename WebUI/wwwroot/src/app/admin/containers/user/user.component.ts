@@ -17,8 +17,6 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetAll());
-
-    console.log(this.store.pipe(select(selectManagerList)));
   }
 
 }
