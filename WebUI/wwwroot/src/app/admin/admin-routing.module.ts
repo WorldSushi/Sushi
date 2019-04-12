@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './containers/user/user.component';
+import { AdminComponent } from './admin.component';
+
+const adminRoutes: Routes = [
+    { path: '', redirectTo: 'users', pathMatch: 'full'},
+    { path: 'users', component: UserComponent }
+]
 
 const routes: Routes = [
-    { path: '', redirectTo: 'user', pathMatch: 'full' },
-    { path: 'user', component: UserComponent }
+    { path: '', 
+        component: AdminComponent, 
+        children: adminRoutes
+    }
+  
 ];
 
 @NgModule({

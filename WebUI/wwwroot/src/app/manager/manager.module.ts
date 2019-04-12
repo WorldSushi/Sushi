@@ -17,7 +17,7 @@ import { ManagerRoutingModule } from './manager-routing.module';
         ManagerRoutingModule,
         HttpClientModule,
         StoreModule.forFeature('manager', managerReducer),
-        EffectsModule.forFeature([ClientEffects])
+        EffectsModule.forFeature([ClientEffects]),
     ],
     providers: [CLientService]
 })

@@ -11,16 +11,20 @@ import { EffectsModule } from '@ngrx/effects';
 import { ManagerEffects } from './store/effects/manager.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
+import { AdminComponent } from './admin.component';
+import { LayoutModule } from './layout/layout.module';
+
 
 @NgModule({
-  declarations: [UserComponent, UserListComponent],
+  declarations: [UserComponent, UserListComponent, AdminComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     HttpClientModule,
     StoreModule.forFeature('admin', adminReducers),
     EffectsModule.forFeature([ManagerEffects]),
-    MaterialModule
+    MaterialModule,
+    LayoutModule
   ],
   providers: [ManagerService]
 })

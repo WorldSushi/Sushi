@@ -9,6 +9,7 @@ import { appReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { LayoutModule } from './manager/layout/layout.module';
 
 @NgModule({
   declarations: [
