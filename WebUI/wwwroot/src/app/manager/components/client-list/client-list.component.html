@@ -1,16 +1,24 @@
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Имя</th>
-      <th>Телефон</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let client of clients">
-      <td>{{client.id}}</td>
-      <td>{{client.title}}</td>
-      <td>{{client.phone}}</td>
-    </tr>
-  </tbody>
-</table>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Список Клиентов</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+   <table mat-table [dataSource]="clients">
+     <ng-container matColumnDef="id">
+       <th mat-header-cell *matHeaderCellDef> # </th>
+       <td mat-cell *matCellDef="let client"> {{client.id}} </td>
+     </ng-container>
+     <ng-container matColumnDef="title">
+       <th mat-header-cell *matHeaderCellDef> Имя </th>
+       <td mat-cell *matCellDef="let client"> {{client.title}} </td>
+     </ng-container>
+     <ng-container matColumnDef="phone">
+       <th mat-header-cell *matHeaderCellDef> Телефон </th>
+       <td mat-cell *matCellDef="let client"> {{client.phone}} </td>
+     </ng-container>
+     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+   </table>
+   <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>

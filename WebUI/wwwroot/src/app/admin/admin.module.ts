@@ -13,19 +13,23 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { AdminComponent } from './admin.component';
 import { LayoutModule } from './layout/layout.module';
+import { ClientListComponent } from './components/client-list/client-list.component';
+import { ClientComponent } from './containers/client/client.component';
+import { ClientService } from './services/client.service';
+import { ClientEffects } from './store/effects/client.effects';
 
 
 @NgModule({
-  declarations: [UserComponent, UserListComponent, AdminComponent],
+  declarations: [UserComponent, UserListComponent, AdminComponent, ClientListComponent, ClientComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     HttpClientModule,
     StoreModule.forFeature('admin', adminReducers),
-    EffectsModule.forFeature([ManagerEffects]),
+    EffectsModule.forFeature([ManagerEffects, ClientEffects]),
     MaterialModule,
     LayoutModule
   ],
-  providers: [ManagerService]
+  providers: [ManagerService, ClientService]
 })
 export class AdminModule { }

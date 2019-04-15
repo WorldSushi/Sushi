@@ -9,6 +9,7 @@ import { CLientService } from './services/client.service';
 import { managerReducer } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ManagerRoutingModule } from './manager-routing.module';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
     declarations: [ClientComponent, ClientListComponent],
@@ -18,6 +19,7 @@ import { ManagerRoutingModule } from './manager-routing.module';
         HttpClientModule,
         StoreModule.forFeature('manager', managerReducer),
         EffectsModule.forFeature([ClientEffects]),
+        MaterialModule
     ],
     providers: [CLientService]
 })

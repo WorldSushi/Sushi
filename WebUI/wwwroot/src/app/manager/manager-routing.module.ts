@@ -3,8 +3,8 @@ import { ClientComponent } from './containers/client/client.component';
 import { NgModule } from '@angular/core';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'client', pathMatch: 'full' },
-    { path: 'client', component: ClientComponent }
+    { path: '', redirectTo: 'clients', pathMatch: 'full' },
+    { path: 'clients', component: ClientComponent }
 ];
 
 @NgModule({

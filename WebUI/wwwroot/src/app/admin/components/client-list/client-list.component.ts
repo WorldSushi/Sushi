@@ -9,7 +9,7 @@ import { Client } from '../../models/client.model';
 export class ClientListComponent implements OnInit {
 
   @Input()
-  clients: Client[]
+  clients: Client[];
 
   displayedColumns: string[] = ["id", "title", "phone"];
 
