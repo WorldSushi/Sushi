@@ -21,16 +21,21 @@ export const selectClientsWithCallPlan = createSelector(
     selectClientList,
     selectMonthlyCallPlanList,
     (clients: Client[], monthlyCallPlans: MonthlyCallPlan[]) => {
-        return clients.map(item => {
-            let clientWithCallPlan: ClientWithCallPlan = {
-                id: item.id,
-                title: item.title,
-                phone: item.phone,
-                plannedAmountCalls: monthlyCallPlans
-                    .find(x => x.clientId == item.id).amountCalls
-            }
-            
-            return clientWithCallPlan;
-        })
+        if(clients.length > 0 && monthlyCallPlans.length > 0) {
+
+            return clients.map(item => {
+                let clientWithCallPlan: ClientWithCallPlan = {
+                    id: item.id,
+                    title: item.title,
+                    phone: item.phone,
+                    plannedAmountCalls: monthlyCallPlans
+                        .find(x => x.clientId == item.id).amountCalls
+                }
+                
+                return clientWithCallPlan;
+            })
+        } else {
+            return []
+        }        
     }
 ) 
