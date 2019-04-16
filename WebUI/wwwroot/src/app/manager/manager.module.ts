@@ -10,6 +10,8 @@ import { managerReducer } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ManagerRoutingModule } from './manager-routing.module';
 import { MaterialModule } from '../material/material.module';
+import { MonthlyCallPlanService } from './services/monthlyCallPlan.service';
+import { MonthlyCallPlanEffects } from './store/effects/monthlyCallPlan.effects';
 
 @NgModule({
     declarations: [ClientComponent, ClientListComponent],
@@ -18,9 +20,9 @@ import { MaterialModule } from '../material/material.module';
         ManagerRoutingModule,
         HttpClientModule,
         StoreModule.forFeature('manager', managerReducer),
-        EffectsModule.forFeature([ClientEffects]),
+        EffectsModule.forFeature([ClientEffects, MonthlyCallPlanEffects]),
         MaterialModule
     ],
-    providers: [CLientService]
+    providers: [CLientService, MonthlyCallPlanService]
 })
 export class ManagerModule {}

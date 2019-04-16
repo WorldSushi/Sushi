@@ -7,7 +7,7 @@ export enum ClientActionTypes {
     GET_ALL_FAILURE = 'Get All Clients Failure'
 }
 
-export class GetAll implements Action {
+export class GetAllClients implements Action {
     readonly type = ClientActionTypes.GET_ALL;
 
     constructor() {}
@@ -25,4 +25,4 @@ export class GetAllFailure implements Action {
     constructor(public payload: {error: string}) {}
 }
 
-export type ClientActions = GetAll | GetAllSuccess | GetAllFailure
+export type ClientActions = GetAllClients | GetAllSuccess | GetAllFailure

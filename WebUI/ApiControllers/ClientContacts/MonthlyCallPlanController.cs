@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,14 @@ namespace WebUI.ApiControllers.ClientContacts
     {
         // GET: api/MonthlyCallPlan
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<MonthlyCallPlan> Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = new List<MonthlyCallPlan>()
+            {
+                new MonthlyCallPlan(1, 1, 10, 1)
+            };
+
+            return response;
         }
 
         // GET: api/MonthlyCallPlan/5

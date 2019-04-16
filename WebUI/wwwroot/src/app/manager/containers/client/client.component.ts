@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { IManagerState } from '../../store/states';
-import { selectClientList } from '../../store/selectors/client.selectors';
-import { GetAll } from '../../store/actions/client.action';
+import { selectClientList, selectClientsWithCallPlan } from '../../store/selectors/client.selectors';
+import { GetAllClients } from '../../store/actions/client.action';
+import { GetAllMonthyCallPlans } from '../../store/actions/montlyCallPlan.action';
 
 @Component({
   selector: 'app-client',
@@ -11,12 +12,13 @@ import { GetAll } from '../../store/actions/client.action';
 })
 export class ClientComponent implements OnInit {
 
-  clients$ = this.store.pipe(select(selectClientList))
+  clients$ = this.store.pipe(select(selectClientsWithCallPlan))
 
   constructor(private store: Store<IManagerState>) { }
 
   ngOnInit() {
-    this.store.dispatch(new GetAll());
+    this.store.dispatch(new GetAllClients());
+    this.store.dispatch(new GetAllMonthyCallPlans());
   }
 
 }

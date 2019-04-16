@@ -7,7 +7,7 @@ export enum MonthlyCallPlanActionTypes {
     GET_ALL_FAILURE = '[MonthlyCallPlan] GET_ALL_FAILURE'
 };
 
-export class GetAll implements Action {
+export class GetAllMonthyCallPlans implements Action {
     readonly type = MonthlyCallPlanActionTypes.GET_ALL;
 
     constructor() { }
@@ -25,4 +25,4 @@ export class GetAllFailure implements Action {
     constructor(public payload: {error: string}) { }
 }
 
-export type MonthlyCallPlanActions = GetAll | GetAllSuccess | GetAllFailure;
+export type MonthlyCallPlanActions = GetAllMonthyCallPlans | GetAllSuccess | GetAllFailure;

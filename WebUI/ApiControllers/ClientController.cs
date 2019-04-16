@@ -20,7 +20,7 @@ namespace WebUI.ApiControllers
             {
                 new Client()
                 {
-                    Id = 0,
+                    Id = 1,
                     Title = "Client1",
                     Phone = "555-35-35"
                 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Client } from '../../models/client.model';
+import { ClientWithCallPlan } from '../../models/clientWithCallPlan.model';
 
 @Component({
   selector: 'app-client-list',
@@ -9,9 +10,18 @@ import { Client } from '../../models/client.model';
 export class ClientListComponent implements OnInit {
 
   @Input()
-  clients: Client[]
+  clients: ClientWithCallPlan[]
 
-  displayedColumns: string[] = ["id", "title", "phone"];
+  displayedColumns: string[] = [
+    "id",
+    "title", 
+    "phone", 
+    "amountCalls"
+  ];
+
+  yo(){
+    console.log(this.clients);
+  }
 
   constructor() { }
 

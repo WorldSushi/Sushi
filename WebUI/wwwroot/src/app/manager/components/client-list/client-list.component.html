@@ -6,19 +6,24 @@
    <table mat-table [dataSource]="clients">
      <ng-container matColumnDef="id">
        <th mat-header-cell *matHeaderCellDef> # </th>
-       <td mat-cell *matCellDef="let client"> {{client.id}} </td>
+       <td mat-cell *matCellDef="let client"> {{client.client.id}} </td>
      </ng-container>
      <ng-container matColumnDef="title">
        <th mat-header-cell *matHeaderCellDef> Имя </th>
-       <td mat-cell *matCellDef="let client"> {{client.title}} </td>
+       <td mat-cell *matCellDef="let client"> {{client.client.title}} </td>
      </ng-container>
      <ng-container matColumnDef="phone">
        <th mat-header-cell *matHeaderCellDef> Телефон </th>
-       <td mat-cell *matCellDef="let client"> {{client.phone}} </td>
+       <td mat-cell *matCellDef="let client"> {{client.client.phone}} </td>
      </ng-container>
+     <ng-container matColumnDef="amountCalls">
+       <th mat-header-cell *matHeaderCellDef> Запланировано звонков </th>
+       <td mat-cell *matCellDef="let client"> {{client.monthlyCallPlan.amountCalls}} </td>
+     </ng-container>   
      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
    </table>
    <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>
+<button (click)="yo()">Показать клиентов</button>
