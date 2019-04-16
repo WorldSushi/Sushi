@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Client } from '../../models/client.model';
 import { ClientWithCallPlan } from '../../models/clientWithCallPlan.model';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-client-list',
@@ -19,9 +19,32 @@ export class ClientListComponent implements OnInit {
     "plannedAmountCalls"
   ];
 
+  callPlanningDisplayed: boolean = false;
+  selectedClient = {};
+
+  callPlanningForm = new FormGroup({
+    amountColls: new FormControl(0)
+  });
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  callPlanningOpen(clientId: number, clientTitle: string) {
+    this.selectedClient = {
+      id: clientId,
+      title: clientTitle
+    }
+    
+    this.callPlanningDisplayed = true;
+  }
+
+  callPlanningClose() {
+    this.callPlanningDisplayed = false;
+  }
+
+  callPlanningFormSubmit() {
+    
+  }
 }

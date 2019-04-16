@@ -1,3 +1,21 @@
+<ng-container *ngIf="callPlanningDisplayed">
+  <h3 mat-dialog-title>Планирование звонков</h3>
+  <div mat-dialog-container>
+    <label>Клиент: {{selectedClient.title}}</label>
+    <mat-form-field>
+      <form [formGroup]="callPlanningForm" (ngSubmit)="">
+          <input formControlName="amountColls"
+                 matInput
+                 placeholder="Введите количество звонков"
+                 value="value">
+
+          <button mat-button type="submit">Принять</button>
+      </form>
+    </mat-form-field>
+  </div>
+</ng-container>
+
+
 <mat-card>
   <mat-card-header>
     <mat-card-title>Список Клиентов</mat-card-title>
@@ -17,8 +35,15 @@
        <td mat-cell *matCellDef="let client"> {{client.phone}} </td>
      </ng-container>
      <ng-container matColumnDef="plannedAmountCalls">
-       <th mat-header-cell *matHeaderCellDef> Запланировано звонков </th>
-       <td mat-cell *matCellDef="let client"> {{client.plannedAmountCalls}} </td>
+        <th mat-header-cell *matHeaderCellDef> Запланировано звонков </th>
+        <td mat-cell *matCellDef="let client">
+          <ng-container *ngIf="client.plannedAmountCalls">
+              {{client.plannedAmountCalls}}
+          </ng-container>
+          <ng-container *ngIf="!client.plannedAmountCalls">
+            <button mat-button (click)="callPlanningOpen(client.id, client.title)">Запланировать звонки</button>
+          </ng-container>                     
+        </td>
      </ng-container>   
      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
