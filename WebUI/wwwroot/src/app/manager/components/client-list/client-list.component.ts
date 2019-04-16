@@ -16,12 +16,8 @@ export class ClientListComponent implements OnInit {
     "id",
     "title", 
     "phone", 
-    "amountCalls"
+    "plannedAmountCalls"
   ];
-
-  yo(){
-    console.log(this.clients);
-  }
 
   constructor() { }
 

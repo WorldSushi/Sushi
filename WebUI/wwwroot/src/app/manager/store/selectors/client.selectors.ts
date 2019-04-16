@@ -23,8 +23,11 @@ export const selectClientsWithCallPlan = createSelector(
     (clients: Client[], monthlyCallPlans: MonthlyCallPlan[]) => {
         return clients.map(item => {
             let clientWithCallPlan: ClientWithCallPlan = {
-                client: item,
-                monthlyCallPlan: monthlyCallPlans.find(x => x.clientId == item.id)
+                id: item.id,
+                title: item.title,
+                phone: item.phone,
+                plannedAmountCalls: monthlyCallPlans
+                    .find(x => x.clientId == item.id).amountCalls
             }
             
             return clientWithCallPlan;
