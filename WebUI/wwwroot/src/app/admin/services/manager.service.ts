@@ -9,7 +9,6 @@ export class ManagerService {
     userApi =  "http://localhost:58743/api/";
 
     getManagers(): Observable<Manager[]> {
-
         return this.http.get<Manager[]>(this.userApi + "User");
     }
 
