@@ -10,45 +10,45 @@ namespace WebUI.ApiControllers.Clients
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientForManagerController : ControllerBase
+    public class ClientForAdminController : ControllerBase
     {
-        // GET: api/ClientForManager
+        // GET: api/ClientForAdmin
         [HttpGet]
-        public IEnumerable<ClientForManagerVM> Get()
+        public IEnumerable<ClientForAdminVM> Get()
         {
-            return new List<ClientForManagerVM>()
+            return new List<ClientForAdminVM>()
             {
-                new ClientForManagerVM()
+                new ClientForAdminVM()
                 {
                     Id = 1,
                     Phone = "555-35-35",
-                    PlannedAmountCalls = 3,
+                    PlannedAmountCalls = 10,
                     Title = "Client1"
                 },
-                new ClientForManagerVM()
+                new ClientForAdminVM()
                 {
                     Id = 2,
                     Phone = "444-24-24",
-                    PlannedAmountCalls = null,
-                    Title = "Client2"
+                    Title = "Client2",
+                    PlannedAmountCalls = null
                 }
             };
         }
 
-        // GET: api/ClientForManager/5
-        [HttpGet("{id}")]
+        // GET: api/ClientForAdmin/5
+        [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/ClientForManager
+        // POST: api/ClientForAdmin
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/ClientForManager/5
+        // PUT: api/ClientForAdmin/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

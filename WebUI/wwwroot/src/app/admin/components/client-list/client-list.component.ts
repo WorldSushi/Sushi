@@ -11,7 +11,12 @@ export class ClientListComponent implements OnInit {
   @Input()
   clients: Client[];
 
-  displayedColumns: string[] = ["id", "title", "phone"];
+  displayedColumns: string[] = [
+    "id", 
+    "title", 
+    "phone",
+    "plannedAmountCalls"
+  ];
 
   constructor() { }
 
