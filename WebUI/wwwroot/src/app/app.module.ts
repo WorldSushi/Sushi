@@ -23,8 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(),
     BrowserAnimationsModule,
-    MaterialModule,
-    ReactiveFormsModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

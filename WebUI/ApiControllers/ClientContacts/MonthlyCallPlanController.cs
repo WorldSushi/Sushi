@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Commands.ClientContacts;
 using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,13 @@ namespace WebUI.ApiControllers.ClientContacts
 
         // POST: api/MonthlyCallPlan
         [HttpPost]
-        public void Post([FromBody] int clientId, int amountCalls, int month)
+        public IActionResult Post([FromBody]MonthlyCallPlanCreateCommand command)
         {
+            return Ok(new
+            {
+                clientId = command.ClientId,
+                amountCalls = command.AmountCalls
+            });
         }
 
         // PUT: api/MonthlyCallPlan/5

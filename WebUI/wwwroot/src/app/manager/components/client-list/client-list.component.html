@@ -3,11 +3,10 @@
   <div mat-dialog-container>
     <label>Клиент: {{selectedClient.title}}</label>
     <mat-form-field>
-      <form [formGroup]="callPlanningForm" (ngSubmit)="">
-          <input formControlName="amountColls"
+      <form [formGroup]="callPlanningForm" (ngSubmit)="callPlanningFormSubmit()">
+          <input formControlName="amountCalls"
                  matInput
-                 placeholder="Введите количество звонков"
-                 value="value">
+                 placeholder="Введите количество звонков">
 
           <button mat-button type="submit">Принять</button>
       </form>

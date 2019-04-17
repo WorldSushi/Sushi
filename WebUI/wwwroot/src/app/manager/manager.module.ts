@@ -14,6 +14,7 @@ import { MonthlyCallPlanService } from './services/monthlyCallPlan.service';
 import { MonthlyCallPlanEffects } from './store/effects/monthlyCallPlan.effects';
 import { ManagerComponent } from "./manager.component";
 import { LayoutModule } from "./layout/layout.module";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [ClientComponent, ClientListComponent, ManagerComponent],
@@ -24,7 +25,8 @@ import { LayoutModule } from "./layout/layout.module";
         StoreModule.forFeature('manager', managerReducer),
         EffectsModule.forFeature([ClientEffects, MonthlyCallPlanEffects]),
         MaterialModule,
-        LayoutModule
+        LayoutModule,
+        ReactiveFormsModule
     ],
     providers: [CLientService, MonthlyCallPlanService]
 })

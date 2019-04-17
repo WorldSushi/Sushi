@@ -126,7 +126,7 @@ namespace Data.Services.Concrete
 
         public CallsDTO GetCallsByDateAndManager(DateTime dateFrom, DateTime dateFor, int managerId)
         {
-            var managerPhone = _managerService.Get(managerId).Phone;
+            //var managerPhone = _managerService.Get(managerId).Phone;
 
             var managerCalls = GetCallsByDate(dateFrom, dateFor, 0);
             var results_next_offset_index = 0;
@@ -139,12 +139,12 @@ namespace Data.Services.Concrete
 
                 managerCalls.Results_next_offset = nextPartsOfCalls.Results_next_offset;
 
-                managerCalls.Results.AddRange(nextPartsOfCalls.Results);
+                managerCalls.Results = managerCalls.Results.Concat(nextPartsOfCalls.Results).ToList();
             }
 
 
             managerCalls.Results = managerCalls.Results
-                .Where(x => x.Client_number.PhoneFormat() == managerPhone
+                .Where(x => x.Client_number.PhoneFormat() == "+79009151781"
                     && x.Duration > 150)
                 .OrderByDescending(x => x.Start_time)
                 .ToList();

@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Base;
 using Data;
 using Data.Services.Abstract;
+using Data.Services.Abstract.ClientContacts;
 using Data.Services.Concrete;
+using Data.Services.Concrete.ClientContacts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +48,7 @@ namespace WebUI
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IMyCallsAPIService, MyCallsAPIService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IMonthlyCallService, MonthlyCallService>();
             #endregion
 
             services.AddMvc();

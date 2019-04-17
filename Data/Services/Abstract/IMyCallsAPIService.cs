@@ -15,6 +15,5 @@ namespace Data.Services.Abstract
         CallsDTO GetCallsByDateAndManager(DateTime dateFrom, int managerId);
 
         CallsDTO GetCallsByDateAndManager(DateTime dateFrom, DateTime dateFor, int managerId);
-
     }
 }
