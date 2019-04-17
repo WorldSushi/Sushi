@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { ClientComponent } from './containers/client/client.component';
-import { ClientListComponent } from './components/client-list/client-list.component';
+import { ClientListComponent, MonthlyCallPlanDialog } from './components/client-list/client-list.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
@@ -14,10 +14,17 @@ import { MonthlyCallPlanService } from './services/monthlyCallPlan.service';
 import { MonthlyCallPlanEffects } from './store/effects/monthlyCallPlan.effects';
 import { ManagerComponent } from "./manager.component";
 import { LayoutModule } from "./layout/layout.module";
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [ClientComponent, ClientListComponent, ManagerComponent],
+    declarations: [ClientComponent, 
+        ClientListComponent, 
+        ManagerComponent,
+        MonthlyCallPlanDialog
+    ],
+    entryComponents: [
+        MonthlyCallPlanDialog
+    ],
     imports: [
         CommonModule,
         ManagerRoutingModule,
@@ -26,7 +33,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         EffectsModule.forFeature([ClientEffects, MonthlyCallPlanEffects]),
         MaterialModule,
         LayoutModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ],
     providers: [CLientService, MonthlyCallPlanService]
 })
