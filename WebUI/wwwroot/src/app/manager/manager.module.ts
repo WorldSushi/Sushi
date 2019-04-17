@@ -12,16 +12,19 @@ import { ManagerRoutingModule } from './manager-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { MonthlyCallPlanService } from './services/monthlyCallPlan.service';
 import { MonthlyCallPlanEffects } from './store/effects/monthlyCallPlan.effects';
+import { ManagerComponent } from "./manager.component";
+import { LayoutModule } from "./layout/layout.module";
 
 @NgModule({
-    declarations: [ClientComponent, ClientListComponent],
+    declarations: [ClientComponent, ClientListComponent, ManagerComponent],
     imports: [
         CommonModule,
         ManagerRoutingModule,
         HttpClientModule,
         StoreModule.forFeature('manager', managerReducer),
         EffectsModule.forFeature([ClientEffects, MonthlyCallPlanEffects]),
-        MaterialModule
+        MaterialModule,
+        LayoutModule
     ],
     providers: [CLientService, MonthlyCallPlanService]
 })
