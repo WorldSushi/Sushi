@@ -17,6 +17,11 @@ namespace Data.Entities.ClientContacts
 
         public DateTime Date { get; set; }
 
+        private MonthlyBusinessTripPlan()
+        {
+
+        }
+
         public MonthlyBusinessTripPlan(int managerId, int clientId, int amountBusinessTrip, int month)
         {
             ManagerId = managerId;

@@ -22,7 +22,7 @@ namespace WebUI.ApiControllers.ClientContacts
         [HttpGet]
         public IActionResult Get()
         {
-            var a = _monthlyCallService.GetMonthlyCalls(1, 1, 4);
+            //var a = _monthlyCallService.GetMonthlyCalls(1, 1, 4);
 
             return Ok();
         }
