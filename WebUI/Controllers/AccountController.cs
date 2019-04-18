@@ -38,7 +38,13 @@ namespace WebUI.Controllers
                 if (user != null)
                 {
                     await Authenticate(user);
-                    return RedirectToAction("Index", "Home");
+                    return Ok(new {
+                        Login = user.Login,
+                        Password = user.Password,
+                        Role = user is Admin //Todo цифры на enum заменить
+                            ? 10
+                            : 20
+                    });
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
