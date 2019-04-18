@@ -2,5 +2,6 @@ export interface ClientWithCallPlan {
     id: number,
     title: string,
     phone: string,
-    plannedAmountCalls: number
+    plannedAmountCalls: number,
+    amountCalls: number
 }

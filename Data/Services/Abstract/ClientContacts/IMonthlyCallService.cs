@@ -1,7 +1,10 @@
-﻿namespace Data.Services.Abstract.ClientContacts
+﻿using System.Linq;
+using Data.DTO.Calls;
+
+namespace Data.Services.Abstract.ClientContacts
 {
     public interface IMonthlyCallService
     {
-        int GetMonthlyCalls(int managerId, int clientId, int month);
+        IQueryable<CallDTO> GetMonthlyCalls(int month);
     }
 }

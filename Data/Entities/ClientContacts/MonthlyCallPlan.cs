@@ -17,6 +17,11 @@ namespace Data.Entities.ClientContacts
 
         public DateTime Date { get; set; }
 
+        private MonthlyCallPlan()
+        {
+
+        }
+
         public MonthlyCallPlan(int managerId, int clientId, int amountCalls, int month)
         {
             ManagerId = managerId;

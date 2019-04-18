@@ -21,7 +21,7 @@
         <th mat-header-cell *matHeaderCellDef> Звонки <br> Сделано | Запланировано </th>
         <td mat-cell *matCellDef="let client">
           <ng-container *ngIf="client.plannedAmountCalls">
-             <strong>0</strong> | <strong>{{client.plannedAmountCalls}}</strong>
+             <strong>{{client.amountCalls}}</strong> | <strong>{{client.plannedAmountCalls}}</strong>
           </ng-container>
           <ng-container *ngIf="!client.plannedAmountCalls">
             <button mat-raised-button class="mat-primary" (click)="callPlanningOpen(client.id, client.title)">Запланировать звонки</button>
