@@ -12,6 +12,7 @@ namespace WebUI.ApiControllers.Clients
     [ApiController]
     public class ClientForAdminController : ControllerBase
     {
+
         // GET: api/ClientForAdmin
         [HttpGet]
         public IEnumerable<ClientForAdminVM> Get()

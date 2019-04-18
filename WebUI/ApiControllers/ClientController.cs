@@ -12,6 +12,7 @@ namespace WebUI.ApiControllers
     [ApiController]
     public class ClientController : ControllerBase
     {
+
         // GET: api/Client
         [HttpGet]
         public IEnumerable<Client> Get()

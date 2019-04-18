@@ -16,8 +16,6 @@ namespace Data.Services.Concrete
 
         public IQueryable<User> GetAll()
         {
-            var test = _userRepository.All();
-
             return _userRepository.All();
         }
     }
