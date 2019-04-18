@@ -41,8 +41,10 @@ namespace WebUI.ApiControllers.Clients
                     Title = x.Title,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
-                    PlannedAmountCalls = 10
-                });
+                    PlannedAmountCalls = null,
+                    Calls = calls.Where(c => c.Client_number == x.Phone
+                                             && c.Src_number == manager.Phone).ToList()
+                }).ToList();
         }
 
         // GET: api/ClientForManager/5
