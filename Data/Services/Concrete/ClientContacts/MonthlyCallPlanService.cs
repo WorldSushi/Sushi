@@ -20,6 +20,18 @@ namespace Data.Services.Concrete.ClientContacts
             return _monthlyCallPlanRepository.All();
         }
 
+        public MonthlyCallPlan GetPlan(int managerId, int clientId, int month)
+        {
+            return GetAll().FirstOrDefault(x => x.ManagerId == managerId
+                                     && x.ClientId == clientId
+                                     && x.Date.Month == month);
+        }
+
+        public int GetPlanAmountCalls(int managerId, int clientId, int month)
+        {
+            return GetPlan(managerId, clientId, month)?.AmountCalls ?? 0;
+        }
+
         public void Create(MonthlyCallPlanCreateCommand command)
         {
             _monthlyCallPlanRepository.Create(

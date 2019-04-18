@@ -17,14 +17,17 @@ namespace WebUI.ApiControllers.Clients
         private readonly IClientService _clientService;
         private readonly IMonthlyCallService _monthlyCallService;
         private readonly IManagerService _managerService;
+        private readonly IMonthlyCallPlanService _monthlyCallPlanService;
 
         public ClientForManagerController(IClientService clientService,
             IMonthlyCallService monthlyCallService,
-            IManagerService managerService)
+            IManagerService managerService,
+            IMonthlyCallPlanService monthlyCallPlanService)
         {
             _clientService = clientService;
             _monthlyCallService = monthlyCallService;
             _managerService = managerService;
+            _monthlyCallPlanService = monthlyCallPlanService;
         }
 
         [HttpGet]
@@ -41,7 +44,8 @@ namespace WebUI.ApiControllers.Clients
                     Title = x.Title,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
-                    PlannedAmountCalls = null,
+                    PlannedAmountCalls = _monthlyCallPlanService
+                        .GetPlanAmountCalls(manager.Id, x.Id, DateTime.Now.Month),
                     Calls = calls.Where(c => c.Client_number == x.Phone
                                              && c.Src_number == manager.Phone).ToList()
                 }).ToList();
