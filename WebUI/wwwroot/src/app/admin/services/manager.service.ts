@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Manager } from '../models/manager.model';
+import { API_URL } from '../../../environments/environment';
 
 @Injectable()
 export class ManagerService {
-    userApi =  "http://localhost:58743/api/";
+    userApi =  API_URL + "User";
 
     getManagers(): Observable<Manager[]> {
-        return this.http.get<Manager[]>(this.userApi + "User");
+        return this.http.get<Manager[]>(this.userApi);
     }
 
     constructor(private http: HttpClient){}

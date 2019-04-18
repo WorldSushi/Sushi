@@ -47,7 +47,8 @@ export class ClientListComponent implements OnInit {
       data: { 
         Clientid: this.selectedClient.id,
         title: this.selectedClient.title,
-        amountCalls: 0 
+        amountCalls: 0,
+        month: new Date().getMonth() + 1
       }     
     })
 
