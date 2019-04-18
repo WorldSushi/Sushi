@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../../reducers/auth.reducer';
 import { FormGroup, FormControl } from '@angular/forms';
 import { LoadAuths } from '../../actions/auth.actions';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,9 @@ import { LoadAuths } from '../../actions/auth.actions';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private store: Store<AuthState>) { }
+  constructor(private store: Store<AuthState>, 
+    private authService: AuthService,
+    private router: Router) { }
 
   authForm = new FormGroup({
     login: new FormControl(""),
@@ -19,7 +23,12 @@ export class LoginComponent implements OnInit {
   });
 
   authorize() {
-    this.store.dispatch(new LoadAuths({data: this.authForm.value}))
+    this.authService.getAuthorization(this.authForm.value).subscribe(res => {
+      if(res.role == 10)
+        this.router.navigate(['admin'])
+      else
+        this.router.navigate(['manager'])
+    });
   }
 
   ngOnInit() {

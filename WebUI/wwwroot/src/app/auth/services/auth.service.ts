@@ -16,8 +16,6 @@ export class AuthService {
   }
 
   getAuthorization(model: ILoginModel): Observable<IUser>{
-    console.log(model);
-
     return this.http.post<IUser>(this.url, model, this.httpOptions)
   }
 
