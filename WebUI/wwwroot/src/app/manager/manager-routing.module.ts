@@ -5,7 +5,7 @@ import { ManagerComponent } from "./manager.component";
 
 
 const managerRoutes: Routes = [
-    { path: '', redirectTo: 'users', pathMatch: 'full'},
+    { path: '', redirectTo: 'clients', pathMatch: 'full'},
     { path: 'clients', component: ClientComponent }
 ]
 
