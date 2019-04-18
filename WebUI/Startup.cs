@@ -52,6 +52,8 @@ namespace WebUI
             #endregion
 
             services.AddMvc();
+
+            services.AddMemoryCache();
         }
 
 

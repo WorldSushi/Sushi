@@ -4,16 +4,20 @@ using Base.Extensions;
 using Data.DTO.Calls;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Data.Services.Concrete.ClientContacts
 {
     public class MonthlyCallService : IMonthlyCallService
     {
         private readonly IMyCallsAPIService _myCallsApiService;
+        private readonly IMemoryCache _memoryCache;
 
-        public MonthlyCallService(IMyCallsAPIService myCallsApiService)
+        public MonthlyCallService(IMyCallsAPIService myCallsApiService,
+            IMemoryCache memoryCache)
         {
             _myCallsApiService = myCallsApiService;
+            _memoryCache = memoryCache;
         }
 
         public IQueryable<CallDTO> GetMonthlyCalls(int month)
@@ -32,19 +36,28 @@ namespace Data.Services.Concrete.ClientContacts
                 .Date.Subtract(new DateTime(1970, 1, 1))
                 .TotalSeconds;
 
+            var calls = new CallsDTO();
 
-            var calls = _myCallsApiService.GetCallsByDate(dateStart, dateEnd, 0);
-
-            var nextOffset = Convert.ToInt32(calls.Results_next_offset);
-            while (nextOffset > 0)
+            if (!_memoryCache.TryGetValue("calls", out calls))
             {
-                var buf = _myCallsApiService.GetCallsByDate(dateStart, dateEnd, nextOffset);
-                nextOffset = Convert.ToInt32(buf.Results_next_offset);
+                calls = _myCallsApiService.GetCallsByDate(dateStart, dateEnd, 0);
 
-                foreach (var callDto in buf.Results)
+                var nextOffset = Convert.ToInt32(calls.Results_next_offset);
+                while (nextOffset > 0)
                 {
-                    calls.Results.Add(callDto);
+                    var buf = _myCallsApiService.GetCallsByDate(dateStart, dateEnd, nextOffset);
+                    nextOffset = Convert.ToInt32(buf.Results_next_offset);
+
+                    foreach (var callDto in buf.Results)
+                    {
+                        calls.Results.Add(callDto);
+                    }
                 }
+
+                _memoryCache.Set("calls", calls, new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(72)
+                });
             }
 
             return calls.Results
