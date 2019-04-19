@@ -40,7 +40,7 @@ namespace WebUI.ApiControllers.Clients
             var calls = _monthlyCallService.GetMonthlyCalls(4);
             var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
-            return _clientService.GetAll()
+            var response = _clientService.GetAll()
                 .Select(x => new ClientForManagerVM()
                 {
                     Id = x.Id,
@@ -53,6 +53,8 @@ namespace WebUI.ApiControllers.Clients
                     Calls = calls.Where(c => c.Client_number == x.Phone
                                              && c.Src_number == manager.Phone).ToList()
                 }).ToList();
+
+            return response;
         }
 
         // GET: api/ClientForManager/5

@@ -3,6 +3,8 @@ import { ClientWithCallPlan } from '../../models/clientWithCallPlan.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MonthlyCallPlanService } from '../../services/monthlyCallPlan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import * as moment from 'moment';
+import { Call } from '../../models/call.model';
 
 @Component({
   selector: 'app-client-list',
@@ -58,6 +60,34 @@ export class ClientListComponent implements OnInit {
       this.callPlanningFormSubmit(monthlyCallPlan);
     });
   }
+  
+  callsOpen(clientId: number, clientTitle: string, calls: any[]) {
+    this.selectedClient = {
+      id: clientId,
+      title: clientTitle,
+    }
+    
+    const dialogRef = this.dialog.open(ManagerCallsDialog, {
+
+      minWidth: '620px',
+
+      data: { 
+        clientid: this.selectedClient.id,
+        title: this.selectedClient.title,
+        calls: calls.map(item => {
+          
+          return {
+            date: moment(new Date(item.start_time * 1000)).format("DD.MM.YYYY HH:MM"),
+            duration: (Math.floor(item.duration / 60)).toString() + ":" + (item.duration % 60),
+            record: item.recording
+          }
+
+        })
+      }     
+    })
+
+    dialogRef.afterClosed().subscribe();
+  }
 
   callPlanningFormSubmit(result) {
     this.monthlyCallPlanService.createMonthlyCallPlan(result).subscribe(res => this.clients
@@ -79,6 +109,11 @@ export class ClientListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 }
+
+
+
+
+// To Do вынести диалоги туда куда им место (не тут)
 
 @Component({
   selector: 'app-monthly-call-plan-dialog',
@@ -110,6 +145,27 @@ export class MonthlyCallPlanDialog {
     @Inject(MAT_DIALOG_DATA) public data) {}
 
     
-  
+}
 
+@Component({
+  selector: 'app-manager-calls-dialog',
+  templateUrl: 'manager-calls-dialog.html',
+})
+export class ManagerCallsDialog {
+ 
+  private dataSource = new MatTableDataSource<Call>(this.data)
+
+  private displayedColumns = [
+    "date",
+    "duration",
+    "record"
+  ]
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  constructor(
+    public dialogRef: MatDialogRef<MonthlyCallPlanDialog>,
+    @Inject(MAT_DIALOG_DATA) public data) {}
 }

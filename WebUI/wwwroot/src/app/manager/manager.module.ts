@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { ClientComponent } from './containers/client/client.component';
-import { ClientListComponent, MonthlyCallPlanDialog } from './components/client-list/client-list.component';
+import { ClientListComponent, MonthlyCallPlanDialog, ManagerCallsDialog } from './components/client-list/client-list.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
@@ -20,10 +20,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     declarations: [ClientComponent, 
         ClientListComponent, 
         ManagerComponent,
-        MonthlyCallPlanDialog
+        MonthlyCallPlanDialog,
+        ManagerCallsDialog
     ],
     entryComponents: [
-        MonthlyCallPlanDialog
+        MonthlyCallPlanDialog,
+        ManagerCallsDialog
     ],
     imports: [
         CommonModule,
