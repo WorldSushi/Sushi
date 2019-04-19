@@ -32,6 +32,13 @@ namespace Data.Services.Concrete.ClientContacts
             return GetPlan(managerId, clientId, month)?.AmountCalls ?? 0;
         }
 
+        public int GetPlanAmountCalls(int clientId, int month)
+        {
+            return GetAll().Where(x => x.ClientId == clientId
+                                       && x.Date.Month == month)
+                .Sum(x => x.AmountCalls);
+        }
+
         public void Create(MonthlyCallPlanCreateCommand command)
         {
             _monthlyCallPlanRepository.Create(
