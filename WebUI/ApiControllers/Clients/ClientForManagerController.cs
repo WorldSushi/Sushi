@@ -6,6 +6,7 @@ using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebUI.Services.Abstract;
 using WebUI.ViewModels.Clients;
 
 namespace WebUI.ApiControllers.Clients
@@ -17,21 +18,27 @@ namespace WebUI.ApiControllers.Clients
         private readonly IClientService _clientService;
         private readonly IMonthlyCallService _monthlyCallService;
         private readonly IManagerService _managerService;
+        private readonly IMonthlyCallPlanService _monthlyCallPlanService;
+        private readonly IAccountInformationService _accountInformationService;
 
         public ClientForManagerController(IClientService clientService,
             IMonthlyCallService monthlyCallService,
-            IManagerService managerService)
+            IManagerService managerService,
+            IMonthlyCallPlanService monthlyCallPlanService,
+            IAccountInformationService accountInformationService)
         {
             _clientService = clientService;
             _monthlyCallService = monthlyCallService;
             _managerService = managerService;
+            _monthlyCallPlanService = monthlyCallPlanService;
+            _accountInformationService = accountInformationService;
         }
 
         [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
             var calls = _monthlyCallService.GetMonthlyCalls(4);
-            var manager = _managerService.Get(1);
+            var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
             return _clientService.GetAll()
                 .Select(x => new ClientForManagerVM()
@@ -41,8 +48,11 @@ namespace WebUI.ApiControllers.Clients
                     Title = x.Title,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
-                    PlannedAmountCalls = 10
-                });
+                    PlannedAmountCalls = _monthlyCallPlanService
+                        .GetPlanAmountCalls(manager.Id, x.Id, DateTime.Now.Month),
+                    Calls = calls.Where(c => c.Client_number == x.Phone
+                                             && c.Src_number == manager.Phone).ToList()
+                }).ToList();
         }
 
         // GET: api/ClientForManager/5

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.Commands.ClientContacts;
 using Data.Entities.ClientContacts;
+using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebUI.Services.Abstract;
 
 namespace WebUI.ApiControllers.ClientContacts
 {
@@ -13,7 +15,16 @@ namespace WebUI.ApiControllers.ClientContacts
     [ApiController]
     public class MonthlyCallPlanController : ControllerBase
     {
-        // GET: api/MonthlyCallPlan
+        private readonly IMonthlyCallPlanService _monthlyCallPlanService;
+        private readonly IAccountInformationService _accountInformationService;
+
+        public MonthlyCallPlanController(IMonthlyCallPlanService monthlyCallPlanService,
+            IAccountInformationService accountInformationService)
+        {
+            _monthlyCallPlanService = monthlyCallPlanService;
+            _accountInformationService = accountInformationService;
+        }
+
         [HttpGet]
         public IEnumerable<MonthlyCallPlan> Get()
         {
@@ -36,6 +47,9 @@ namespace WebUI.ApiControllers.ClientContacts
         [HttpPost]
         public IActionResult Post([FromBody]MonthlyCallPlanCreateCommand command)
         {
+            command.ManagerId = _accountInformationService.GetOperatorId();
+            _monthlyCallPlanService.Create(command);
+
             return Ok(new
             {
                 clientId = command.ClientId,

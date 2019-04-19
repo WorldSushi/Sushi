@@ -49,6 +49,7 @@ namespace WebUI
             services.AddTransient<IMyCallsAPIService, MyCallsAPIService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IMonthlyCallService, MonthlyCallService>();
+            services.AddTransient<IMonthlyCallPlanService, MonthlyCallPlanService>();
             #endregion
 
             services.AddMvc();

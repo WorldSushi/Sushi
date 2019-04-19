@@ -61,7 +61,7 @@ namespace Data.Services.Concrete.ClientContacts
             }
 
             return calls.Results
-                .Where(x => x.Duration > 150)
+                .Where(x => x.Duration >= 150 && Convert.ToInt32(x.Direction) == 1)
                 .AsQueryable();
         }
 
