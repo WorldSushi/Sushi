@@ -52,13 +52,14 @@ export class ClientListComponent implements OnInit {
     });
   }
 
-  editClient(client){
-    const dialogRef = this.dialog.open(ClientCreateDialog, {
+  detailClient(client){
+    const dialogRef = this.dialog.open(ClientDetailDialog, {
       minWidth: '620px',
       data: {
         id: client.id,
         title: client.title,
-        phone: client.phone
+        phone: client.phone,
+        currentManagers: client.managers
       }
     });
 
@@ -119,4 +120,35 @@ export class ClientCreateDialog {
 
   constructor(public dialogRef: MatDialogRef<ClientCreateDialog>,
     @Inject(MAT_DIALOG_DATA) public data) {}
+}
+
+@Component({
+  selector: 'app-client-detail-dialog',
+  templateUrl: 'client-detail-dialog.html'
+})
+export class ClientDetailDialog {
+
+  private detailClientForm = new FormGroup({
+    id: new FormControl(this.data.id),
+    title: new FormControl(this.data.title),
+    phone: new FormControl(this.data.phone)
+  })
+
+  private dataSource = new MatTableDataSource<ClientManager>(this.data.currentManagers);
+
+  private displayedColumns = [
+    "login"
+  ]
+
+  save(): void {
+    this.dialogRef.close(this.detailClientForm.value);
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  constructor(public dialogRef: MatDialogRef<ClientDetailDialog>, 
+    @Inject(MAT_DIALOG_DATA) public data) {}
+
 }
