@@ -21,11 +21,11 @@
         <th mat-header-cell *matHeaderCellDef> Звонки <br> Сделано | Запланировано </th>
         <td mat-cell *matCellDef="let client">
           <ng-container *ngIf="client.plannedAmountCalls">
-             <strong>{{client.amountCalls}}</strong> | <strong>{{client.plannedAmountCalls}}</strong>
+             <button mat-raised-button class="mat-primary table-button" (click)="callsOpen(client.id, client.title, client.calls)">{{client.amountCalls}} | {{client.plannedAmountCalls}}</button>
           </ng-container>
           <ng-container *ngIf="!client.plannedAmountCalls">
-            <button mat-raised-button class="mat-primary" (click)="callPlanningOpen(client.id, client.title)">Запланировать звонки</button>
-          </ng-container>                     
+            <button mat-raised-button class="mat-primary table-button" (click)="callPlanningOpen(client.id, client.title)">Запланировать звонки</button>  
+          </ng-container>                 
         </td>
      </ng-container>   
      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
