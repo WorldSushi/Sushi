@@ -25,6 +25,61 @@ export function clientReducer(state = clientInitialState, action: ClientsActions
             loading: false
         }
 
+        case ClientActionTypes.CREATE_CLIENT_SUCCESS:
+            const clients = [
+                ...state.clients,
+                action.payload.data
+            ];
+
+            return {
+                ...state,
+                clients
+            }
+
+        case ClientActionTypes.CREATE_CLIENT_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error
+            }
+
+        case ClientActionTypes.UPDATE_CLIENT_SUCCESS:
+            const index = state
+                .clients
+                .findIndex(item => item.id == action.payload.data.id);
+
+            if(index >= 0){
+                const clients = [
+                    ...state.clients.slice(0, index),
+                    action.payload.data,
+                    ...state.clients.slice(index + 1)
+                ];
+
+                return {
+                    ...state,
+                    clients
+                }
+            }
+
+            return state;
+
+        case ClientActionTypes.UPDATE_CLIENT_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error
+            }
+
+        case ClientActionTypes.DELETE_CLIENT_SUCCESS: 
+            return {
+                ...state,
+                clients: state.clients.filter(item => item.id != action.payload.data)
+            }
+
+        case ClientActionTypes.DELETE_CLIENT_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error
+            }    
+
         default:
         return state;
     }
