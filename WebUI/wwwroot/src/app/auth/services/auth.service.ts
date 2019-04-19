@@ -3,11 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ILoginModel } from '../models/login.model';
 import { IUser } from '../models/user.model';
 import { Observable } from 'rxjs';
+import { API_URL } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService {
 
-  private url = "http://localhost:59295/Account/Login";
+  private url = "Account/Login";
 
   private httpOptions = {
     headers: new HttpHeaders({
