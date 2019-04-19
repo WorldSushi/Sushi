@@ -6,7 +6,7 @@ import { API_URL } from "../../../environments/environment";
 
 @Injectable()
 export class ClientService {
-    clientApi = API_URL + "Client";
+    clientApi = API_URL + "ClientForAdmin";
 
     getClients(): Observable<Client[]>{
         return this.http.get<Client[]>(this.clientApi);

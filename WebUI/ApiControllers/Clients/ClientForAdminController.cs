@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Services.Abstract;
+using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.ViewModels.Clients;
@@ -12,32 +14,32 @@ namespace WebUI.ApiControllers.Clients
     [ApiController]
     public class ClientForAdminController : ControllerBase
     {
+        private readonly IClientService _clientService;
+        private readonly IMonthlyCallPlanService _monthlyCallPlanService;
 
-        // GET: api/ClientForAdmin
+        public ClientForAdminController(IClientService clientService,
+            IMonthlyCallPlanService monthlyCallPlanService)
+        {
+            _clientService = clientService;
+            _monthlyCallPlanService = monthlyCallPlanService;
+        }
+
         [HttpGet]
         public IEnumerable<ClientForAdminVM> Get()
         {
-            return new List<ClientForAdminVM>()
-            {
-                new ClientForAdminVM()
+            return _clientService.GetAll()
+                .Select(x => new ClientForAdminVM()
                 {
-                    Id = 1,
-                    Phone = "555-35-35",
-                    PlannedAmountCalls = 10,
-                    Title = "Client1"
-                },
-                new ClientForAdminVM()
-                {
-                    Id = 2,
-                    Phone = "444-24-24",
-                    Title = "Client2",
-                    PlannedAmountCalls = null
-                }
-            };
+                    Id = x.Id,
+                    Phone = x.Phone,
+                    Title = x.Title,
+                    PlannedAmountCalls = _monthlyCallPlanService
+                        .GetPlanAmountCalls(x.Id, DateTime.Now.Month)
+                }).ToList();
         }
 
         // GET: api/ClientForAdmin/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";

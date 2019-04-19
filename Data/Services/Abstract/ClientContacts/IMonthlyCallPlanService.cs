@@ -9,6 +9,7 @@ namespace Data.Services.Abstract.ClientContacts
         IQueryable<MonthlyCallPlan> GetAll();
         MonthlyCallPlan GetPlan(int managerId, int clientId, int month);
         int GetPlanAmountCalls(int managerId, int clientId, int month);
+        int GetPlanAmountCalls(int clientId, int month);
 
         void Create(MonthlyCallPlanCreateCommand command);
     }

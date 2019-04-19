@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.Services.Abstract;
 using WebUI.ViewModels.Clients;
@@ -15,19 +13,16 @@ namespace WebUI.ApiControllers.Clients
     [ApiController]
     public class ClientForManagerController : ControllerBase
     {
-        private readonly IClientService _clientService;
         private readonly IMonthlyCallService _monthlyCallService;
         private readonly IManagerService _managerService;
         private readonly IMonthlyCallPlanService _monthlyCallPlanService;
         private readonly IAccountInformationService _accountInformationService;
 
-        public ClientForManagerController(IClientService clientService,
-            IMonthlyCallService monthlyCallService,
+        public ClientForManagerController(IMonthlyCallService monthlyCallService,
             IManagerService managerService,
             IMonthlyCallPlanService monthlyCallPlanService,
             IAccountInformationService accountInformationService)
         {
-            _clientService = clientService;
             _monthlyCallService = monthlyCallService;
             _managerService = managerService;
             _monthlyCallPlanService = monthlyCallPlanService;
@@ -37,7 +32,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
-            var calls = _monthlyCallService.GetMonthlyCalls(4);
+            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month);
             var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
             return _managerService.GetClients(manager.Id)

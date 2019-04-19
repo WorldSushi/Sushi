@@ -161,7 +161,7 @@ export class ManagerCallsDialog {
     "record"
   ]
 
-  onNoClick(): void {
+  callsDialogClose(): void {
     this.dialogRef.close();
   }
 
