@@ -56,6 +56,7 @@ export class ClientListComponent implements OnInit {
     const dialogRef = this.dialog.open(ClientCreateDialog, {
       minWidth: '620px',
       data: {
+        id: client.id,
         title: client.title,
         phone: client.phone
       }
@@ -97,12 +98,13 @@ export class ClientManagersDialog {
 }
 
 @Component({
-  selector: 'app-manager-calls-dialog',
+  selector: 'app-client-dialog',
   templateUrl: 'client-create-dialog.html',
 })
 export class ClientCreateDialog {
 
   private createClientForm = new FormGroup({
+    id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
     phone: new FormControl(this.data.phone)
   })

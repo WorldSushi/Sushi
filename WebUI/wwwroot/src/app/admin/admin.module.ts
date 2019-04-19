@@ -4,7 +4,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { UserComponent } from './containers/user/user.component';
-import { UserListComponent } from './components/user-list/user-list.component';
+import { UserListComponent, ManagerCreateDialog } from './components/user-list/user-list.component';
 import { adminReducers } from './store/reducers';
 import { ManagerService } from './services/manager.service';
 import { EffectsModule } from '@ngrx/effects';
@@ -27,11 +27,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClientListComponent, 
     ClientComponent,
     ClientCreateDialog,
-    ClientManagersDialog
+    ClientManagersDialog,
+    ManagerCreateDialog
   ],
   entryComponents: [
     ClientCreateDialog,
-    ClientManagersDialog
+    ClientManagersDialog,
+    ManagerCreateDialog
   ],
   imports: [
     CommonModule,
