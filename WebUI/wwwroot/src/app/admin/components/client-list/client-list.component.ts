@@ -24,7 +24,9 @@ export class ClientListComponent implements OnInit {
     const dialogRef = this.dialog.open(ClientManagersDialog, {
       minWidth: '620px',
       data: {
-        
+        clientId: clientId,
+        clienttitle: clientTitle,
+        managers: managers
       }
     })
   }
