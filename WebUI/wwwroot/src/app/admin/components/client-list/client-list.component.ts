@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Client } from '../../models/client.model';
+import { MatDialog, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
+import { ClientManager } from '../../models/clientManagers.model';
 
 @Component({
   selector: 'app-client-list',
@@ -18,9 +20,34 @@ export class ClientListComponent implements OnInit {
     "plannedAmountCalls"
   ];
 
-  constructor() { }
+  clienManagersDialogOpen(clientId: number, clientTitle: string, managers: any[]){
+    const dialogRef = this.dialog.open(ClientManagersDialog, {
+      minWidth: '620px',
+      data: {
+        
+      }
+    })
+  }
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
+}
+
+@Component({
+  selector: 'app-client-managers-dialog',
+  templateUrl: 'client-managers-dialog.html'
+})
+export class ClientManagersDialog {
+  
+  private dataSource = new MatTableDataSource<ClientManager>(this.data)
+
+  private displayedColumns = [
+    "login",
+    "calls"
+  ]
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data) {}
 }

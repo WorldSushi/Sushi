@@ -16,25 +16,53 @@ namespace WebUI.ApiControllers.Clients
     {
         private readonly IClientService _clientService;
         private readonly IMonthlyCallPlanService _monthlyCallPlanService;
+        private readonly IMonthlyCallService _monthlyCallService;
 
         public ClientForAdminController(IClientService clientService,
-            IMonthlyCallPlanService monthlyCallPlanService)
+            IMonthlyCallPlanService monthlyCallPlanService,
+            IMonthlyCallService monthlyCallService)
         {
             _clientService = clientService;
             _monthlyCallPlanService = monthlyCallPlanService;
+            _monthlyCallService = monthlyCallService;
         }
 
         [HttpGet]
         public IEnumerable<ClientForAdminVM> Get()
         {
-            return _clientService.GetAll()
+            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month);
+            var clients = _clientService.GetAll()
                 .Select(x => new ClientForAdminVM()
                 {
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
                     PlannedAmountCalls = _monthlyCallPlanService
-                        .GetPlanAmountCalls(x.Id, DateTime.Now.Month)
+                        .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
+                    AmountCalls = calls.Count(c => c.Client_number == x.Phone),
+                    Managers = new List<ClientManagersVM>()
+                }).ToList();
+
+            return clients
+                .Select(x => new ClientForAdminVM()
+                {
+                    Id = x.Id,
+                    Phone = x.Phone,
+                    Title = x.Title,
+                    PlannedAmountCalls = x.PlannedAmountCalls,
+                    AmountCalls = x.AmountCalls,
+                    Managers = _clientService.GetManagers(x.Id)
+                        .Select(c => new ClientManagersVM()
+                        {
+                            Id = c.Id,
+                            Login = c.Login,
+                            AmountCalls = calls.Count(z => z.Client_number == x.Phone
+                                                           && z.Src_number == c.Phone),
+                            PlannedAmountCalls = _monthlyCallPlanService
+                                .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
+                            Calls = calls.Where(z => z.Client_number == x.Phone
+                                                     && z.Src_number == c.Phone).ToList()
+                        }).ToList()
                 }).ToList();
         }
 
