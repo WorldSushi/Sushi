@@ -7,7 +7,7 @@ import { API_URL } from '../../../environments/environment';
 
 @Injectable()
 export class ManagerService {
-    private managerApi = API_URL + 'User';
+    private managerApi = API_URL + 'Manager';
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -24,7 +24,7 @@ export class ManagerService {
     }
 
     updateManager(manager: Manager): Observable<Manager> {
-        return this.http.put<Manager>(this.managerApi, manager, this.httpOptions)
+        return this.http.put<Manager>(this.managerApi + "/" + manager.id, manager, this.httpOptions)
     }
 
     deleteManager(managerId: number): Observable<number> {

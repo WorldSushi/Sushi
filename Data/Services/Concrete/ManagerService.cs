@@ -4,6 +4,7 @@ using Data.Entities.Users;
 using Data.Services.Abstract;
 using System.Linq;
 using Data.Entities.Clients;
+using Data.Commands.Manager;
 
 namespace Data.Services.Concrete
 {
@@ -44,6 +45,24 @@ namespace Data.Services.Concrete
                 Password = password,
                 Phone = phone.PhoneFormat()
             });
+        }
+
+        public Manager Update(ManagerEditCommand command)
+        {
+            var editingManager = _managers.Get(command.Id);
+
+            editingManager.Login = command.Login;
+            editingManager.Password = command.Password;
+            editingManager.Phone = command.Phone;
+
+            return _managers.Update(editingManager);
+        }
+
+        public int Delete(int id)
+        {
+            _managers.Delete(id);
+
+            return id;
         }
     }
 }
