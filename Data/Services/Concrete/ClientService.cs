@@ -3,6 +3,7 @@ using Base.Extensions;
 using Data.Entities.Clients;
 using Data.Services.Abstract;
 using System.Linq;
+using Data.Commands.Clients;
 
 namespace Data.Services.Concrete
 {
@@ -33,6 +34,15 @@ namespace Data.Services.Concrete
         {
             return GetAll().Where(x => x.Phone.PhoneFormat() == phone.PhoneFormat())
                 .FirstOrDefault();
+        }
+
+        public void BindManager(BindManagerCommand command)
+        {
+            var client = _clientRepository.Get(command.ClientId);
+
+            client.BindManager(command.ManagerId);
+
+            _clientRepository.Update(client);
         }
     }
 }

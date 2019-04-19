@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System.Collections.Generic;
+using Base;
 
 namespace Data.Entities.Clients
 {
@@ -7,5 +8,15 @@ namespace Data.Entities.Clients
         public string Title { get; set; }
 
         public string Phone { get; set; }
+
+        public ICollection<ManagerForClient> Managers { get; set; } = new HashSet<ManagerForClient>();
+
+        public void BindManager(int managerId)
+        {
+            Managers.Add(
+                new ManagerForClient(
+                    Id,
+                    managerId));
+        }
     }
 }

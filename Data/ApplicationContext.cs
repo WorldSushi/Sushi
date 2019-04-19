@@ -20,6 +20,7 @@ namespace Data
             modelBuilder.Entity<Client>();
             modelBuilder.Entity<MonthlyCallPlan>();
             modelBuilder.Entity<MonthlyBusinessTripPlan>();
+            modelBuilder.Entity<ManagerForClient>();
         }
     }
 }
