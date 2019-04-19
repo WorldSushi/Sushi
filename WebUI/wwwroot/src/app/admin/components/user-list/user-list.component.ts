@@ -10,7 +10,6 @@ export class UserListComponent implements OnInit {
 
   @Input()
   managers: Manager[];
-  
 
   displayedColumns: string[] = ["id", "login", "password", "phone"];
 

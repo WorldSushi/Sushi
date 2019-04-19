@@ -13,14 +13,26 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { AdminComponent } from './admin.component';
 import { LayoutModule } from './layout/layout.module';
-import { ClientListComponent } from './components/client-list/client-list.component';
+import { ClientListComponent, ClientCreateDialog, ClientManagersDialog } from './components/client-list/client-list.component';
 import { ClientComponent } from './containers/client/client.component';
 import { ClientService } from './services/client.service';
 import { ClientEffects } from './store/effects/client.effects';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [UserComponent, UserListComponent, AdminComponent, ClientListComponent, ClientComponent],
+  declarations: [UserComponent, 
+    UserListComponent, 
+    AdminComponent,
+    ClientListComponent, 
+    ClientComponent,
+    ClientCreateDialog,
+    ClientManagersDialog
+  ],
+  entryComponents: [
+    ClientCreateDialog,
+    ClientManagersDialog
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -28,7 +40,8 @@ import { ClientEffects } from './store/effects/client.effects';
     StoreModule.forFeature('admin', adminReducers),
     EffectsModule.forFeature([ManagerEffects, ClientEffects]),
     MaterialModule,
-    LayoutModule
+    LayoutModule,
+    ReactiveFormsModule
   ],
   providers: [ManagerService, ClientService]
 })

@@ -166,6 +166,6 @@ export class ManagerCallsDialog {
   }
 
   constructor(
-    public dialogRef: MatDialogRef<MonthlyCallPlanDialog>,
+    public dialogRef: MatDialogRef<ManagerCallsDialog>,
     @Inject(MAT_DIALOG_DATA) public data) {}
 }

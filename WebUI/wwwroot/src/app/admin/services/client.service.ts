@@ -6,22 +6,19 @@ import { API_URL } from "../../../environments/environment";
 
 @Injectable()
 export class ClientService {
-<<<<<<< HEAD
-    clientApi = API_URL + "Client";
+    clientApi = API_URL + "ClientForAdmin";
     httpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
         })
     }
-=======
-    clientApi = API_URL + "ClientForAdmin";
->>>>>>> origin/master
 
     getClients(): Observable<Client[]>{
         return this.http.get<Client[]>(this.clientApi);
     }
 
     createClient(client: Client): Observable<Client> {
+
         return this.http.post<Client>(this.clientApi, client, this.httpOptions);
     }
 
