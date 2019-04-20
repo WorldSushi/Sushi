@@ -54,6 +54,11 @@ namespace Data.Services.Concrete
             return client;
         }
 
+        public void Delete(int id)
+        {
+            _clientRepository.Delete(id);
+        }
+
         public Client GetClientByPhone(string phone)
         {
             return GetAll().Where(x => x.Phone.PhoneFormat() == phone.PhoneFormat())

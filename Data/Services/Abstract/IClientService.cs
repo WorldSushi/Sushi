@@ -12,6 +12,7 @@ namespace Data.Services.Abstract
 
         Client Create(string title, string phone);
         Client Edit(ClientEditCommand command);
+        void Delete(int id);
 
         Client GetClientByPhone(string phone);
         void BindManager(BindManagerCommand command);

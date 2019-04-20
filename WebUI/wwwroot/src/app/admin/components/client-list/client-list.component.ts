@@ -23,6 +23,9 @@ export class ClientListComponent implements OnInit {
   @Input()
   managers: Manager[];
 
+  @Input()
+  loading: boolean;
+
   displayedColumns: string[] = [
     "id", 
     "title", 

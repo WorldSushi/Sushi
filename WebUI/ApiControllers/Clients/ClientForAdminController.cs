@@ -128,8 +128,11 @@ namespace WebUI.ApiControllers.Clients
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            _clientService.Delete(id);
+
+            return Ok(id);
         }
     }
 }
