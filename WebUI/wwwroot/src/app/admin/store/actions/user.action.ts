@@ -18,7 +18,7 @@ export enum ManagerActionTypes {
 }
 
 
-export class GetAll implements Action {
+export class GetAllManagers implements Action {
     readonly type = ManagerActionTypes.GET_ALL;
 
     constructor() {}
@@ -90,7 +90,7 @@ export class DeleteManagerFailure implements Action {
     constructor(public payload: {error: any}) { }
 }
 
-export type ManagerActions = GetAll 
+export type ManagerActions = GetAllManagers 
     | GetAllSuccess 
     | GetAllFailure
     | CreateManager

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { GetAll } from '../../store/actions/user.action';
+import { GetAllManagers } from '../../store/actions/user.action';
 import { selectManagerList } from '../../store/selectors/manager.selectors';
 import { IAdminState } from '../../store/states';
 
@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
   constructor(private store: Store<IAdminState>) { }
 
   ngOnInit() {
-    this.store.dispatch(new GetAll());
+    this.store.dispatch(new GetAllManagers());
   }
 
 }

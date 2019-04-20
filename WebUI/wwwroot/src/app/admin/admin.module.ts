@@ -17,9 +17,10 @@ import { ClientListComponent, ClientCreateDialog, ClientManagersDialog, ClientDe
 import { ClientComponent } from './containers/client/client.component';
 import { ClientService } from './services/client.service';
 import { ClientEffects } from './store/effects/client.effects';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ManagerClientDialog } from './components/client-list/dialogs/manager-client/manager-client-dialog';
 import { ManagerCallsDialog } from './components/client-list/dialogs/manager-calls/manager-calls-dialog';
+import { ChooseManagerDialog } from './components/client-list/dialogs/choose-manager/choose-manager-dialog';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ManagerCallsDialog } from './components/client-list/dialogs/manager-cal
     ManagerCreateDialog,
     ClientDetailDialog,
     ManagerClientDialog,
-    ManagerCallsDialog
+    ManagerCallsDialog,
+    ChooseManagerDialog
   ],
   entryComponents: [
     ClientCreateDialog,
@@ -41,7 +43,8 @@ import { ManagerCallsDialog } from './components/client-list/dialogs/manager-cal
     ManagerCreateDialog,
     ClientDetailDialog,
     ManagerClientDialog,
-    ManagerCallsDialog
+    ManagerCallsDialog,
+    ChooseManagerDialog
   ],
   imports: [
     CommonModule,
@@ -51,7 +54,8 @@ import { ManagerCallsDialog } from './components/client-list/dialogs/manager-cal
     EffectsModule.forFeature([ManagerEffects, ClientEffects]),
     MaterialModule,
     LayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [ManagerService, ClientService]
 })

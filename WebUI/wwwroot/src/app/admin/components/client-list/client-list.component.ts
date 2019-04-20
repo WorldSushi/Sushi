@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { IAdminState } from '../../store/states';
 import { CreateClient, UpdateClient, DeleteClient } from '../../store/actions/client.action';
 import { ManagerClientDialog } from './dialogs/manager-client/manager-client-dialog';
+import { Manager } from '../../models/manager.model';
+import { ChooseManagerDialog } from './dialogs/choose-manager/choose-manager-dialog';
 
 @Component({
   selector: 'app-client-list',
@@ -17,6 +19,8 @@ export class ClientListComponent implements OnInit {
 
   @Input()
   clients: Client[];
+  @Input()
+  managers: Manager[];
 
   displayedColumns: string[] = [
     "id", 
@@ -60,7 +64,8 @@ export class ClientListComponent implements OnInit {
         id: client.id,
         title: client.title,
         phone: client.phone,
-        currentManagers: client.managers
+        currentManagers: client.managers,
+        managersForChoose: this.managers
       }
     });
 
@@ -75,7 +80,7 @@ export class ClientListComponent implements OnInit {
     const dialogRef = this.dialog.open(ManagerClientDialog, {
       minWidth: '620px',
       data: {
-        managers: managers
+        managers: managers      
       }
     })
   }
@@ -144,14 +149,40 @@ export class ClientDetailDialog {
     phone: new FormControl(this.data.phone)
   })
 
-  private dataSource = new MatTableDataSource<ClientManager>(this.data.currentManagers);
+  private dataSource = new MatTableDataSource(this.data.currentManagers);
 
   private displayedColumns = [
-    "login"
+    "login",
+    "action"
   ]
 
   save(): void {
     this.dialogRef.close(this.detailClientForm.value);
+  }
+
+  bindManager(): void {
+    const dialogRef = this.dialog.open(ChooseManagerDialog, {
+      minWidth: '620px',
+      data: {
+        managers: this.data.managersForChoose
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      
+      if(!res)
+        return;
+
+      this.data.currentManagers.push(res);
+
+      this.dataSource = new MatTableDataSource(this.data.currentManagers);
+    })
+  }
+
+  unbindManager(id: number): void {
+    this.data.currentManagers = this.data.currentManagers.filter(item => item.id != id);
+
+    this.dataSource = new MatTableDataSource(this.data.currentManagers);
   }
 
   closeDialog(): void {
@@ -159,6 +190,7 @@ export class ClientDetailDialog {
   }
 
   constructor(public dialogRef: MatDialogRef<ClientDetailDialog>, 
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data) {}
 
 }
