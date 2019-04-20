@@ -42,6 +42,18 @@ namespace Data.Services.Concrete
             });
         }
 
+        public Client Edit(ClientEditCommand command)
+        {
+            var client = _clientRepository.Get(command.Id);
+
+            client.Title = command.Title;
+            client.Phone = command.Phone;
+
+            _clientRepository.Update(client);
+
+            return client;
+        }
+
         public Client GetClientByPhone(string phone)
         {
             return GetAll().Where(x => x.Phone.PhoneFormat() == phone.PhoneFormat())

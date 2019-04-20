@@ -11,6 +11,8 @@ namespace Data.Services.Abstract
         IQueryable<Manager> GetManagers(int clientId);
 
         Client Create(string title, string phone);
+        Client Edit(ClientEditCommand command);
+
         Client GetClientByPhone(string phone);
         void BindManager(BindManagerCommand command);
     }

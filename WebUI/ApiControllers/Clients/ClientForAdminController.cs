@@ -83,8 +83,47 @@ namespace WebUI.ApiControllers.Clients
 
         // PUT: api/ClientForAdmin/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put([FromBody]ClientEditCommand command)
         {
+            _clientService.Edit(command);
+
+            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month);
+            var result = _clientService.GetAll()
+                .Where(x => x.Id == command.Id)
+                .Select(x => new ClientForAdminVM()
+                {
+                    Id = x.Id,
+                    Phone = x.Phone,
+                    Title = x.Title,
+                    PlannedAmountCalls = _monthlyCallPlanService
+                        .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
+                    AmountCalls = calls.Count(c => c.Client_number == x.Phone),
+                    Managers = new List<ClientManagersVM>()
+                }).ToList();
+
+            
+            var response = result.Select(x => new ClientForAdminVM()
+                {
+                    Id = x.Id,
+                    Phone = x.Phone,
+                    Title = x.Title,
+                    PlannedAmountCalls = x.PlannedAmountCalls,
+                    AmountCalls = x.AmountCalls,
+                    Managers = _clientService.GetManagers(x.Id)
+                        .Select(c => new ClientManagersVM()
+                        {
+                            Id = c.Id,
+                            Login = c.Login,
+                            AmountCalls = calls.Count(z => z.Client_number == x.Phone
+                                                           && z.Src_number == c.Phone),
+                            PlannedAmountCalls = _monthlyCallPlanService
+                                .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
+                            Calls = calls.Where(z => z.Client_number == x.Phone
+                                                     && z.Src_number == c.Phone).ToList()
+                        }).ToList()
+                }).FirstOrDefault();
+
+            return Ok(response);
         }
 
         // DELETE: api/ApiWithActions/5
