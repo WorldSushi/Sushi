@@ -6,6 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IAdminState } from '../../store/states';
 import { CreateClient, UpdateClient, DeleteClient } from '../../store/actions/client.action';
+import { ManagerClientDialog } from './dialogs/manager-client/manager-client-dialog';
 
 @Component({
   selector: 'app-client-list',
@@ -67,6 +68,15 @@ export class ClientListComponent implements OnInit {
 
       this.store.dispatch(new UpdateClient({data: result}));
 
+    })
+  }
+
+  callPlanDetail(managers){
+    const dialogRef = this.dialog.open(ManagerClientDialog, {
+      minWidth: '620px',
+      data: {
+        managers: managers
+      }
     })
   }
 

@@ -1,23 +1,29 @@
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
+import { Inject, Component } from '@angular/core';
+
 @Component({
     selector: 'app-manager-client-dialog',
     templateUrl: 'manager-client-dialog.html',
   })
   export class ManagerClientDialog {
   
-    private createClientForm = new FormGroup({
-      id: new FormControl(this.data.id),
-      title: new FormControl(this.data.title),
-      phone: new FormControl(this.data.phone)
-    })
-  
+    private dataSource = new MatTableDataSource(this.data.managers);
+
+    private displayedColumns = [
+      "login",
+      "amountCalls",
+      "plannedAmountCalls"
+    ]
+
     save(): void {
-      this.dialogRef.close(this.createClientForm.value);
-    }
-  
-    onNoClick(): void {
       this.dialogRef.close();
     }
   
-    constructor(public dialogRef: MatDialogRef<ClientCreateDialog>,
+    closeDialog(): void {
+      this.dialogRef.close();
+    }
+  
+    constructor(public dialogRef: MatDialogRef<ManagerClientDialog>,
       @Inject(MAT_DIALOG_DATA) public data) {}
   }

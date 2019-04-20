@@ -18,6 +18,7 @@ import { ClientComponent } from './containers/client/client.component';
 import { ClientService } from './services/client.service';
 import { ClientEffects } from './store/effects/client.effects';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ManagerClientDialog } from './components/client-list/dialogs/manager-client/manager-client-dialog';
 
 
 @NgModule({
@@ -29,13 +30,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClientCreateDialog,
     ClientManagersDialog,
     ManagerCreateDialog,
-    ClientDetailDialog
+    ClientDetailDialog,
+    ManagerClientDialog
   ],
   entryComponents: [
     ClientCreateDialog,
     ClientManagersDialog,
     ManagerCreateDialog,
-    ClientDetailDialog
+    ClientDetailDialog,
+    ManagerClientDialog
   ],
   imports: [
     CommonModule,

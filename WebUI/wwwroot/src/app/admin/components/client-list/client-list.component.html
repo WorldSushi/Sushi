@@ -23,7 +23,7 @@
         <th mat-header-cell *matHeaderCellDef> Запланировано звонков </th>
         <td mat-cell *matCellDef="let client">
           <ng-container *ngIf="client.plannedAmountCalls">
-            <button mat-raised-button class="mat-primary table-button"> {{client.plannedAmountCalls}} </button>
+            <button mat-raised-button class="mat-primary table-button" (click)="callPlanDetail(client.managers)"> {{client.plannedAmountCalls}} </button>
           </ng-container>
           <ng-container *ngIf="!client.plannedAmountCalls">
             <button mat-raised-button class="mat-primary table-button"> Не составлено </button>
