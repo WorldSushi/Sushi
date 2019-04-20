@@ -18,12 +18,11 @@ export class ClientService {
     }
 
     createClient(client: Client): Observable<Client> {
-
         return this.http.post<Client>(this.clientApi, client, this.httpOptions);
     }
 
     updateClient(client: Client): Observable<Client> {
-        return this.http.put<Client>(this.clientApi, client, this.httpOptions)
+        return this.http.put<Client>(this.clientApi + '/' + client.id, client, this.httpOptions)
     }
 
     deleteClient(clientId: number): Observable<number> {
