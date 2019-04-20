@@ -69,6 +69,7 @@ export class ClientListComponent implements OnInit {
       }
     });
 
+
     dialogRef.afterClosed().subscribe(result => {
 
       this.store.dispatch(new UpdateClient({data: result}));
@@ -157,7 +158,10 @@ export class ClientDetailDialog {
   ]
 
   save(): void {
-    this.dialogRef.close(this.detailClientForm.value);
+    this.dialogRef.close({
+      form: this.detailClientForm.value,
+      currentManagers: this.data.currentManagers
+    });
   }
 
   bindManager(): void {
@@ -173,7 +177,7 @@ export class ClientDetailDialog {
       if(!res)
         return;
 
-      this.data.currentManagers.push(res);
+      this.data.currentManagers = [...this.data.currentManagers, res]
 
       this.dataSource = new MatTableDataSource(this.data.currentManagers);
     })
@@ -183,6 +187,7 @@ export class ClientDetailDialog {
     this.data.currentManagers = this.data.currentManagers.filter(item => item.id != id);
 
     this.dataSource = new MatTableDataSource(this.data.currentManagers);
+
   }
 
   closeDialog(): void {
