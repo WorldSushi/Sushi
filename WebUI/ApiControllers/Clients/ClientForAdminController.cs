@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Commands.Clients;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Http;
@@ -75,8 +76,9 @@ namespace WebUI.ApiControllers.Clients
 
         // POST: api/ClientForAdmin
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody]ClientCreateCommand command)
         {
+            return Ok(_clientService.Create(command.Title, command.Phone));
         }
 
         // PUT: api/ClientForAdmin/5

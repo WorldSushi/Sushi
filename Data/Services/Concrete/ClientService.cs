@@ -5,6 +5,7 @@ using Data.Services.Abstract;
 using System.Linq;
 using Data.Commands.Clients;
 using Data.Entities.Users;
+using System.Collections.Generic;
 
 namespace Data.Services.Concrete
 {
@@ -51,9 +52,16 @@ namespace Data.Services.Concrete
         {
             var client = _clientRepository.Get(command.ClientId);
 
+            var managersForClient = _managerForClientRepository.All()
+                .Where(x => x.ClientId == client.Id)
+                .Select(x => x.Id);
 
+            foreach(var managerForClient in managersForClient)
+            {
+                _managerForClientRepository.Delete(managerForClient);
+            }
 
-            foreach(var managerId in command.ManagerIds)
+            foreach (var managerId in command.ManagerIds)
             {
                 if (_managerForClientRepository.All().Any(x => x.ClientId == client.Id && x.ManagerId == managerId))
                 {
