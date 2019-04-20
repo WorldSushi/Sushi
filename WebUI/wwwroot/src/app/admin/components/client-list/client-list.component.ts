@@ -74,10 +74,7 @@ export class ClientListComponent implements OnInit {
     });
 
 
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.store.dispatch(new UpdateClient({data: result.form}));
-
+    dialogRef.afterClosed().subscribe(result => {     
       this.managerClientService
         .bindManagers(result.form.id, result.currentManagers.map(item => item.id))
         .subscribe(res => {
@@ -88,6 +85,7 @@ export class ClientListComponent implements OnInit {
 
           this.clients = [...this.clients.slice(0, index), editedClient, ...this.clients.slice(index + 1)]
 
+          this.store.dispatch(new UpdateClient({data: result.form}));
         })
     })
   }
