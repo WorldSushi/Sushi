@@ -21,6 +21,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ManagerClientDialog } from './components/client-list/dialogs/manager-client/manager-client-dialog';
 import { ManagerCallsDialog } from './components/client-list/dialogs/manager-calls/manager-calls-dialog';
 import { ChooseManagerDialog } from './components/client-list/dialogs/choose-manager/choose-manager-dialog';
+import { ManagerClientService } from './services/manager-client.service';
 
 
 @NgModule({
@@ -57,6 +58,6 @@ import { ChooseManagerDialog } from './components/client-list/dialogs/choose-man
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [ManagerService, ClientService]
+  providers: [ManagerService, ClientService, ManagerClientService]
 })
 export class AdminModule { }

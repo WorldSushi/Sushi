@@ -51,7 +51,22 @@ namespace Data.Services.Concrete
         {
             var client = _clientRepository.Get(command.ClientId);
 
-            client.BindManager(command.ManagerId);
+
+
+            foreach(var managerId in command.ManagerIds)
+            {
+                if (_managerForClientRepository.All().Any(x => x.ClientId == client.Id && x.ManagerId == managerId))
+                {
+
+                }
+                else
+                {
+                    client.BindManager(managerId);
+                }               
+                    
+            }
+
+            
 
             _clientRepository.Update(client);
         }

@@ -9,6 +9,7 @@ import { CreateClient, UpdateClient, DeleteClient } from '../../store/actions/cl
 import { ManagerClientDialog } from './dialogs/manager-client/manager-client-dialog';
 import { Manager } from '../../models/manager.model';
 import { ChooseManagerDialog } from './dialogs/choose-manager/choose-manager-dialog';
+import { ManagerClientService } from '../../services/manager-client.service';
 
 @Component({
   selector: 'app-client-list',
@@ -72,8 +73,19 @@ export class ClientListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      this.store.dispatch(new UpdateClient({data: result}));
+      this.store.dispatch(new UpdateClient({data: result.form}));
 
+      this.managerClientService
+        .bindManagers(result.form.id, result.currentManagers.map(item => item.id))
+        .subscribe(res => {
+          const editedClient = this.clients.find(item => item.id == result.form.id);
+          editedClient.managers = result.currentManagers;
+
+          const index = this.clients.findIndex(item => item.id == editedClient.id);
+
+          this.clients = [...this.clients.slice(0, index), editedClient, ...this.clients.slice(index + 1)]
+
+        })
     })
   }
 
@@ -91,6 +103,7 @@ export class ClientListComponent implements OnInit {
   }
 
   constructor(public dialog: MatDialog,
+    private managerClientService: ManagerClientService,
     private store: Store<IAdminState>) { }
 
   ngOnInit() {
