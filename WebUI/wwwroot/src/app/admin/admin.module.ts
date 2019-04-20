@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { AdminComponent } from './admin.component';
 import { LayoutModule } from './layout/layout.module';
-import { ClientListComponent, ClientCreateDialog, ClientManagersDialog } from './components/client-list/client-list.component';
+import { ClientListComponent, ClientCreateDialog, ClientManagersDialog, ClientDetailDialog } from './components/client-list/client-list.component';
 import { ClientComponent } from './containers/client/client.component';
 import { ClientService } from './services/client.service';
 import { ClientEffects } from './store/effects/client.effects';
@@ -28,12 +28,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClientComponent,
     ClientCreateDialog,
     ClientManagersDialog,
-    ManagerCreateDialog
+    ManagerCreateDialog,
+    ClientDetailDialog
   ],
   entryComponents: [
     ClientCreateDialog,
     ClientManagersDialog,
-    ManagerCreateDialog
+    ManagerCreateDialog,
+    ClientDetailDialog
   ],
   imports: [
     CommonModule,
