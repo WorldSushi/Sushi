@@ -10,3 +10,8 @@ const selectClientState = createSelector(
 export const selectClientList = createSelector(
     selectClientState,
     (state: IClientState) => state.clients);
+
+export const selectLoadingStatus = createSelector(
+    selectClientState,
+    (state: IClientState) => state.loading
+);
