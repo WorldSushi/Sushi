@@ -13,7 +13,6 @@ namespace Data.Entities.Clients
 
         public void BindManager(int managerId)
         {
-
             Managers.Add(
                 new ManagerForClient(
                     Id,
