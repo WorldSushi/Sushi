@@ -52,6 +52,7 @@ namespace WebUI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IMonthlyCallService, MonthlyCallService>();
             services.AddTransient<IMonthlyCallPlanService, MonthlyCallPlanService>();
+            services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
             #endregion
 
             services.AddCors();
@@ -60,7 +61,10 @@ namespace WebUI
 
             services.AddMemoryCache();
 
-            services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
+            services.AddSpaStaticFiles(conf =>
+            {
+                conf.RootPath = "wwwroot";
+            });
         }
 
 
@@ -76,7 +80,7 @@ namespace WebUI
 
             app.UseAuthentication();
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseMvc(routes =>
             {
@@ -93,6 +97,8 @@ namespace WebUI
 
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");*/
             });
+
+           
         }
     }
 }
