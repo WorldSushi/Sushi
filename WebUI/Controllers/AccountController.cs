@@ -27,7 +27,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        public async Task<IActionResult> Login([FromBody]LoginCommand command)
         {
             if (ModelState.IsValid)
             {

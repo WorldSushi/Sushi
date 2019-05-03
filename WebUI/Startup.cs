@@ -50,25 +50,35 @@ namespace WebUI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IMonthlyCallService, MonthlyCallService>();
             services.AddTransient<IMonthlyCallPlanService, MonthlyCallPlanService>();
+            services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
             #endregion
+
+            services.AddCors();
 
             services.AddMvc();
 
             services.AddMemoryCache();
+
+            services.AddSpaStaticFiles(conf =>
+            {
+                conf.RootPath = "wwwroot";
+            });
+
+            
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
+
 
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseMvc(routes =>
             {
@@ -80,11 +90,9 @@ namespace WebUI
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
-
-                spa.UseAngularCliServer(npmScript: "start");
-
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
+
+           
         }
     }
 }

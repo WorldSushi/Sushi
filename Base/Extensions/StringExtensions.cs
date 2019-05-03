@@ -15,7 +15,7 @@ namespace Base.Extensions
 
         public static string PhoneFormat(this string str)
         {
-            var phone = str.Replace(" ", "");
+            /*var phone = str.Replace(" ", "");
             phone = str.Replace("(", "");
             phone = str.Replace(")", "");
             phone = str.Replace("-", "");
@@ -24,9 +24,9 @@ namespace Base.Extensions
             {
                 phone = phone.Remove(0, 2);
                 phone = phone.Insert(0, "8");
-            }
+            }*/
                 
-            return phone;
+            return str;
         }
     }
 }
