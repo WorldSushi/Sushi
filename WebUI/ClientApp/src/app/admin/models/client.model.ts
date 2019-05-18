@@ -2,6 +2,7 @@ export interface Client {
     id: number,
     title: string,
     phone: string,
+    legalEntity: string,
     plannedAmountCalls: number,
     amountCalls: number,
     managers: ClientManager[]

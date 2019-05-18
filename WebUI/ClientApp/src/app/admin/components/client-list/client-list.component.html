@@ -20,6 +20,10 @@
         <th mat-header-cell *matHeaderCellDef>Имя</th>
         <td mat-cell *matCellDef="let client">{{client.title}}</td>
       </ng-container>
+      <ng-container matColumnDef="legalEntity">
+        <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+        <td mat-cell *matCellDef="let client">{{client.legalEntity}}</td>
+      </ng-container>
       <ng-container matColumnDef="phone">
         <th mat-header-cell *matHeaderCellDef>Телефон</th>
         <td mat-cell *matCellDef="let client">{{client.phone}}</td>

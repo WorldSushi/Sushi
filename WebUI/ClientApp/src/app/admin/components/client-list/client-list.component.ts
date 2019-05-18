@@ -36,6 +36,7 @@ export class ClientListComponent implements OnInit {
   displayedColumns: string[] = [
     "id", 
     "title", 
+    "legalEntity",
     "phone",
     "plannedAmountCalls",   
     "action",
@@ -57,7 +58,8 @@ export class ClientListComponent implements OnInit {
       minWidth: '620px',
       data: {
         title: '',
-        phone: ''
+        phone: '',
+        legalEntity: ''
       }
     });
 
@@ -76,7 +78,8 @@ export class ClientListComponent implements OnInit {
         title: client.title,
         phone: client.phone,
         currentManagers: client.managers,
-        managersForChoose: this.managers
+        managersForChoose: this.managers,
+        legalEntity: client.legalEntity
       }
     });
 
@@ -89,7 +92,7 @@ export class ClientListComponent implements OnInit {
           editedClient.managers = result.currentManagers;
 
           const index = this.clients.findIndex(item => item.id == editedClient.id);
-
+          
           this.clients = [...this.clients.slice(0, index), editedClient, ...this.clients.slice(index + 1)]
 
           this.store.dispatch(new UpdateClient({data: result.form}));
@@ -141,11 +144,13 @@ export class ClientManagersDialog {
   templateUrl: 'client-create-dialog.html',
 })
 export class ClientCreateDialog {
+  public legalEntities = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
 
   public createClientForm = new FormGroup({
     id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
-    phone: new FormControl(this.data.phone)
+    phone: new FormControl(this.data.phone),
+    legalEntity: new FormControl(this.data.legalEntity)
   })
 
   save(): void {
@@ -165,11 +170,13 @@ export class ClientCreateDialog {
   templateUrl: 'client-detail-dialog.html'
 })
 export class ClientDetailDialog {
+  public legalEntities = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
 
   public detailClientForm = new FormGroup({
     id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
-    phone: new FormControl(this.data.phone)
+    phone: new FormControl(this.data.phone),
+    legalEntity: new FormControl(this.data.legalEntity)
   })
 
   public dataSource = new MatTableDataSource(this.data.currentManagers);
