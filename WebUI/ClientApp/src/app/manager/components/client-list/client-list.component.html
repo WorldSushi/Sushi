@@ -13,6 +13,10 @@
        <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя </th>
        <td mat-cell *matCellDef="let client"> {{client.title}} </td>
      </ng-container>
+     <ng-container matColumnDef="legalEntity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Юр. лицо </th>
+      <td mat-cell *matCellDef="let client"> {{client.legalEntity}} </td>
+    </ng-container>
      <ng-container matColumnDef="phone">
        <th mat-header-cell *matHeaderCellDef mat-sort-header> Телефон </th>
        <td mat-cell *matCellDef="let client"> {{client.phone}} </td>

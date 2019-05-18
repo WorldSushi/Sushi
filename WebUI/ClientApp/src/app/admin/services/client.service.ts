@@ -18,6 +18,7 @@ export class ClientService {
     }
 
     createClient(client: Client): Observable<Client> {
+        console.log(client);
         return this.http.post<Client>(this.clientApi, client, this.httpOptions);
     }
 
