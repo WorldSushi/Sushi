@@ -53,7 +53,11 @@ namespace WebUI
             services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
             #endregion
 
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowAnyOrigin();
+            }));
 
             services.AddMvc();
 
@@ -71,6 +75,8 @@ namespace WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
             app.UseDeveloperExceptionPage();
 
 
@@ -78,8 +84,7 @@ namespace WebUI
 
             app.UseAuthentication();
 
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
-
+           
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
