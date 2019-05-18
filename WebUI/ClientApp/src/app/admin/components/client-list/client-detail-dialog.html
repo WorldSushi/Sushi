@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Подробная информация о клиенте</h1>
+<div mat-dialog-content>
+  <form [formGroup]="detailClientForm">
+    <mat-form-field>
+        <input type="text" placeholder="Название" matInput formControlName="title">
+    </mat-form-field>
+    <mat-form-field>
+        <input type="text" matInput placeholder="Телефон" formControlName="phone">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Не указан" formControlName="legalEntity">
+        <mat-option *ngFor="let item of legalEntities" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <h2 mat-dialog-title style="display: inline-block">Привязанные за клиентом менеджеры</h2>
+  <div align="right" style="float: right">
+    <button mat-mini-fab color="primary" style="font-size: 14px" (click)="bindManager()">+</button>
+  </div> 
+  <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="login">
+        <th mat-header-cell *matHeaderCellDef> Логин </th>
+        <td mat-cell *matCellDef="let element"> {{element.login}} </td>
+      </ng-container>    
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Действие </th>
+        <td mat-cell *matCellDef="let element"><button mat-raised-button class="mat-primary" (click)="unbindManager(element.id)" ><i class="fas fa-trash-alt"></i></button> </td>
+      </ng-container> 
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>  
+  </table>
+  
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button class="mat-primary" (click)="save()" cdkFocusInitial>Сохранить</button>
+    <button mat-raised-button (click)="closeDialog()">Закрыть</button> 
+</div>

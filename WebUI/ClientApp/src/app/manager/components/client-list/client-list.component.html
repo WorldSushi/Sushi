@@ -1,0 +1,51 @@
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Список Клиентов</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+   <table mat-table matSort [dataSource]="dataSource">
+     <ng-container matColumnDef="id">
+       <th mat-header-cell *matHeaderCellDef> # </th>
+       <td mat-cell *matCellDef="let client"> {{client.id}} </td>
+     </ng-container>
+     <ng-container matColumnDef="title">
+       <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя </th>
+       <td mat-cell *matCellDef="let client"> {{client.title}} </td>
+     </ng-container>
+     <ng-container matColumnDef="legalEntity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Юр. лицо </th>
+      <td mat-cell *matCellDef="let client"> {{client.legalEntity}} </td>
+    </ng-container>
+     <ng-container matColumnDef="phone">
+       <th mat-header-cell *matHeaderCellDef mat-sort-header> Телефон </th>
+       <td mat-cell *matCellDef="let client"> {{client.phone}} </td>
+     </ng-container>
+     <ng-container matColumnDef="plannedAmountCalls">
+        <th mat-header-cell *matHeaderCellDef> Звонки <br> Сделано | Запланировано </th>
+        <td mat-cell *matCellDef="let client">
+          <ng-container *ngIf="client.plannedAmountCalls">
+             <button mat-raised-button class="mat-primary table-button" (click)="callsOpen(client.id, client.title, client.calls)">{{client.amountCalls}} | {{client.plannedAmountCalls}}</button>
+          </ng-container>
+          <ng-container *ngIf="!client.plannedAmountCalls">
+            <button mat-raised-button class="mat-primary table-button" (click)="callPlanningOpen(client.id, client.title)">Запланировать</button>  
+          </ng-container>                 
+        </td>
+     </ng-container>  
+     <ng-container matColumnDef="plannedAmountTrips">
+      <th mat-header-cell *matHeaderCellDef> Командировки <br> Сделано | Запланировано </th>
+      <td mat-cell *matCellDef="let client">
+        <ng-container *ngIf="client.plannedAmountTrips">
+           <button mat-raised-button class="mat-primary table-button">{{client.amountTrips}} | {{client.plannedAmountTrips}}</button>
+        </ng-container>
+        <ng-container *ngIf="!client.plannedAmountTrips">
+          <button mat-raised-button class="mat-primary table-button" (click)="openPlannedTrips(client.id, client.title)">Запланировать</button>  
+        </ng-container>                 
+      </td>
+   </ng-container>  
+     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+   </table>
+   <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>

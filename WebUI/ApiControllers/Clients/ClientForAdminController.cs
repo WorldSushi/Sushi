@@ -38,6 +38,7 @@ namespace WebUI.ApiControllers.Clients
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
+                    LegalEntity = x.LegalEntity,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
@@ -50,6 +51,7 @@ namespace WebUI.ApiControllers.Clients
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
+                    LegalEntity = x.LegalEntity,
                     PlannedAmountCalls = x.PlannedAmountCalls,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)
@@ -78,7 +80,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpPost]
         public IActionResult Post([FromBody]ClientCreateCommand command)
         {
-            return Ok(_clientService.Create(command.Title, command.Phone));
+            return Ok(_clientService.Create(command.Title, command.Phone, command.LegalEntity));
         }
 
         // PUT: api/ClientForAdmin/5
@@ -95,6 +97,7 @@ namespace WebUI.ApiControllers.Clients
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
+                    LegalEntity = x.LegalEntity,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
@@ -107,6 +110,7 @@ namespace WebUI.ApiControllers.Clients
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
+                    LegalEntity = x.LegalEntity,
                     PlannedAmountCalls = x.PlannedAmountCalls,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)

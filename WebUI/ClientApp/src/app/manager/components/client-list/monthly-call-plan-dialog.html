@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Клиент: {{data.title}}</h1>
+<div mat-dialog-content>
+  <p>Выберите месяц</p>
+  <mat-form-field>
+    <mat-select placeholder="Месяц:" [(ngModel)]="data.month">
+        <mat-option *ngFor="let item of months" [value]="item.number">
+            {{item.title}}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>Выберите количество звонков</p>
+  <mat-form-field>
+    <input type="number" matInput [(ngModel)]="data.amountCalls">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button class="mat-primary" [mat-dialog-close]="data" cdkFocusInitial>Сохранить</button>
+    <button mat-raised-button (click)="onNoClick()">Закрыть</button> 
+</div>

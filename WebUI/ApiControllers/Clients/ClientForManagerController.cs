@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Data.DTO.Calls;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
-            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
+            var calls = new List<CallDTO>();//_monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
             var trips = _monthlyBusinessTripService.GetAll().ToList();
             var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
@@ -45,6 +46,7 @@ namespace WebUI.ApiControllers.Clients
                     Id = x.Id,
                     Phone = x.Phone,
                     Title = x.Title,
+                    LegalEntity = x.LegalEntity,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
                     AmountTrips = 0,

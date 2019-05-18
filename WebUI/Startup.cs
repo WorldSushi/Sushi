@@ -32,6 +32,11 @@ namespace WebUI
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/login");
                 });
 
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
             var connection = //"Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=SushiWorld;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
                 //"Data Source=31.31.196.160;Initial Catalog=u0703742_sushiWorld;User ID=u0703742_admin;Password=barnaul2019";
                 "Data Source=sushiworld.database.windows.net;Initial Catalog=SushiWorld;User ID=SushiWorld;Password=barnaul2019!;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -55,7 +60,11 @@ namespace WebUI
             services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
             #endregion
 
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowAnyOrigin();
+            }));
 
             services.AddMvc();
 
@@ -71,6 +80,8 @@ namespace WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
             app.UseDeveloperExceptionPage();
 
             /*if (env.IsDevelopment())
@@ -80,8 +91,7 @@ namespace WebUI
 
             app.UseAuthentication();
 
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
-
+           
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -93,9 +103,9 @@ namespace WebUI
             {
                 spa.Options.SourcePath = "wwwroot";
 
-                /*spa.UseAngularCliServer(npmScript: "start");
+               /* spa.UseAngularCliServer(npmScript: "start");*/
 
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");*/
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
 
            
