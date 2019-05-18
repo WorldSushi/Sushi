@@ -22,6 +22,7 @@ import { ManagerClientDialog } from './components/client-list/dialogs/manager-cl
 import { ManagerCallsDialog } from './components/client-list/dialogs/manager-calls/manager-calls-dialog';
 import { ChooseManagerDialog } from './components/client-list/dialogs/choose-manager/choose-manager-dialog';
 import { ManagerClientService } from './services/manager-client.service';
+import { ClientTypeTranslatePipe } from './pipes/client-type-translate-pipe';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ManagerClientService } from './services/manager-client.service';
     ClientDetailDialog,
     ManagerClientDialog,
     ManagerCallsDialog,
-    ChooseManagerDialog
+    ChooseManagerDialog,
+    ClientTypeTranslatePipe
   ],
   entryComponents: [
     ClientCreateDialog,

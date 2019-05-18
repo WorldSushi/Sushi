@@ -3,6 +3,8 @@ export interface Client {
     title: string,
     phone: string,
     legalEntity: string,
+    clientType: string,
+    numberOfCalls: string,
     plannedAmountCalls: number,
     amountCalls: number,
     managers: ClientManager[]

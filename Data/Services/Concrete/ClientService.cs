@@ -6,6 +6,7 @@ using System.Linq;
 using Data.Commands.Clients;
 using Data.Entities.Users;
 using System.Collections.Generic;
+using Data.Enums;
 
 namespace Data.Services.Concrete
 {
@@ -33,13 +34,15 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(string title, string phone, string legalEntity)
+        public Client Create(string title, string phone, string legalEntity, ClientTypes clientType, NumberOfCalls numberOfCalls)
         {
             return _clientRepository.Create(new Client
             {
                 Title = title,
                 Phone = phone.PhoneFormat(),
-                LegalEntity = legalEntity
+                LegalEntity = legalEntity,
+                ClientType = clientType,
+                NumberOfCalls = numberOfCalls
             });
         }
 
@@ -50,6 +53,8 @@ namespace Data.Services.Concrete
             client.Title = command.Title;
             client.Phone = command.Phone;
             client.LegalEntity = command.LegalEntity;
+            client.ClientType = command.ClientType;
+            client.NumberOfCalls = command.NumberOfCalls;
 
             _clientRepository.Update(client);
 

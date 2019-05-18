@@ -37,6 +37,8 @@ export class ClientListComponent implements OnInit {
     "id", 
     "title", 
     "legalEntity",
+    "clientType",
+    "numberOfCalls",
     "phone",
     "plannedAmountCalls",   
     "action",
@@ -59,7 +61,9 @@ export class ClientListComponent implements OnInit {
       data: {
         title: '',
         phone: '',
-        legalEntity: ''
+        legalEntity: '',
+        clientTypes: '',
+        numberOfCalls: ''
       }
     });
 
@@ -79,7 +83,9 @@ export class ClientListComponent implements OnInit {
         phone: client.phone,
         currentManagers: client.managers,
         managersForChoose: this.managers,
-        legalEntity: client.legalEntity
+        legalEntity: client.legalEntity,
+        clientTypes: client.clientTypes,
+        numberOfCalls: client.numberOfCalls
       }
     });
 
@@ -144,13 +150,16 @@ export class ClientManagersDialog {
   templateUrl: 'client-create-dialog.html',
 })
 export class ClientCreateDialog {
-  public legalEntities = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
+  public clientTypes = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
+  public numberOfCalls = ['Не указан', '1 раз в месяц', '1 раз в 2 недели', '3 раза в месяц', '1 раз в неделю', '5 раз в месяц', '6 раз в месяц', '2 раза в неделю'];
 
   public createClientForm = new FormGroup({
     id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
     phone: new FormControl(this.data.phone),
-    legalEntity: new FormControl(this.data.legalEntity)
+    legalEntity: new FormControl(this.data.legalEntity),
+    clientType: new FormControl(this.data.clientType),
+    numberOfCalls: new FormControl(this.data.numberOfCalls)
   })
 
   save(): void {
