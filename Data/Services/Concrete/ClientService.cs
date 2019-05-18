@@ -33,12 +33,13 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(string title, string phone)
+        public Client Create(string title, string phone, string legalEntity)
         {
             return _clientRepository.Create(new Client
             {
                 Title = title,
-                Phone = phone.PhoneFormat()
+                Phone = phone.PhoneFormat(),
+                LegalEntity = legalEntity
             });
         }
 
@@ -48,6 +49,7 @@ namespace Data.Services.Concrete
 
             client.Title = command.Title;
             client.Phone = command.Phone;
+            client.LegalEntity = command.LegalEntity;
 
             _clientRepository.Update(client);
 

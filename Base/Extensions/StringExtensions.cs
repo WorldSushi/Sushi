@@ -25,7 +25,7 @@ namespace Base.Extensions
                 phone = phone.Remove(0, 2);
                 phone = phone.Insert(0, "8");
             }*/
-                
+
             return str;
         }
     }

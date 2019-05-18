@@ -23,7 +23,8 @@ namespace WebUI.ApiControllers
                 {
                     Id = 1,
                     Title = "Client1",
-                    Phone = "555-35-35"
+                    Phone = "555-35-35",
+                    LegalEntity = "User"
                 }
             };
 
@@ -38,7 +39,8 @@ namespace WebUI.ApiControllers
             {
                 Id = 0,
                 Title = "Client1",
-                Phone = "555-35-35"
+                Phone = "555-35-35",
+                LegalEntity = "User"
             };
         }
 

@@ -78,7 +78,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpPost]
         public IActionResult Post([FromBody]ClientCreateCommand command)
         {
-            return Ok(_clientService.Create(command.Title, command.Phone));
+            return Ok(_clientService.Create(command.Title, command.Phone, command.LegalEntity));
         }
 
         // PUT: api/ClientForAdmin/5

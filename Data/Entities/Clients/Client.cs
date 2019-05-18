@@ -9,11 +9,12 @@ namespace Data.Entities.Clients
 
         public string Phone { get; set; }
 
+        public string LegalEntity { get; set; }
+
         public ICollection<ManagerForClient> Managers { get; set; } = new HashSet<ManagerForClient>();
 
         public void BindManager(int managerId)
         {
-
             Managers.Add(
                 new ManagerForClient(
                     Id,
