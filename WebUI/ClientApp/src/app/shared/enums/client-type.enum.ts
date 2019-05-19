@@ -1,4 +1,4 @@
-enum ClientType {
+export enum ClientType {
     WithoutType = 0,
     Small = 10,
     Middle1 = 20,

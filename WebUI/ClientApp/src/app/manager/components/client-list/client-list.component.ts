@@ -28,6 +28,8 @@ export class ClientListComponent implements OnInit {
     "id",
     "title",
     "legalEntity", 
+    "clientType",
+    "numberOfCalls",
     "phone", 
     "plannedAmountCalls"
   ];

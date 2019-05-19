@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class AuthService {
 
-  private url = "http://hanasyo.ru/Account/Login";
-  //private url = "http://localhost:59295/Account/Login";
+  //private url = "http://hanasyo.ru/Account/Login";
+  private url = "http://localhost:59295/Account/Login";
 
   private httpOptions = {
     headers: new HttpHeaders({

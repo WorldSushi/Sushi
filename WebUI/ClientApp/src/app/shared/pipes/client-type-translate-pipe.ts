@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({name: "clientTypeTranslate"})
 export class ClientTypeTranslatePipe implements PipeTransform {
-    transform(value: number):string {
-        console.log(value)
+    transform(value: any):string {
         switch (value) {
             case 0:
                 return 'Не указан';

@@ -22,7 +22,7 @@ import { ManagerClientDialog } from './components/client-list/dialogs/manager-cl
 import { ManagerCallsDialog } from './components/client-list/dialogs/manager-calls/manager-calls-dialog';
 import { ChooseManagerDialog } from './components/client-list/dialogs/choose-manager/choose-manager-dialog';
 import { ManagerClientService } from './services/manager-client.service';
-import { ClientTypeTranslatePipe } from './pipes/client-type-translate-pipe';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -31,14 +31,14 @@ import { ClientTypeTranslatePipe } from './pipes/client-type-translate-pipe';
     AdminComponent,
     ClientListComponent, 
     ClientComponent,
+
     ClientCreateDialog,
     ClientManagersDialog,
     ManagerCreateDialog,
     ClientDetailDialog,
     ManagerClientDialog,
     ManagerCallsDialog,
-    ChooseManagerDialog,
-    ClientTypeTranslatePipe
+    ChooseManagerDialog
   ],
   entryComponents: [
     ClientCreateDialog,
@@ -58,7 +58,8 @@ import { ClientTypeTranslatePipe } from './pipes/client-type-translate-pipe';
     MaterialModule,
     LayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   providers: [ManagerService, 
     ClientService, 
