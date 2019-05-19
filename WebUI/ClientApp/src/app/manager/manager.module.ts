@@ -17,14 +17,18 @@ import { LayoutModule } from "./layout/layout.module";
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BusinessTripDialog } from './components/client-list/dialogs/business-trip/business-trip.dialog';
 import { BusinessTripPlanService } from './services/businessTripPlan.service';
+import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
     declarations: [ClientComponent, 
         ClientListComponent, 
         ManagerComponent,
+
         MonthlyCallPlanDialog,
         ManagerCallsDialog,
         BusinessTripDialog
+    
     ],
     entryComponents: [
         MonthlyCallPlanDialog,
@@ -40,7 +44,8 @@ import { BusinessTripPlanService } from './services/businessTripPlan.service';
         MaterialModule,
         LayoutModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        SharedModule
     ],
     providers: [
         CLientService, 

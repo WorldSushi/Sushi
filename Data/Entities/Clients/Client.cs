@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Base;
+using Data.Enums;
 
 namespace Data.Entities.Clients
 {
@@ -10,6 +11,10 @@ namespace Data.Entities.Clients
         public string Phone { get; set; }
 
         public string LegalEntity { get; set; }
+
+        public ClientTypes ClientType { get; set; }
+
+        public NumberOfCalls NumberOfCalls { get; set; }
 
         public ICollection<ManagerForClient> Managers { get; set; } = new HashSet<ManagerForClient>();
 

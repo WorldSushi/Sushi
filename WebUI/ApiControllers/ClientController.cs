@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,9 @@ namespace WebUI.ApiControllers
                     Id = 1,
                     Title = "Client1",
                     Phone = "555-35-35",
-                    LegalEntity = "User"
+                    LegalEntity = "User",
+                    ClientType = ClientTypes.Small,
+                    NumberOfCalls = NumberOfCalls.FivePerMonth
                 }
             };
 
@@ -40,7 +43,9 @@ namespace WebUI.ApiControllers
                 Id = 0,
                 Title = "Client1",
                 Phone = "555-35-35",
-                LegalEntity = "User"
+                LegalEntity = "User",
+                ClientType = ClientTypes.Small,
+                NumberOfCalls = NumberOfCalls.FivePerMonth
             };
         }
 

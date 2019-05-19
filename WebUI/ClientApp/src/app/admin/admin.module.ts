@@ -22,6 +22,7 @@ import { ManagerClientDialog } from './components/client-list/dialogs/manager-cl
 import { ManagerCallsDialog } from './components/client-list/dialogs/manager-calls/manager-calls-dialog';
 import { ChooseManagerDialog } from './components/client-list/dialogs/choose-manager/choose-manager-dialog';
 import { ManagerClientService } from './services/manager-client.service';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ManagerClientService } from './services/manager-client.service';
     AdminComponent,
     ClientListComponent, 
     ClientComponent,
+
     ClientCreateDialog,
     ClientManagersDialog,
     ManagerCreateDialog,
@@ -56,7 +58,8 @@ import { ManagerClientService } from './services/manager-client.service';
     MaterialModule,
     LayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   providers: [ManagerService, 
     ClientService, 

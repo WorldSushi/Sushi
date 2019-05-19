@@ -2,14 +2,38 @@
 <div mat-dialog-content>
   <form [formGroup]="detailClientForm">
     <mat-form-field>
-        <input type="text" placeholder="Название" matInput formControlName="title">
+        <input type="text" matInput placeholder="Название"  formControlName="title">
     </mat-form-field>
     <mat-form-field>
         <input type="text" matInput placeholder="Телефон" formControlName="phone">
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Не указан" formControlName="legalEntity">
-        <mat-option *ngFor="let item of legalEntities" [value]="item">{{item}}</mat-option>
+      <input type="text" matInput placeholder="Юр.лицо" formControlName="legalEntity">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Тип" formControlName="clientType">
+        <mat-option [value]="data.clientType">{{data.clientType | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.WithoutType">{{clientTypes.WithoutType | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Small">{{clientTypes.Small | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Middle1">{{clientTypes.Middle1 | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Middle2">{{clientTypes.Middle2 | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Large1">{{clientTypes.Large1 | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Large2">{{clientTypes.Large2 | clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.Large3">{{clientTypes.Large3| clientTypeTranslate}}</mat-option>
+        <mat-option [value]="clientTypes.VeryLarge">{{clientTypes.VeryLarge | clientTypeTranslate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Количество звонков" formControlName="numberOfCalls">
+          <mat-option [value]="data.numberOfCalls">{{data.numberOfCalls | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.WithoutType">{{numbersOfCalls.WithoutType | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.OnePerMonth">{{numbersOfCalls.OnePerMonth |numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.OnePerTwoWeek">{{numbersOfCalls.OnePerTwoWeek | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.ThreePerMonth">{{numbersOfCalls.ThreePerMonth | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.OnePerWeek">{{numbersOfCalls.OnePerWeek | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.FivePerMonth">{{numbersOfCalls.FivePerMonth | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.SixPerMonth">{{numbersOfCalls.SixPerMonth | numberOfCallsTranslate}}</mat-option>
+          <mat-option [value]="numbersOfCalls.TwoPerWeek">{{numbersOfCalls.TwoPerWeek | numberOfCallsTranslate}}</mat-option>
       </mat-select>
     </mat-form-field>
   </form>

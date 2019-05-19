@@ -36,7 +36,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
-            var calls = new List<CallDTO>();//_monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
+            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
             var trips = _monthlyBusinessTripService.GetAll().ToList();
             var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
@@ -47,6 +47,8 @@ namespace WebUI.ApiControllers.Clients
                     Phone = x.Phone,
                     Title = x.Title,
                     LegalEntity = x.LegalEntity,
+                    ClientType = x.ClientType,
+                    NumberOfCalls = x.NumberOfCalls,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
                     AmountTrips = 0,

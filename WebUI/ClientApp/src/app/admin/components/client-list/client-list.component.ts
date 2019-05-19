@@ -12,6 +12,8 @@ import { ChooseManagerDialog } from './dialogs/choose-manager/choose-manager-dia
 import { ManagerClientService } from '../../services/manager-client.service';
 import { BusinessTripDialog } from '../../../manager/components/client-list/dialogs/business-trip/business-trip.dialog';
 import { BusinessTripPlanService } from '../../../manager/services/businessTripPlan.service';
+import { ClientType } from 'src/app/shared/enums/client-type.enum';
+import { NumberOfCalls } from 'src/app/shared/enums/number-of-calls.enum';
 
 @Component({
   selector: 'app-client-list',
@@ -37,6 +39,8 @@ export class ClientListComponent implements OnInit {
     "id", 
     "title", 
     "legalEntity",
+    "clientType",
+    "numberOfCalls",
     "phone",
     "plannedAmountCalls",   
     "action",
@@ -59,7 +63,9 @@ export class ClientListComponent implements OnInit {
       data: {
         title: '',
         phone: '',
-        legalEntity: ''
+        legalEntity: '',
+        clientType: '',
+        numberOfCalls: ''
       }
     });
 
@@ -79,12 +85,17 @@ export class ClientListComponent implements OnInit {
         phone: client.phone,
         currentManagers: client.managers,
         managersForChoose: this.managers,
-        legalEntity: client.legalEntity
+        legalEntity: client.legalEntity,
+        clientType: client.clientType,
+        numberOfCalls: client.numberOfCalls
       }
     });
 
 
-    dialogRef.afterClosed().subscribe(result => {     
+    dialogRef.afterClosed().subscribe(result => {   
+      if(!result)
+        return
+      
       this.managerClientService
         .bindManagers(result.form.id, result.currentManagers.map(item => item.id))
         .subscribe(res => {
@@ -144,13 +155,16 @@ export class ClientManagersDialog {
   templateUrl: 'client-create-dialog.html',
 })
 export class ClientCreateDialog {
-  public legalEntities = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
+  public clientTypes = ClientType;
+  public numbersOfCalls = NumberOfCalls;
 
   public createClientForm = new FormGroup({
     id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
     phone: new FormControl(this.data.phone),
-    legalEntity: new FormControl(this.data.legalEntity)
+    legalEntity: new FormControl(this.data.legalEntity),
+    clientType: new FormControl(this.data.clientType),
+    numberOfCalls: new FormControl(this.data.numberOfCalls)
   })
 
   save(): void {
@@ -170,13 +184,16 @@ export class ClientCreateDialog {
   templateUrl: 'client-detail-dialog.html'
 })
 export class ClientDetailDialog {
-  public legalEntities = ['Не указан', 'Небольшой', 'Средний 1', 'Средний 2', 'Крупный 1', 'Крупный 2', 'Крупный 3', 'Очень крупный'];
+  public clientTypes = ClientType;
+  public numbersOfCalls = NumberOfCalls;
 
   public detailClientForm = new FormGroup({
     id: new FormControl(this.data.id),
     title: new FormControl(this.data.title),
     phone: new FormControl(this.data.phone),
-    legalEntity: new FormControl(this.data.legalEntity)
+    legalEntity: new FormControl(this.data.legalEntity),
+    clientType: new FormControl(this.data.clientType),
+    numberOfCalls: new FormControl(this.data.numberOfCalls)
   })
 
   public dataSource = new MatTableDataSource(this.data.currentManagers);
@@ -225,6 +242,8 @@ export class ClientDetailDialog {
 
   constructor(public dialogRef: MatDialogRef<ClientDetailDialog>, 
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data) {}
+    @Inject(MAT_DIALOG_DATA) public data) {
+      console.log(this.detailClientForm)
+    }
 
 }
