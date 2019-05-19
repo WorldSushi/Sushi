@@ -2,14 +2,22 @@
 <div mat-dialog-content>
   <form [formGroup]="detailClientForm">
     <mat-form-field>
-        <input type="text" placeholder="Название" matInput formControlName="title">
+        <input type="text" matInput placeholder="Название"  formControlName="title">
     </mat-form-field>
     <mat-form-field>
         <input type="text" matInput placeholder="Телефон" formControlName="phone">
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Юр. лицо" formControlName="legalEntity">
-        <mat-option *ngFor="let item of legalEntities" [value]="item">{{item}}</mat-option>
+      <input type="text" matInput placeholder="Юр.лицо" formControlName="legalEntity">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Не указан" formControlName="clientType">
+        <mat-option *ngFor="let item of clientTypes" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Не указан" formControlName="numberOfCalls">
+        <mat-option *ngFor="let item of numberOfCalls" [value]="item">{{item}}</mat-option>
       </mat-select>
     </mat-form-field>
   </form>
