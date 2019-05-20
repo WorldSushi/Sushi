@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Data.Entities.Clients;
 using Data.Enums;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.ApiControllers
@@ -13,7 +9,6 @@ namespace WebUI.ApiControllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-
         // GET: api/Client
         [HttpGet]
         public IEnumerable<Client> Get()

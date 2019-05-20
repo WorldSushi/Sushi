@@ -43,6 +43,7 @@ export class ClientListComponent implements OnInit {
     "numberOfCalls",
     "phone",
     "plannedAmountCalls",   
+    "weekPlans",
     "action",
   ];
 

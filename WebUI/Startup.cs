@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Base;
+﻿using Base;
 using Data;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
@@ -12,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebUI.Services.Abstract;
@@ -37,6 +32,8 @@ namespace WebUI
                 configuration.RootPath = "wwwroot";
             });
 
+            var connection =
+                "Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=SushiWorldSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("Data")));
@@ -66,7 +63,6 @@ namespace WebUI
             services.AddMvc();
 
             services.AddMemoryCache();
-
         }
 
 
@@ -83,7 +79,6 @@ namespace WebUI
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
            
             app.UseMvc(routes =>
             {
@@ -101,8 +96,6 @@ namespace WebUI
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
-
-           
         }
     }
 }

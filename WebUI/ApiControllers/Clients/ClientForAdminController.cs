@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Data;
 using Data.Commands.Clients;
+using Data.Entities.ClientContacts;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.ViewModels.Clients;
 
@@ -18,14 +18,17 @@ namespace WebUI.ApiControllers.Clients
         private readonly IClientService _clientService;
         private readonly IMonthlyCallPlanService _monthlyCallPlanService;
         private readonly IMonthlyCallService _monthlyCallService;
+        private readonly ApplicationContext _context;
 
         public ClientForAdminController(IClientService clientService,
             IMonthlyCallPlanService monthlyCallPlanService,
-            IMonthlyCallService monthlyCallService)
+            IMonthlyCallService monthlyCallService,
+            ApplicationContext context)
         {
             _clientService = clientService;
             _monthlyCallPlanService = monthlyCallPlanService;
             _monthlyCallService = monthlyCallService;
+            _context = context;
         }
 
         [HttpGet]
@@ -45,6 +48,17 @@ namespace WebUI.ApiControllers.Clients
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
                     Managers = new List<ClientManagersVM>()
+                }).ToList();
+            var weekPlans = _context.Set<WeekPlan>()
+                .Select(z => new WeekPlanDto()
+                {
+                    Id = z.Id,
+                    ManagerId = z.ManagerId,
+                    ClientId = z.ClientId,
+                    Date = z.Date,
+                    WeekNumber = z.WeekNumber,
+                    Plan = z.Plan,
+                    Fact = z.Fact
                 }).ToList();
 
             return clients
@@ -68,7 +82,10 @@ namespace WebUI.ApiControllers.Clients
                             PlannedAmountCalls = _monthlyCallPlanService
                                 .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
                             Calls = calls.Where(z => z.Client_number == x.Phone
-                                                     && z.Src_number == c.Phone).ToList()
+                                                     && z.Src_number == c.Phone).ToList(),
+                            WeekPlans = weekPlans
+                                .Where(z => z.ManagerId == c.Id && z.ClientId == x.Id)
+                                .ToList()
                         }).ToList()
                 }).ToList();
         }

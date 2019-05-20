@@ -15,11 +15,19 @@ export interface ClientManager {
     login: string,
     amountCalls: number,
     plannedAmountCalls: number,
-    calls: ClientManagerCall[]
+    calls: ClientManagerCall[],
+    weekPlans: ClientManagerWeekPlan[]
 }
 
 export interface ClientManagerCall {
     date: Date,
     duration: string,
     record: string
+}
+
+export interface ClientManagerWeekPlan {
+    date: Date,
+    weekNumber: number,
+    plan: string,
+    fact: string
 }

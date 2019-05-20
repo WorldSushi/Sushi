@@ -21,6 +21,7 @@ namespace Data
             modelBuilder.Entity<MonthlyCallPlan>();
             modelBuilder.Entity<MonthlyBusinessTripPlan>();
             modelBuilder.Entity<ManagerForClient>();
+            modelBuilder.Entity<WeekPlan>();
         }
     }
 }
