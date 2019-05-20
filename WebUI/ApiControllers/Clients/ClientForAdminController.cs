@@ -44,6 +44,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
@@ -70,6 +71,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = x.PlannedAmountCalls,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)
@@ -101,7 +103,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpPost]
         public IActionResult Post([FromBody]ClientCreateCommand command)
         {
-            return Ok(_clientService.Create(command.Title, command.Phone, command.LegalEntity, command.ClientType, command.NumberOfCalls));
+            return Ok(_clientService.Create(command.Title, command.Phone, command.LegalEntity, command.ClientType, command.NumberOfCalls, command.NumberOfShipments));
         }
 
         // PUT: api/ClientForAdmin/5
@@ -121,6 +123,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
@@ -136,6 +139,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = x.PlannedAmountCalls,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)

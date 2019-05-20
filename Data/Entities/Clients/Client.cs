@@ -16,6 +16,8 @@ namespace Data.Entities.Clients
 
         public NumberOfCalls NumberOfCalls { get; set; }
 
+        public NumberOfShipments NumberOfShipments { get; set; }
+
         public ICollection<ManagerForClient> Managers { get; set; } = new HashSet<ManagerForClient>();
 
         public void BindManager(int managerId)

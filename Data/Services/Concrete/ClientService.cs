@@ -34,7 +34,7 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(string title, string phone, string legalEntity, ClientTypes clientType, NumberOfCalls numberOfCalls)
+        public Client Create(string title, string phone, string legalEntity, ClientTypes clientType, NumberOfCalls numberOfCalls, NumberOfShipments numberOfShipments)
         {
             return _clientRepository.Create(new Client
             {
@@ -42,7 +42,8 @@ namespace Data.Services.Concrete
                 Phone = phone.PhoneFormat(),
                 LegalEntity = legalEntity,
                 ClientType = clientType,
-                NumberOfCalls = numberOfCalls
+                NumberOfCalls = numberOfCalls,
+                NumberOfShipments = numberOfShipments
             });
         }
 
@@ -55,6 +56,7 @@ namespace Data.Services.Concrete
             client.LegalEntity = command.LegalEntity;
             client.ClientType = command.ClientType;
             client.NumberOfCalls = command.NumberOfCalls;
+            client.NumberOfShipments = command.NumberOfShipments;
 
             _clientRepository.Update(client);
 

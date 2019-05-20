@@ -32,6 +32,10 @@
         <th mat-header-cell *matHeaderCellDef>Периодичность звонков</th>
         <td mat-cell *matCellDef="let client">{{client.numberOfCalls | numberOfCallsTranslate}}</td>
       </ng-container>
+      <ng-container matColumnDef="numberOfShipments">
+        <th mat-header-cell *matHeaderCellDef>Периодичность отгрузок</th>
+        <td mat-cell *matCellDef="let client">{{client.numberOfShipments | numberOfShipmentsTranslate}}</td>
+      </ng-container>
       <ng-container matColumnDef="phone">
         <th mat-header-cell *matHeaderCellDef>Телефон</th>
         <td mat-cell *matCellDef="let client">{{client.phone}}</td>

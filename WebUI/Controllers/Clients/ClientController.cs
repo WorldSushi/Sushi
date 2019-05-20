@@ -32,9 +32,9 @@ namespace WebUI.Controllers.Clients
         }
 
         [HttpPost]
-        public IActionResult Create(string title, string phone, string legalEntity, ClientTypes clientTypes, NumberOfCalls numberOfCalls)
+        public IActionResult Create(string title, string phone, string legalEntity, ClientTypes clientTypes, NumberOfCalls numberOfCalls, NumberOfShipments numberOfShipments)
         {
-            _clientService.Create(title, phone, legalEntity, clientTypes, numberOfCalls);
+            _clientService.Create(title, phone, legalEntity, clientTypes, numberOfCalls, numberOfShipments);
 
             return RedirectToAction("Index");
         }

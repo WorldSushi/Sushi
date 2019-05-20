@@ -49,6 +49,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    NumberOfShipments = x.NumberOfShipments,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
                     AmountTrips = 0,
