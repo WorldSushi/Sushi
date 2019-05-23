@@ -9,6 +9,6 @@ namespace Data.Commands.Clients
         public string LegalEntity { get; set; }
         public ClientTypes ClientType { get; set; }
         public NumberOfCalls NumberOfCalls { get; set; }
-        public ShipmentPeriodicity ShipmentPeriodicity { get; set; }
+        public NumberOfShipments NumberOfShipments { get; set; }
     }
 }

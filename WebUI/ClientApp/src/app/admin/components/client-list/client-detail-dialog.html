@@ -36,6 +36,19 @@
           <mat-option [value]="numbersOfCalls.TwoPerWeek">{{numbersOfCalls.TwoPerWeek | numberOfCallsTranslate}}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Количество отгрузок" formControlName="numberOfShipments">
+          <mat-option [value]="data.numberOfShipments">{{data.numberOfShipments | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.WithoutType">{{numberOfShipments.WithoutType | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.OnePerMonth">{{numberOfShipments.OnePerMonth |numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.OnePerTwoWeek">{{numberOfShipments.OnePerTwoWeek | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.ThreePerMonth">{{numberOfShipments.ThreePerMonth | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.OnePerWeek">{{numberOfShipments.OnePerWeek | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.FivePerMonth">{{numberOfShipments.FivePerMonth | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.SixPerMonth">{{numberOfShipments.SixPerMonth | numberOfShipmentsTranslate}}</mat-option>
+          <mat-option [value]="numberOfShipments.TwoPerWeek">{{numberOfShipments.TwoPerWeek | numberOfShipmentsTranslate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
   <h2 mat-dialog-title style="display: inline-block">Привязанные за клиентом менеджеры</h2>
   <div align="right" style="float: right">

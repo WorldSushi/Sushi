@@ -14,6 +14,7 @@ import { BusinessTripDialog } from '../../../manager/components/client-list/dial
 import { BusinessTripPlanService } from '../../../manager/services/businessTripPlan.service';
 import { ClientType } from 'src/app/shared/enums/client-type.enum';
 import { NumberOfCalls } from 'src/app/shared/enums/number-of-calls.enum';
+import { NumberOfShipments } from 'src/app/shared/enums/number-of-shipments.enum';
 
 @Component({
   selector: 'app-client-list',
@@ -41,6 +42,7 @@ export class ClientListComponent implements OnInit {
     "legalEntity",
     "clientType",
     "numberOfCalls",
+    "numberOfShipments",
     "phone",
     "plannedAmountCalls",   
     "weekPlans",
@@ -66,7 +68,8 @@ export class ClientListComponent implements OnInit {
         phone: '',
         legalEntity: '',
         clientType: '',
-        numberOfCalls: ''
+        numberOfCalls: '',
+        numberOfShipments: ''
       }
     });
 
@@ -88,7 +91,8 @@ export class ClientListComponent implements OnInit {
         managersForChoose: this.managers,
         legalEntity: client.legalEntity,
         clientType: client.clientType,
-        numberOfCalls: client.numberOfCalls
+        numberOfCalls: client.numberOfCalls,
+        numberOfShipments: client.numberOfShipments
       }
     });
 
@@ -158,6 +162,7 @@ export class ClientManagersDialog {
 export class ClientCreateDialog {
   public clientTypes = ClientType;
   public numbersOfCalls = NumberOfCalls;
+  public numberOfShipments = NumberOfShipments;
 
   public createClientForm = new FormGroup({
     id: new FormControl(this.data.id),
@@ -165,7 +170,8 @@ export class ClientCreateDialog {
     phone: new FormControl(this.data.phone),
     legalEntity: new FormControl(this.data.legalEntity),
     clientType: new FormControl(this.data.clientType),
-    numberOfCalls: new FormControl(this.data.numberOfCalls)
+    numberOfCalls: new FormControl(this.data.numberOfCalls),
+    numberOfShipments: new FormControl(this.data.numberOfShipments)
   })
 
   save(): void {
@@ -187,6 +193,7 @@ export class ClientCreateDialog {
 export class ClientDetailDialog {
   public clientTypes = ClientType;
   public numbersOfCalls = NumberOfCalls;
+  public numberOfShipments = NumberOfShipments;
 
   public detailClientForm = new FormGroup({
     id: new FormControl(this.data.id),
@@ -194,7 +201,8 @@ export class ClientDetailDialog {
     phone: new FormControl(this.data.phone),
     legalEntity: new FormControl(this.data.legalEntity),
     clientType: new FormControl(this.data.clientType),
-    numberOfCalls: new FormControl(this.data.numberOfCalls)
+    numberOfCalls: new FormControl(this.data.numberOfCalls),
+    numberOfShipments: new FormControl(this.data.numberOfShipments)
   })
 
   public dataSource = new MatTableDataSource(this.data.currentManagers);

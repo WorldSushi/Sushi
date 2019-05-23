@@ -31,6 +31,7 @@ export class ClientListComponent implements OnInit {
     "legalEntity", 
     "clientType",
     "numberOfCalls",
+    "numberOfShipments",
     "phone", 
     "plannedAmountCalls",
     "plannedAmountTrips"

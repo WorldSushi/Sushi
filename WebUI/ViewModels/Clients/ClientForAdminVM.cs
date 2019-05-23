@@ -13,6 +13,7 @@ namespace WebUI.ViewModels.Clients
         public string Phone { get; set; }
         public ClientTypes ClientType { get; set; }
         public NumberOfCalls NumberOfCalls { get; set; }
+        public NumberOfShipments NumberOfShipments { get; set; }
         public int? PlannedAmountCalls { get; set; }
         public int AmountCalls { get; set; }
         public ICollection<ClientManagersVM> Managers { get; set; }
