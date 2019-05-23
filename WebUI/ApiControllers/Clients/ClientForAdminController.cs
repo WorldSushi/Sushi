@@ -24,8 +24,7 @@ namespace WebUI.ApiControllers.Clients
         public ClientForAdminController(IClientService clientService,
             IMonthlyCallPlanService monthlyCallPlanService,
             IMonthlyCallService monthlyCallService,
-            IMonthlyBusinessTripService monthlyBusinessTripService)
-            IMonthlyCallService monthlyCallService,
+            IMonthlyBusinessTripService monthlyBusinessTripService,
             ApplicationContext context)
         {
             _clientService = clientService;

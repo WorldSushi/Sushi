@@ -9,7 +9,7 @@ import { NumberOfShipmentsTranslatePipe } from './pipes/number-of-shipments-pipe
   declarations: [
     ClientTypeTranslatePipe,
     NumberOfCallsTranslatePipe,
-    BusinessTripPlanCompleteTypeTranslatePipe
+    BusinessTripPlanCompleteTypeTranslatePipe,
     NumberOfCallsTranslatePipe,
     NumberOfShipmentsTranslatePipe
   ],
@@ -19,7 +19,7 @@ import { NumberOfShipmentsTranslatePipe } from './pipes/number-of-shipments-pipe
   exports: [
     ClientTypeTranslatePipe,
     NumberOfCallsTranslatePipe,
-    BusinessTripPlanCompleteTypeTranslatePipe
+    BusinessTripPlanCompleteTypeTranslatePipe,
     NumberOfCallsTranslatePipe,
     NumberOfShipmentsTranslatePipe
   ]
