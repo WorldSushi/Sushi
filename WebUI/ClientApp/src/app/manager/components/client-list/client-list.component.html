@@ -44,7 +44,7 @@
       <th mat-header-cell *matHeaderCellDef> Командировки <br> Сделано | Запланировано </th>
       <td mat-cell *matCellDef="let client">
         <ng-container *ngIf="client.plannedAmountTrips">
-           <button mat-raised-button class="mat-primary table-button">{{client.amountTrips}} | {{client.plannedAmountTrips}}</button>
+           <button mat-raised-button class="mat-primary table-button" (click)="openTrips(client.id, client.title, client.plannedAmountTrips, client.businessTripCompletedType, client.businessTripPlanId)">{{client.businessTripCompletedType | businessTripCompleteTypeTranslate }} | {{client.plannedAmountTrips}}</button>
         </ng-container>
         <ng-container *ngIf="!client.plannedAmountTrips">
           <button mat-raised-button class="mat-primary table-button" (click)="openPlannedTrips(client.id, client.title)">Запланировать</button>  

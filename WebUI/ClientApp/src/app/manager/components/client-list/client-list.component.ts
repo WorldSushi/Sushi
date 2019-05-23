@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { Call } from '../../models/call.model';
 import { BusinessTripDialog } from './dialogs/business-trip/business-trip.dialog';
 import { BusinessTripPlanService } from '../../services/businessTripPlan.service';
+import { AmountBusinessTripDialog } from './dialogs/amount-business-trip/amount-business-trip.dialog';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class ClientListComponent implements OnInit {
     "clientType",
     "numberOfCalls",
     "phone", 
-    "plannedAmountCalls"
+    "plannedAmountCalls",
+    "plannedAmountTrips"
   ];
 
   callPlanningDisplayed: boolean = false;
@@ -95,10 +97,35 @@ export class ClientListComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
+  openTrips(clientId: number, clientTitle: string, trips: number, tripCompletedType: number, tripId: number) {
+    this.selectedClient = {
+      id: clientId,
+      title: clientTitle,
+    }
+    
+    const dialogRef = this.dialog.open(AmountBusinessTripDialog, {
+
+      minWidth: '620px',
+
+      data: { 
+        id: tripId,
+        clientid: this.selectedClient.id,
+        title: this.selectedClient.title,
+        trips: trips,
+        businessTripCompletedType: tripCompletedType
+      }     
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.businessTripPlanService.updateBusinessTripPlan(res).subscribe(res => {
+        this.clients.find(item => item.id == res.clientId).businessTripCompletedType = res.businessTripCompletedType;
+      });
+    });
+  }
+
   callPlanningFormSubmit(result) {
     this.monthlyCallPlanService.createMonthlyCallPlan(result).subscribe(res => this.clients
       .find(item => item.id == res.clientId).plannedAmountCalls = res.amountCalls);
-
   }
 
   openPlannedTrips(clientId, clientTitle) {

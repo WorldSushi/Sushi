@@ -2,6 +2,7 @@
 using Base;
 using Data.Entities.Clients;
 using Data.Entities.Users;
+using Data.Enums;
 
 namespace Data.Entities.ClientContacts
 {
@@ -14,6 +15,7 @@ namespace Data.Entities.ClientContacts
         public Client Client { get; set; }
 
         public int AmountBusinessTrip { get; set; }
+        public BusinessTripCompletedType BusinessTripCompletedType { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -28,6 +30,7 @@ namespace Data.Entities.ClientContacts
             ClientId = clientId;
             AmountBusinessTrip = amountBusinessTrip;
             Date = new DateTime(DateTime.Now.Year, month, 1);
+            BusinessTripCompletedType = BusinessTripCompletedType.DidntCompleted;
         }
     }
 }

@@ -18,14 +18,17 @@ namespace WebUI.ApiControllers.Clients
         private readonly IClientService _clientService;
         private readonly IMonthlyCallPlanService _monthlyCallPlanService;
         private readonly IMonthlyCallService _monthlyCallService;
+        private readonly IMonthlyBusinessTripService _monthlyBusinessTripService;
 
         public ClientForAdminController(IClientService clientService,
             IMonthlyCallPlanService monthlyCallPlanService,
-            IMonthlyCallService monthlyCallService)
+            IMonthlyCallService monthlyCallService,
+            IMonthlyBusinessTripService monthlyBusinessTripService)
         {
             _clientService = clientService;
             _monthlyCallPlanService = monthlyCallPlanService;
             _monthlyCallService = monthlyCallService;
+            _monthlyBusinessTripService = monthlyBusinessTripService;
         }
 
         [HttpGet]
@@ -65,8 +68,12 @@ namespace WebUI.ApiControllers.Clients
                             Login = c.Login,
                             AmountCalls = calls.Count(z => z.Client_number == x.Phone
                                                            && z.Src_number == c.Phone),
+                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlan(x.Id, c.Id, DateTime.Now.Month)
+                                .BusinessTripCompletedType,
                             PlannedAmountCalls = _monthlyCallPlanService
                                 .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
+                            PlannedAmountBusinessTrips = _monthlyBusinessTripService
+                                .GetPlannedBusinessTripAmount(c.Id, x.Id, DateTime.Now.Month),
                             Calls = calls.Where(z => z.Client_number == x.Phone
                                                      && z.Src_number == c.Phone).ToList()
                         }).ToList()
@@ -130,6 +137,10 @@ namespace WebUI.ApiControllers.Clients
                                                            && z.Src_number == c.Phone),
                             PlannedAmountCalls = _monthlyCallPlanService
                                 .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
+                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlan(x.Id, c.Id, DateTime.Now.Month)
+                                .BusinessTripCompletedType,
+                            PlannedAmountBusinessTrips = _monthlyBusinessTripService
+                                .GetPlannedBusinessTripAmount(c.Id, x.Id, DateTime.Now.Month),
                             Calls = calls.Where(z => z.Client_number == x.Phone
                                                      && z.Src_number == c.Phone).ToList()
                         }).ToList()

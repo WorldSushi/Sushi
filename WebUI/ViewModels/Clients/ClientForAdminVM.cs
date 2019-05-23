@@ -24,5 +24,7 @@ namespace WebUI.ViewModels.Clients
         public int AmountCalls { get; set; }
         public int? PlannedAmountCalls { get; set; }
         public ICollection<CallDTO> Calls { get; set; }
+        public BusinessTripCompletedType BusinessTripCompletedType { get; set; }
+        public int? PlannedAmountBusinessTrips { get; set; }
     }
 }

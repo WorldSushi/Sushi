@@ -5,5 +5,6 @@ export interface ClientWithCallPlan {
     plannedAmountCalls: number,
     amountCalls: number,
     plannedAmountTrips: number,
-    amountTrips: number
+    amountTrips: number,
+    businessTripCompletedType: number
 }

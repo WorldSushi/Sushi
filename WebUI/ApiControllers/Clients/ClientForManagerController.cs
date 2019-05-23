@@ -51,7 +51,9 @@ namespace WebUI.ApiControllers.Clients
                     NumberOfCalls = x.NumberOfCalls,
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone
                                                    && c.Src_number == manager.Phone),
-                    AmountTrips = 0,
+                    BusinessTripPlanId = _monthlyBusinessTripService.GetPlan(manager.Id, x.Id, DateTime.Now.Month).Id,
+                    BusinessTripCompletedType = _monthlyBusinessTripService.GetPlan(manager.Id, x.Id, DateTime.Now.Month)
+                        .BusinessTripCompletedType,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(manager.Id, x.Id, DateTime.Now.Month),
                     Calls = calls.Where(c => c.Client_number == x.Phone
