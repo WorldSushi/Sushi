@@ -51,6 +51,17 @@
           </ng-container>          
         </td>
       </ng-container> 
+      <ng-container matColumnDef="plannedAmountTrips">
+        <th mat-header-cell *matHeaderCellDef> Командировки <br> Запланировано </th>
+        <td mat-cell *matCellDef="let client">
+          <ng-container *ngIf="client.plannedAmountTrips">
+            <button mat-raised-button class="mat-primary table-button" (click)="tripsPlanDetail(client.managers)"> {{client.plannedAmountTrips}} </button>
+          </ng-container>
+          <ng-container *ngIf="!client.plannedAmountTrips">
+            <button mat-raised-button class="mat-primary table-button" (click)="tripsPlanDetail(client.managers)"> Не составлено </button>
+          </ng-container>          
+        </td>
+      </ng-container> 
       <ng-container matColumnDef="weekPlans">
         <th mat-header-cell *matHeaderCellDef>Планы на неделю</th>
         <td mat-cell *matCellDef="let client">
@@ -59,17 +70,6 @@
           </ng-container>                   
         </td>
       </ng-container>      
-      <ng-container matColumnDef="plannedAmountTrips">
-        <th mat-header-cell *matHeaderCellDef> Командировки <br> Сделано | Запланировано </th>
-        <td mat-cell *matCellDef="let client">
-          <ng-container *ngIf="client.plannedAmountTrips">
-             <button mat-raised-button class="mat-primary table-button">{{client.amountTrips}} | {{client.plannedAmountTrips}}</button>
-          </ng-container>
-          <ng-container *ngIf="!client.plannedAmountTrips">
-            <button mat-raised-button class="mat-primary table-button" (click)="openPlannedTrips(client.id, client.title)">Запланировать</button>  
-          </ng-container>                 
-        </td>
-     </ng-container> 
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Действие</th>
         <td mat-cell *matCellDef="let client">

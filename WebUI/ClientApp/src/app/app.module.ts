@@ -12,6 +12,9 @@ import { MaterialModule } from './material/material.module';
 import { LayoutModule } from './manager/layout/layout.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { AdminModule } from './admin/admin.module';
+import { ManagerModule } from './manager/manager.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @NgModule({

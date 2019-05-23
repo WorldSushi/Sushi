@@ -15,6 +15,7 @@ namespace WebUI.ViewModels.Clients
         public NumberOfCalls NumberOfCalls { get; set; }
         public NumberOfShipments NumberOfShipments { get; set; }
         public int? PlannedAmountCalls { get; set; }
+        public int? PlannedAmountTrips { get; set; }
         public int AmountCalls { get; set; }
         public ICollection<ClientManagersVM> Managers { get; set; }
     }

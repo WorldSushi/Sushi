@@ -39,6 +39,7 @@ namespace Data.Services.Concrete.ClientContacts
                 .Sum(x => x.AmountCalls);
         }
 
+
         public void Create(MonthlyCallPlanCreateCommand command)
         {
             _monthlyCallPlanRepository.Create(

@@ -1,6 +1,7 @@
 ﻿using Base;
 using Data.Commands.ClientContacts;
 using Data.Entities.ClientContacts;
+using Data.Enums;
 using Data.Services.Abstract.ClientContacts;
 using System.Linq;
 
@@ -31,9 +32,24 @@ namespace Data.Services.Concrete.ClientContacts
                 .FirstOrDefault(x => x.ManagerId == managerId && x.ClientId == clientId && x.Date.Month == month);
         }
 
+        public BusinessTripCompletedType GetPlanCompletedType(int managerId, int clientId, int month)
+        {
+            var businessTrip = GetPlan(managerId, clientId, month);
+
+            return businessTrip != null
+                ? businessTrip.BusinessTripCompletedType
+                : BusinessTripCompletedType.DidntCompleted;
+        }
+
         public int GetPlannedBusinessTripAmount(int managerId, int clientId, int month)
         {
             return GetPlan(managerId, clientId, month)?.AmountBusinessTrip ?? 0;
+        }
+
+        public int GetPlanAmountTrips(int clientId, int month)
+        {
+            return GetAll().Where(x => x.ClientId == clientId && x.Date.Month == month)
+                .Sum(x => x.AmountBusinessTrip);
         }
 
         public MonthlyBusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
