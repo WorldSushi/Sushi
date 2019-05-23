@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Клиент: {{data.title}}</h1>
+<div mat-dialog-content>
+  <p>Планирование на этот месяц</p>
+  <div mat-dialog-content>
+    <table mat-table [dataSource]="weeks">
+  
+      <ng-container matColumnDef="weekNumber">
+        <th mat-header-cell *matHeaderCellDef> Неделя </th>
+        <td mat-cell *matCellDef="let element"> {{element.weekNumber}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fact">
+        <th mat-header-cell *matHeaderCellDef> Факт </th>
+        <td mat-cell *matCellDef="let element" style="padding: 0 5px"> 
+          <mat-form-field>
+            <textarea type="text" matInput [(ngModel)]="element.fact" (change)="weekUpdate(element.id)"></textarea>
+          </mat-form-field>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="plan">
+        <th mat-header-cell *matHeaderCellDef> План </th>
+        <td mat-cell *matCellDef="let element" style="padding: 0 5px"> 
+          <mat-form-field>
+            <textarea type="text" matInput [(ngModel)]="element.plan" (change)="weekUpdate(element.id)"></textarea>
+          </mat-form-field>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  
+    
+</div>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button class="mat-primary" (click)="save()">Сохранить</button>
+    <button mat-raised-button (click)="onNoClick()">Закрыть</button> 
+</div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Data.DTO.Calls;
+using Data.DTO.WeeklyPlan;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,21 @@ namespace WebUI.ApiControllers.Clients
         private readonly IMonthlyCallPlanService _monthlyCallPlanService;
         private readonly IAccountInformationService _accountInformationService;
         private readonly IMonthlyBusinessTripService _monthlyBusinessTripService;
+        private readonly IWeekPlanService _weekPlanService;
 
         public ClientForManagerController(IMonthlyCallService monthlyCallService,
             IManagerService managerService,
             IMonthlyCallPlanService monthlyCallPlanService,
             IAccountInformationService accountInformationService,
-            IMonthlyBusinessTripService monthlyBusinessTripService)
+            IMonthlyBusinessTripService monthlyBusinessTripService,
+            IWeekPlanService weekPlanService)
         {
             _monthlyCallService = monthlyCallService;
             _managerService = managerService;
             _monthlyCallPlanService = monthlyCallPlanService;
             _accountInformationService = accountInformationService;
             _monthlyBusinessTripService = monthlyBusinessTripService;
+            _weekPlanService = weekPlanService;
         }
 
         [HttpGet]
@@ -61,6 +65,7 @@ namespace WebUI.ApiControllers.Clients
                                              && c.Src_number == manager.Phone).ToList(),
                     PlannedAmountTrips = _monthlyBusinessTripService
                        .GetPlannedBusinessTripAmount(manager.Id, x.Id, DateTime.Now.Month),
+                    WeekPlans = _weekPlanService.GetWeekPlansByClient(x.Id, manager.Id, DateTime.Now.Month).ToList()
                 }).ToList();
 
             return test;

@@ -16,6 +16,7 @@ import { ClientType } from 'src/app/shared/enums/client-type.enum';
 import { NumberOfCalls } from 'src/app/shared/enums/number-of-calls.enum';
 import { NumberOfShipments } from 'src/app/shared/enums/number-of-shipments.enum';
 import { ManagerTripsDialog } from './dialogs/manager-trips/manager-trips-dialog';
+import { ManagerWeekPlansDialog } from './dialogs/manager-weekPlans/manager-weekPlans-dialog';
 
 @Component({
   selector: 'app-client-list',
@@ -129,6 +130,15 @@ export class ClientListComponent implements OnInit {
 
   tripsPlanDetail(managers){
     const dialogRef = this.dialog.open(ManagerTripsDialog, {
+      minWidth: '620px',
+      data: {
+        managers: managers
+      }
+    })
+  }
+
+  weekPlansDetail(managers){
+    const dialogRef = this.dialog.open(ManagerWeekPlansDialog, {
       minWidth: '620px',
       data: {
         managers: managers

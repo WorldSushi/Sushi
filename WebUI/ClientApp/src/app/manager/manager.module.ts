@@ -19,6 +19,8 @@ import { BusinessTripDialog } from './components/client-list/dialogs/business-tr
 import { BusinessTripPlanService } from './services/businessTripPlan.service';
 import { SharedModule } from '../shared/shared.module';
 import { AmountBusinessTripDialog } from './components/client-list/dialogs/amount-business-trip/amount-business-trip.dialog';
+import { WeekPlanDialog } from './components/client-list/dialogs/weekplan/weekplan-dialog';
+import { WeekPlanService } from './services/weekPlan.service';
 
 
 @NgModule({
@@ -29,14 +31,16 @@ import { AmountBusinessTripDialog } from './components/client-list/dialogs/amoun
         MonthlyCallPlanDialog,
         ManagerCallsDialog,
         BusinessTripDialog,
-        AmountBusinessTripDialog
+        AmountBusinessTripDialog,
+        WeekPlanDialog
     
     ],
     entryComponents: [
         MonthlyCallPlanDialog,
         ManagerCallsDialog,
         BusinessTripDialog,
-        AmountBusinessTripDialog
+        AmountBusinessTripDialog,
+        WeekPlanDialog
     ],
     imports: [
         CommonModule,
@@ -53,7 +57,8 @@ import { AmountBusinessTripDialog } from './components/client-list/dialogs/amoun
     providers: [
         CLientService, 
         MonthlyCallPlanService,
-        BusinessTripPlanService
+        BusinessTripPlanService,
+        WeekPlanService
     ]
 })
 export class ManagerModule {}
