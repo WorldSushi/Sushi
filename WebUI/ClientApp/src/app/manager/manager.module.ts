@@ -18,6 +18,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BusinessTripDialog } from './components/client-list/dialogs/business-trip/business-trip.dialog';
 import { BusinessTripPlanService } from './services/businessTripPlan.service';
 import { SharedModule } from '../shared/shared.module';
+import { AmountBusinessTripDialog } from './components/client-list/dialogs/amount-business-trip/amount-business-trip.dialog';
 
 
 @NgModule({
@@ -27,13 +28,15 @@ import { SharedModule } from '../shared/shared.module';
 
         MonthlyCallPlanDialog,
         ManagerCallsDialog,
-        BusinessTripDialog
+        BusinessTripDialog,
+        AmountBusinessTripDialog
     
     ],
     entryComponents: [
         MonthlyCallPlanDialog,
         ManagerCallsDialog,
-        BusinessTripDialog
+        BusinessTripDialog,
+        AmountBusinessTripDialog
     ],
     imports: [
         CommonModule,

@@ -54,8 +54,11 @@ namespace WebUI.ApiControllers.ClientContacts
 
         // PUT: api/BusinessTripPlan/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put([FromBody] MonthlyBusinessTripPlanUpdateCommand value)
         {
+            var response = _monthlyBusinessTripService.Update(value);
+
+            return Ok(response);
         }
 
         // DELETE: api/ApiWithActions/5

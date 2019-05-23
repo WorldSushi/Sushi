@@ -26,5 +26,9 @@ export class BusinessTripPlanService {
             this.httpOptions);
     }
 
+    updateBusinessTripPlan(createCommand): Observable<any> {
+        return this.http.put<any>(this.businessTripPlanApi + "/" + createCommand.id, createCommand, this.httpOptions);
+    }
+
     constructor(private http: HttpClient) {}
 }

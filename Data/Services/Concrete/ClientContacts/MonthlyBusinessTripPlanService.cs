@@ -35,5 +35,16 @@ namespace Data.Services.Concrete.ClientContacts
         {
             return GetPlan(managerId, clientId, month)?.AmountBusinessTrip ?? 0;
         }
+
+        public MonthlyBusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
+        {
+            var monthlyTripPlan = _monthlyBusinessTripPlanRepository.Get(value.Id);
+
+            monthlyTripPlan.BusinessTripCompletedType = value.BusinessTripCompletedType;
+
+            _monthlyBusinessTripPlanRepository.Update(monthlyTripPlan);
+
+            return monthlyTripPlan;
+        }
     }
 }
