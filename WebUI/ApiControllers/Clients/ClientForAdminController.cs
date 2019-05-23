@@ -50,6 +50,8 @@ namespace WebUI.ApiControllers.Clients
                     NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
+                    PlannedAmountTrips = _monthlyBusinessTripService
+                        .GetPlanAmountTrips(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
                     Managers = new List<ClientManagersVM>()
                 }).ToList();
@@ -76,6 +78,7 @@ namespace WebUI.ApiControllers.Clients
                     NumberOfCalls = x.NumberOfCalls,
                     NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = x.PlannedAmountCalls,
+                    PlannedAmountTrips = x.PlannedAmountTrips,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)
                         .Select(c => new ClientManagersVM()
@@ -84,7 +87,7 @@ namespace WebUI.ApiControllers.Clients
                             Login = c.Login,
                             AmountCalls = calls.Count(z => z.Client_number == x.Phone
                                                            && z.Src_number == c.Phone),
-                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlanCompletedType(x.Id, c.Id, DateTime.Now.Month),
+                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlanCompletedType(c.Id, x.Id, DateTime.Now.Month),
                             PlannedAmountCalls = _monthlyCallPlanService
                                 .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
                             PlannedAmountBusinessTrips = _monthlyBusinessTripService
@@ -132,6 +135,8 @@ namespace WebUI.ApiControllers.Clients
                     NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = _monthlyCallPlanService
                         .GetPlanAmountCalls(x.Id, DateTime.Now.Month),
+                    PlannedAmountTrips = _monthlyBusinessTripService
+                        .GetPlanAmountTrips(x.Id, DateTime.Now.Month),
                     AmountCalls = calls.Count(c => c.Client_number == x.Phone),
                     Managers = new List<ClientManagersVM>()
                 }).ToList();
@@ -147,6 +152,7 @@ namespace WebUI.ApiControllers.Clients
                     NumberOfCalls = x.NumberOfCalls,
                     NumberOfShipments = x.NumberOfShipments,
                     PlannedAmountCalls = x.PlannedAmountCalls,
+                    PlannedAmountTrips = x.PlannedAmountTrips,
                     AmountCalls = x.AmountCalls,
                     Managers = _clientService.GetManagers(x.Id)
                         .Select(c => new ClientManagersVM()
@@ -157,7 +163,7 @@ namespace WebUI.ApiControllers.Clients
                                                            && z.Src_number == c.Phone),
                             PlannedAmountCalls = _monthlyCallPlanService
                                 .GetPlanAmountCalls(c.Id, x.Id, DateTime.Now.Month),
-                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlanCompletedType(x.Id, c.Id, DateTime.Now.Month),
+                            BusinessTripCompletedType = _monthlyBusinessTripService.GetPlanCompletedType(c.Id, x.Id, DateTime.Now.Month),
                             PlannedAmountBusinessTrips = _monthlyBusinessTripService
                                 .GetPlannedBusinessTripAmount(c.Id, x.Id, DateTime.Now.Month),
                             Calls = calls.Where(z => z.Client_number == x.Phone

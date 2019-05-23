@@ -46,6 +46,12 @@ namespace Data.Services.Concrete.ClientContacts
             return GetPlan(managerId, clientId, month)?.AmountBusinessTrip ?? 0;
         }
 
+        public int GetPlanAmountTrips(int clientId, int month)
+        {
+            return GetAll().Where(x => x.ClientId == clientId && x.Date.Month == month)
+                .Sum(x => x.AmountBusinessTrip);
+        }
+
         public MonthlyBusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
         {
             var monthlyTripPlan = _monthlyBusinessTripPlanRepository.Get(value.Id);

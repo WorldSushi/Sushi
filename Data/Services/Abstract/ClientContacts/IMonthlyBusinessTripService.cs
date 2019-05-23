@@ -12,6 +12,7 @@ namespace Data.Services.Abstract.ClientContacts
         int GetPlannedBusinessTripAmount(int managerId, int clientId, int month);
 
         BusinessTripCompletedType GetPlanCompletedType(int managerId, int clientId, int month);
+        int GetPlanAmountTrips(int clientId, int month);
 
         MonthlyBusinessTripPlan Create(MonthlyBusinessTripPlanCreateCommand command);
         MonthlyBusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand command);

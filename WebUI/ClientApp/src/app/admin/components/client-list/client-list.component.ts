@@ -15,6 +15,7 @@ import { BusinessTripPlanService } from '../../../manager/services/businessTripP
 import { ClientType } from 'src/app/shared/enums/client-type.enum';
 import { NumberOfCalls } from 'src/app/shared/enums/number-of-calls.enum';
 import { NumberOfShipments } from 'src/app/shared/enums/number-of-shipments.enum';
+import { ManagerTripsDialog } from './dialogs/manager-trips/manager-trips-dialog';
 
 @Component({
   selector: 'app-client-list',
@@ -44,7 +45,8 @@ export class ClientListComponent implements OnInit {
     "numberOfCalls",
     "numberOfShipments",
     "phone",
-    "plannedAmountCalls",   
+    "plannedAmountCalls",
+    "plannedAmountTrips",   
     "weekPlans",
     "action",
   ];
@@ -117,11 +119,19 @@ export class ClientListComponent implements OnInit {
   }
 
   callPlanDetail(managers){
-    console.log(managers);
     const dialogRef = this.dialog.open(ManagerClientDialog, {
       minWidth: '620px',
       data: {
         managers: managers      
+      }
+    })
+  }
+
+  tripsPlanDetail(managers){
+    const dialogRef = this.dialog.open(ManagerTripsDialog, {
+      minWidth: '620px',
+      data: {
+        managers: managers
       }
     })
   }
