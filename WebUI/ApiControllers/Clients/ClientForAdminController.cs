@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Data.Commands.Clients;
+using Data.DTO.WeeklyPlan;
 using Data.Entities.ClientContacts;
 using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
@@ -56,7 +57,7 @@ namespace WebUI.ApiControllers.Clients
                     Managers = new List<ClientManagersVM>()
                 }).ToList();
             var weekPlans = _context.Set<WeekPlan>()
-                .Select(z => new WeekPlanDto()
+                .Select(z => new WeekPlanDTO()
                 {
                     Id = z.Id,
                     ManagerId = z.ManagerId,

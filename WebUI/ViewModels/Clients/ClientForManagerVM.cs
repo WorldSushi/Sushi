@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Data.DTO.Calls;
+using Data.DTO.WeeklyPlan;
+using Data.Entities.ClientContacts;
 using Data.Enums;
 
 namespace WebUI.ViewModels.Clients
@@ -20,6 +22,7 @@ namespace WebUI.ViewModels.Clients
         public BusinessTripCompletedType BusinessTripCompletedType { get; set; }
 
         public ICollection<CallDTO> Calls { get; set; }
+        public ICollection<WeekPlanDTO> WeekPlans { get; set; }
 
     }
 }

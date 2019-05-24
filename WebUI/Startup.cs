@@ -52,6 +52,7 @@ namespace WebUI
             services.AddTransient<IMonthlyCallService, MonthlyCallService>();
             services.AddTransient<IMonthlyCallPlanService, MonthlyCallPlanService>();
             services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
+            services.AddTransient<IWeekPlanService, WeekPlanService>();
             #endregion
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder => {

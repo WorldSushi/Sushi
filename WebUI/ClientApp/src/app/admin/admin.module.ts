@@ -24,7 +24,8 @@ import { ChooseManagerDialog } from './components/client-list/dialogs/choose-man
 import { ManagerClientService } from './services/manager-client.service';
 import { SharedModule } from '../shared/shared.module';
 import { ManagerTripsDialog } from './components/client-list/dialogs/manager-trips/manager-trips-dialog';
-import { ManagerModule } from '../manager/manager.module';
+import { WeekPlanDialog } from './components/client-list/dialogs/weekplan/weekplan.dialog';
+import { ManagerWeekPlansDialog } from './components/client-list/dialogs/manager-weekPlans/manager-weekPlans-dialog';
 
 
 @NgModule({
@@ -41,7 +42,11 @@ import { ManagerModule } from '../manager/manager.module';
     ManagerClientDialog,
     ManagerCallsDialog,
     ChooseManagerDialog,
-    ManagerTripsDialog
+    ManagerTripsDialog,
+    WeekPlanDialog,
+    ManagerWeekPlansDialog,
+
+    
   ],
   entryComponents: [
     ClientCreateDialog,
@@ -51,7 +56,10 @@ import { ManagerModule } from '../manager/manager.module';
     ManagerClientDialog,
     ManagerCallsDialog,
     ChooseManagerDialog,
-    ManagerTripsDialog
+    ManagerTripsDialog,
+    WeekPlanDialog,
+    ManagerWeekPlansDialog,
+    
   ],
   imports: [
     CommonModule,

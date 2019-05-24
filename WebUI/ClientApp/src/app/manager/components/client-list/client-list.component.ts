@@ -8,6 +8,8 @@ import { Call } from '../../models/call.model';
 import { BusinessTripDialog } from './dialogs/business-trip/business-trip.dialog';
 import { BusinessTripPlanService } from '../../services/businessTripPlan.service';
 import { AmountBusinessTripDialog } from './dialogs/amount-business-trip/amount-business-trip.dialog';
+import { WeekPlanDialog } from './dialogs/weekplan/weekplan-dialog';
+import { WeekPlanService } from '../../services/weekPlan.service';
 
 
 @Component({
@@ -34,7 +36,8 @@ export class ClientListComponent implements OnInit {
     "numberOfShipments",
     "phone", 
     "plannedAmountCalls",
-    "plannedAmountTrips"
+    "plannedAmountTrips",
+    "weekPlans"
   ];
 
   callPlanningDisplayed: boolean = false;
@@ -124,6 +127,42 @@ export class ClientListComponent implements OnInit {
     });
   }
 
+  openWeekPlan(clientId: number, clientTitle: string, weekPlans: any[]){
+    this.selectedClient = {
+      id: clientId,
+      title: clientTitle,
+    }
+
+    const dialogRef = this.dialog.open(WeekPlanDialog, {
+
+      minWidth: '620px',
+
+      data: { 
+        clientId: this.selectedClient.id,
+        title: this.selectedClient.title,
+        weekPlans: weekPlans
+      }     
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if(!result)
+        return;
+
+      if(result.weeks.filter(item => item.id == 0 && item.plan != '').length > 0){
+        this.weekPlanService.createWeekPlans(result.weeks.filter(item => item.id == 0 && item.plan != '')).subscribe(res => {
+          const client = this.clients.find(item => item.id == res[0].clientId);
+          client.weekPlans = res;
+        });
+      }
+
+      if(result.editedWeeks.length > 0){
+        this.weekPlanService.putWeekPlan(result.weeks.filter(item => result.editedWeeks.includes(item.id))).subscribe(res => res)
+      }
+      
+    });
+  }
+
   callPlanningFormSubmit(result) {
     this.monthlyCallPlanService.createMonthlyCallPlan(result).subscribe(res => this.clients
       .find(item => item.id == res.clientId).plannedAmountCalls = res.amountCalls);
@@ -160,6 +199,7 @@ export class ClientListComponent implements OnInit {
 
   constructor(public monthlyCallPlanService: MonthlyCallPlanService,
     public businessTripPlanService: BusinessTripPlanService,
+    public weekPlanService: WeekPlanService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
