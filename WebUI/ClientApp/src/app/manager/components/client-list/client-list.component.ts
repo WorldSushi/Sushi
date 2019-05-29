@@ -25,6 +25,61 @@ export class ClientListComponent implements OnInit {
   @Input()
   public clients: ClientWithCallPlan[];
 
+  getTestClients(){
+    let clients = [];
+    for(let i = 0; i < 300; i ++){
+      clients.push({
+        id: i,
+        title: 'Тест: ' + i.toString(),
+        legalEntity: 'Юр лицо',
+        clientType: 10,
+        numberOfCalls: 10,
+        numberOfShipments: 10,
+        phone: '123-45-67',
+        amountCalls: 10,
+        amountTrips: 1,
+        plannedAmountCalls: '10',
+        plannedAmountTrips: '10',
+        weekPlans: '10',
+        day1: '1 | 2',
+        day2: '1 | 3',
+        day3: '1 | 1',
+        day4: '1 | 1',
+        day5: '1 | 1',
+        day6: '1 | 1',
+        day7: '1 | 1',
+        day8: '1 | 1',
+        day9: '3 | 3',
+        day10: '4 | 4',
+        day11: '1 | 2',
+        day12: '1 | 3',
+        day13: '1 | 1',
+        day14: '1 | 1',
+        day15: '1 | 1',
+        day16: '1 | 1',
+        day17: '1 | 1',
+        day18: '1 | 1',
+        day19: '3 | 3',
+        day20: '4 | 4',
+        day21: '1 | 2',
+        day22: '1 | 3',
+        day23: '1 | 1',
+        day24: '1 | 1',
+        day25: '1 | 1',
+        day26: '1 | 1',
+        day27: '1 | 1',
+        day28: '1 | 1',
+        day29: '3 | 3',
+        day30: '4 | 4',
+        resultMS: '10 | 10 | 10 | 30',
+        resultRM: '10 | 10 | 10 | 30',
+        contractResult: '1 | 1'
+      })
+    }
+
+    return clients;
+  }
+
   public dataSource = new MatTableDataSource()
 
   displayedColumns: string[] = [
@@ -37,7 +92,40 @@ export class ClientListComponent implements OnInit {
     "phone", 
     "plannedAmountCalls",
     "plannedAmountTrips",
-    "weekPlans"
+    "weekPlans",
+    "day1",
+    "day2",
+    "day3",
+    "day4",
+    "day5",
+    "day6",
+    "day7",
+    "day8",
+    "day9",
+    "day10",
+    "day11",
+    "day12",
+    "day13",
+    "day14",
+    "day15",
+    "day16",
+    "day17",
+    "day18",
+    "day19",
+    "day20",
+    "day21",
+    "day22",
+    "day23",
+    "day24",
+    "day25",
+    "day26",
+    "day27",
+    "day28",
+    "day29",
+    "day30",
+    "resultMS",
+    "resultRM",
+    "contractResult"
   ];
 
   callPlanningDisplayed: boolean = false;

@@ -21,7 +21,7 @@ namespace WebUI.Services.Concrete
 
         public int GetOperatorId()
         {
-            return  CurrentUser().Id;
+            return CurrentUser().Id;
         }
 
         public string GetLayout()

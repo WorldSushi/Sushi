@@ -16,7 +16,7 @@ export class ClientComponent implements OnInit {
   constructor(private store: Store<IManagerState>) { }
 
   ngOnInit() {
-    this.store.dispatch(new GetAllClients());
+    //this.store.dispatch(new GetAllClients());
   }
 
 }
