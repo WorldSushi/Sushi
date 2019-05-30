@@ -40,7 +40,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
-            var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
+            var calls = new List<CallDTO>();//_monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
             var trips = _monthlyBusinessTripService.GetAll().ToList();
             var manager = _managerService.Get(_accountInformationService.GetOperatorId());
 
