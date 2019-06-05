@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { IManagerState } from '../../store/states';
 import { selectClientList } from '../../store/selectors/client.selectors';
@@ -7,7 +7,8 @@ import { GetAllClients } from '../../store/actions/client.action';
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: ['./client.component.sass']
+  styleUrls: ['./client.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClientComponent implements OnInit {
 
