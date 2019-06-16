@@ -12,7 +12,7 @@ export enum ClientsActionTypes {
     EDIT_CLIENT_FAILURE = '[Client API] EDIT_CLIENT_FAILURE'
 }
 
-export class GetClientsACtion implements Action {
+export class GetClientsAction implements Action {
     readonly type = ClientsActionTypes.GET_CLIENTS;
 
     constructor(public clients: any[]) { }
