@@ -4,8 +4,8 @@
     <mat-card-title>Список Клиентов</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-  <div class="table-wrapper">
-      <table mat-table matSort [dataSource]="getTestClients()">
+  <!--<div class="table-wrapper">
+      <table mat-table matSort [dataSource]="dataSource" [trackBy]="trackBy">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> # </th>
             <td mat-cell *matCellDef="let client"> {{client.id}} </td>
@@ -16,11 +16,22 @@
           </ng-container>
           <ng-container matColumnDef="legalEntity">
            <th mat-header-cell *matHeaderCellDef mat-sort-header> Юр. лицо </th>
-           <td mat-cell *matCellDef="let client"> {{client.legalEntity}} </td>
+           <td mat-cell *matCellDef="let client"><input matInput [(ngModel)]="client.legalEntity" [ngModelOptions]="{ standalone: true }"> </td>
          </ng-container>
          <ng-container matColumnDef="clientType">
            <th mat-header-cell *matHeaderCellDef>Тип клиента</th>
-           <td mat-cell *matCellDef="let client">{{client.clientType | clientTypeTranslate}}</td>
+           <td mat-cell *matCellDef="let client">
+            <mat-select [value]="client.clientType" placeholder="Тип" ([ngModel])="client.clientType">
+              <mat-option [value]="clientTypes.WithoutType">{{clientTypes.WithoutType | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Small">{{clientTypes.Small | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Middle1">{{clientTypes.Middle1 | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Middle2">{{clientTypes.Middle2 | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Large1">{{clientTypes.Large1 | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Large2">{{clientTypes.Large2 | clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.Large3">{{clientTypes.Large3| clientTypeTranslate}}</mat-option>
+              <mat-option [value]="clientTypes.VeryLarge">{{clientTypes.VeryLarge | clientTypeTranslate}}</mat-option>
+            </mat-select>
+           </td>
          </ng-container>
          <ng-container matColumnDef="numberOfCalls">
            <th mat-header-cell *matHeaderCellDef>Кол-во звонков</th>
@@ -30,6 +41,10 @@
            <th mat-header-cell *matHeaderCellDef>Кол-во отгрузок</th>
            <td mat-cell *matCellDef="let client">{{client.numberOfShipments | numberOfShipmentsTranslate}}</td>
          </ng-container>
+         <ng-container matColumnDef="analysis">
+          <th mat-header-cell *matHeaderCellDef>Анализ по номен-ре <br> Отчетный месяц <br> <span style="display: inline-block; width: 350px">Относительно</span> | Предыд месяц | В среднем по 5 предыд. 5ти мес. <br> предыд. месяца | среднего по предыд 5ти мес.</th>
+          <td mat-cell *matCellDef="let client">{{client.analysis.reportMonth.prevMonth }}</td>
+        </ng-container>
           <ng-container matColumnDef="phone">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Телефон </th>
             <td mat-cell *matCellDef="let client"> {{client.phone}} </td>
@@ -331,8 +346,342 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+  </div>-->
+
+  <div class="table-wrapper">
+      <table>
+          <thead>
+            <tr>
+              <th colspan="5"></th>
+              <th colspan="4">Анализ по номен-ре</th>
+              <th colspan="4">Анализ по выручке</th>
+              <th colspan="5"></th>
+              <th colspan="20">План по задачам</th>
+              <th colspan="62">Даты и фактическое число звонков</th>
+              <th colspan="8">Итоги звонки за месяц</th>
+              <th colspan="2"></th>
+            </tr>
+            <tr>
+              <th colspan="18"></th>
+              <th colspan="4">1 Неделя</th>
+              <th colspan="4">2 Неделя</th>
+              <th colspan="4">3 Неделя</th>
+              <th colspan="4">4 Неделя</th>
+              <th colspan="4">5 Неделя</th>
+              <th colspan="72"></th>
+            </tr>
+            <tr>
+              <th colspan="5"></th>
+              <th colspan="2">Отчетный месяц <br> относительно</th>
+              <th colspan="2"></th>
+              <th colspan="2">Отчетный месяц <br> относительно</th>
+              <th colspan="2"></th>
+              <th colspan="3">План по числу звонков</th>
+              <th colspan="2">Командировки <br> РМ, в раб. часах</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th colspan="2">1 Мая</th>
+              <th colspan="2">2 Мая</th>
+              <th colspan="2">3 Мая</th>
+              <th colspan="2">4 Мая</th>
+              <th colspan="2">5 Мая</th>
+              <th colspan="2">6 Мая</th>
+              <th colspan="2">7 Мая</th>
+              <th colspan="2">8 Мая</th>
+              <th colspan="2">9 Мая</th>
+              <th colspan="2">10 Мая</th>
+              <th colspan="2">11 Мая</th>
+              <th colspan="2">12 Мая</th>
+              <th colspan="2">13 Мая</th>
+              <th colspan="2">14 Мая</th>
+              <th colspan="2">15 Мая</th>
+              <th colspan="2">16 Мая</th>
+              <th colspan="2">17 Мая</th>
+              <th colspan="2">18 Мая</th>
+              <th colspan="2">19 Мая</th>
+              <th colspan="2">20 Мая</th>
+              <th colspan="2">21 Мая</th>
+              <th colspan="2">22 Мая</th>
+              <th colspan="2">23 Мая</th>
+              <th colspan="2">24 Мая</th>
+              <th colspan="2">25 Мая</th>
+              <th colspan="2">26 Мая</th>
+              <th colspan="2">27 Мая</th>
+              <th colspan="2">28 Мая</th>
+              <th colspan="2">29 Мая</th>
+              <th colspan="2">30 Мая</th>
+              <th colspan="2">31 Мая</th>
+              <th colspan="4">МС</th>
+              <th colspan="4">РМ</th>
+              <th colspan="2">Доля <br> выполнения <br> плана по <br> контрактам</th>
+            </tr>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                Юр.Лица
+              </th>
+              <th>
+                Тип 
+              </th>
+              <th>
+                Период-ть <br>
+                отгрузок
+              </th>
+              <th>
+                Требуемая период-ть <br>
+                звонков
+              </th>
+              <th>
+                предыд <br> месяца
+              </th>
+              <th>
+                среднего по <br> предыд 5ти <br> мес.
+              </th>
+              <th>
+                предыд. <br>
+                месяц
+              </th>
+              <th>
+                в среднем по <br> предыд 5ти <br> мес.
+              </th>
+              <th>
+                предыд.<br>месяца
+              </th>
+              <th>
+                среднего по <br> предыд. 5ти <br> мес.
+              </th>
+              <th>
+                предыд. <br> месяц
+              </th>
+              <th>
+                в среднем по <br> предыд. 5ти <br> мес.
+              </th>
+              <th>общий</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>План</th>
+              <th>Факт</th>
+              <th colspan="2">План</th>
+              <th colspan="2">Факт</th>
+              <th colspan="2">План</th>
+              <th colspan="2">Факт</th>
+              <th colspan="2">План</th>
+              <th colspan="2">Факт</th>
+              <th colspan="2">План</th>
+              <th colspan="2">Факт</th>
+              <th colspan="2">План</th>
+              <th colspan="2">Факт</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>МС</th>
+              <th>РМ</th>
+              <th>Зовнки</th>
+              <th>WhatsApp</th>
+              <th>письма</th>
+              <th>Итого</th>
+              <th>Звонки</th>
+              <th>WhatsApp</th>
+              <th>письма</th>
+              <th>Итого</th>
+              <th>МС</th>
+              <th>РМ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of dataSource.data; trackBy: trackBy">
+              <td>{{row.id}}</td>
+              <td>{{row.legalEntity}}</td>
+              <td>{{row.clientType | clientTypeTranslate}}</td>
+              <td>{{row.numberOfShipments | numberOfShipmentsTranslate}}</td>
+              <td>{{row.numberOfCalls | numberOfCallsTranslate}}</td>
+              <td>{{row.analysis.reportMonth.prevMonth}}</td>
+              <td>{{row.analysis.reportMonth.avgLast5Months}}</td>
+              <td>{{row.analysis.prevMonth.prevMonth}}</td>
+              <td>{{row.analysis.prevMonth.avgLast5Months}}</td>
+              <td>{{row.analysisCash.reportMonth.prevMonth}}</td>
+              <td>{{row.analysisCash.reportMonth.avgLast5Months}}</td>
+              <td>{{row.analysisCash.prevMonth.prevMonth}}</td>
+              <td>{{row.analysisCash.prevMonth.avgLast5Months}}</td>
+              <td>{{row.callPlan.shared}}</td>
+              <td>{{row.callPlan.MS}}</td>
+              <td>{{row.callPlan.RM}}</td>
+              <td>{{row.tripPlan.plan}}</td>
+              <td>{{row.tripPlan.fact}}</td>
+              <td>{{row.firstWeek.MS.plan}}</td>
+              <td>{{row.firstWeek.RM.plan}}</td>
+              <td>{{row.firstWeek.MS.fact}}</td>
+              <td>{{row.firstWeek.RM.fact}}</td>
+              <td>{{row.secondWeek.MS.plan}}</td>
+              <td>{{row.secondWeek.RM.plan}}</td>
+              <td>{{row.secondWeek.MS.fact}}</td>
+              <td>{{row.secondWeek.RM.fact}}</td>
+              <td>{{row.thirdWeek.MS.plan}}</td>
+              <td>{{row.thirdWeek.RM.plan}}</td>
+              <td>{{row.thirdWeek.MS.fact}}</td>
+              <td>{{row.thirdWeek.RM.fact}}</td>
+              <td>{{row.fourthWeek.MS.plan}}</td>
+              <td>{{row.fourthWeek.RM.plan}}</td>
+              <td>{{row.fourthWeek.MS.fact}}</td>
+              <td>{{row.fourthWeek.RM.fact}}</td>
+              <td>{{row.fifthWeek.MS.plan}}</td>
+              <td>{{row.fifthWeek.RM.plan}}</td>
+              <td>{{row.fifthWeek.MS.fact}}</td>
+              <td>{{row.fifthWeek.RM.fact}}</td>
+              <td>{{row.day1.MS}}</td>
+              <td>{{row.day1.RM}}</td>
+              <td>{{row.day2.MS}}</td>
+              <td>{{row.day2.RM}}</td>
+              <td>{{row.day3.MS}}</td>
+              <td>{{row.day3.RM}}</td>
+              <td>{{row.day4.MS}}</td>
+              <td>{{row.day4.RM}}</td>
+              <td>{{row.day5.MS}}</td>
+              <td>{{row.day5.RM}}</td>
+              <td>{{row.day6.MS}}</td>
+              <td>{{row.day6.RM}}</td>
+              <td>{{row.day7.MS}}</td>
+              <td>{{row.day7.RM}}</td>
+              <td>{{row.day8.MS}}</td>
+              <td>{{row.day8.RM}}</td>
+              <td>{{row.day9.MS}}</td>
+              <td>{{row.day9.RM}}</td>
+              <td>{{row.day10.MS}}</td>
+              <td>{{row.day10.RM}}</td>
+              <td>{{row.day11.MS}}</td>
+              <td>{{row.day11.RM}}</td>
+              <td>{{row.day12.MS}}</td>
+              <td>{{row.day12.RM}}</td>
+              <td>{{row.day13.MS}}</td>
+              <td>{{row.day13.RM}}</td>
+              <td>{{row.day14.MS}}</td>
+              <td>{{row.day14.RM}}</td>
+              <td>{{row.day15.MS}}</td>
+              <td>{{row.day15.RM}}</td>
+              <td>{{row.day16.MS}}</td>
+              <td>{{row.day16.RM}}</td>
+              <td>{{row.day17.MS}}</td>
+              <td>{{row.day17.RM}}</td>
+              <td>{{row.day18.MS}}</td>
+              <td>{{row.day18.RM}}</td>
+              <td>{{row.day19.MS}}</td>
+              <td>{{row.day19.RM}}</td>
+              <td>{{row.day20.MS}}</td>
+              <td>{{row.day20.RM}}</td>
+              <td>{{row.day21.MS}}</td>
+              <td>{{row.day21.RM}}</td>
+              <td>{{row.day22.MS}}</td>
+              <td>{{row.day22.RM}}</td>
+              <td>{{row.day23.MS}}</td>
+              <td>{{row.day23.RM}}</td>
+              <td>{{row.day24.MS}}</td>
+              <td>{{row.day24.RM}}</td>
+              <td>{{row.day25.MS}}</td>
+              <td>{{row.day25.RM}}</td>
+              <td>{{row.day26.MS}}</td>
+              <td>{{row.day26.RM}}</td>
+              <td>{{row.day27.MS}}</td>
+              <td>{{row.day27.RM}}</td>
+              <td>{{row.day28.MS}}</td>
+              <td>{{row.day28.RM}}</td>
+              <td>{{row.day29.MS}}</td>
+              <td>{{row.day29.RM}}</td>
+              <td>{{row.day30.MS}}</td>
+              <td>{{row.day30.RM}}</td>
+              <td>{{row.day31.MS}}</td>
+              <td>{{row.day31.RM}}</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>1</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
   </div>
+  
    
-   <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>

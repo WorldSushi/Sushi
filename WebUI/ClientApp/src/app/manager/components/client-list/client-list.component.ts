@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ClientWithCallPlan } from '../../models/clientWithCallPlan.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MonthlyCallPlanService } from '../../services/monthlyCallPlan.service';
@@ -10,12 +10,14 @@ import { BusinessTripPlanService } from '../../services/businessTripPlan.service
 import { AmountBusinessTripDialog } from './dialogs/amount-business-trip/amount-business-trip.dialog';
 import { WeekPlanDialog } from './dialogs/weekplan/weekplan-dialog';
 import { WeekPlanService } from '../../services/weekPlan.service';
+import { ClientType } from 'src/app/shared/enums/client-type.enum';
 
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.sass']
+  styleUrls: ['./client-list.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClientListComponent implements OnInit {
 
@@ -24,6 +26,7 @@ export class ClientListComponent implements OnInit {
 
   @Input()
   public clients: ClientWithCallPlan[];
+  public clientTypes = ClientType;
 
   getTestClients(){
     let clients = [];
@@ -35,52 +38,216 @@ export class ClientListComponent implements OnInit {
         clientType: 10,
         numberOfCalls: 10,
         numberOfShipments: 10,
-        phone: '123-45-67',
-        amountCalls: 10,
-        amountTrips: 1,
-        plannedAmountCalls: '10',
-        plannedAmountTrips: '10',
-        weekPlans: '10',
-        day1: '1 | 2',
-        day2: '1 | 3',
-        day3: '1 | 1',
-        day4: '1 | 1',
-        day5: '1 | 1',
-        day6: '1 | 1',
-        day7: '1 | 1',
-        day8: '1 | 1',
-        day9: '3 | 3',
-        day10: '4 | 4',
-        day11: '1 | 2',
-        day12: '1 | 3',
-        day13: '1 | 1',
-        day14: '1 | 1',
-        day15: '1 | 1',
-        day16: '1 | 1',
-        day17: '1 | 1',
-        day18: '1 | 1',
-        day19: '3 | 3',
-        day20: '4 | 4',
-        day21: '1 | 2',
-        day22: '1 | 3',
-        day23: '1 | 1',
-        day24: '1 | 1',
-        day25: '1 | 1',
-        day26: '1 | 1',
-        day27: '1 | 1',
-        day28: '1 | 1',
-        day29: '3 | 3',
-        day30: '4 | 4',
-        resultMS: '10 | 10 | 10 | 30',
-        resultRM: '10 | 10 | 10 | 30',
-        contractResult: '1 | 1'
+        analysis: {
+          reportMonth: {
+            prevMonth: 100,
+            avgLast5Months: 500
+          },
+          prevMonth: {
+            prevMonth: 0,
+            avgLast5Months: 1000
+          }
+        },
+        analysisCash: {
+          reportMonth: {
+            prevMonth: 100,
+            avgLast5Months: 500
+          },
+          prevMonth: {
+            prevMonth: 0,
+            avgLast5Months: 1000
+          }
+        },
+        callPlan: {
+          shared: 10,
+          MS: 5,
+          RM: 5
+        },
+        tripPlan: {
+          plan: 5,
+          fact: 10
+        },
+        firstWeek: {
+          MS: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          },
+          RM: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          }
+        },
+        secondWeek: {
+          MS: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          },
+          RM: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          }
+        },
+        thirdWeek: {
+          MS: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          },
+          RM: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          }
+        },
+        fourthWeek: {
+          MS: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          },
+          RM: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          }
+        },
+        fifthWeek: {
+          MS: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          },
+          RM: {
+            plan: 'МС План',
+            fact: 'РМ Факт'
+          }
+        },
+        day1: {
+          MS: 1,
+          RM: 3
+        },
+        day2: {
+          MS: 1,
+          RM: 3
+        },
+        day3: {
+          MS: 1,
+          RM: 3
+        },
+        day4: {
+          MS: 1,
+          RM: 3
+        },
+        day5: {
+          MS: 1,
+          RM: 3
+        },
+        day6: {
+          MS: 1,
+          RM: 3
+        },
+        day7: {
+          MS: 1,
+          RM: 3
+        },
+        day8: {
+          MS: 1,
+          RM: 3
+        },
+        day9: {
+          MS: 1,
+          RM: 3
+        },
+        day10: {
+          MS: 1,
+          RM: 3
+        },
+        day11: {
+          MS: 1,
+          RM: 3
+        },
+        day12: {
+          MS: 1,
+          RM: 3
+        },
+        day13: {
+          MS: 1,
+          RM: 3
+        },
+        day14: {
+          MS: 1,
+          RM: 3
+        },
+        day15: {
+          MS: 1,
+          RM: 3
+        },
+        day16: {
+          MS: 1,
+          RM: 3
+        },
+        day17: {
+          MS: 1,
+          RM: 3
+        },
+        day18: {
+          MS: 1,
+          RM: 3
+        },
+        day19: {
+          MS: 1,
+          RM: 3
+        },
+        day20: {
+          MS: 1,
+          RM: 3
+        },
+        day21: {
+          MS: 1,
+          RM: 3
+        },
+        day22: {
+          MS: 1,
+          RM: 3
+        },
+        day23: {
+          MS: 1,
+          RM: 3
+        },
+        day24: {
+          MS: 1,
+          RM: 3
+        },
+        day25: {
+          MS: 1,
+          RM: 3
+        },
+        day26: {
+          MS: 1,
+          RM: 3
+        },
+        day27: {
+          MS: 1,
+          RM: 3
+        },
+        day28: {
+          MS: 1,
+          RM: 3
+        },
+        day29: {
+          MS: 1,
+          RM: 3
+        },
+        day30: {
+          MS: 1,
+          RM: 3
+        },
+        day31: {
+          MS: 1,
+          RM: 3
+        },
       })
     }
 
     return clients;
   }
 
-  public dataSource = new MatTableDataSource()
+  public dataSource = new MatTableDataSource();
 
   displayedColumns: string[] = [
     "id",
@@ -89,6 +256,7 @@ export class ClientListComponent implements OnInit {
     "clientType",
     "numberOfCalls",
     "numberOfShipments",
+    "analysis",
     "phone", 
     "plannedAmountCalls",
     "plannedAmountTrips",
@@ -285,6 +453,10 @@ export class ClientListComponent implements OnInit {
     });
   }
 
+  trackBy = (_index: number, item: any) => {
+    return item.id;
+  }
+
   constructor(public monthlyCallPlanService: MonthlyCallPlanService,
     public businessTripPlanService: BusinessTripPlanService,
     public weekPlanService: WeekPlanService,
@@ -295,9 +467,10 @@ export class ClientListComponent implements OnInit {
   } 
 
   ngOnChanges(): void {
-    this.dataSource.data = this.clients;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.data = this.getTestClients();
+    
   }
 }
 
@@ -334,7 +507,6 @@ export class MonthlyCallPlanDialog {
   constructor(
     public dialogRef: MatDialogRef<MonthlyCallPlanDialog>,
     @Inject(MAT_DIALOG_DATA) public data) {}
-
     
 }
 
