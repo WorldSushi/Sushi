@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientsFacade } from 'src/app/store/manager-rm/clients/facades/clients.facade';
+import { ClientsFacade } from '../../../../store/manager-rm/clients/facades/clients.facade';
 
 @Component({
   selector: 'app-clients',
@@ -8,7 +8,7 @@ import { ClientsFacade } from 'src/app/store/manager-rm/clients/facades/clients.
 })
 export class ClientsComponent implements OnInit {
 
-  clients$ = this.clientsFacade.clients$;
+
 
   constructor(public clientsFacade: ClientsFacade) { }
 

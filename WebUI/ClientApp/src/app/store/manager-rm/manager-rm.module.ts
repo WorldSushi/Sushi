@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { managerRmReducers } from './reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { ClientsService } from 'src/app/manager-rm/clients/shared/services/clients.service';
+import { ClientsEffects } from './clients/effects/clients.effects';
+import { ClientsService } from '../../manager-rm/clients/shared/services/clients.service';
 import { ClientsFacade } from './clients/facades/clients.facade';
 
 @NgModule({
@@ -11,11 +12,11 @@ import { ClientsFacade } from './clients/facades/clients.facade';
   imports: [
     CommonModule,
     StoreModule.forFeature('manager-rm', managerRmReducers),
-    EffectsModule.forFeature([]),   
+    EffectsModule.forFeature([ClientsEffects]),   
   ],
   providers: [
     ClientsService,
     ClientsFacade
   ]
 })
-export class ManagerRmModule { }
+export class ManagerRmStoreModule { }
