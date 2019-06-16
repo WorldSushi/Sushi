@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 
-export enum ClientsActionTypes {
+export enum ClientsActionsTypes {
     GET_CLIENTS = '[Clients Page] GET_CLIENTS',
     GET_CLIENTS_SUCCESS = '[Clients API] GET_CLIENTS_SUCCESS',
     GET_CLIENTS_FAILURE = '[Clients API] GET_CLIENTS_FAILURE',
@@ -14,55 +14,55 @@ export enum ClientsActionTypes {
 }
 
 export class GetClientsAction implements Action {
-    readonly type = ClientsActionTypes.GET_CLIENTS;
+    readonly type = ClientsActionsTypes.GET_CLIENTS;
 
     constructor() { }
 }
 
 export class GetClientsSuccesAction implements Action {
-    readonly type = ClientsActionTypes.GET_CLIENTS_SUCCESS;
+    readonly type = ClientsActionsTypes.GET_CLIENTS_SUCCESS;
 
     constructor(public payload: { clients: IClient[] }) { }
 }
 
 export class GetClientsFailureAction implements Action {
-    readonly type = ClientsActionTypes.GET_CLIENTS_FAILURE;
+    readonly type = ClientsActionsTypes.GET_CLIENTS_FAILURE;
 
     constructor(public payload: { error: any }) { }
 }
 
 export class CreateClientAction implements Action {
-    readonly type = ClientsActionTypes.CREATE_CLIENT;
+    readonly type = ClientsActionsTypes.CREATE_CLIENT;
 
     constructor(){}
 }
 
 export class CreateClientSuccesAction implements Action {
-    readonly type = ClientsActionTypes.CREATE_CLIENT_SUCCES;
+    readonly type = ClientsActionsTypes.CREATE_CLIENT_SUCCES;
 
     constructor(public payload: { client: IClient }){}
 }
 
 export class CreateClientFailureAction implements Action{
-    readonly type = ClientsActionTypes.CREATE_CLIENT_FAILURE;
+    readonly type = ClientsActionsTypes.CREATE_CLIENT_FAILURE;
 
     constructor(public payload: { error: any }){}
 }
 
 export class EditClientAction implements Action {
-    readonly type = ClientsActionTypes.EDIT_CLIENT;
+    readonly type = ClientsActionsTypes.EDIT_CLIENT;
 
     constructor(){}
 }
 
 export class EditClientSuccesAction implements Action {
-    readonly type = ClientsActionTypes.EDIT_CLIENT_SUCCES;
+    readonly type = ClientsActionsTypes.EDIT_CLIENT_SUCCES;
 
     constructor(public payload: { client: IClient }){}
 }
 
 export class EditClientFailureAction implements Action {
-    readonly type = ClientsActionTypes.EDIT_CLIENT_FAILURE;
+    readonly type = ClientsActionsTypes.EDIT_CLIENT_FAILURE;
 
     constructor(public payload: { error: any }){}
 }
