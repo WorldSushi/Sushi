@@ -32,7 +32,6 @@ export class ClientsService {
 
     editClient(client: IClient) {
         let clients: IClient[] = JSON.parse(this.testData);
-
     }
 
 

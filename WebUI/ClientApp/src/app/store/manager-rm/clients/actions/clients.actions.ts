@@ -16,7 +16,7 @@ export enum ClientsActionsTypes {
 export class GetClientsAction implements Action {
     readonly type = ClientsActionsTypes.GET_CLIENTS;
 
-    constructor() { }
+    constructor(public payload: { managerId: number }) { }
 }
 
 export class GetClientsSuccesAction implements Action {
@@ -34,7 +34,7 @@ export class GetClientsFailureAction implements Action {
 export class CreateClientAction implements Action {
     readonly type = ClientsActionsTypes.CREATE_CLIENT;
 
-    constructor(){}
+    constructor(public payload: { client: IClient }){}
 }
 
 export class CreateClientSuccesAction implements Action {
@@ -52,7 +52,7 @@ export class CreateClientFailureAction implements Action{
 export class EditClientAction implements Action {
     readonly type = ClientsActionsTypes.EDIT_CLIENT;
 
-    constructor(){}
+    constructor(public payload: { client: IClient }){}
 }
 
 export class EditClientSuccesAction implements Action {
