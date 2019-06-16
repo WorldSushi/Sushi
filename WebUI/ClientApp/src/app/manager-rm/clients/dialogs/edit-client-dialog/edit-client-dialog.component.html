@@ -1,0 +1,52 @@
+<form >
+    <mat-form-field>
+      <input matInput placeholder="Название" [(ngModel)]="data.title" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    
+    <mat-form-field>
+      <mat-select placeholder="Тип клиента" [(ngModel)]="data.type" [ngModelOptions]="{standalone: true}">
+        <mat-option [value]="0">Без типа</mat-option>
+        <mat-option [value]="10">Небольшой</mat-option>
+        <mat-option [value]="20">Средний 1</mat-option>
+        <mat-option [value]="30">Средний 2</mat-option>
+        <mat-option [value]="40">Крупный 1</mat-option>
+        <mat-option [value]="50">Крупный 2</mat-option>
+        <mat-option [value]="60">Крупный 3</mat-option>
+        <mat-option [value]="90">Очень крупный</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-select placeholder="Переодичность звонков" [(ngModel)]="data.numberOfCalls" [ngModelOptions]="{standalone: true}">
+        <mat-option [value]="0">Не указан</mat-option>
+        <mat-option [value]="10">1 раз в месяц</mat-option>
+        <mat-option [value]="20">1 раз в 2 недели</mat-option>
+        <mat-option [value]="30">3 раза в месяц</mat-option>
+        <mat-option [value]="40">1 раз в неделю</mat-option>
+        <mat-option [value]="50">5 раз в месяц</mat-option>
+        <mat-option [value]="60">6 раз в месяц</mat-option>
+        <mat-option [value]="90">2 раза в неделю</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-select placeholder="Переодичность отгрузок" [(ngModel)]="data.numberOfShipments" [ngModelOptions]="{standalone: true}">
+        <mat-option [value]="0">Не указан</mat-option>
+        <mat-option [value]="10">1 раз в месяц</mat-option>
+        <mat-option [value]="20">1 раз в 2 недели</mat-option>
+        <mat-option [value]="30">3 раза в месяц</mat-option>
+        <mat-option [value]="40">1 раз в неделю</mat-option>
+        <mat-option [value]="50">5 раз в месяц</mat-option>
+        <mat-option [value]="60">6 раз в месяц</mat-option>
+        <mat-option [value]="90">2 раза в неделю</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+  </form>
+  
+  <div class="dialog-actions">
+    <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
+    <button mat-raised-button (click)="close()">Закрыть</button>
+  </div>
+  
+  

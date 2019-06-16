@@ -8,9 +8,51 @@ import { IClient } from '../models/client.model';
 export class ClientsService {
 
     testData = JSON.stringify([
-        { id: 1, title: 'Клиент 1', type: 10, numberOfCalls: 10, numberOfShipments: 10, managerId: 1 },
-        { id: 2, title: 'Клиент 2', type: 30, numberOfCalls: 30, numberOfShipments: 20, managerId: 1 },
-        { id: 3, title: 'Клиент 3', type: 40, numberOfCalls: 40, numberOfShipments: 30, managerId: 1 },
+        {   
+            id: 1, 
+            title: 'Клиент 1', 
+            type: 10, 
+            numberOfCalls: 60, 
+            numberOfShipments: 10, 
+            managerId: 1,
+            callPlan: {
+                id: 1,
+                collective: 6,
+                MS: 4,
+                RM: 2,
+                clientId: 1
+            }
+        },
+        { 
+            id: 2, 
+            title: 'Клиент 2', 
+            type: 30, 
+            numberOfCalls: 90,
+            numberOfShipments: 20, 
+            managerId: 1,
+            callPlan: {
+                id: 2,
+                collective: 8,
+                MS: 4,
+                RM: 4,
+                clientId: 2
+            }
+        },
+        { 
+            id: 3, 
+            title: 'Клиент 3', 
+            type: 40, 
+            numberOfCalls: 40, 
+            numberOfShipments: 30, 
+            managerId: 1,
+            callPlan: {
+                id: 3,
+                collective: 4,
+                MS: 2,
+                RM: 2,
+                clientId: 3
+            }
+        },
     ]);
 
     getClients(managerId: number): Observable<IClient[]>{

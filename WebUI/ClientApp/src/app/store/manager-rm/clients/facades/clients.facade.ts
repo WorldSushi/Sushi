@@ -3,8 +3,7 @@ import { Store } from '@ngrx/store';
 import { IClientsState } from '../states/clients.state';
 import { clientsQueries } from '../selectors/clients.selectors';
 import { GetClientsAction, EditClientAction, CreateClientAction } from '../actions/clients.actions';
-import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
-
+import { IClient } from "../../../../manager-rm/clients/shared/models/client.model";
 
 
 @Injectable()
