@@ -1,39 +1,55 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule, MatInputModule, MatPaginatorModule, MatSortModule, MatProgressSpinnerModule, MatCardModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDividerModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
+    MatToolbarModule,
+    MatGridListModule,
     MatCardModule,
     MatButtonModule,
-    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatSortModule,
-    MatProgressSpinnerModule
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatTableModule,
+    MatListModule,
+    MatStepperModule,
+    MatDialogModule
   ],
   exports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
+    MatToolbarModule,
+    MatGridListModule,
     MatCardModule,
     MatButtonModule,
-    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatSortModule,
-    MatProgressSpinnerModule
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatTableModule,
+    MatListModule,
+    MatStepperModule,
+    MatDialogModule
   ]
 })
 export class MaterialModule { }
