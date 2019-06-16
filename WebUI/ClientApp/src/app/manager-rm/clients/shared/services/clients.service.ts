@@ -30,8 +30,20 @@ export class ClientsService {
         return of(client);
     }
 
-    editClient(client: IClient) {
+    editClient(client: IClient): Observable<IClient> {
         let clients: IClient[] = JSON.parse(this.testData);
+
+        let indexOfEditingClient = clients.findIndex(item => item.id == client.id);
+
+        clients = [
+            ...clients.slice(0, indexOfEditingClient),
+            client,
+            ...clients.slice(indexOfEditingClient + 1)
+        ];
+
+        this.testData = JSON.stringify(clients);
+
+        return of(client);
     }
 
 
