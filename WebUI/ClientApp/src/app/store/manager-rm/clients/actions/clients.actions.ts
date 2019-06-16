@@ -6,10 +6,10 @@ export enum ClientsActionsTypes {
     GET_CLIENTS_SUCCESS = '[Clients API] GET_CLIENTS_SUCCESS',
     GET_CLIENTS_FAILURE = '[Clients API] GET_CLIENTS_FAILURE',
     CREATE_CLIENT = '[Clients Page] CREATE_CLIENT',
-    CREATE_CLIENT_SUCCES = '[Clients API] CREATE_CLIENT_SUCCES',
+    CREATE_CLIENT_SUCCESS = '[Clients API] CREATE_CLIENT_SUCCESS',
     CREATE_CLIENT_FAILURE = '[Clients API] CREATE_CLIENT_FAILURE',
     EDIT_CLIENT = '[Clients Page] EDIT_CLIENT',
-    EDIT_CLIENT_SUCCES = '[Client API] EDIT_CLIENT_SUCCES',
+    EDIT_CLIENT_SUCCESS = '[Client API] EDIT_CLIENT_SUCCESS',
     EDIT_CLIENT_FAILURE = '[Client API] EDIT_CLIENT_FAILURE'
 }
 
@@ -38,7 +38,7 @@ export class CreateClientAction implements Action {
 }
 
 export class CreateClientSuccesAction implements Action {
-    readonly type = ClientsActionsTypes.CREATE_CLIENT_SUCCES;
+    readonly type = ClientsActionsTypes.CREATE_CLIENT_SUCCESS;
 
     constructor(public payload: { client: IClient }){}
 }
@@ -56,7 +56,7 @@ export class EditClientAction implements Action {
 }
 
 export class EditClientSuccesAction implements Action {
-    readonly type = ClientsActionsTypes.EDIT_CLIENT_SUCCES;
+    readonly type = ClientsActionsTypes.EDIT_CLIENT_SUCCESS;
 
     constructor(public payload: { client: IClient }){}
 }

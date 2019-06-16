@@ -24,7 +24,7 @@ export function clientsReducer(state = clientsInitialState, action: ClientsActio
                                 error: action.payload.error
                         }
 
-                case ClientsActionsTypes.CREATE_CLIENT_SUCCES:
+                case ClientsActionsTypes.CREATE_CLIENT_SUCCESS:
                         return {
                                 ...state,
                                 clients: [...state.clients, action.payload.client],
@@ -37,7 +37,7 @@ export function clientsReducer(state = clientsInitialState, action: ClientsActio
                                 error: action.payload.error
                         }
                 
-                case ClientsActionsTypes.EDIT_CLIENT_SUCCES:
+                case ClientsActionsTypes.EDIT_CLIENT_SUCCESS:
                         const index = state.clients.findIndex(item => item.id == action.payload.client.id);
                         
                         return {
