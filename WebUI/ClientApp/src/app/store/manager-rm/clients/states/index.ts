@@ -1,9 +1,9 @@
 import { IClientsState, clientsInitialState } from './clients.state';
 
 export interface IManagerRmState {
-    clients: IClientsState
+    clientsState: IClientsState
 }
 
 export const managerRmInitialState = {
-    clients: clientsInitialState
+    clientsState: clientsInitialState
 }
