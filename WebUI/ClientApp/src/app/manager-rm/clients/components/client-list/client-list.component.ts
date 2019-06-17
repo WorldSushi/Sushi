@@ -96,7 +96,7 @@ export class ClientListComponent implements OnInit {
 
   getAnalysisColor(value) {
     if(value == 0){
-      return "#ef5350"
+      return "#ac0800"
     }
     else if(value > 0 && value < 25){
       return '#fb8c00'
