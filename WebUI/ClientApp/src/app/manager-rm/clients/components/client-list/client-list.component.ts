@@ -6,6 +6,8 @@ import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit
 import { AnalysisDialogComponent } from '../../dialogs/analysis-dialog/analysis-dialog.component';
 import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
+import { IWeekPlan } from '../../shared/models/week-plan.model';
+import { WeekPlansDialogComponent } from '../../dialogs/week-plans/week-plans-dialog.component';
 
 @Component({
   selector: 'app-client-list',
@@ -20,7 +22,6 @@ export class ClientListComponent implements OnInit {
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
    
   displayedColumns: string[] = [
-    'id', 
     'title', 
     'type', 
     'numberOfCalls', 
@@ -31,7 +32,9 @@ export class ClientListComponent implements OnInit {
     'callPlan.MS', 
     'callPlan.RM',
     'tripPlan.planned',
-    'tripPlan.fact'
+    'tripPlan.fact',
+    'RMplanned',
+    'RMfact'
   ];
 
   openCreateClientForm() {
@@ -41,6 +44,7 @@ export class ClientListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if(res){
+        res.id = this.clients.length + 1;
         this.clientCreated.emit(res);
       }
     })
@@ -85,6 +89,22 @@ export class ClientListComponent implements OnInit {
     })
   }
 
+  openWeekPlans(weekPlans: IWeekPlan[]){
+    let dialogRef = this.dialog.open(WeekPlansDialogComponent, {
+      width: '70%',
+      data: JSON.parse(JSON.stringify(weekPlans))
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        const client = this.clients.find(item => res[0].clientId == item.id);
+        client.weekPlans = [...res];
+
+        this.updateClient(client);
+      }
+    })
+  }
+
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
     const a = parseInt(value.reportPrevMonth);
     const b = parseInt(value.reportAvg5Months);
@@ -92,6 +112,10 @@ export class ClientListComponent implements OnInit {
     const d = parseInt(value.avg5Months);
 
     return Math.round((a + b + c + d) / 4);
+  }
+
+  getCurrentWeek(weekPlans: IWeekPlan[]){
+    return weekPlans[3];
   }
 
   getAnalysisColor(value) {

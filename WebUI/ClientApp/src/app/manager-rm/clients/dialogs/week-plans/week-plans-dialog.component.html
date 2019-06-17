@@ -1,0 +1,31 @@
+<h3 mat-dialog-title>{{data.title}}. План по задачам</h3>
+
+<table mat-table #table [dataSource]="data">
+  <ng-container matColumnDef="Number">
+    <th mat-header-cell *matHeaderCellDef>Неделя</th>
+    <td mat-cell *matCellDef="let row; let i = index">{{i + 1}}</td>
+  </ng-container>
+  <ng-container matColumnDef="RMplanned">
+    <th mat-header-cell *matHeaderCellDef>РМ план</th>
+    <td mat-cell *matCellDef="let row">
+      <mat-form-field>
+        <textarea matInput [(ngModel)]="row.RMplanned"></textarea>
+      </mat-form-field>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="RMfact">
+    <th mat-header-cell *matHeaderCellDef>РМ факт </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-form-field>
+        <textarea matInput [(ngModel)]="row.RMfact"></textarea>
+      </mat-form-field>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div class="dialog-actions">
+  <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
+  <button mat-raised-button (click)="close()">Закрыть</button>
+</div>
