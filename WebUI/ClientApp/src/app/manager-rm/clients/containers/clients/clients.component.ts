@@ -5,6 +5,7 @@ import { IClient } from '../../shared/models/client.model';
 import { ICallPlan } from '../../shared/models/call-plan.model';
 import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
+import { IWeekPlan } from '../../shared/models/week-plan.model';
 
 @Component({
   selector: 'app-clients',
@@ -39,6 +40,7 @@ export class ClientsComponent implements OnInit {
       avg5Months: '0%',
       clientId: client.id
     }
+    client.weekPlans = this.clientWeekPlansInit(client);
 
     this.clientsFacade.createClient(client);
   }
@@ -57,6 +59,41 @@ export class ClientsComponent implements OnInit {
       MS: 0,
       clientId: client.id
     }
+  }
+
+  clientWeekPlansInit(client: IClient): IWeekPlan[]{
+    return [
+      {
+          id: client.id,
+          clientId: client.id,
+          RMplanned: '',
+          RMfact: ''
+      },
+      {
+          id: client.id,
+          clientId: client.id,
+          RMplanned: '',
+          RMfact: ''
+      },
+      {
+          id: client.id,
+          clientId: client.id,
+          RMplanned: '',
+          RMfact: ''
+      },
+      {
+          id: client.id,
+          clientId: client.id,
+          RMplanned: '',
+          RMfact: ''
+      },
+      {
+          id: client.id,
+          clientId: client.id,
+          RMplanned: '',
+          RMfact: ''
+      }
+    ]
   }
 
   clientCallPlanRecalculate(client: IClient): ICallPlan {

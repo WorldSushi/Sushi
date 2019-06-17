@@ -3,6 +3,7 @@ import { ITripPlan } from './trip-plan.model';
 
 import { IRevenueAnalysis } from './revenue-analysis';
 import { INomenclatureAnalysis } from './nomenclature-analysis';
+import { IWeekPlan } from './week-plan.model';
 
 export interface IClient {
     id: number,
@@ -13,6 +14,7 @@ export interface IClient {
     callPlan?: ICallPlan,
     tripPlan?: ITripPlan,
     nomenclatureAnalysis: INomenclatureAnalysis,
-    revenueAnalysis: IRevenueAnalysis
+    revenueAnalysis: IRevenueAnalysis,
+    weekPlans: IWeekPlan[]
     managerId: number
 }

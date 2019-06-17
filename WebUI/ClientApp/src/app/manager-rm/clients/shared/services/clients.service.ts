@@ -25,7 +25,7 @@ export class ClientsService {
             tripPlan: {
                 id: 1,
                 planned: 10,
-                fact: 10,
+                fact: 1,
                 clientId: 1
             },
             nomenclatureAnalysis: {
@@ -43,7 +43,40 @@ export class ClientsService {
                 prevMonth: "132%",
                 avg5Months: "140%",
                 clientId: 1
-            }
+            },
+            weekPlans: [
+                {
+                    id: 1,
+                    clientId: 1,
+                    RMplanned: 'РМ План 1',
+                    RMfact: 'РМ План 1'
+                },
+                {
+                    id: 2,
+                    clientId: 1,
+                    RMplanned: 'РМ План 2',
+                    RMfact: ''
+                },
+                {
+                    id: 3,
+                    clientId: 1,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 4,
+                    clientId: 1,
+                    RMplanned: 'План на 4 неделю',
+                    RMfact: 'Итог'
+                },
+                {
+                    id: 5,
+                    clientId: 1,
+                    RMplanned: '',
+                    RMfact: ''
+                }
+            ]
+
         },
         { 
             id: 2, 
@@ -62,7 +95,7 @@ export class ClientsService {
             tripPlan: {
                 id: 2,
                 planned: 7,
-                fact: 5,
+                fact: 0.5,
                 clientId: 2
             },
             nomenclatureAnalysis: {
@@ -80,7 +113,40 @@ export class ClientsService {
                 prevMonth: "10%",
                 avg5Months: "60%",
                 clientId: 2
-            }
+            },
+            weekPlans: [
+                {
+                    id: 6,
+                    clientId: 2,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 7,
+                    clientId: 2,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 8,
+                    clientId: 2,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 9,
+                    clientId: 2,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 10,
+                    clientId: 2,
+                    RMplanned: '',
+                    RMfact: ''
+                }
+            ]
+            
         },
         { 
             id: 3, 
@@ -99,7 +165,7 @@ export class ClientsService {
             tripPlan: {
                 id: 3,
                 planned: 6,
-                fact: 5,
+                fact: 0.3,
                 clientId: 3
             },
             nomenclatureAnalysis: {
@@ -118,6 +184,39 @@ export class ClientsService {
                 avg5Months: "126%",
                 clientId: 3
             },
+            weekPlans: [
+                {
+                    id: 11,
+                    clientId: 3,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 12,
+                    clientId: 3,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 13,
+                    clientId: 3,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 14,
+                    clientId: 3,
+                    RMplanned: '',
+                    RMfact: ''
+                },
+                {
+                    id: 15,
+                    clientId: 3,
+                    RMplanned: '',
+                    RMfact: ''
+                }
+            ]
+            
         },
     ]);
 

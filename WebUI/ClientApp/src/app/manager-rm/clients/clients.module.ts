@@ -7,6 +7,7 @@ import { CreateClientDialogComponent } from './dialogs/create-client-dialog/crea
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-client-dialog.component';
 import { AnalysisDialogComponent } from './dialogs/analysis-dialog/analysis-dialog.component';
+import { WeekPlansDialogComponent } from './dialogs/week-plans/week-plans-dialog.component';
 
 @NgModule({
   declarations: [
@@ -14,12 +15,14 @@ import { AnalysisDialogComponent } from './dialogs/analysis-dialog/analysis-dial
     ClientListComponent,
     CreateClientDialogComponent,
     EditClientDialogComponent,
-    AnalysisDialogComponent
+    AnalysisDialogComponent,
+    WeekPlansDialogComponent
   ],
   entryComponents: [
     CreateClientDialogComponent,
     EditClientDialogComponent,
-    AnalysisDialogComponent
+    AnalysisDialogComponent,
+    WeekPlansDialogComponent
   ],
   exports: [
     ClientsComponent,
