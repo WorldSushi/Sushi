@@ -27,6 +27,16 @@
     <td mat-cell *matCellDef="let element"> {{element.numberOfShipments}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="nomenclatureAnalysis">
+    <th mat-header-cell *matHeaderCellDef> Анализ по номен-ре </th>
+    <td mat-cell *matCellDef="let element" [style.background-color]="getAnalysisColor(getAvgAnalysis(element.nomenclatureAnalysis))" (click)="openNomenclatureAnalysis(element)"><b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b></td>
+  </ng-container>
+
+  <ng-container matColumnDef="revenueAnalysis">
+    <th mat-header-cell *matHeaderCellDef> Анализ по выручке </th>
+    <td mat-cell *matCellDef="let element" [style.background-color]="getAnalysisColor(getAvgAnalysis(element.revenueAnalysis))" (click)="openRevenueAnalysis(element)"><b>{{getAvgAnalysis(element.revenueAnalysis)}}%</b></td>
+  </ng-container>
+
   <ng-container matColumnDef="callPlan.collective">
     <th mat-header-cell *matHeaderCellDef> Общий план </th>
     <td mat-cell *matCellDef="let element"> {{element.callPlan?.collective}} </td>

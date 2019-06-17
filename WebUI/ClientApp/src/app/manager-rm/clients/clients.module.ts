@@ -6,17 +6,20 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { CreateClientDialogComponent } from './dialogs/create-client-dialog/create-client-dialog.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-client-dialog.component';
+import { AnalysisDialogComponent } from './dialogs/analysis-dialog/analysis-dialog.component';
 
 @NgModule({
   declarations: [
     ClientsComponent,
     ClientListComponent,
     CreateClientDialogComponent,
-    EditClientDialogComponent
+    EditClientDialogComponent,
+    AnalysisDialogComponent
   ],
   entryComponents: [
     CreateClientDialogComponent,
-    EditClientDialogComponent
+    EditClientDialogComponent,
+    AnalysisDialogComponent
   ],
   exports: [
     ClientsComponent,

@@ -27,6 +27,22 @@ export class ClientsService {
                 planned: 10,
                 fact: 10,
                 clientId: 1
+            },
+            nomenclatureAnalysis: {
+                id: 1,
+                reportPrevMonth: "127%",
+                reportAvg5Months: "72%",
+                prevMonth: "152%",
+                avg5Months: "60%",
+                clientId: 1
+            },
+            revenueAnalysis: {
+                id: 1,
+                reportPrevMonth: "127%",
+                reportAvg5Months: "112%",
+                prevMonth: "132%",
+                avg5Months: "140%",
+                clientId: 1
             }
         },
         { 
@@ -47,6 +63,22 @@ export class ClientsService {
                 id: 2,
                 planned: 7,
                 fact: 5,
+                clientId: 2
+            },
+            nomenclatureAnalysis: {
+                id: 2,
+                reportPrevMonth: "12%",
+                reportAvg5Months: "19%",
+                prevMonth: "10%",
+                avg5Months: "10%",
+                clientId: 2
+            },
+            revenueAnalysis: {
+                id: 2,
+                reportPrevMonth: "12%",
+                reportAvg5Months: "19%",
+                prevMonth: "10%",
+                avg5Months: "60%",
                 clientId: 2
             }
         },
@@ -69,7 +101,23 @@ export class ClientsService {
                 planned: 6,
                 fact: 5,
                 clientId: 3
-            }
+            },
+            nomenclatureAnalysis: {
+                id: 3,
+                reportPrevMonth: "82%",
+                reportAvg5Months: "59%",
+                prevMonth: "90%",
+                avg5Months: "126%",
+                clientId: 3
+            },
+            revenueAnalysis: {
+                id: 3,
+                reportPrevMonth: "82%",
+                reportAvg5Months: "29%",
+                prevMonth: "30%",
+                avg5Months: "126%",
+                clientId: 3
+            },
         },
     ]);
 

@@ -1,0 +1,22 @@
+<h3 mat-dialog-title>{{data.title}}. {{data.analysisTitle}}</h3>
+
+<table mat-table #table [dataSource]="data.analysis">
+  <ng-container matColumnDef="reportPrevMonth">
+    <th mat-header-cell *matHeaderCellDef>Относительно <br> пред. мес. </th>
+    <td mat-cell *matCellDef="let row">{{row.reportPrevMonth}}</td>
+  </ng-container>
+  <ng-container matColumnDef="reportAvg5Months">
+    <th mat-header-cell *matHeaderCellDef>Относительно <br> Среднего по пред. 5ти мес.</th>
+    <td mat-cell *matCellDef="let row">{{row.reportAvg5Months}}</td>
+  </ng-container>
+  <ng-container matColumnDef="prevMonth">
+    <th mat-header-cell *matHeaderCellDef>Пред. месяц </th>
+    <td mat-cell *matCellDef="let row">{{row.prevMonth}}</td>
+  </ng-container>
+  <ng-container matColumnDef="avg5Months">
+    <th mat-header-cell *matHeaderCellDef>В среднем по пред. 5ти мес. </th>
+    <td mat-cell *matCellDef="let row">{{row.avg5Months}}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
