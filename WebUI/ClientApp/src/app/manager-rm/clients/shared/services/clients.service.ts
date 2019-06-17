@@ -25,7 +25,7 @@ export class ClientsService {
             tripPlan: {
                 id: 1,
                 planned: 10,
-                fact: 10,
+                fact: 1,
                 clientId: 1
             },
             nomenclatureAnalysis: {
@@ -66,8 +66,8 @@ export class ClientsService {
                 {
                     id: 4,
                     clientId: 1,
-                    RMplanned: '',
-                    RMfact: ''
+                    RMplanned: 'План на 4 неделю',
+                    RMfact: 'Итог'
                 },
                 {
                     id: 5,
@@ -95,7 +95,7 @@ export class ClientsService {
             tripPlan: {
                 id: 2,
                 planned: 7,
-                fact: 5,
+                fact: 0.5,
                 clientId: 2
             },
             nomenclatureAnalysis: {
@@ -165,7 +165,7 @@ export class ClientsService {
             tripPlan: {
                 id: 3,
                 planned: 6,
-                fact: 5,
+                fact: 0.3,
                 clientId: 3
             },
             nomenclatureAnalysis: {

@@ -11,7 +11,7 @@ export class WeekPlansDialogComponent implements OnInit {
   displayedColumns: string[] = ['Number',  'RMplanned', 'RMfact'];
 
   save(){
-    this.dialogRef.close(this.data);
+    this.dialogRef.close(this.data.weekPlans);
   }
 
   close(){

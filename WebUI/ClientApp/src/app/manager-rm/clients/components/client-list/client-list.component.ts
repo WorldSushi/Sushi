@@ -89,10 +89,13 @@ export class ClientListComponent implements OnInit {
     })
   }
 
-  openWeekPlans(weekPlans: IWeekPlan[]){
+  openWeekPlans(client: IClient){
     let dialogRef = this.dialog.open(WeekPlansDialogComponent, {
       width: '70%',
-      data: JSON.parse(JSON.stringify(weekPlans))
+      data: {
+        title: client.title,
+        weekPlans: JSON.parse(JSON.stringify(client.weekPlans))
+      }
     })
 
     dialogRef.afterClosed().subscribe(res => {
