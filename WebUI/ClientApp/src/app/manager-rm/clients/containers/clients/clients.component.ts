@@ -3,6 +3,8 @@ import { ClientsFacade } from '../../../../store/manager-rm/clients/facades/clie
 import { Observable } from 'rxjs';
 import { IClient } from '../../shared/models/client.model';
 import { ICallPlan } from '../../shared/models/call-plan.model';
+import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
+import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 
 @Component({
   selector: 'app-clients',
@@ -15,6 +17,28 @@ export class ClientsComponent implements OnInit {
 
   createClient(client: IClient){
     client.callPlan = this.clientCallPlanInit(client);
+    client.tripPlan = {
+      id: client.id,
+      planned: 0,
+      fact: 0,
+      clientId: client.id
+    }
+    client.nomenclatureAnalysis = {
+      id: client.id,
+      reportPrevMonth: '0%',
+      reportAvg5Months: '0%',
+      prevMonth: '0%',
+      avg5Months: '0%',
+      clientId: client.id
+    }
+    client.revenueAnalysis = {
+      id: client.id,
+      reportPrevMonth: '0%',
+      reportAvg5Months: '0%',
+      prevMonth: '0%',
+      avg5Months: '0%',
+      clientId: client.id
+    }
 
     this.clientsFacade.createClient(client);
   }
