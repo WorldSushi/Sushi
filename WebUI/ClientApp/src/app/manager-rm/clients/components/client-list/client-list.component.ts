@@ -16,7 +16,18 @@ export class ClientListComponent implements OnInit {
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
    
-  displayedColumns: string[] = ['id', 'title', 'type', 'numberOfCalls', 'numberOfShipments', 'callPlan.collective', 'callPlan.MS', 'callPlan.RM'];
+  displayedColumns: string[] = [
+    'id', 
+    'title', 
+    'type', 
+    'numberOfCalls', 
+    'numberOfShipments', 
+    'callPlan.collective', 
+    'callPlan.MS', 
+    'callPlan.RM',
+    'tripPlan.planned',
+    'tripPlan.fact'
+  ];
 
   openCreateClientForm() {
     const dialogRef = this.dialog.open(CreateClientDialogComponent, {
@@ -33,7 +44,7 @@ export class ClientListComponent implements OnInit {
   openEditClientForm(client: IClient) {
     const dialogRef = this.dialog.open(EditClientDialogComponent, {
       width: '725px',
-      data: client
+      data: { ...client }
     })
 
     dialogRef.afterClosed().subscribe(res => {

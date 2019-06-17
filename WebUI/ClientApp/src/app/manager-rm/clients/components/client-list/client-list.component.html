@@ -35,7 +35,7 @@
   <ng-container matColumnDef="callPlan.MS">
     <th mat-header-cell *matHeaderCellDef> МС </th>
     <td mat-cell *matCellDef="let element">
-      <mat-form-field>
+      <mat-form-field class="numberInputField">
         <input matInput [(ngModel)]="element.callPlan.MS" (focusout)="updateClient(element)"/>
       </mat-form-field>        
     </td>
@@ -44,6 +44,24 @@
   <ng-container matColumnDef="callPlan.RM">
     <th mat-header-cell *matHeaderCellDef> РМ </th>
     <td mat-cell *matCellDef="let element"> {{element.callPlan?.RM}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tripPlan.planned">
+    <th mat-header-cell *matHeaderCellDef> План </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field class="numberInputField">
+        <input matInput [(ngModel)]="element.tripPlan.planned" (focusout)="updateClient(element)"/>
+      </mat-form-field>  
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tripPlan.fact">
+    <th mat-header-cell *matHeaderCellDef> Факт </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field class="numberInputField">
+        <input matInput [(ngModel)]="element.tripPlan.fact" (focusout)="updateClient(element)"/>
+      </mat-form-field>  
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -21,6 +21,12 @@ export class ClientsService {
                 MS: 4,
                 RM: 2,
                 clientId: 1
+            },
+            tripPlan: {
+                id: 1,
+                planned: 10,
+                fact: 10,
+                clientId: 1
             }
         },
         { 
@@ -36,6 +42,12 @@ export class ClientsService {
                 MS: 4,
                 RM: 4,
                 clientId: 2
+            },
+            tripPlan: {
+                id: 2,
+                planned: 7,
+                fact: 5,
+                clientId: 2
             }
         },
         { 
@@ -50,6 +62,12 @@ export class ClientsService {
                 collective: 4,
                 MS: 2,
                 RM: 2,
+                clientId: 3
+            },
+            tripPlan: {
+                id: 3,
+                planned: 6,
+                fact: 5,
                 clientId: 3
             }
         },

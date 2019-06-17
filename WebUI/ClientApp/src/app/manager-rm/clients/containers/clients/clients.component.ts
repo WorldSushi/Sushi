@@ -15,6 +15,12 @@ export class ClientsComponent implements OnInit {
 
   createClient(client: IClient){
     client.callPlan = this.clientCallPlanInit(client);
+    client.tripPlan = {
+      id: client.id,
+      planned: 0,
+      fact: 0,
+      clientId: client.id
+    }
 
     this.clientsFacade.createClient(client);
   }
