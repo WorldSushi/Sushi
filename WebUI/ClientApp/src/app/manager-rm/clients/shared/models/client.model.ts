@@ -4,6 +4,7 @@ import { ITripPlan } from './trip-plan.model';
 import { IRevenueAnalysis } from './revenue-analysis';
 import { INomenclatureAnalysis } from './nomenclature-analysis';
 import { IWeekPlan } from './week-plan.model';
+import { IManagerCallsResult } from './Manager-calls-result.model';
 
 export interface IClient {
     id: number,
@@ -15,6 +16,8 @@ export interface IClient {
     tripPlan?: ITripPlan,
     nomenclatureAnalysis: INomenclatureAnalysis,
     revenueAnalysis: IRevenueAnalysis,
-    weekPlans: IWeekPlan[]
+    weekPlans: IWeekPlan[],
+    MSresults: IManagerCallsResult,
+    RMresults: IManagerCallsResult,
     managerId: number
 }

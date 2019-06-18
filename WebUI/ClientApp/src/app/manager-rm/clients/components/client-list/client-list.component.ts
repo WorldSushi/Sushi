@@ -8,6 +8,7 @@ import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { WeekPlansDialogComponent } from '../../dialogs/week-plans/week-plans-dialog.component';
+import { CallsResultDialogComponent } from '../../dialogs/calls-result-dialog/calls-result-dialog.component';
 
 @Component({
   selector: 'app-client-list',
@@ -33,8 +34,12 @@ export class ClientListComponent implements OnInit {
     'callPlan.RM',
     'tripPlan.planned',
     'tripPlan.fact',
+    'MSplanned',
     'RMplanned',
-    'RMfact'
+    'MSfact',
+    'RMfact',
+    'MSresults.sum',
+    'RMresults.sum'   
   ];
 
   openCreateClientForm() {
@@ -104,6 +109,21 @@ export class ClientListComponent implements OnInit {
         client.weekPlans = [...res];
 
         this.updateClient(client);
+      }
+    })
+  }
+
+  openCallsResult(client: IClient){
+    let dialogRef = this.dialog.open(CallsResultDialogComponent, {
+      width: '70%',
+      data: {
+        title: client.title,
+        results: [
+          {
+            MSresults: client.MSresults,
+            RMresults: client.RMresults
+          }
+        ]        
       }
     })
   }

@@ -8,6 +8,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-client-dialog.component';
 import { AnalysisDialogComponent } from './dialogs/analysis-dialog/analysis-dialog.component';
 import { WeekPlansDialogComponent } from './dialogs/week-plans/week-plans-dialog.component';
+import { CallsResultDialogComponent } from './dialogs/calls-result-dialog/calls-result-dialog.component';
+import { ClientTypeTranslatePipe } from 'src/app/shared/pipes/client-type-translate-pipe';
+import { NumberOfCallsTranslatePipe } from 'src/app/shared/pipes/number-of-calls-pipe';
+import { NumberOfShipmentsTranslatePipe } from 'src/app/shared/pipes/number-of-shipments-pipe';
 
 @NgModule({
   declarations: [
@@ -16,13 +20,18 @@ import { WeekPlansDialogComponent } from './dialogs/week-plans/week-plans-dialog
     CreateClientDialogComponent,
     EditClientDialogComponent,
     AnalysisDialogComponent,
-    WeekPlansDialogComponent
+    WeekPlansDialogComponent,
+    CallsResultDialogComponent,
+    ClientTypeTranslatePipe,
+    NumberOfCallsTranslatePipe,
+    NumberOfShipmentsTranslatePipe
   ],
   entryComponents: [
     CreateClientDialogComponent,
     EditClientDialogComponent,
     AnalysisDialogComponent,
-    WeekPlansDialogComponent
+    WeekPlansDialogComponent,
+    CallsResultDialogComponent
   ],
   exports: [
     ClientsComponent,

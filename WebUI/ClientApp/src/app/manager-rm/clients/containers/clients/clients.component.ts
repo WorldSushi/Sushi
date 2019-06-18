@@ -41,6 +41,20 @@ export class ClientsComponent implements OnInit {
       clientId: client.id
     }
     client.weekPlans = this.clientWeekPlansInit(client);
+    client.MSresults = {
+      id: client.id,
+      clientId: client.id,
+      calls: 0,
+      whatsUp: 0,
+      letters: 0
+    }  
+    client.RMresults = {
+      id: client.id,
+      clientId: client.id,
+      calls: 0,
+      whatsUp: 0,
+      letters: 0
+    }
 
     this.clientsFacade.createClient(client);
   }

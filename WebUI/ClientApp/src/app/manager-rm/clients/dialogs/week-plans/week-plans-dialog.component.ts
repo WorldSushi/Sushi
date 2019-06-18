@@ -8,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class WeekPlansDialogComponent implements OnInit {
 
-  displayedColumns: string[] = ['Number',  'RMplanned', 'RMfact'];
+  displayedColumns: string[] = ['Number', 'MSplanned', 'RMplanned', 'MSfact', 'RMfact'];
 
   save(){
     this.dialogRef.close(this.data.weekPlans);
