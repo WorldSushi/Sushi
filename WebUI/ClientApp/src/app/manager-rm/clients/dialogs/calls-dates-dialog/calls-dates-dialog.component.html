@@ -1,0 +1,39 @@
+
+<h2 mat-dialog-title>Даты и фактическое число звонков. {{data.clientTitle}}</h2>
+<mat-dialog-content class="mat-typography mat-body"> 
+  <table mat-table #table [dataSource]="data.MSCallsDates">
+    <ng-container matColumnDef="day">
+      <th mat-header-cell *matHeaderCellDef style="width: 200px">Дата</th>
+      <td mat-cell *matCellDef="let row; let i = index" style="width: 200px">{{getDate(i + 1)}}</td>
+    </ng-container>
+    <ng-container matColumnDef="MSvalue">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">МС</th>
+      <td mat-cell *matCellDef="let row" style="text-align: center">
+          <mat-select [(ngModel)]="row.action">
+            <mat-option [value]="0">Отсутствует</mat-option>
+            <mat-option [value]="10">Звонок</mat-option>
+            <mat-option [value]="20">WhatsUp</mat-option>
+            <mat-option [value]="30">Письмо</mat-option>
+          </mat-select>       
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="RMvalue">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">РМ</th>
+      <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
+          <mat-select [(ngModel)]="data.RMCallsDates[i].action">
+            <mat-option [value]="0">Отсутствует</mat-option>
+            <mat-option [value]="10">Звонок</mat-option>
+            <mat-option [value]="20">WhatsUp</mat-option>
+            <mat-option [value]="30">Письмо</mat-option>
+          </mat-select>       
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div class="dialog-actions">
+    <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
+    <button mat-raised-button (click)="close()">Закрыть</button>
+  </div>
+</mat-dialog-content>
+

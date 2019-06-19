@@ -2,35 +2,35 @@
 
 <table mat-table #table [dataSource]="data.results">
   <ng-container matColumnDef="MScalls">
-    <th mat-header-cell *matHeaderCellDef>Звонки</th>
+    <th mat-header-cell *matHeaderCellDef>МС Звонки</th>
     <td mat-cell *matCellDef="let row">{{row.MSresults.calls}}</td>
   </ng-container>
   <ng-container matColumnDef="MSwhatsUp">
-    <th mat-header-cell *matHeaderCellDef>WhatsUp</th>
+    <th mat-header-cell *matHeaderCellDef>МС WhatsUp</th>
     <td mat-cell *matCellDef="let row">{{row.MSresults.whatsUp}}</td>
   </ng-container>
   <ng-container matColumnDef="MSletters">
-    <th mat-header-cell *matHeaderCellDef>Письма</th>
+    <th mat-header-cell *matHeaderCellDef>МС Письма</th>
     <td mat-cell *matCellDef="let row">{{row.MSresults.letters}}</td>
   </ng-container>
   <ng-container matColumnDef="MSsum">
-    <th mat-header-cell *matHeaderCellDef>Итог</th>
+    <th mat-header-cell *matHeaderCellDef>МС Итог</th>
     <td mat-cell *matCellDef="let row">{{row.MSresults.calls + row.MSresults.whatsUp + row.MSresults.letters}}</td>
   </ng-container>
   <ng-container matColumnDef="RMcalls">
-    <th mat-header-cell *matHeaderCellDef>Звонки</th>
+    <th mat-header-cell *matHeaderCellDef>РМ Звонки</th>
     <td mat-cell *matCellDef="let row">{{row.RMresults.calls}}</td>
   </ng-container>
   <ng-container matColumnDef="RMwhatsUp">
-    <th mat-header-cell *matHeaderCellDef>WhatsUp</th>
+    <th mat-header-cell *matHeaderCellDef>РМ WhatsUp</th>
     <td mat-cell *matCellDef="let row">{{row.RMresults.whatsUp}}</td>
   </ng-container>
   <ng-container matColumnDef="RMletters">
-    <th mat-header-cell *matHeaderCellDef>Письма</th>
+    <th mat-header-cell *matHeaderCellDef>РМ Письма</th>
     <td mat-cell *matCellDef="let row">{{row.RMresults.letters}}</td>
   </ng-container>
   <ng-container matColumnDef="RMsum">
-    <th mat-header-cell *matHeaderCellDef>Итог</th>
+    <th mat-header-cell *matHeaderCellDef>РМ Итог</th>
     <td mat-cell *matCellDef="let row">{{row.RMresults.calls + row.RMresults.whatsUp + row.RMresults.letters}}</td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

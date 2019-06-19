@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IClient } from '../models/client.model';
+import { ICallsDate } from '../models/calls-date.model';
 
 
 @Injectable()
@@ -99,7 +100,9 @@ export class ClientsService {
                 calls: 2,
                 whatsUp: 3,
                 letters: 1   
-            }
+            },
+            MSCallsDates: this.callsDateInit(1),
+            RMCallsDates: this.callsDateInit(1)
 
         },
         { 
@@ -193,7 +196,9 @@ export class ClientsService {
                 calls: 2,
                 whatsUp: 3,
                 letters: 1   
-            }
+            },
+            MSCallsDates: this.callsDateInit(2),
+            RMCallsDates: this.callsDateInit(2)
         },
         { 
             id: 3, 
@@ -286,7 +291,9 @@ export class ClientsService {
                 calls: 2,
                 whatsUp: 3,
                 letters: 1   
-            }
+            },
+            MSCallsDates: this.callsDateInit(3),
+            RMCallsDates: this.callsDateInit(3)
         },
     ]);
 
@@ -322,6 +329,29 @@ export class ClientsService {
 
         return of(client);
     }
+
+    callsDateInit(clientId: number) {
+        const currentMonth = new Date().getMonth() + 1;
+        const currentYear = new Date().getFullYear();
+        const daysAmount = this.getDaysInMonth(currentMonth, currentYear);
+    
+        const callsDate: ICallsDate[] = [];
+        
+        for(let i = 0; i < daysAmount; i++){
+          callsDate.push({
+            id: i + 1,
+            action: 0,
+            clientId: clientId
+          })
+        }
+    
+        return callsDate;
+    
+      }
+    
+      getDaysInMonth(month, year){
+        return new Date(year, month, 0).getDate();
+      }
 
 
     constructor(public http: HttpClient){}
