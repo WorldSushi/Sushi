@@ -8,6 +8,9 @@ import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { WeekPlansDialogComponent } from '../../dialogs/week-plans/week-plans-dialog.component';
+import { CallsResultDialogComponent } from '../../dialogs/calls-result-dialog/calls-result-dialog.component';
+import { ICallsDate } from '../../shared/models/calls-date.model';
+import { CallsDatesDialogComponent } from '../../dialogs/calls-dates-dialog/calls-dates-dialog.component';
 
 @Component({
   selector: 'app-client-list',
@@ -33,8 +36,13 @@ export class ClientListComponent implements OnInit {
     'callPlan.RM',
     'tripPlan.planned',
     'tripPlan.fact',
+    'MSplanned',
     'RMplanned',
-    'RMfact'
+    'MSfact',
+    'RMfact',
+    'calls',
+    'MSresults.sum',
+    'RMresults.sum'   
   ];
 
   openCreateClientForm() {
@@ -108,6 +116,50 @@ export class ClientListComponent implements OnInit {
     })
   }
 
+  openCallsResult(client: IClient){
+    let dialogRef = this.dialog.open(CallsResultDialogComponent, {
+      width: '70%',
+      data: {
+        title: client.title,
+        results: [
+          {
+            MSresults: {
+              calls: client.MSCallsDates.filter(item => item.action == 10).length,
+              whatsUp: client.MSCallsDates.filter(item => item.action == 20).length,
+              letters: client.MSCallsDates.filter(item => item.action == 30).length,
+              sum: client.MSCallsDates.filter(item => item.action != 0).length
+            },
+            RMresults: {
+              calls: client.RMCallsDates.filter(item => item.action == 10).length,
+              whatsUp: client.RMCallsDates.filter(item => item.action == 20).length,
+              letters: client.RMCallsDates.filter(item => item.action == 30).length,
+              sum: client.RMCallsDates.filter(item => item.action > 0).length
+            }
+          }
+        ]        
+      }
+    })
+  }
+
+  openCallsDates(client: IClient){
+    let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
+      width: '720px',
+      data: {
+        clientId: client.id,
+        clientTitle: client.title,
+        MSCallsDates: client.MSCallsDates,
+        RMCallsDates: client.RMCallsDates
+      } 
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      let client = this.clients.find(item => item.id == res.clientId);
+      if(res){
+        this.updateClient(client);
+      }
+    })
+  }
+
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
     const a = parseInt(value.reportPrevMonth);
     const b = parseInt(value.reportAvg5Months);
@@ -119,6 +171,10 @@ export class ClientListComponent implements OnInit {
 
   getCurrentWeek(weekPlans: IWeekPlan[]){
     return weekPlans[3];
+  }
+
+  getSumOfCallsDates(callsDates: ICallsDate[]){
+    return callsDates.filter(item => item.action > 0).length;
   }
 
   getAnalysisColor(value) {

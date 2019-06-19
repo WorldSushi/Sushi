@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IClient } from '../models/client.model';
+import { ICallsDate } from '../models/calls-date.model';
 
 
 @Injectable()
@@ -25,7 +26,7 @@ export class ClientsService {
             tripPlan: {
                 id: 1,
                 planned: 10,
-                fact: 1,
+                fact: 0.3,
                 clientId: 1
             },
             nomenclatureAnalysis: {
@@ -48,34 +49,60 @@ export class ClientsService {
                 {
                     id: 1,
                     clientId: 1,
+                    MSplanned: 'МС План 1',
                     RMplanned: 'РМ План 1',
+                    MSfact: 'МС План 1',
                     RMfact: 'РМ План 1'
                 },
                 {
                     id: 2,
                     clientId: 1,
+                    MSplanned: 'МС План 2',
                     RMplanned: 'РМ План 2',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 3,
                     clientId: 1,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 4,
                     clientId: 1,
-                    RMplanned: 'План на 4 неделю',
-                    RMfact: 'Итог'
+                    MSplanned: 'МС План 4 неделя',
+                    RMplanned: 'РМ План 4 неделя',
+                    MSfact: 'МС факт 4 неделя',
+                    RMfact: 'РМ факт 4 неделя'
                 },
                 {
                     id: 5,
                     clientId: 1,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 }
-            ]
+            ],
+            MSresults: {
+                id: 1,
+                clientId: 1,
+                calls: 1,
+                whatsUp: 5,
+                letters: 1              
+            },
+            RMresults: {
+                id: 1,
+                clientId: 1,
+                calls: 2,
+                whatsUp: 3,
+                letters: 1   
+            },
+            MSCallsDates: this.callsDateInit(1),
+            RMCallsDates: this.callsDateInit(1)
 
         },
         { 
@@ -95,7 +122,7 @@ export class ClientsService {
             tripPlan: {
                 id: 2,
                 planned: 7,
-                fact: 0.5,
+                fact: 1,
                 clientId: 2
             },
             nomenclatureAnalysis: {
@@ -118,35 +145,60 @@ export class ClientsService {
                 {
                     id: 6,
                     clientId: 2,
+                    MSplanned: 'План 2',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 7,
                     clientId: 2,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 8,
                     clientId: 2,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 9,
                     clientId: 2,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 10,
                     clientId: 2,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 }
-            ]
-            
+            ],
+            MSresults: {
+                id: 2,
+                clientId: 2,
+                calls: 1,
+                whatsUp: 5,
+                letters: 1              
+            },
+            RMresults: {
+                id: 2,
+                clientId: 2,
+                calls: 2,
+                whatsUp: 3,
+                letters: 1   
+            },
+            MSCallsDates: this.callsDateInit(2),
+            RMCallsDates: this.callsDateInit(2)
         },
         { 
             id: 3, 
@@ -165,7 +217,7 @@ export class ClientsService {
             tripPlan: {
                 id: 3,
                 planned: 6,
-                fact: 0.3,
+                fact: 0.5,
                 clientId: 3
             },
             nomenclatureAnalysis: {
@@ -188,35 +240,60 @@ export class ClientsService {
                 {
                     id: 11,
                     clientId: 3,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 12,
                     clientId: 3,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 13,
                     clientId: 3,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 14,
                     clientId: 3,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 },
                 {
                     id: 15,
                     clientId: 3,
+                    MSplanned: '',
                     RMplanned: '',
+                    MSfact: '',
                     RMfact: ''
                 }
-            ]
-            
+            ],
+            MSresults: {
+                id: 3,
+                clientId: 3,
+                calls: 1,
+                whatsUp: 5,
+                letters: 1              
+            },
+            RMresults: {
+                id: 3,
+                clientId: 3,
+                calls: 2,
+                whatsUp: 3,
+                letters: 1   
+            },
+            MSCallsDates: this.callsDateInit(3),
+            RMCallsDates: this.callsDateInit(3)
         },
     ]);
 
@@ -252,6 +329,29 @@ export class ClientsService {
 
         return of(client);
     }
+
+    callsDateInit(clientId: number) {
+        const currentMonth = new Date().getMonth() + 1;
+        const currentYear = new Date().getFullYear();
+        const daysAmount = this.getDaysInMonth(currentMonth, currentYear);
+    
+        const callsDate: ICallsDate[] = [];
+        
+        for(let i = 0; i < daysAmount; i++){
+          callsDate.push({
+            id: i + 1,
+            action: 0,
+            clientId: clientId
+          })
+        }
+    
+        return callsDate;
+    
+      }
+    
+      getDaysInMonth(month, year){
+        return new Date(year, month, 0).getDate();
+      }
 
 
     constructor(public http: HttpClient){}

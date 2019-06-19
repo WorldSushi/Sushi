@@ -6,6 +6,7 @@ import { ICallPlan } from '../../shared/models/call-plan.model';
 import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
+import { ICallsDate } from '../../shared/models/calls-date.model';
 
 @Component({
   selector: 'app-clients',
@@ -41,6 +42,23 @@ export class ClientsComponent implements OnInit {
       clientId: client.id
     }
     client.weekPlans = this.clientWeekPlansInit(client);
+    client.MSresults = {
+      id: client.id,
+      clientId: client.id,
+      calls: 0,
+      whatsUp: 0,
+      letters: 0
+    }  
+    client.RMresults = {
+      id: client.id,
+      clientId: client.id,
+      calls: 0,
+      whatsUp: 0,
+      letters: 0
+    }
+
+    client.MSCallsDates = this.callsDateInit(client.id);
+    client.RMCallsDates = this.callsDateInit(client.id);
 
     this.clientsFacade.createClient(client);
   }
@@ -103,6 +121,29 @@ export class ClientsComponent implements OnInit {
       MS: client.callPlan.MS,
       RM: client.callPlan.collective - client.callPlan.MS
     }
+  }
+
+  callsDateInit(clientId: number) {
+    const currentMonth = new Date().getMonth() + 1;
+    const currentYear = new Date().getFullYear();
+    const daysAmount = this.getDaysInMonth(currentMonth, currentYear);
+
+    const callsDate: ICallsDate[] = [];
+    
+    for(let i = 0; i < daysAmount; i++){
+      callsDate.push({
+        id: i + 1,
+        action: 0,
+        clientId: clientId
+      })
+    }
+
+    return callsDate;
+
+  }
+
+  getDaysInMonth(month, year){
+    return new Date(year, month, 0).getDate();
   }
 
   constructor(public clientsFacade: ClientsFacade) { }
