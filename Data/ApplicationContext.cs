@@ -18,8 +18,8 @@ namespace Data
             modelBuilder.Entity<Admin>();
             modelBuilder.Entity<User>();
             modelBuilder.Entity<Client>();
-            modelBuilder.Entity<MonthlyCallPlan>();
-            modelBuilder.Entity<MonthlyBusinessTripPlan>();
+            modelBuilder.Entity<CallPlan>();
+            modelBuilder.Entity<BusinessTripPlan>();
             modelBuilder.Entity<ManagerForClient>();
             modelBuilder.Entity<WeekPlan>();
         }

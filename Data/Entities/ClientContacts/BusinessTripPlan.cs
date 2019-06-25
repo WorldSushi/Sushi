@@ -1,12 +1,13 @@
 ﻿using System;
 using Base;
+using Data.Commands.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.Users;
 using Data.Enums;
 
 namespace Data.Entities.ClientContacts
 {
-    public class MonthlyBusinessTripPlan : Entity
+    public class BusinessTripPlan : Entity
     {
         public int ManagerId { get; set; }
         public Manager Manager { get; set; }
@@ -14,22 +15,23 @@ namespace Data.Entities.ClientContacts
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
-        public int AmountBusinessTrip { get; set; }
+        public int NumberBusinessTripHours { get; set; }
         public BusinessTripCompletedType BusinessTripCompletedType { get; set; }
 
         public DateTime Date { get; set; }
 
-        private MonthlyBusinessTripPlan()
+        private BusinessTripPlan()
         {
 
         }
 
-        public MonthlyBusinessTripPlan(int managerId, int clientId, int amountBusinessTrip, int month)
+        public BusinessTripPlan(BusinessTripPlanCreateCommand command)
         {
-            ManagerId = managerId;
-            ClientId = clientId;
-            AmountBusinessTrip = amountBusinessTrip;
-            Date = new DateTime(DateTime.Now.Year, month, 1);
+            ManagerId = command.ManagerId;
+            ClientId = command.ClientId;
+            NumberBusinessTripHours = command.NumberBusinessTripHours;
+            Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
             BusinessTripCompletedType = BusinessTripCompletedType.DidntCompleted;
         }
     }

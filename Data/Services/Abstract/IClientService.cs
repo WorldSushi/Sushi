@@ -11,7 +11,7 @@ namespace Data.Services.Abstract
         IQueryable<Client> GetAll();
         IQueryable<Manager> GetManagers(int clientId);
 
-        Client Create(string title, string phone, string legalEntity, ClientTypes clientTypes, NumberOfCalls numberOfCalls, NumberOfShipments numberOfShipments);
+        Client Create(ClientCreateCommand command);
         Client Edit(ClientEditCommand command);
         void Delete(int id);
 

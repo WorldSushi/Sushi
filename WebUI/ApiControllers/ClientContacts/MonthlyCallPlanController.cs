@@ -25,48 +25,22 @@ namespace WebUI.ApiControllers.ClientContacts
             _accountInformationService = accountInformationService;
         }
 
-        [HttpGet]
-        public IEnumerable<MonthlyCallPlan> Get()
+        /*[HttpGet]
+        public IEnumerable<CallPlan> Get()
         {
-            var response = new List<MonthlyCallPlan>()
+            var response = new List<CallPlan>()
             {
-                new MonthlyCallPlan(1, 1, 10, 1)
+                new CallPlan(1, 1, 10, 1)
             };
 
             return response;
-        }
+        }*/
 
         // GET: api/MonthlyCallPlan/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
-        }
-
-        // POST: api/MonthlyCallPlan
-        [HttpPost]
-        public IActionResult Post([FromBody]MonthlyCallPlanCreateCommand command)
-        {
-            command.ManagerId = _accountInformationService.GetOperatorId();
-            _monthlyCallPlanService.Create(command);
-
-            return Ok(new
-            {
-                clientId = command.ClientId,
-                amountCalls = command.AmountCalls
-            });
-        }
-
-        // PUT: api/MonthlyCallPlan/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

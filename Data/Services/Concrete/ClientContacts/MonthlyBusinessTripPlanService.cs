@@ -9,24 +9,25 @@ namespace Data.Services.Concrete.ClientContacts
 {
     public class MonthlyBusinessTripPlanService : IMonthlyBusinessTripService
     {
-        private readonly IRepository<MonthlyBusinessTripPlan> _monthlyBusinessTripPlanRepository;
+        private readonly IRepository<BusinessTripPlan> _monthlyBusinessTripPlanRepository;
 
-        public MonthlyBusinessTripPlanService(IRepository<MonthlyBusinessTripPlan> monthlyBusinessTripPlanRepository)
+        public MonthlyBusinessTripPlanService(IRepository<BusinessTripPlan> monthlyBusinessTripPlanRepository)
         {
             _monthlyBusinessTripPlanRepository = monthlyBusinessTripPlanRepository;
         }
 
-        public IQueryable<MonthlyBusinessTripPlan> GetAll()
+        public IQueryable<BusinessTripPlan> GetAll()
         {
             return _monthlyBusinessTripPlanRepository.All();
         }
 
-        public MonthlyBusinessTripPlan Create(MonthlyBusinessTripPlanCreateCommand command)
+        public BusinessTripPlan Create(BusinessTripPlanCreateCommand command)
         {
-            return _monthlyBusinessTripPlanRepository.Create(new MonthlyBusinessTripPlan(command.ManagerId, command.ClientId, command.AmountTrips, command.Month));
+            return _monthlyBusinessTripPlanRepository.Create(
+                new BusinessTripPlan(command));
         }
 
-        public MonthlyBusinessTripPlan GetPlan(int managerId, int clientId, int month)
+        public BusinessTripPlan GetPlan(int managerId, int clientId, int month)
         {
             return _monthlyBusinessTripPlanRepository.All()
                 .FirstOrDefault(x => x.ManagerId == managerId && x.ClientId == clientId && x.Date.Month == month);
@@ -43,16 +44,16 @@ namespace Data.Services.Concrete.ClientContacts
 
         public int GetPlannedBusinessTripAmount(int managerId, int clientId, int month)
         {
-            return GetPlan(managerId, clientId, month)?.AmountBusinessTrip ?? 0;
+            return GetPlan(managerId, clientId, month)?.NumberBusinessTripHours ?? 0;
         }
 
         public int GetPlanAmountTrips(int clientId, int month)
         {
             return GetAll().Where(x => x.ClientId == clientId && x.Date.Month == month)
-                .Sum(x => x.AmountBusinessTrip);
+                .Sum(x => x.NumberBusinessTripHours);
         }
 
-        public MonthlyBusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
+        public BusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
         {
             var monthlyTripPlan = _monthlyBusinessTripPlanRepository.Get(value.Id);
 

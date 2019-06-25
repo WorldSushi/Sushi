@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System;
+using Base;
 using Base.Extensions;
 using Data.Entities.Clients;
 using Data.Services.Abstract;
@@ -34,17 +35,10 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(string title, string phone, string legalEntity, ClientTypes clientType, NumberOfCalls numberOfCalls, NumberOfShipments numberOfShipments)
+        public Client Create(ClientCreateCommand command)
         {
-            return _clientRepository.Create(new Client
-            {
-                Title = title,
-                Phone = phone.PhoneFormat(),
-                LegalEntity = legalEntity,
-                ClientType = clientType,
-                NumberOfCalls = numberOfCalls,
-                NumberOfShipments = numberOfShipments
-            });
+            return _clientRepository.Create(
+                new Client(command));
         }
 
         public Client Edit(ClientEditCommand command)
@@ -76,7 +70,7 @@ namespace Data.Services.Concrete
 
         public void BindManager(BindManagerCommand command)
         {
-            var client = _clientRepository.Get(command.ClientId);
+            /*var client = _clientRepository.Get(command.ClientId);
 
             var managersForClient = _managerForClientRepository.All()
                 .Where(x => x.ClientId == client.Id)
@@ -102,7 +96,9 @@ namespace Data.Services.Concrete
 
             
 
-            _clientRepository.Update(client);
+            _clientRepository.Update(client);*/
+
+            throw new Exception("Legacy");
         }
     }
 }

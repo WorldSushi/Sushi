@@ -10,7 +10,7 @@ namespace WebUI.ApiControllers
     public class ClientController : ControllerBase
     {
         // GET: api/Client
-        [HttpGet]
+        /*[HttpGet]
         public IEnumerable<Client> Get()
         {
             var response = new List<Client>()
@@ -27,10 +27,10 @@ namespace WebUI.ApiControllers
             };
 
             return response;
-        }
+        }*/
 
         // GET: api/Client/5
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public Client Get(int id)
         {
             return new Client()
@@ -42,7 +42,7 @@ namespace WebUI.ApiControllers
                 ClientType = ClientTypes.Small,
                 NumberOfCalls = NumberOfCalls.FivePerMonth
             };
-        }
+        }*/
 
         // POST: api/Client
         [HttpPost]

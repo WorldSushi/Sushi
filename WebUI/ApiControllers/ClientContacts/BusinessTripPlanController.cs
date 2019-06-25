@@ -40,7 +40,7 @@ namespace WebUI.ApiControllers.ClientContacts
 
         // POST: api/BusinessTripPlan
         [HttpPost]
-        public IActionResult Post([FromBody]MonthlyBusinessTripPlanCreateCommand value)
+        public IActionResult Post([FromBody]BusinessTripPlanCreateCommand value)
         {
             value.ManagerId = _accountInformationService.GetOperatorId();
             _monthlyBusinessTripService.Create(value);
@@ -48,7 +48,7 @@ namespace WebUI.ApiControllers.ClientContacts
             return Ok(new
             {
                 clientId = value.ClientId,
-                amountTrips= value.AmountTrips
+                amountTrips= value.NumberBusinessTripHours
             });
         }
 
