@@ -12,17 +12,17 @@ namespace Data.Entities.Clients
 {
     public class Client : Entity
     {
-        public string Title { get; set; }
+        public string Title { get; protected set; }
 
-        public string Phone { get; set; }
+        public string Phone { get; protected set; }
 
-        public string LegalEntity { get; set; }
+        public string LegalEntity { get; protected set; }
 
-        public ClientTypes ClientType { get; set; }
+        public ClientTypes ClientType { get; protected set; }
 
-        public NumberOfCalls NumberOfCalls { get; set; }
+        public NumberOfCalls NumberOfCalls { get; protected set; }
 
-        public NumberOfShipments NumberOfShipments { get; set; }
+        public NumberOfShipments NumberOfShipments { get; protected set; }
 
         public ICollection<ManagerForClient> Managers { get; protected set; } = new HashSet<ManagerForClient>();
 
@@ -45,12 +45,22 @@ namespace Data.Entities.Clients
             NumberOfShipments = command.NumberOfShipments;
         }
 
+        public void Edit(ClientEditCommand command)
+        {
+            Title = command.Title;
+            LegalEntity = command.LegalEntity;
+            Phone = command.Phone;
+            ClientType = command.ClientType;
+            NumberOfCalls = command.NumberOfCalls;
+            NumberOfShipments = command.NumberOfShipments;
+        }
+
         public void BindManager(BindManagerCommand command)
         {
             Managers.Add(new ManagerForClient(command));
         }
 
-        public CallPlan CurrentCallPlan()
+       /* public CallPlan CurrentCallPlan()
         {
             var currentDate = DateTime.Now;
 
@@ -99,6 +109,6 @@ namespace Data.Entities.Clients
             BusinessTripPlans.Add(businessTripPlan);
 
             return businessTripPlan;
-        }
+        }*/
     }
 }

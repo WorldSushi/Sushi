@@ -51,18 +51,13 @@ namespace WebUI.ApiControllers.Manager
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Put(int id, [FromBody] ClientEditCommand command)
         {
             var client = await _context.Set<Client>()
                 .FirstOrDefaultAsync(x => x.Id == command.Id);
 
-            client.Title = command.Title;
-            client.LegalEntity = command.LegalEntity;
-            client.Phone = command.Phone;
-            client.ClientType = command.ClientType;
-            client.NumberOfCalls = command.NumberOfCalls;
-            client.NumberOfShipments = command.NumberOfShipments;
+            client.Edit(command);
 
             await _context.SaveChangesAsync();
 
