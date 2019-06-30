@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Data;
-using Data.Commands.ClientContacts;
+using Data.Commands.ClientContacts.CallPlan;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Mvc;
