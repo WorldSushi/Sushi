@@ -6,8 +6,6 @@ using Data.Services.Abstract;
 using System.Linq;
 using Data.Commands.Clients;
 using Data.Entities.Users;
-using System.Collections.Generic;
-using Data.Enums;
 
 namespace Data.Services.Concrete
 {

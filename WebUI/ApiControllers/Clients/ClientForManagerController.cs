@@ -53,20 +53,7 @@ namespace WebUI.ApiControllers.Clients
                     LegalEntity = x.LegalEntity,
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
-                    NumberOfShipments = x.NumberOfShipments,
-                    AmountCalls = calls.Count(c => c.Client_number == x.Phone
-                                                   && c.Src_number == manager.Phone),
-                    BusinessTripPlanId = _monthlyBusinessTripService.GetPlan(manager.Id, x.Id, DateTime.Now.Month) != null
-                        ? _monthlyBusinessTripService.GetPlan(manager.Id, x.Id, DateTime.Now.Month).Id
-                        : 0,
-                    BusinessTripCompletedType = _monthlyBusinessTripService.GetPlanCompletedType(manager.Id, x.Id, DateTime.Now.Month),
-                    PlannedAmountCalls = _monthlyCallPlanService
-                        .GetPlanAmountCalls(manager.Id, x.Id, DateTime.Now.Month),
-                    Calls = calls.Where(c => c.Client_number == x.Phone
-                                             && c.Src_number == manager.Phone).ToList(),
-                    PlannedAmountTrips = _monthlyBusinessTripService
-                       .GetPlannedBusinessTripAmount(manager.Id, x.Id, DateTime.Now.Month),
-                    WeekPlans = _weekPlanService.GetWeekPlansByClient(x.Id, manager.Id, DateTime.Now.Month).ToList()
+                    NumberOfShipments = x.NumberOfShipments
                 }).ToList();
 
             return test;

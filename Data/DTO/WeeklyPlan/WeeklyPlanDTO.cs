@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Data.Enums;
 
 namespace Data.DTO.WeeklyPlan
 {
@@ -13,5 +12,6 @@ namespace Data.DTO.WeeklyPlan
         public int WeekNumber { get; set; }
         public string Plan { get; set; }
         public string Fact { get; set; }
+        public ManagerType ManagerType { get; set; }
     }
 }

@@ -16,9 +16,11 @@ namespace Data.Services.Concrete.ClientContacts
             _weekPlanRepository = weekPlanRepository;
         }
 
-        public IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int managerId, int month)
+        public IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int month)
         {
-            return _weekPlanRepository.All().Where(x => x.ClientId == clientId && x.ManagerId == managerId && x.Date.Month == month)
+            return _weekPlanRepository.All()
+                .Where(x => x.ClientId == clientId
+                            && x.Date.Month == month)
                 .Select(x => new WeekPlanDTO {
                     Id = x.Id,
                     ClientId = x.ClientId,
@@ -26,11 +28,6 @@ namespace Data.Services.Concrete.ClientContacts
                     Plan = x.Plan,
                     WeekNumber = x.WeekNumber                   
                 }).AsQueryable();
-        }
-
-        public WeekPlan CreateWeekPlan(WeekPlanCreateCommand command)
-        {
-            return _weekPlanRepository.Create(new WeekPlan(command.ManagerId, command.ClientId, command.Month, command.WeekNumber, command.Plan));
         }
 
         public WeekPlan GetWeekPlan(int id)
@@ -46,6 +43,18 @@ namespace Data.Services.Concrete.ClientContacts
             weekPlanEditing.Fact = command.Fact;
 
             _weekPlanRepository.Update(weekPlanEditing);
+        }
+
+
+        protected WeekPlan CreateWeekPlan(WeekPlanCreateCommand command)
+        {
+            return _weekPlanRepository.Create(
+                new WeekPlan(
+                    command.ManagerId,
+                    command.ClientId,
+                    command.Month,
+                    command.WeekNumber,
+                    command.Plan));
         }
     }
 }

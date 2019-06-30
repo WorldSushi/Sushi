@@ -7,13 +7,9 @@ namespace Data.Services.Abstract.ClientContacts
 {
     public interface IWeekPlanService
     {
-
-        IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int managerId, int month);
+        IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int month);
         WeekPlan GetWeekPlan(int id);
 
         void WeekPlanUpdate(WeekPlanDTO WeekPlan);
-
-        WeekPlan CreateWeekPlan(WeekPlanCreateCommand weekPlan);
-
     }
 }
