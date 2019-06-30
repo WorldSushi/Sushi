@@ -39,7 +39,7 @@ namespace Data.Services.Concrete
                 new Client(command));
         }
 
-        public Client Edit(ClientEdit command)
+        /*public Client Edit(ClientEdit command)
         {
             var client = _clientRepository.Get(command.Id);
 
@@ -53,7 +53,7 @@ namespace Data.Services.Concrete
             _clientRepository.Update(client);
 
             return client;
-        }
+        }*/
 
         public void Delete(int id)
         {
