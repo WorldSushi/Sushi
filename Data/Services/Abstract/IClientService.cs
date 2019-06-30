@@ -12,7 +12,7 @@ namespace Data.Services.Abstract
         IQueryable<Manager> GetManagers(int clientId);
 
         Client Create(ClientCreate command);
-        Client Edit(ClientEdit command);
+        //Client Edit(ClientEdit command);
         void Delete(int id);
 
         Client GetClientByPhone(string phone);

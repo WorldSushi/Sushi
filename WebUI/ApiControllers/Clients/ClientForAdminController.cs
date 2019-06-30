@@ -120,7 +120,7 @@ namespace WebUI.ApiControllers.Clients
         [HttpPut("{id}")]
         public IActionResult Put([FromBody]ClientEdit command)
         {
-            _clientService.Edit(command);
+            //_clientService.Edit(command);
 
             var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month);
             var result = _clientService.GetAll()
