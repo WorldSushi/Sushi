@@ -1,6 +1,6 @@
 ﻿using System;
 using Base;
-using Data.Commands.ClientContacts;
+using Data.Commands.ClientContacts.CallPlan;
 using Data.Entities.Clients;
 using Data.Entities.Users;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using Base;
-using Data.Commands.ClientContacts;
+using Data.Commands.ClientContacts.BusinessTripPlan;
 using Data.Entities.Clients;
 using Data.Entities.Users;
 using Data.Enums;
@@ -9,30 +9,40 @@ namespace Data.Entities.ClientContacts
 {
     public class BusinessTripPlan : Entity
     {
-        public int ManagerId { get; set; }
-        public Manager Manager { get; set; }
+        public int ManagerId { get; protected set; }
+        public Manager Manager { get; protected set; }
 
-        public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public int ClientId { get; protected set; }
+        public Client Client { get; protected set; }
 
-        public int NumberBusinessTripHours { get; set; }
-        public BusinessTripCompletedType BusinessTripCompletedType { get; set; }
+        public int Hours { get; protected set; }
+        public BusinessTripCompletedType CompletedType { get; protected set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; protected set; }
 
         private BusinessTripPlan()
         {
 
         }
 
-        public BusinessTripPlan(BusinessTripPlanCreateCommand command)
+        public BusinessTripPlan(BusinessTripPlanCreate command)
         {
             ManagerId = command.ManagerId;
             ClientId = command.ClientId;
-            NumberBusinessTripHours = command.NumberBusinessTripHours;
+            Hours = command.NumberBusinessTripHours;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-            BusinessTripCompletedType = BusinessTripCompletedType.DidntCompleted;
+            CompletedType = BusinessTripCompletedType.DidntCompleted;
+        }
+
+        public void ChangeHours(int hours)
+        {
+            Hours = hours;
+        }
+
+        public void ChangeCompletedType(BusinessTripCompletedType type)
+        {
+            CompletedType = type;
         }
     }
 }

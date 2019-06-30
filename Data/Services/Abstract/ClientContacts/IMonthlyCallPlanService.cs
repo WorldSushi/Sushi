@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Data.Commands.ClientContacts;
+using Data.Commands.ClientContacts.CallPlan;
 using Data.Entities.ClientContacts;
 
 namespace Data.Services.Abstract.ClientContacts

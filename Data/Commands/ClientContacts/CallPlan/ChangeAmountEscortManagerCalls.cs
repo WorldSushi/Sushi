@@ -1,4 +1,4 @@
-﻿namespace Data.Commands.ClientContacts
+﻿namespace Data.Commands.ClientContacts.CallPlan
 {
     public class ChangeAmountEscortManagerCalls
     {

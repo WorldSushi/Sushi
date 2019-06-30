@@ -1,6 +1,6 @@
-﻿namespace Data.Commands.ClientContacts
+﻿namespace Data.Commands.ClientContacts.BusinessTripPlan
 {
-    public class BusinessTripPlanCreateCommand
+    public class BusinessTripPlanCreate
     {
         public int ClientId { get; set; }
         public int NumberBusinessTripHours { get; set; }

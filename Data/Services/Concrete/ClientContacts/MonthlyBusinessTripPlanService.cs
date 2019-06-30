@@ -1,9 +1,9 @@
 ﻿using Base;
-using Data.Commands.ClientContacts;
 using Data.Entities.ClientContacts;
 using Data.Enums;
 using Data.Services.Abstract.ClientContacts;
 using System.Linq;
+using Data.Commands.ClientContacts.BusinessTripPlan;
 
 namespace Data.Services.Concrete.ClientContacts
 {
@@ -21,7 +21,7 @@ namespace Data.Services.Concrete.ClientContacts
             return _monthlyBusinessTripPlanRepository.All();
         }
 
-        public BusinessTripPlan Create(BusinessTripPlanCreateCommand command)
+        public BusinessTripPlan Create(BusinessTripPlanCreate command)
         {
             return _monthlyBusinessTripPlanRepository.Create(
                 new BusinessTripPlan(command));
@@ -38,22 +38,22 @@ namespace Data.Services.Concrete.ClientContacts
             var businessTrip = GetPlan(managerId, clientId, month);
 
             return businessTrip != null
-                ? businessTrip.BusinessTripCompletedType
+                ? businessTrip.CompletedType
                 : BusinessTripCompletedType.DidntCompleted;
         }
 
         public int GetPlannedBusinessTripAmount(int managerId, int clientId, int month)
         {
-            return GetPlan(managerId, clientId, month)?.NumberBusinessTripHours ?? 0;
+            return GetPlan(managerId, clientId, month)?.Hours ?? 0;
         }
 
         public int GetPlanAmountTrips(int clientId, int month)
         {
             return GetAll().Where(x => x.ClientId == clientId && x.Date.Month == month)
-                .Sum(x => x.NumberBusinessTripHours);
+                .Sum(x => x.Hours);
         }
 
-        public BusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
+        /*public BusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand value)
         {
             var monthlyTripPlan = _monthlyBusinessTripPlanRepository.Get(value.Id);
 
@@ -62,6 +62,6 @@ namespace Data.Services.Concrete.ClientContacts
             _monthlyBusinessTripPlanRepository.Update(monthlyTripPlan);
 
             return monthlyTripPlan;
-        }
+        }*/
     }
 }
