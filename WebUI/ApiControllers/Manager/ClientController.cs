@@ -39,7 +39,7 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ClientCreateCommand command)
+        public async Task<IActionResult> Post([FromBody] ClientCreate command)
         {
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
@@ -52,7 +52,7 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] ClientEditCommand command)
+        public async Task<IActionResult> Put(int id, [FromBody] ClientEdit command)
         {
             var client = await _context.Set<Client>()
                 .FirstOrDefaultAsync(x => x.Id == command.Id);

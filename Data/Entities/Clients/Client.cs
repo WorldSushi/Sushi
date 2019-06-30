@@ -35,7 +35,7 @@ namespace Data.Entities.Clients
 
         }
 
-        public Client(ClientCreateCommand command)
+        public Client(ClientCreate command)
         {
             Title = command.Title;
             Phone = command.Phone;
@@ -45,7 +45,7 @@ namespace Data.Entities.Clients
             NumberOfShipments = command.NumberOfShipments;
         }
 
-        public void Edit(ClientEditCommand command)
+        public void Edit(ClientEdit command)
         {
             Title = command.Title;
             LegalEntity = command.LegalEntity;
@@ -55,7 +55,7 @@ namespace Data.Entities.Clients
             NumberOfShipments = command.NumberOfShipments;
         }
 
-        public void BindManager(BindManagerCommand command)
+        public void BindManager(BindManager command)
         {
             Managers.Add(new ManagerForClient(command));
         }

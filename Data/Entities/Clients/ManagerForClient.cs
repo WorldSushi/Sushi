@@ -20,7 +20,7 @@ namespace Data.Entities.Clients
 
         }
 
-        public ManagerForClient(BindManagerCommand command)
+        public ManagerForClient(BindManager command)
         {
             ClientId = command.ClientId;
             ManagerId = command.ManagerId;

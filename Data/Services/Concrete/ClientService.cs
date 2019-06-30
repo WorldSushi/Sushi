@@ -33,13 +33,13 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(ClientCreateCommand command)
+        public Client Create(ClientCreate command)
         {
             return _clientRepository.Create(
                 new Client(command));
         }
 
-        public Client Edit(ClientEditCommand command)
+        public Client Edit(ClientEdit command)
         {
             var client = _clientRepository.Get(command.Id);
 
@@ -66,7 +66,7 @@ namespace Data.Services.Concrete
                 .FirstOrDefault();
         }
 
-        public void BindManager(BindManagerCommand command)
+        public void BindManager(BindManager command)
         {
             /*var client = _clientRepository.Get(command.ClientId);
 

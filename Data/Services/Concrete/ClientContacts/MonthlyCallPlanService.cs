@@ -43,7 +43,7 @@ namespace Data.Services.Concrete.ClientContacts
         }
 
 
-        public void Create(CallPlanCreateCommand command)
+        public void Create(CallPlanCreate command)
         {
             /*_monthlyCallPlanRepository.Create(
                 new CallPlan(

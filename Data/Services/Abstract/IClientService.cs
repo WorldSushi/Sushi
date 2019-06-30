@@ -11,11 +11,11 @@ namespace Data.Services.Abstract
         IQueryable<Client> GetAll();
         IQueryable<Manager> GetManagers(int clientId);
 
-        Client Create(ClientCreateCommand command);
-        Client Edit(ClientEditCommand command);
+        Client Create(ClientCreate command);
+        Client Edit(ClientEdit command);
         void Delete(int id);
 
         Client GetClientByPhone(string phone);
-        void BindManager(BindManagerCommand command);
+        void BindManager(BindManager command);
     }
 }

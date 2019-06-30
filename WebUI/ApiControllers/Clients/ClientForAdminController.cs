@@ -111,14 +111,14 @@ namespace WebUI.ApiControllers.Clients
 
         // POST: api/ClientForAdmin
         [HttpPost]
-        public IActionResult Post([FromBody]ClientCreateCommand command)
+        public IActionResult Post([FromBody]ClientCreate command)
         {
             return Ok(_clientService.Create(command));
         }
 
         // PUT: api/ClientForAdmin/5
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody]ClientEditCommand command)
+        public IActionResult Put([FromBody]ClientEdit command)
         {
             _clientService.Edit(command);
 

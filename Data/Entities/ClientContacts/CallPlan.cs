@@ -28,7 +28,7 @@ namespace Data.Entities.ClientContacts
 
         }
 
-        public CallPlan(CallPlanCreateCommand command)
+        public CallPlan(CallPlanCreate command)
         {
             ClientId = command.ClientId;
             TotalCalls = command.TotalCalls;

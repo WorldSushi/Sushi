@@ -11,6 +11,6 @@ namespace Data.Services.Abstract.ClientContacts
         int GetPlanAmountCalls(int managerId, int clientId, int month);
         int GetPlanAmountCalls(int clientId, int month);
 
-        void Create(CallPlanCreateCommand command);
+        void Create(CallPlanCreate command);
     }
 }

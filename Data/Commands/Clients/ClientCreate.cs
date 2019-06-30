@@ -2,7 +2,7 @@
 
 namespace Data.Commands.Clients
 {
-    public class ClientCreateCommand
+    public class ClientCreate
     {
         public string Title { get; set; }
         public string Phone { get; set; }

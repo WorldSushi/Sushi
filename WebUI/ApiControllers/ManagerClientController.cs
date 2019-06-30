@@ -22,7 +22,7 @@ namespace WebUI.ApiControllers
 
         // POST: api/ManagerClient
         [HttpPost]
-        public IActionResult Post([FromBody]BindManagerCommand command)
+        public IActionResult Post([FromBody]BindManager command)
         {
             _clientService.BindManager(command);
 
