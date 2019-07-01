@@ -26,6 +26,7 @@ export class ClientListComponent implements OnInit {
    
   displayedColumns: string[] = [
     'title', 
+    'phone',
     'type', 
     'numberOfCalls', 
     'numberOfShipments',
@@ -38,8 +39,6 @@ export class ClientListComponent implements OnInit {
     'tripPlan.fact',
     'MSplanned',
     'RMplanned',
-    'MSfact',
-    'RMfact',
     'calls',
     'MSresults.sum',
     'RMresults.sum'   
@@ -177,27 +176,55 @@ export class ClientListComponent implements OnInit {
     return callsDates.filter(item => item.action > 0).length;
   }
 
-  getAnalysisColor(value) {
+  getAnalysisProps(value) {
     if(value == 0){
-      return "#ac0800"
+      return {
+        background: "#ac0800",
+        font: "#384855",
+        width: '30'
+      } 
     }
     else if(value > 0 && value < 25){
-      return '#fb8c00'
+      return {
+        background: "#ffbc6d",
+        font: "#384855",
+        width: "40"
+      }
     }
     else if(value >= 25 && value <= 49){
-      return '#ffd54f'
+      return {
+        background: "#fee789",
+        font: "#384855",
+        width: "50"
+      }
     }
     else if(value > 49 && value <= 74){
-      return '#f8bbd0'
+      return {
+        background: '#ebb4d3',
+        font: '#384855',
+        width: "70"
+      }
     }
     else if(value > 74 && value <= 99){
-      return '#64dd17'
+      return {
+        background: "#ccffc6",
+        font: "#384855",
+        width: "80"
+      }
     }
     else if(value > 99 && value <= 124){
-      return '#4caf50'
+      return {
+        background: "#85e5fe",
+        font: "#384855",
+        width: '100'
+      }
     }
     else if(value > 124){
-      return '#18ffff'
+      return {
+        background: "#85e5fe",
+        font: "#384855",
+        width: '100'
+      }
     }
     else {
       '#fff'
