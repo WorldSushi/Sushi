@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Base;
-using Data.Commands.ClientContacts;
 using Data.Commands.Clients;
-using Data.Constants;
 using Data.Entities.ClientContacts;
 using Data.Enums;
 
