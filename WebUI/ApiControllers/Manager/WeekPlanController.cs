@@ -55,7 +55,7 @@ namespace WebUI.ApiControllers.Manager
 
             await _context.SaveChangesAsync();
 
-            var result = newWeekPlan;
+            var result = newWeekPlan.Entity;
 
             return Ok(result);
         }
