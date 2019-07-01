@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.WeekPlan;
 using Data.DTO.Clients;
@@ -25,6 +26,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             var result = await _context.Set<WeekPlan>()
+                .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new WeekPlanDto()
                 {
                     Id = x.Id,
@@ -43,8 +45,7 @@ namespace WebUI.ApiControllers.Manager
         {
             var weekPlan = await _context.Set<WeekPlan>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
-                                          && x.Date.Month == DateTime.Now.Month
-                                          && x.Date.Year == DateTime.Now.Year
+                                          && DateHelper.IsCurrentMonth(x.Date)
                                           && x.WeekNumber == command.WeekNumber
                                           && x.ManagerType == command.ManagerType);
             if (weekPlan != null)
@@ -67,8 +68,7 @@ namespace WebUI.ApiControllers.Manager
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && x.WeekNumber == command.WeekNumber
                                           && x.ManagerType == command.ManagerType
-                                          && x.Date.Month == DateTime.Now.Month
-                                          && x.Date.Year == DateTime.Now.Year);
+                                          && DateHelper.IsCurrentMonth(x.Date));
 
             if (weekPlan == null)
                 return BadRequest("План не найден");

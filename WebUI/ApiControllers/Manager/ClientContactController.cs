@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.DTO.Clients;
@@ -25,6 +26,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             var result = await _context.Set<ClientContact>()
+                .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new ClientContactDto()
                 {
                     Id = x.Id,

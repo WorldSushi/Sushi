@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
@@ -27,8 +28,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             var result = await _context.Set<ClientContact>()
-                .Where(x => x.Date.Month == DateTime.Now.Month
-                            && x.Date.Year == DateTime.Now.Year)
+                .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .GroupBy(x => x.ClientId)
                 .Select(x => new ClientContactResultDto()
                 {

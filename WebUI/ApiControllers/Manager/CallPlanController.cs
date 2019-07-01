@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.CallPlan;
 using Data.DTO.Clients;
@@ -25,6 +26,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             var result = await _context.Set<CallPlan>()
+                .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new CallPlanDto()
                 {
                     Id = x.Id,
@@ -42,8 +44,7 @@ namespace WebUI.ApiControllers.Manager
         {
             var callPlan = await _context.Set<CallPlan>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
-                                          && x.Date.Month == DateTime.Now.Month
-                                          && x.Date.Year == DateTime.Now.Year);
+                                          && DateHelper.IsCurrentMonth(x.Date));
 
             callPlan.ChangeEscortManagerCalls(command.Amount);
 
