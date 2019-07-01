@@ -1,48 +1,29 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { ICallPlan } from "../models/call-plan.model";
+import { environment } from 'src/environments/environment';
 
 
 @Injectable()
 export class CallPlansService {
-
-    testData = JSON.stringify([
-        { id: 1, collective: 10, MS: 7, RM: 3, clientId: 1 },
-        { id: 1, collective: 5, MS: 2, RM: 3, clientId: 2 },
-    ]);
+    API_URL: string = environment.API_URL + "CallPlan/"
+    httpOptions = {
+        headers: new HttpHeaders({
+            "Content-Type": "application/json"
+        })
+    }
 
     getCallPlans(managerId: number): Observable<ICallPlan[]>{
-        const result = JSON.parse(this.testData);
-        return of(result);
+        return this.http.get<ICallPlan[]>(this.API_URL + managerId);
     }
 
     createCallPlan(callPlan: ICallPlan): Observable<ICallPlan> {
-        let callPlans: ICallPlan[] = JSON.parse(this.testData);
-
-        callPlan.id = callPlans.length + 1;
-
-        callPlans = [...callPlans, callPlan];
-
-        this.testData = JSON.stringify(callPlans);
-
-        return of(callPlan);
+        return this.http.post<ICallPlan>(this.API_URL, callPlan, this.httpOptions);
     }
 
-    editClient(callPlan: ICallPlan): Observable<ICallPlan> {
-        let callPlans: ICallPlan[] = JSON.parse(this.testData);
-
-        let indexOfEditingCallPlan= callPlans.findIndex(item => item.id == callPlan.id);
-
-        callPlans = [
-            ...callPlans.slice(0, indexOfEditingCallPlan),
-            callPlan,
-            ...callPlans.slice(indexOfEditingCallPlan + 1)
-        ];
-
-        this.testData = JSON.stringify(callPlans);
-
-        return of(callPlan);
+    editCallPlan(callPlan: ICallPlan): Observable<ICallPlan> {
+        return this.http.put<ICallPlan>(this.API_URL + callPlan.id, callPlan, this.httpOptions);
     }
 
 
