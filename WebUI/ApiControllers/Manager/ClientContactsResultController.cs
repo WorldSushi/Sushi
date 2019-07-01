@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.ApiControllers.Manager
 {
-    [Route("api/[controller]")]
+    [Route("api/manager/[controller]")]
     [ApiController]
     public class ClientContactsResultController : ControllerBase
     {

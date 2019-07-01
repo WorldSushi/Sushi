@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebUI.ApiControllers.Manager
 {
-    [Route("api/[controller]")]
+    [Route("api/manager/[controller]")]
     [ApiController]
     public class WeekPlanController : ControllerBase
     {
