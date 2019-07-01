@@ -16,6 +16,6 @@ namespace Data.DTO.Clients
         public BusinessTripPlanDto BusinessTripPlan { get; set; }
         public ICollection<WeekPlanDto> WeekPlans { get; set; }
         public ICollection<CallDto> Calls { get; set; }
-        public ResultDto Results { get; set; }
+        public ClientContactResultDto Results { get; set; }
     }
 }

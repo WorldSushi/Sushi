@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Data;
 using Data.DTO.Clients;
+using Data.Entities.ClientContacts;
+using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebUI.ApiControllers.Manager
 {
@@ -20,19 +26,28 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = new List<ResultDto>()
-            {
-                new ResultDto()
+            var result = await _context.Set<ClientContact>()
+                .Where(x => x.Date.Month == DateTime.Now.Month
+                            && x.Date.Year == DateTime.Now.Year)
+                .GroupBy(x => x.ClientId)
+                .Select(x => new ClientContactResultDto()
                 {
-                    ClientId = 1,
-                    EscortCalls = 30,
-                    EscortMails = 2,
-                    EscortWhatsUpMessages = 1,
-                    RegionalCalls = 20,
-                    RegionalMails = 1,
-                    RegionalWhatsUpMessages = 0
-                }
-            };
+                    ClientId = x.Key,
+                    EscortCalls = x.Count(z => z.ManagerType == ManagerType.EscortManager
+                                               && z.Type == ClientContactType.Call),
+                    EscortMails = x.Count(z => z.ManagerType == ManagerType.EscortManager
+                                               && z.Type == ClientContactType.Mail),
+                    EscortWhatsUpMessages = x.Count(z => z.ManagerType == ManagerType.EscortManager
+                                                         && z.Type == ClientContactType.WhatsUp),
+                    EscortTotalContacts = x.Count(z => z.ManagerType == ManagerType.EscortManager),
+                    RegionalCalls = x.Count(z => z.ManagerType == ManagerType.RegionalManager
+                                                 && z.Type == ClientContactType.Call),
+                    RegionalMails = x.Count(z => z.ManagerType == ManagerType.RegionalManager
+                                                 && z.Type == ClientContactType.Mail),
+                    RegionalWhatsUpMessages = x.Count(z => z.ManagerType == ManagerType.RegionalManager
+                                                           && z.Type == ClientContactType.WhatsUp),
+                    RegionalTotalContacts = x.Count(z => z.ManagerType == ManagerType.RegionalManager)
+                }).ToListAsync();
 
             return Ok(result);
         }
