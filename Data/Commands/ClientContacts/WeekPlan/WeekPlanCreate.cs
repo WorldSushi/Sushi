@@ -1,14 +1,12 @@
 ﻿using Data.Enums;
 
-namespace Data.DTO.Clients
+namespace Data.Commands.ClientContacts.WeekPlan
 {
-    public class WeekPlanDto
+    public class WeekPlanCreate
     {
-        public int Id { get; set; }
         public int ClientId { get; set; }
-        public string Plan { get; set; }
-        public string Fact { get; set; }
         public int WeekNumber { get; set; }
+        public string Plan { get; set; }
         public ManagerType ManagerType { get; set; }
     }
 }

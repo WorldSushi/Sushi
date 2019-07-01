@@ -35,7 +35,7 @@ namespace WebUI.ApiControllers.Clients
             _context = context;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public IEnumerable<ClientForAdminVM> Get()
         {
             var calls = _monthlyCallService.GetMonthlyCalls(DateTime.Now.Month);
@@ -100,7 +100,7 @@ namespace WebUI.ApiControllers.Clients
                                 .ToList()
                         }).ToList()
                 }).ToList();
-        }
+        }*/
 
         // GET: api/ClientForAdmin/5
         [HttpGet("{id}")]

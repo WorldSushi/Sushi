@@ -1,9 +1,9 @@
 ﻿using Base;
-using Data.Commands.ClientContacts;
 using Data.DTO.WeeklyPlan;
 using Data.Entities.ClientContacts;
 using Data.Services.Abstract.ClientContacts;
 using System.Linq;
+using Data.Commands.ClientContacts.WeekPlan;
 
 namespace Data.Services.Concrete.ClientContacts
 {
@@ -37,16 +37,16 @@ namespace Data.Services.Concrete.ClientContacts
 
         public void WeekPlanUpdate(WeekPlanDTO command)
         {
-            var weekPlanEditing = GetWeekPlan(command.Id);
+            /*var weekPlanEditing = GetWeekPlan(command.Id);
 
             weekPlanEditing.Plan = command.Plan;
             weekPlanEditing.Fact = command.Fact;
 
-            _weekPlanRepository.Update(weekPlanEditing);
+            _weekPlanRepository.Update(weekPlanEditing);*/
         }
 
 
-        protected WeekPlan CreateWeekPlan(WeekPlanCreateCommand command)
+       /* protected WeekPlan CreateWeekPlan(WeekPlanCreate command)
         {
             return _weekPlanRepository.Create(
                 new WeekPlan(
@@ -55,6 +55,6 @@ namespace Data.Services.Concrete.ClientContacts
                     command.Month,
                     command.WeekNumber,
                     command.Plan));
-        }
+        }*/
     }
 }
