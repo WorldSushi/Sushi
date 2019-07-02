@@ -1,9 +1,9 @@
 export interface INomenclatureAnalysis 
 {
     id: number,
-    reportPrevMonth: string,
-    reportAvg5Months: string,
-    prevMonth: string,
-    avg5Months: string,
+    reportPrevMonth: number,
+    reportAvg5Months: number,
+    prevMonth: number,
+    avg5Months: number,
     clientId: number
 }

@@ -76,22 +76,22 @@ export class ClientListComponent implements OnInit {
 
   openNomenclatureAnalysis(client: IClient) {
     this.dialog.open(AnalysisDialogComponent, {
-      width: '725px',
+      width: '938px',
       data: {
         title: client.title,
-        analysisTitle: 'Анализ по номен-ре',
-        analysis: [client.nomenclatureAnalysis]
+        analysisTitle: 'Анализ по номенклатуре',
+        analysis: client.nomenclatureAnalysis
       }
     })
   }
 
   openRevenueAnalysis(client: IClient) {
     this.dialog.open(AnalysisDialogComponent, {
-      width: '725px',
+      width: '938px',
       data: {
         title: client.title,
         analysisTitle: 'Анализ по выручке',
-        analysis: [client.revenueAnalysis]
+        analysis: client.revenueAnalysis
       }
     })
   }
@@ -123,16 +123,16 @@ export class ClientListComponent implements OnInit {
         results: [
           {
             MSresults: {
-              calls: client.MSCallsDates.filter(item => item.action == 10).length,
-              whatsUp: client.MSCallsDates.filter(item => item.action == 20).length,
-              letters: client.MSCallsDates.filter(item => item.action == 30).length,
-              sum: client.MSCallsDates.filter(item => item.action != 0).length
+              calls: client.MSCallsDates.filter(item => item.contactType == 10).length,
+              whatsUp: client.MSCallsDates.filter(item => item.contactType == 20).length,
+              letters: client.MSCallsDates.filter(item => item.contactType == 30).length,
+              sum: client.MSCallsDates.filter(item => item.contactType != 0).length
             },
             RMresults: {
-              calls: client.RMCallsDates.filter(item => item.action == 10).length,
-              whatsUp: client.RMCallsDates.filter(item => item.action == 20).length,
-              letters: client.RMCallsDates.filter(item => item.action == 30).length,
-              sum: client.RMCallsDates.filter(item => item.action > 0).length
+              calls: client.RMCallsDates.filter(item => item.contactType == 10).length,
+              whatsUp: client.RMCallsDates.filter(item => item.contactType == 20).length,
+              letters: client.RMCallsDates.filter(item => item.contactType == 30).length,
+              sum: client.RMCallsDates.filter(item => item.contactType > 0).length
             }
           }
         ]        
@@ -160,10 +160,10 @@ export class ClientListComponent implements OnInit {
   }
 
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
-    const a = parseInt(value.reportPrevMonth);
-    const b = parseInt(value.reportAvg5Months);
-    const c = parseInt(value.prevMonth);
-    const d = parseInt(value.avg5Months);
+    const a = value.reportPrevMonth;
+    const b = value.reportAvg5Months;
+    const c = value.prevMonth;
+    const d = value.avg5Months;
 
     return Math.round((a + b + c + d) / 4);
   }
@@ -173,7 +173,7 @@ export class ClientListComponent implements OnInit {
   }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
-    return callsDates.filter(item => item.action > 0).length;
+    return callsDates.filter(item => item.contactType > 0).length;
   }
 
   getAnalysisProps(value) {

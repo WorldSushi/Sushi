@@ -7,6 +7,11 @@ import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { ICallsDate } from '../../shared/models/calls-date.model';
+import { CallPlanFacade } from 'src/app/store/manager-rm/clients/facades/call-plans.facade';
+import { WeekPlanFacade } from 'src/app/store/manager-rm/clients/facades/week-plan.facade';
+import { TripPlanFacade } from 'src/app/store/manager-rm/clients/facades/trip-plan.facade';
+import { ManagerCallsResultFacade } from 'src/app/store/manager-rm/clients/facades/manager-calls-result.facade';
+import { CallsDateFacade } from 'src/app/store/manager-rm/clients/facades/calls-date.selectors';
 
 @Component({
   selector: 'app-clients',
@@ -27,35 +32,22 @@ export class ClientsComponent implements OnInit {
     }
     client.nomenclatureAnalysis = {
       id: client.id,
-      reportPrevMonth: '0%',
-      reportAvg5Months: '0%',
-      prevMonth: '0%',
-      avg5Months: '0%',
+      reportPrevMonth: 0,
+      reportAvg5Months: 0,
+      prevMonth: 0,
+      avg5Months: 0,
       clientId: client.id
     }
     client.revenueAnalysis = {
       id: client.id,
-      reportPrevMonth: '0%',
-      reportAvg5Months: '0%',
-      prevMonth: '0%',
-      avg5Months: '0%',
+      reportPrevMonth: 0,
+      reportAvg5Months: 0,
+      prevMonth: 0,
+      avg5Months: 0,
       clientId: client.id
     }
     client.weekPlans = this.clientWeekPlansInit(client);
-    client.MSresults = {
-      id: client.id,
-      clientId: client.id,
-      calls: 0,
-      whatsUp: 0,
-      letters: 0
-    }  
-    client.RMresults = {
-      id: client.id,
-      clientId: client.id,
-      calls: 0,
-      whatsUp: 0,
-      letters: 0
-    }
+
 
     client.MSCallsDates = this.callsDateInit(client.id);
     client.RMCallsDates = this.callsDateInit(client.id);
@@ -72,9 +64,9 @@ export class ClientsComponent implements OnInit {
   clientCallPlanInit(client: IClient): ICallPlan {
     return {
       id: 0,
-      collective: this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls),
-      RM: this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls),
-      MS: 0,
+      totalCalls: this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls),
+      regionalManagerCalls: this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls),
+      escortManagerCalls: 0,
       clientId: client.id
     }
   }
@@ -85,41 +77,51 @@ export class ClientsComponent implements OnInit {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       }
     ]
   }
 
   clientCallPlanRecalculate(client: IClient): ICallPlan {
-    client.callPlan.collective = this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls);
+    client.callPlan.totalCalls = this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls);
     return {
       ...client.callPlan,
-      MS: client.callPlan.MS,
-      RM: client.callPlan.collective - client.callPlan.MS
+      escortManagerCalls: client.callPlan.escortManagerCalls,
+      regionalManagerCalls: client.callPlan.totalCalls - client.callPlan.escortManagerCalls
     }
   }
 
@@ -133,7 +135,9 @@ export class ClientsComponent implements OnInit {
     for(let i = 0; i < daysAmount; i++){
       callsDate.push({
         id: i + 1,
-        action: 0,
+        contactType: 0,
+        managerType: 10,
+        date: new Date(),
         clientId: clientId
       })
     }
@@ -146,10 +150,20 @@ export class ClientsComponent implements OnInit {
     return new Date(year, month, 0).getDate();
   }
 
-  constructor(public clientsFacade: ClientsFacade) { }
+  constructor(public clientsFacade: ClientsFacade,
+    public callPlanFacade: CallPlanFacade,
+    public weekPlanFacade: WeekPlanFacade,
+    public tripPlanFacade: TripPlanFacade,
+    public managerCallsResult: ManagerCallsResultFacade,
+    public callsDateFacade: CallsDateFacade) { }
 
   ngOnInit() {
     this.clientsFacade.loadClients(1);
+    this.callPlanFacade.loadCallPlan(1);
+    this.weekPlanFacade.loadWeekPlan(1);
+    this.tripPlanFacade.loadTripPlan(1);
+    this.managerCallsResult.loadManagerCallsResult(1);
+    this.callsDateFacade.loadCallsDate(1);
   }
 
   translateNumberOfCallsToCollectiveCalls(numberOfCalls): number {

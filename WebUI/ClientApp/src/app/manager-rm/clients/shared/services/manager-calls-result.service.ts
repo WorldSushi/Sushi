@@ -7,7 +7,7 @@ import { IManagerCallsResult } from '../models/Manager-calls-result.model';
 
 @Injectable()
 export class ManagerCallsResultsService {
-    API_URL: string = environment.API_URL + "ManagerCallsResult/"
+    API_URL: string = environment.API_URL + "manager/ClientContactsResult/"
     httpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export class ManagerCallsResultsService {
     }
 
     getManagerCallsResults(managerId: number): Observable<IManagerCallsResult[]>{
-        return this.http.get<IManagerCallsResult[]>(this.API_URL + managerId);
+        return this.http.get<IManagerCallsResult[]>(this.API_URL);
     }
 
     createManagerCallsResult(managerCallsResult: IManagerCallsResult): Observable<IManagerCallsResult> {

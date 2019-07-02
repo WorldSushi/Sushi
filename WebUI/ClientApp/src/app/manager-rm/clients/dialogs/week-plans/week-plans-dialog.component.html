@@ -1,45 +1,78 @@
-<h3 mat-dialog-title>{{data.title}}. План по задачам</h3>
+<div class="dialog-title">
+  <h3 mat-dialog-title>План по задачам <span>{{data.title}}</span></h3>
+</div>
 
-<table mat-table #table [dataSource]="data.weekPlans">
-  <ng-container matColumnDef="Number">
-    <th mat-header-cell *matHeaderCellDef>Неделя</th>
-    <td mat-cell *matCellDef="let row; let i = index">{{i + 1}}</td>
-  </ng-container>
-  <ng-container matColumnDef="MSplanned">
-    <th mat-header-cell *matHeaderCellDef>МС план</th>
-    <td mat-cell *matCellDef="let row">
-      <mat-form-field>
-        <textarea matInput [(ngModel)]="row.MSplanned"></textarea>
-      </mat-form-field>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="RMplanned">
-    <th mat-header-cell *matHeaderCellDef>РМ план</th>
-    <td mat-cell *matCellDef="let row">
-      <mat-form-field>
-        <textarea matInput [(ngModel)]="row.RMplanned"></textarea>
-      </mat-form-field>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="MSfact">
-    <th mat-header-cell *matHeaderCellDef>МС факт </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-form-field>
-        <textarea matInput [(ngModel)]="row.MSfact"></textarea>
-      </mat-form-field>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="RMfact">
-    <th mat-header-cell *matHeaderCellDef>РМ факт </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-form-field>
-        <textarea matInput [(ngModel)]="row.RMfact"></textarea>
-      </mat-form-field>
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<span class="numberOfWeek">неделя {{numberOfWeek}}</span>
+
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+<div class="dialog-body">
+  <div class="dialog-section dialog-left">
+    <div class="dialog-section-title">
+      Менеджер сопровождения
+    </div>
+    <div class="dialog-section-body">
+      <div class="planned">
+        <small>План</small>
+        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedWeek.MSplanned">{{selectedWeek.MSplanned}}</textarea>
+      </div>
+      
+
+      <div class="fact">
+        <small>Факт</small>
+        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedWeek.MSfact">{{selectedWeek.MSfact}}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section dialog-right">
+    <div class="dialog-section-title">
+      Региональный сопровождения
+    </div>
+    <div class="dialog-section-body">
+      <div class="planned">
+        <small>План</small>
+        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedWeek.RMplanned">{{selectedWeek.RMplanned}}</textarea>
+      </div>
+      <div class="fact">
+        <small>Факт</small>
+        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedWeek.RMfact">{{selectedWeek.RMplanned}}</textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table style="margin-bottom: 40px">
+    <thead>
+      <tr>
+        <th style="background-color: #F1F8FF" width="50"></th>
+        <th style="background-color: #ECF5FF">Неделя 1</th>
+        <th style="background-color: #EFF6FF">Неделя 2</th>
+        <th style="background-color: #E2F0FF">Неделя 3</th>
+        <th style="background-color: #DBECFF">Неделя 4</th>
+        <th style="background-color: #D3E8FF">Неделя 5</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: bold">
+          МС
+        </td>
+        <td *ngFor="let element of data.weekPlans; let i = index" (click)="selectWeek(element, i)">
+          {{element.MSplanned}}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold">
+          РМ
+        </td>
+        <td *ngFor="let element of data.weekPlans; let i = index" (click)="selectWeek(element, i)">
+          {{element.RMplanned}}
+        </td>
+      </tr>
+    </tbody>
 </table>
+
 
 <div class="dialog-actions">
   <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
