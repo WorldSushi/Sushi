@@ -76,22 +76,22 @@ export class ClientListComponent implements OnInit {
 
   openNomenclatureAnalysis(client: IClient) {
     this.dialog.open(AnalysisDialogComponent, {
-      width: '725px',
+      width: '938px',
       data: {
         title: client.title,
-        analysisTitle: 'Анализ по номен-ре',
-        analysis: [client.nomenclatureAnalysis]
+        analysisTitle: 'Анализ по номенклатуре',
+        analysis: client.nomenclatureAnalysis
       }
     })
   }
 
   openRevenueAnalysis(client: IClient) {
     this.dialog.open(AnalysisDialogComponent, {
-      width: '725px',
+      width: '938px',
       data: {
         title: client.title,
         analysisTitle: 'Анализ по выручке',
-        analysis: [client.revenueAnalysis]
+        analysis: client.revenueAnalysis
       }
     })
   }
@@ -160,10 +160,10 @@ export class ClientListComponent implements OnInit {
   }
 
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
-    const a = parseInt(value.reportPrevMonth);
-    const b = parseInt(value.reportAvg5Months);
-    const c = parseInt(value.prevMonth);
-    const d = parseInt(value.avg5Months);
+    const a = value.reportPrevMonth;
+    const b = value.reportAvg5Months;
+    const c = value.prevMonth;
+    const d = value.avg5Months;
 
     return Math.round((a + b + c + d) / 4);
   }

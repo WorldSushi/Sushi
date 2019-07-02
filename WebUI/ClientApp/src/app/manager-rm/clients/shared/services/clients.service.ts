@@ -31,18 +31,18 @@ export class ClientsService {
             },
             nomenclatureAnalysis: {
                 id: 1,
-                reportPrevMonth: "127%",
-                reportAvg5Months: "72%",
-                prevMonth: "152%",
-                avg5Months: "60%",
+                reportPrevMonth: 127,
+                reportAvg5Months: 72,
+                prevMonth: 152,
+                avg5Months: 60,
                 clientId: 1
             },
             revenueAnalysis: {
                 id: 1,
-                reportPrevMonth: "127%",
-                reportAvg5Months: "112%",
-                prevMonth: "132%",
-                avg5Months: "140%",
+                reportPrevMonth: 127,
+                reportAvg5Months: 112,
+                prevMonth: 132,
+                avg5Months: 140,
                 clientId: 1
             },
             weekPlans: [
@@ -127,18 +127,18 @@ export class ClientsService {
             },
             nomenclatureAnalysis: {
                 id: 2,
-                reportPrevMonth: "12%",
-                reportAvg5Months: "19%",
-                prevMonth: "10%",
-                avg5Months: "10%",
+                reportPrevMonth: 12,
+                reportAvg5Months: 19,
+                prevMonth: 10,
+                avg5Months: 10,
                 clientId: 2
             },
             revenueAnalysis: {
                 id: 2,
-                reportPrevMonth: "12%",
-                reportAvg5Months: "19%",
-                prevMonth: "10%",
-                avg5Months: "60%",
+                reportPrevMonth: 12,
+                reportAvg5Months: 19,
+                prevMonth: 10,
+                avg5Months: 60,
                 clientId: 2
             },
             weekPlans: [
@@ -222,18 +222,18 @@ export class ClientsService {
             },
             nomenclatureAnalysis: {
                 id: 3,
-                reportPrevMonth: "82%",
-                reportAvg5Months: "59%",
-                prevMonth: "90%",
-                avg5Months: "126%",
+                reportPrevMonth: 82,
+                reportAvg5Months: 59,
+                prevMonth: 90,
+                avg5Months: 126,
                 clientId: 3
             },
             revenueAnalysis: {
                 id: 3,
-                reportPrevMonth: "82%",
-                reportAvg5Months: "29%",
-                prevMonth: "30%",
-                avg5Months: "126%",
+                reportPrevMonth: 82,
+                reportAvg5Months: 29,
+                prevMonth: 30,
+                avg5Months: 126,
                 clientId: 3
             },
             weekPlans: [

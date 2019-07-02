@@ -27,18 +27,18 @@ export class ClientsComponent implements OnInit {
     }
     client.nomenclatureAnalysis = {
       id: client.id,
-      reportPrevMonth: '0%',
-      reportAvg5Months: '0%',
-      prevMonth: '0%',
-      avg5Months: '0%',
+      reportPrevMonth: 0,
+      reportAvg5Months: 0,
+      prevMonth: 0,
+      avg5Months: 0,
       clientId: client.id
     }
     client.revenueAnalysis = {
       id: client.id,
-      reportPrevMonth: '0%',
-      reportAvg5Months: '0%',
-      prevMonth: '0%',
-      avg5Months: '0%',
+      reportPrevMonth: 0,
+      reportAvg5Months: 0,
+      prevMonth: 0,
+      avg5Months: 0,
       clientId: client.id
     }
     client.weekPlans = this.clientWeekPlansInit(client);
@@ -85,31 +85,41 @@ export class ClientsComponent implements OnInit {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       },
       {
           id: client.id,
           clientId: client.id,
           RMplanned: '',
-          RMfact: ''
+          RMfact: '',
+          MSplanned: '',
+          MSfact: ''
       }
     ]
   }
