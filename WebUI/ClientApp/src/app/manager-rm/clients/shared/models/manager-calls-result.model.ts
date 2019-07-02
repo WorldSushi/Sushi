@@ -1,7 +1,12 @@
 export interface IManagerCallsResult {
     id: number,
-    calls: number,
-    whatsUp: number,
-    letters: number,
+    escortCalls: number,
+    escortMails: number,
+    escortLetters: number,
+    escortTotalContacts: number,
+    regionalCalls: number,
+    regionalMails: number,
+    regionalLetters: number,
+    regionalTotalContacts: number,
     clientId: number
 }

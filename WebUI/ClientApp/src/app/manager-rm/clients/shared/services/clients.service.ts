@@ -340,7 +340,9 @@ export class ClientsService {
         for(let i = 0; i < daysAmount; i++){
           callsDate.push({
             id: i + 1,
-            action: 0,
+            contactType: 0,
+            managerType: 10,
+            date: new Date(),
             clientId: clientId
           })
         }

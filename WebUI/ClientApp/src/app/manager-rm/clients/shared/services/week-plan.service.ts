@@ -7,7 +7,7 @@ import { IWeekPlan } from '../models/week-plan.model';
 
 @Injectable()
 export class WeekPlansService {
-    API_URL: string = environment.API_URL + "WeekPlan/"
+    API_URL: string = environment.API_URL + "manager/WeekPlan/"
     httpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export class WeekPlansService {
     }
 
     getWeekPlans(managerId: number): Observable<IWeekPlan[]>{
-        return this.http.get<IWeekPlan[]>(this.API_URL + managerId);
+        return this.http.get<IWeekPlan[]>(this.API_URL);
     }
 
     createWeekPlan(weekPlan: IWeekPlan): Observable<IWeekPlan> {

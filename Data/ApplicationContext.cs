@@ -22,6 +22,7 @@ namespace Data
             modelBuilder.Entity<BusinessTripPlan>();
             modelBuilder.Entity<ManagerForClient>();
             modelBuilder.Entity<WeekPlan>();
+            modelBuilder.Entity<ClientContact>();
         }
     }
 }

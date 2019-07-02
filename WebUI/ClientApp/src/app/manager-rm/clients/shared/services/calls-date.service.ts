@@ -7,7 +7,7 @@ import { ICallsDate } from '../models/calls-date.model';
 
 @Injectable()
 export class CallsDatesService {
-    API_URL: string = environment.API_URL + "CallsDate/"
+    API_URL: string = environment.API_URL + "manager/ClientContact/"
     httpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export class CallsDatesService {
     }
 
     getCallsDates(managerId: number): Observable<ICallsDate[]>{
-        return this.http.get<ICallsDate[]>(this.API_URL + managerId);
+        return this.http.get<ICallsDate[]>(this.API_URL);
     }
 
     createCallsDate(callsDate: ICallsDate): Observable<ICallsDate> {

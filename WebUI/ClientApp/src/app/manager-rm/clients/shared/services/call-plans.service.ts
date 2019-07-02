@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class CallPlansService {
-    API_URL: string = environment.API_URL + "CallPlan/"
+    API_URL: string = environment.API_URL + "manager/CallPlan/"
     httpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export class CallPlansService {
     }
 
     getCallPlans(managerId: number): Observable<ICallPlan[]>{
-        return this.http.get<ICallPlan[]>(this.API_URL + managerId);
+        return this.http.get<ICallPlan[]>(this.API_URL);
     }
 
     createCallPlan(callPlan: ICallPlan): Observable<ICallPlan> {

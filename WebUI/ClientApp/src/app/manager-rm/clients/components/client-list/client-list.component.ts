@@ -123,16 +123,16 @@ export class ClientListComponent implements OnInit {
         results: [
           {
             MSresults: {
-              calls: client.MSCallsDates.filter(item => item.action == 10).length,
-              whatsUp: client.MSCallsDates.filter(item => item.action == 20).length,
-              letters: client.MSCallsDates.filter(item => item.action == 30).length,
-              sum: client.MSCallsDates.filter(item => item.action != 0).length
+              calls: client.MSCallsDates.filter(item => item.contactType == 10).length,
+              whatsUp: client.MSCallsDates.filter(item => item.contactType == 20).length,
+              letters: client.MSCallsDates.filter(item => item.contactType == 30).length,
+              sum: client.MSCallsDates.filter(item => item.contactType != 0).length
             },
             RMresults: {
-              calls: client.RMCallsDates.filter(item => item.action == 10).length,
-              whatsUp: client.RMCallsDates.filter(item => item.action == 20).length,
-              letters: client.RMCallsDates.filter(item => item.action == 30).length,
-              sum: client.RMCallsDates.filter(item => item.action > 0).length
+              calls: client.RMCallsDates.filter(item => item.contactType == 10).length,
+              whatsUp: client.RMCallsDates.filter(item => item.contactType == 20).length,
+              letters: client.RMCallsDates.filter(item => item.contactType == 30).length,
+              sum: client.RMCallsDates.filter(item => item.contactType > 0).length
             }
           }
         ]        
@@ -173,7 +173,7 @@ export class ClientListComponent implements OnInit {
   }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
-    return callsDates.filter(item => item.action > 0).length;
+    return callsDates.filter(item => item.contactType > 0).length;
   }
 
   getAnalysisProps(value) {
