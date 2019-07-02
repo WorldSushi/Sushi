@@ -1,9 +1,9 @@
 ﻿using Base;
-using Data.Commands.ClientContacts;
 using Data.DTO.WeeklyPlan;
 using Data.Entities.ClientContacts;
 using Data.Services.Abstract.ClientContacts;
 using System.Linq;
+using Data.Commands.ClientContacts.WeekPlan;
 
 namespace Data.Services.Concrete.ClientContacts
 {
@@ -16,9 +16,11 @@ namespace Data.Services.Concrete.ClientContacts
             _weekPlanRepository = weekPlanRepository;
         }
 
-        public IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int managerId, int month)
+        public IQueryable<WeekPlanDTO> GetWeekPlansByClient(int clientId, int month)
         {
-            return _weekPlanRepository.All().Where(x => x.ClientId == clientId && x.ManagerId == managerId && x.Date.Month == month)
+            return _weekPlanRepository.All()
+                .Where(x => x.ClientId == clientId
+                            && x.Date.Month == month)
                 .Select(x => new WeekPlanDTO {
                     Id = x.Id,
                     ClientId = x.ClientId,
@@ -28,11 +30,6 @@ namespace Data.Services.Concrete.ClientContacts
                 }).AsQueryable();
         }
 
-        public WeekPlan CreateWeekPlan(WeekPlanCreateCommand command)
-        {
-            return _weekPlanRepository.Create(new WeekPlan(command.ManagerId, command.ClientId, command.Month, command.WeekNumber, command.Plan));
-        }
-
         public WeekPlan GetWeekPlan(int id)
         {
             return _weekPlanRepository.Get(id);
@@ -40,12 +37,24 @@ namespace Data.Services.Concrete.ClientContacts
 
         public void WeekPlanUpdate(WeekPlanDTO command)
         {
-            var weekPlanEditing = GetWeekPlan(command.Id);
+            /*var weekPlanEditing = GetWeekPlan(command.Id);
 
             weekPlanEditing.Plan = command.Plan;
             weekPlanEditing.Fact = command.Fact;
 
-            _weekPlanRepository.Update(weekPlanEditing);
+            _weekPlanRepository.Update(weekPlanEditing);*/
         }
+
+
+       /* protected WeekPlan CreateWeekPlan(WeekPlanCreate command)
+        {
+            return _weekPlanRepository.Create(
+                new WeekPlan(
+                    command.ManagerId,
+                    command.ClientId,
+                    command.Month,
+                    command.WeekNumber,
+                    command.Plan));
+        }*/
     }
 }

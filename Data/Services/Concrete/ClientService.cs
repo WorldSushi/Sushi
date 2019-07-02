@@ -6,8 +6,6 @@ using Data.Services.Abstract;
 using System.Linq;
 using Data.Commands.Clients;
 using Data.Entities.Users;
-using System.Collections.Generic;
-using Data.Enums;
 
 namespace Data.Services.Concrete
 {
@@ -35,13 +33,13 @@ namespace Data.Services.Concrete
                 .Select(x => x.Manager);
         }
 
-        public Client Create(ClientCreateCommand command)
+        public Client Create(ClientCreate command)
         {
             return _clientRepository.Create(
                 new Client(command));
         }
 
-        public Client Edit(ClientEditCommand command)
+        /*public Client Edit(ClientEdit command)
         {
             var client = _clientRepository.Get(command.Id);
 
@@ -55,7 +53,7 @@ namespace Data.Services.Concrete
             _clientRepository.Update(client);
 
             return client;
-        }
+        }*/
 
         public void Delete(int id)
         {
@@ -68,7 +66,7 @@ namespace Data.Services.Concrete
                 .FirstOrDefault();
         }
 
-        public void BindManager(BindManagerCommand command)
+        public void BindManager(BindManager command)
         {
             /*var client = _clientRepository.Get(command.ClientId);
 

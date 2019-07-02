@@ -8,7 +8,6 @@ namespace Data.DTO.Calls
         public string Results_count { get; set; }
 
         public List<CallDTO> Results { get; set; }
-       
     }
 
     public class CallDTO

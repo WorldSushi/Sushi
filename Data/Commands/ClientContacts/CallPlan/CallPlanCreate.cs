@@ -1,6 +1,6 @@
-﻿namespace Data.Commands.ClientContacts
+﻿namespace Data.Commands.ClientContacts.CallPlan
 {
-    public class CallPlanCreateCommand
+    public class CallPlanCreate
     {
         public int ClientId { get; set; }
         public int TotalCalls { get; set; }

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTO\BusinessTrip\**" />
+    <EmbeddedResource Remove="DTO\BusinessTrip\**" />
+    <None Remove="DTO\BusinessTrip\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
@@ -12,10 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DTO\BusinessTrip\" />
   </ItemGroup>
 
 </Project>

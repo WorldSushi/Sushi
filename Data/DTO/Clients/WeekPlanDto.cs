@@ -1,17 +1,14 @@
-﻿using System;
-using Data.Enums;
+﻿using Data.Enums;
 
-namespace Data.DTO.WeeklyPlan
+namespace Data.DTO.Clients
 {
-    public class WeekPlanDTO
+    public class WeekPlanDto
     {
         public int Id { get; set; }
-        public int ManagerId { get; set; }
         public int ClientId { get; set; }
-        public DateTime Date { get; set; }
-        public int WeekNumber { get; set; }
         public string Plan { get; set; }
         public string Fact { get; set; }
+        public int WeekNumber { get; set; }
         public ManagerType ManagerType { get; set; }
     }
 }

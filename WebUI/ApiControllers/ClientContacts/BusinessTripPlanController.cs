@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Commands.ClientContacts;
+using Data.Commands.ClientContacts.BusinessTripPlan;
 using Data.Services.Abstract.ClientContacts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace WebUI.ApiControllers.ClientContacts
 
         // POST: api/BusinessTripPlan
         [HttpPost]
-        public IActionResult Post([FromBody]BusinessTripPlanCreateCommand value)
+        public IActionResult Post([FromBody]BusinessTripPlanCreate value)
         {
             value.ManagerId = _accountInformationService.GetOperatorId();
             _monthlyBusinessTripService.Create(value);
@@ -53,13 +54,13 @@ namespace WebUI.ApiControllers.ClientContacts
         }
 
         // PUT: api/BusinessTripPlan/5
-        [HttpPut("{id}")]
+       /* [HttpPut("{id}")]
         public IActionResult Put([FromBody] MonthlyBusinessTripPlanUpdateCommand value)
         {
             var response = _monthlyBusinessTripService.Update(value);
 
             return Ok(response);
-        }
+        }*/
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]

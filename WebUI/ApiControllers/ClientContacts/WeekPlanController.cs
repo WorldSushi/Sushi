@@ -41,7 +41,7 @@ namespace WebUI.ApiControllers.ClientContacts
         }
 
         // POST: api/WeekPlan
-        [HttpPost]
+       /* [HttpPost]
         public IActionResult Post([FromBody] ICollection<WeekPlanDTO> value)
         {
             var manager = _accountInformationService.GetOperatorId();
@@ -59,10 +59,10 @@ namespace WebUI.ApiControllers.ClientContacts
             }
 
             return Ok(_weekPlanService.GetWeekPlansByClient(value.FirstOrDefault().ClientId, manager, DateTime.Now.Month));
-        }
+        }*/
 
         // PUT: api/WeekPlan/5
-        [HttpPut()]
+        /*[HttpPut()]
         public IActionResult Put([FromBody] ICollection<WeekPlanDTO> value)
         {
             var manager = _accountInformationService.GetOperatorId();
@@ -73,7 +73,7 @@ namespace WebUI.ApiControllers.ClientContacts
             }
 
             return Ok(_weekPlanService.GetWeekPlansByClient(value.FirstOrDefault().ClientId, manager, DateTime.Now.Month));
-        }
+        }*/
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]

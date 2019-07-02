@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using Data.DTO.Calls;
-using Data.DTO.WeeklyPlan;
 using Data.Enums;
 
-namespace WebUI.ViewModels.Clients
+namespace Data.DTO.Clients
 {
-    public class ClientForManagerVM
+    public class ClientForManagerDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -14,8 +12,10 @@ namespace WebUI.ViewModels.Clients
         public ClientTypes ClientType { get; set; }
         public NumberOfCalls NumberOfCalls { get; set; }
         public NumberOfShipments NumberOfShipments { get; set; }
-
-        public ICollection<CallDTO> Calls { get; set; }
-        public ICollection<WeekPlanDTO> WeekPlans { get; set; }
+        public CallPlanDto CallPlan { get; set; }
+        public BusinessTripPlanDto BusinessTripPlan { get; set; }
+        public ICollection<WeekPlanDto> WeekPlans { get; set; }
+        public ICollection<CallDto> Calls { get; set; }
+        public ClientContactResultDto Results { get; set; }
     }
 }

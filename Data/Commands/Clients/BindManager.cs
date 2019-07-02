@@ -2,7 +2,7 @@
 
 namespace Data.Commands.Clients
 {
-    public class BindManagerCommand
+    public class BindManager
     {
         public int ClientId { get; set; }
         public int ManagerId { get; set; }

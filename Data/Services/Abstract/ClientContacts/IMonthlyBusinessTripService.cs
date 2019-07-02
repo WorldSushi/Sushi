@@ -1,7 +1,7 @@
-﻿using Data.Commands.ClientContacts;
-using Data.Entities.ClientContacts;
+﻿using Data.Entities.ClientContacts;
 using Data.Enums;
 using System.Linq;
+using Data.Commands.ClientContacts.BusinessTripPlan;
 
 namespace Data.Services.Abstract.ClientContacts
 {
@@ -14,7 +14,7 @@ namespace Data.Services.Abstract.ClientContacts
         BusinessTripCompletedType GetPlanCompletedType(int managerId, int clientId, int month);
         int GetPlanAmountTrips(int clientId, int month);
 
-        BusinessTripPlan Create(BusinessTripPlanCreateCommand command);
-        BusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand command);
+        BusinessTripPlan Create(BusinessTripPlanCreate command);
+        //BusinessTripPlan Update(MonthlyBusinessTripPlanUpdateCommand command);
     }
 }
