@@ -27,25 +27,25 @@ namespace Data.Services.Concrete.ClientContacts
                 new BusinessTripPlan(command));
         }
 
-        public BusinessTripPlan GetPlan(int managerId, int clientId, int month)
+       /* public BusinessTripPlan GetPlan(int managerId, int clientId, int month)
         {
             return _monthlyBusinessTripPlanRepository.All()
                 .FirstOrDefault(x => x.ManagerId == managerId && x.ClientId == clientId && x.Date.Month == month);
-        }
+        }*/
 
-        public BusinessTripCompletedType GetPlanCompletedType(int managerId, int clientId, int month)
+        /*public BusinessTripCompletedType GetPlanCompletedType(int managerId, int clientId, int month)
         {
             var businessTrip = GetPlan(managerId, clientId, month);
 
             return businessTrip != null
                 ? businessTrip.CompletedType
                 : BusinessTripCompletedType.DidntCompleted;
-        }
+        }*/
 
-        public int GetPlannedBusinessTripAmount(int managerId, int clientId, int month)
+      /*  public int GetPlannedBusinessTripAmount(int managerId, int clientId, int month)
         {
             return GetPlan(managerId, clientId, month)?.Hours ?? 0;
-        }
+        }*/
 
         public int GetPlanAmountTrips(int clientId, int month)
         {

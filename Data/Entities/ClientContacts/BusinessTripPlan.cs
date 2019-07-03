@@ -2,16 +2,12 @@
 using Base;
 using Data.Commands.ClientContacts.BusinessTripPlan;
 using Data.Entities.Clients;
-using Data.Entities.Users;
 using Data.Enums;
 
 namespace Data.Entities.ClientContacts
 {
     public class BusinessTripPlan : Entity
     {
-        public int ManagerId { get; protected set; }
-        public Manager Manager { get; protected set; }
-
         public int ClientId { get; protected set; }
         public Client Client { get; protected set; }
 
@@ -27,7 +23,6 @@ namespace Data.Entities.ClientContacts
 
         public BusinessTripPlan(BusinessTripPlanCreate command)
         {
-            ManagerId = command.ManagerId;
             ClientId = command.ClientId;
             Hours = command.NumberBusinessTripHours;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);

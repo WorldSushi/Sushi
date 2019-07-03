@@ -117,7 +117,7 @@ namespace WebUI.ApiControllers.Clients
         }
 
         // PUT: api/ClientForAdmin/5
-        [HttpPut("{id}")]
+       /* [HttpPut("{id}")]
         public IActionResult Put([FromBody]ClientEdit command)
         {
             //_clientService.Edit(command);
@@ -173,7 +173,7 @@ namespace WebUI.ApiControllers.Clients
                 }).FirstOrDefault();
 
             return Ok(response);
-        }
+        }*/
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
