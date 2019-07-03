@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { CallsResultDialogComponent } from '../calls-result-dialog/calls-result-dialog.component';
+import { IClient } from '../../shared/models/client.model';
 
 @Component({
   selector: 'app-calls-dates-dialog',
@@ -25,9 +27,10 @@ export class CallsDatesDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  constructor(public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
+  constructor(
+    public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(this.data);
+
     }
 
   ngOnInit() {
