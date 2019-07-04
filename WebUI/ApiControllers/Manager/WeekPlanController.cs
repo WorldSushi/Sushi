@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Base.Helpers;
 using Data;
@@ -73,7 +72,7 @@ namespace WebUI.ApiControllers.Manager
             if (weekPlan == null)
                 return BadRequest("План не найден");
 
-            weekPlan.AddFact(command.Fact);
+            weekPlan.AddFact(command.Fact, command.FactTitle);
 
             await _context.SaveChangesAsync();
 
