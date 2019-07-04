@@ -1,38 +1,42 @@
-<h3 mat-dialog-title>{{data.title}}.</h3>
+<h3 class="dialog-title" mat-dialog-title>{{data.title}}</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
 
-<table mat-table #table [dataSource]="data.results">
-  <ng-container matColumnDef="MScalls">
-    <th mat-header-cell *matHeaderCellDef>МС Звонки</th>
-    <td mat-cell *matCellDef="let row">{{row.MSresults.calls}}</td>
-  </ng-container>
-  <ng-container matColumnDef="MSwhatsUp">
-    <th mat-header-cell *matHeaderCellDef>МС WhatsUp</th>
-    <td mat-cell *matCellDef="let row">{{row.MSresults.whatsUp}}</td>
-  </ng-container>
-  <ng-container matColumnDef="MSletters">
-    <th mat-header-cell *matHeaderCellDef>МС Письма</th>
-    <td mat-cell *matCellDef="let row">{{row.MSresults.letters}}</td>
-  </ng-container>
-  <ng-container matColumnDef="MSsum">
-    <th mat-header-cell *matHeaderCellDef>МС Итог</th>
-    <td mat-cell *matCellDef="let row">{{row.MSresults.calls + row.MSresults.whatsUp + row.MSresults.letters}}</td>
-  </ng-container>
-  <ng-container matColumnDef="RMcalls">
-    <th mat-header-cell *matHeaderCellDef>РМ Звонки</th>
-    <td mat-cell *matCellDef="let row">{{row.RMresults.calls}}</td>
-  </ng-container>
-  <ng-container matColumnDef="RMwhatsUp">
-    <th mat-header-cell *matHeaderCellDef>РМ WhatsUp</th>
-    <td mat-cell *matCellDef="let row">{{row.RMresults.whatsUp}}</td>
-  </ng-container>
-  <ng-container matColumnDef="RMletters">
-    <th mat-header-cell *matHeaderCellDef>РМ Письма</th>
-    <td mat-cell *matCellDef="let row">{{row.RMresults.letters}}</td>
-  </ng-container>
-  <ng-container matColumnDef="RMsum">
-    <th mat-header-cell *matHeaderCellDef>РМ Итог</th>
-    <td mat-cell *matCellDef="let row">{{row.RMresults.calls + row.RMresults.whatsUp + row.RMresults.letters}}</td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<div class="dialog-subtitle">
+  <div>
+    <button class="back">Назад</button>
+  </div>
+  <div>
+    <h3>Итоги звонков за месяц</h3>
+  </div>
+  <div>
+    <small>июнь</small>
+  </div> 
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Звонки</th>
+      <th>WhatsApp</th>
+      <th>Письма</th>
+      <th>Итого</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background: rgba(238, 254, 246, 0.4);">
+      <th style="background: #EEFEF6;">Менеджер сопровождения</th>
+      <td>{{data.MSresults.calls}}</td>
+      <td>{{data.MSresults.whatsUp}}</td>
+      <td>{{data.MSresults.letters}}</td>
+      <td>{{data.MSresults.sum}}</td>
+    </tr>
+    <tr style="background: rgba(245, 254, 238, 0.4);">
+      <th style="background: #F5FEEE;">Региональный менеджер</th>
+      <td>{{data.RMresults.calls}}</td>
+      <td>{{data.RMresults.whatsUp}}</td>
+      <td>{{data.RMresults.letters}}</td>
+      <td>{{data.RMresults.sum}}</td>
+    </tr>
+  </tbody>
 </table>

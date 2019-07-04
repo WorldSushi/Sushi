@@ -1,13 +1,28 @@
+<h3 class="dialog-title" mat-dialog-title>{{data.clientTitle}}</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
 
-<h2 mat-dialog-title>Даты и фактическое число звонков. {{data.clientTitle}}</h2>
+<div class="dialog-subtitle"> 
+  <div>
+    <h3>Даты и фактическое число звонков</h3>
+  </div>
+  <div>
+    <small>июнь</small>
+  </div> 
+  <div>
+    <button class="back">Итоги звонков за месяц</button>
+  </div>
+</div>
+
+
+
 <mat-dialog-content class="mat-typography mat-body"> 
   <table mat-table #table [dataSource]="data.MSCallsDates">
     <ng-container matColumnDef="day">
-      <th mat-header-cell *matHeaderCellDef style="width: 200px">Дата</th>
+      <th mat-header-cell *matHeaderCellDef width="190" style="background: #FFFCDD;">Дата</th>
       <td mat-cell *matCellDef="let row; let i = index" style="width: 200px">{{getDate(i + 1)}}</td>
     </ng-container>
     <ng-container matColumnDef="MSvalue">
-      <th mat-header-cell *matHeaderCellDef style="text-align: center">МС</th>
+      <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #EEFEF6;">МС</th>
       <td mat-cell *matCellDef="let row" style="text-align: center">
           <mat-select [(ngModel)]="row.action">
             <mat-option [value]="0">Отсутствует</mat-option>
@@ -18,7 +33,7 @@
       </td>
     </ng-container>
     <ng-container matColumnDef="RMvalue">
-      <th mat-header-cell *matHeaderCellDef style="text-align: center">РМ</th>
+      <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #F5FEEE;">РМ</th>
       <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
           <mat-select [(ngModel)]="data.RMCallsDates[i].action">
             <mat-option [value]="0">Отсутствует</mat-option>
@@ -28,7 +43,7 @@
           </mat-select>       
       </td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <div class="dialog-actions">

@@ -117,32 +117,29 @@ export class ClientListComponent implements OnInit {
 
   openCallsResult(client: IClient){
     let dialogRef = this.dialog.open(CallsResultDialogComponent, {
-      width: '70%',
+      width: '938px',
       data: {
         title: client.title,
-        results: [
-          {
-            MSresults: {
-              calls: client.MSCallsDates.filter(item => item.contactType == 10).length,
-              whatsUp: client.MSCallsDates.filter(item => item.contactType == 20).length,
-              letters: client.MSCallsDates.filter(item => item.contactType == 30).length,
-              sum: client.MSCallsDates.filter(item => item.contactType != 0).length
-            },
-            RMresults: {
-              calls: client.RMCallsDates.filter(item => item.contactType == 10).length,
-              whatsUp: client.RMCallsDates.filter(item => item.contactType == 20).length,
-              letters: client.RMCallsDates.filter(item => item.contactType == 30).length,
-              sum: client.RMCallsDates.filter(item => item.contactType > 0).length
-            }
-          }
-        ]        
+        MSresults: {
+          calls: client.MSCallsDates.filter(item => item.contactType == 10).length,
+          whatsUp: client.MSCallsDates.filter(item => item.contactType == 20).length,
+          letters: client.MSCallsDates.filter(item => item.contactType == 30).length,
+          sum: client.MSCallsDates.filter(item => item.contactType != 0).length
+        },
+        RMresults: {
+          calls: client.RMCallsDates.filter(item => item.contactType == 10).length,
+          whatsUp: client.RMCallsDates.filter(item => item.contactType == 20).length,
+          letters: client.RMCallsDates.filter(item => item.contactType == 30).length,
+          sum: client.RMCallsDates.filter(item => item.contactType > 0).length
+        }
       }
+                  
     })
   }
 
   openCallsDates(client: IClient){
     let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
-      width: '720px',
+      width: '938px',
       data: {
         clientId: client.id,
         clientTitle: client.title,
