@@ -1,20 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Data.Entities.Users;
-using Data.Services.Abstract;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IUserService _userService;
-
-        public HomeController(IUserService userService)
+        [HttpGet]
+        public IActionResult ImportFile()
         {
-            _userService = userService;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ImportFile(IFormFile file)
+        {
+            BinaryReader b = new BinaryReader(file.OpenReadStream());
+            byte[] data = b.ReadBytes(Convert.ToInt32(file.Length));
+
+            string result = Encoding.GetEncoding(1251).GetString(data);
+            string[] lines = result.Split('\r');
+
+            for (var i = 0; i < lines.Length; i++)
+            {
+                string[] rows = lines[i].Split(';');
+            }
+
+            return RedirectToAction("ImportFile");
         }
     }
 }
