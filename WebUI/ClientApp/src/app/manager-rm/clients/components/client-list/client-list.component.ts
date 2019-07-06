@@ -39,7 +39,6 @@ export class ClientListComponent implements OnInit {
     'tripPlan.fact',
     'MSplanned',
     'RMplanned',
-    'calls',
     'MSresults.sum',
     'RMresults.sum'   
   ];
