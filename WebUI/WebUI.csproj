@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ApiControllers\Admin\" />
     <Folder Include="ClientApp\" />
   </ItemGroup>
 

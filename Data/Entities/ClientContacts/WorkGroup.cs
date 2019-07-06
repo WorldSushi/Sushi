@@ -1,6 +1,6 @@
-﻿using Base;
+﻿using System.Collections.Generic;
+using Base;
 using Data.Commands.ClientContacts.WorkGroup;
-using Data.Entities.Clients;
 using Data.Entities.Users;
 
 namespace Data.Entities.ClientContacts
@@ -13,8 +13,7 @@ namespace Data.Entities.ClientContacts
         public int RegionalManagerId { get; protected set; }
         public Manager RegionalManager { get; protected set; }
 
-        public int ClientId { get; protected set; }
-        public Client Client { get; protected set; }
+        public ICollection<ClientWorkGroup> Clients { get; protected set; } = new HashSet<ClientWorkGroup>(); 
 
         protected WorkGroup()
         {
@@ -23,9 +22,13 @@ namespace Data.Entities.ClientContacts
 
         public WorkGroup(WorkGroupCreate command)
         {
-            ClientId = command.ClientId;
             RegionalManagerId = command.RegionalManagerId;
             EscortManagerId = command.EscortManagerId;
+        }
+
+        public void BindClient(BindClient command)
+        {
+            Clients.Add(new ClientWorkGroup(command));
         }
 
         public void ChangeEscortManager(int escortManagerId)

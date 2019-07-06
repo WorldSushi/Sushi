@@ -20,8 +20,6 @@ namespace Data.Entities.Clients
 
         public NumberOfShipments NumberOfShipments { get; protected set; }
 
-        public ICollection<ManagerForClient> Managers { get; protected set; } = new HashSet<ManagerForClient>();
-
         public ICollection<CallPlan> CallPlans { get; protected set; } = new HashSet<CallPlan>();
 
         public ICollection<BusinessTripPlan> BusinessTripPlans { get; protected set; } = new HashSet<BusinessTripPlan>();
@@ -49,11 +47,6 @@ namespace Data.Entities.Clients
             ClientType = command.ClientType;
             NumberOfCalls = command.NumberOfCalls;
             NumberOfShipments = command.NumberOfShipments;
-        }
-
-        public void BindManager(BindManager command)
-        {
-            Managers.Add(new ManagerForClient(command));
         }
 
        /* public CallPlan CurrentCallPlan()

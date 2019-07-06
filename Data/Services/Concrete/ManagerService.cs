@@ -3,7 +3,6 @@ using Base.Extensions;
 using Data.Entities.Users;
 using Data.Services.Abstract;
 using System.Linq;
-using Data.Entities.Clients;
 using Data.Commands.Manager;
 
 namespace Data.Services.Concrete
@@ -11,13 +10,10 @@ namespace Data.Services.Concrete
     public class ManagerService : IManagerService
     {
         private readonly IRepository<Manager> _managers;
-        private readonly IRepository<ManagerForClient> _managersForClient;
 
-        public ManagerService(IRepository<Manager> managers,
-            IRepository<ManagerForClient> managersForClient)
+        public ManagerService(IRepository<Manager> managers)
         {
             _managers = managers;
-            _managersForClient = managersForClient;
         }
 
         public IQueryable<Manager> GetAll()
@@ -25,12 +21,12 @@ namespace Data.Services.Concrete
             return _managers.All();
         }
 
-        public IQueryable<Client> GetClients(int managerId)
+        /*public IQueryable<Client> GetClients(int managerId)
         {
             return _managersForClient.All()
                 .Where(x => x.ManagerId == managerId)
                 .Select(x => x.Client);
-        }
+        }*/
 
         public Manager Get(int managerId)
         {

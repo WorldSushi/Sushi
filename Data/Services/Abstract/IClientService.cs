@@ -1,15 +1,13 @@
 ﻿using Data.Entities.Clients;
 using System.Linq;
 using Data.Commands.Clients;
-using Data.Entities.Users;
-using Data.Enums;
 
 namespace Data.Services.Abstract
 {
     public interface IClientService
     {
         IQueryable<Client> GetAll();
-        IQueryable<Manager> GetManagers(int clientId);
+        //IQueryable<Manager> GetManagers(int clientId);
 
         Client Create(ClientCreate command);
         //Client Edit(ClientEdit command);

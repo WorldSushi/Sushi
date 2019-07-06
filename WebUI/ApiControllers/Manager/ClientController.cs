@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Data;
+using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
+using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +43,20 @@ namespace WebUI.ApiControllers.Manager
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientCreate command)
         {
+            var currentManagerId = 1;
+
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
+
+            var workGroup = await _context.Set<WorkGroup>()
+                .FirstOrDefaultAsync(x => x.EscortManagerId == currentManagerId
+                                          || x.RegionalManagerId == currentManagerId);
+
+            workGroup.BindClient(new BindClient()
+            {
+                ClientId = client.Entity.Id,
+                WorkGroupId = workGroup.Id
+            });
 
             await _context.SaveChangesAsync();
 
