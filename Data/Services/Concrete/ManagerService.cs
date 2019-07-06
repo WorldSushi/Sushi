@@ -33,7 +33,7 @@ namespace Data.Services.Concrete
             return _managers.Get(managerId);
         }
 
-        public Manager Create(string login, string password, string phone)
+       /* public Manager Create(string login, string password, string phone)
         {
             return _managers.Create(new Manager
             {
@@ -41,9 +41,9 @@ namespace Data.Services.Concrete
                 Password = password,
                 Phone = phone.PhoneFormat()
             });
-        }
+        }*/
 
-        public Manager Update(ManagerEditCommand command)
+       /* public Manager Update(ManagerEditCommand command)
         {
             var editingManager = _managers.Get(command.Id);
 
@@ -52,7 +52,7 @@ namespace Data.Services.Concrete
             editingManager.Phone = command.Phone;
 
             return _managers.Update(editingManager);
-        }
+        }*/
 
         public int Delete(int id)
         {

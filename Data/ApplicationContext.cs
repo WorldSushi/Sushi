@@ -24,7 +24,6 @@ namespace Data
             modelBuilder.Entity<WorkGroup>();
 
             modelBuilder.Entity<Client>();
-            modelBuilder.Entity<ManagerForClient>();
 
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();
