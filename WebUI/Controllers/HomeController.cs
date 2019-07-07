@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Data.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,13 @@ namespace WebUI.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMyCallsAPIService _myCallsApiService;
+
+        public HomeController(IMyCallsAPIService myCallsApiService)
+        {
+            _myCallsApiService = myCallsApiService;
+        }
+
         [HttpGet]
         public IActionResult ImportFile()
         {
@@ -30,6 +38,11 @@ namespace WebUI.Controllers
             }
 
             return RedirectToAction("ImportFile");
+        }
+
+        public void MyCallsTest()
+        {
+            _myCallsApiService.GetCallsByDate(new DateTime(2019, 7, 1), new DateTime(2019, 7, 5), 0);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Call>();
+            modelBuilder.Entity<CallLog>();
 
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();

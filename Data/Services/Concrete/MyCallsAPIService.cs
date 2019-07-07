@@ -12,7 +12,7 @@ namespace Data.Services.Concrete
     public class MyCallsAPIService: IMyCallsAPIService
     {
         private readonly IManagerService _managerService;
-        private readonly DateTime referencePoint = new DateTime(2019, 2, 1);
+        private readonly DateTime referencePoint = new DateTime(2019, 7, 1);
 
         public MyCallsAPIService(IManagerService managerService)
         {
