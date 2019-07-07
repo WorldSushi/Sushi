@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { IClient } from '../../shared/models/client.model';
 import { MatDialog } from '@angular/material';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
@@ -11,6 +11,9 @@ import { WeekPlansDialogComponent } from '../../dialogs/week-plans/week-plans-di
 import { CallsResultDialogComponent } from '../../dialogs/calls-result-dialog/calls-result-dialog.component';
 import { ICallsDate } from '../../shared/models/calls-date.model';
 import { CallsDatesDialogComponent } from '../../dialogs/calls-dates-dialog/calls-dates-dialog.component';
+import { ICallPlan } from '../../shared/models/call-plan.model';
+import { ITripPlan } from '../../shared/models/trip-plan.model';
+import { weekPlanQueries } from 'src/app/store/manager-rm/clients/selectors/week-plan.selectors';
 
 @Component({
   selector: 'app-client-list',
@@ -23,6 +26,12 @@ export class ClientListComponent implements OnInit {
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
+  @Output() callPlanUpdated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
+  @Output() tripPlanHoursUpdated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+  @Output() tripPlanCompletedTypeUpdated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+  @Output() weekPlanUpdated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekPlanCreated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekPlanFactAdded: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
    
   displayedColumns: string[] = [
     'title', 
@@ -30,8 +39,6 @@ export class ClientListComponent implements OnInit {
     'type', 
     'numberOfCalls', 
     'numberOfShipments',
-    'nomenclatureAnalysis',
-    'revenueAnalysis', 
     'callPlan.collective', 
     'callPlan.MS', 
     'callPlan.RM',
@@ -58,7 +65,7 @@ export class ClientListComponent implements OnInit {
 
   openEditClientForm(client: IClient) {
     const dialogRef = this.dialog.open(EditClientDialogComponent, {
-      width: '725px',
+      width: '938px',
       data: { ...client }
     })
 
@@ -99,17 +106,26 @@ export class ClientListComponent implements OnInit {
     let dialogRef = this.dialog.open(WeekPlansDialogComponent, {
       width: '70%',
       data: {
+        id: client.id,
         title: client.title,
         weekPlans: JSON.parse(JSON.stringify(client.weekPlans))
       }
     })
 
+    const sub = dialogRef.componentInstance.addFact.subscribe(res => {
+      this.weekPlanFactAdded.emit(res);
+    })
+
     dialogRef.afterClosed().subscribe(res => {
       if(res){
-        const client = this.clients.find(item => res[0].clientId == item.id);
-        client.weekPlans = [...res];
+        res.forEach(element => {
+          if(element.id == 0)
+            this.weekPlanCreated.emit(element);
+          else if(element.id > 0)
+            this.weekPlanUpdated.emit(element);
 
-        this.updateClient(client);
+          sub.unsubscribe();
+        });
       }
     })
   }
@@ -156,6 +172,7 @@ export class ClientListComponent implements OnInit {
   }
 
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
+
     const a = value.reportPrevMonth;
     const b = value.reportAvg5Months;
     const c = value.prevMonth;
@@ -164,12 +181,28 @@ export class ClientListComponent implements OnInit {
     return Math.round((a + b + c + d) / 4);
   }
 
-  getCurrentWeek(weekPlans: IWeekPlan[]){
-    return weekPlans[3];
+  getCurrentMsPlan(weekPlans: IWeekPlan[]){
+    return weekPlans.filter(item => item.managerType == 10)[0];
+  }
+
+  getCurrentRmPlan(weekPlans: IWeekPlan[]){
+    return weekPlans.filter(item => item.managerType == 20)[0];
   }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
     return callsDates.filter(item => item.contactType > 0).length;
+  }
+
+  updateCallPlan(callPlan: ICallPlan){
+    this.callPlanUpdated.emit(callPlan);
+  }
+
+  updateTripPlanHours(tripPlan: ITripPlan){
+    this.tripPlanHoursUpdated.emit(tripPlan);
+  }
+
+  updateTripPlanCompletedType(tripPlan: ITripPlan){
+    this.tripPlanCompletedTypeUpdated.emit(tripPlan);
   }
 
   getAnalysisProps(value) {
@@ -225,6 +258,10 @@ export class ClientListComponent implements OnInit {
     else {
       '#fff'
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
   
   constructor(public dialog: MatDialog) { }

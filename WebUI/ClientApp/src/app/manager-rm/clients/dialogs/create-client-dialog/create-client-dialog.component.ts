@@ -12,7 +12,9 @@ export class CreateClientDialogComponent implements OnInit {
   createClientForm = new FormGroup({
     id: new FormControl(0),
     title: new FormControl(''),
-    type: new FormControl(0),
+    phone: new FormControl(''),
+    legalEntity: new FormControl(''),
+    clientType: new FormControl(0),
     numberOfCalls: new FormControl(0),
     numberOfShipments: new FormControl(0)
   })

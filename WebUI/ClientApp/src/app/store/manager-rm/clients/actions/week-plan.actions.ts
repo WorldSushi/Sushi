@@ -12,7 +12,10 @@ export enum WeekPlanActionsTypes {
     CREATE_WEEK_PLAN_FAILURE = '[WeekPlan API] Create Week Plan Failure',
     EDIT_WEEK_PLAN = '[Clients Page] Edit Week Plan',
     EDIT_WEEK_PLAN_SUCCESS = '[WeekPlan API] Edit Week Plan Success',
-    EDIT_WEEK_PLAN_FAILURE = '[WeekPlan API] Edit Week Plan Failure'
+    EDIT_WEEK_PLAN_FAILURE = '[WeekPlan API] Edit Week Plan Failure',
+    ADD_FACT_TO_WEEK_PLAN = '[Clients Page] Add Fact To Week Plan',
+    ADD_FACT_TO_WEEK_PLAN_SUCCESS = '[WeekPlan API] Add Fact To Week Plan Success',
+    ADD_FACT_TO_WEEK_PLAN_FAILURE = '[WeekPlan API] Add Fact To Week Plan Failure'
 }
 
 export class GetWeekPlansAction implements Action {
@@ -69,6 +72,24 @@ export class EditWeekPlanFailureAction implements Action {
     constructor(public payload: { error: any }){}
 }
 
+export class AddFactToWeekPlanAction implements Action {
+    readonly type = WeekPlanActionsTypes.ADD_FACT_TO_WEEK_PLAN;
+
+    constructor(public payload: { weekPlan: IWeekPlan }){}
+}
+
+export class AddFactToPlanSuccesAction implements Action {
+    readonly type = WeekPlanActionsTypes.ADD_FACT_TO_WEEK_PLAN_SUCCESS;
+
+    constructor(public payload: { weekPlan: IWeekPlan }){}
+}
+
+export class AddFactToPlanFailureAction implements Action {
+    readonly type = WeekPlanActionsTypes.ADD_FACT_TO_WEEK_PLAN_FAILURE;
+
+    constructor(public payload: { error: any }){}
+}
+
 export type WeekPlanActionUnion = GetWeekPlansAction
     | GetWeekPlansSuccesAction
     | GetWeekPlansFailureAction
@@ -78,3 +99,6 @@ export type WeekPlanActionUnion = GetWeekPlansAction
     | EditWeekPlanAction
     | EditWeekPlanSuccesAction
     | EditWeekPlanFailureAction
+    | AddFactToWeekPlanAction
+    | AddFactToPlanSuccesAction
+    | AddFactToPlanFailureAction

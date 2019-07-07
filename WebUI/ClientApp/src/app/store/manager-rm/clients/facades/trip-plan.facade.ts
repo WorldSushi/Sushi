@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from '@ngrx/store';
 import { tripPlanQueries } from '../selectors/trip-plan.selectors';
-import { GetTripPlansAction, CreateTripPlanAction, EditTripPlanAction } from '../actions/trip-plan.actions';
+import { GetTripPlansAction, CreateTripPlanAction, EditTripPlanHoursAction, EditTripPlanCompletedTypeAction} from '../actions/trip-plan.actions';
 import { ITripPlan } from 'src/app/manager-rm/clients/shared/models/trip-plan.model';
 import { ITripPlanState } from '../states/trip-plan.state';
 
@@ -20,8 +20,12 @@ export class TripPlanFacade {
         this.store.dispatch(new CreateTripPlanAction({ tripPlan: tripPlan }));
     }
 
-    editTripPlan(tripPlan: ITripPlan){
-        this.store.dispatch(new EditTripPlanAction({ tripPlan: tripPlan }));
+    editTripPlanHours(tripPlan: ITripPlan){
+        this.store.dispatch(new EditTripPlanHoursAction({ tripPlan: tripPlan }));
+    }
+
+    editTripPlanCompletedType(tripPlan: ITripPlan){
+        this.store.dispatch(new EditTripPlanCompletedTypeAction({ tripPlan: tripPlan }))
     }
 
 

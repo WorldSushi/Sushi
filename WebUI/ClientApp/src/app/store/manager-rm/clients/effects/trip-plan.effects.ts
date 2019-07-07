@@ -2,7 +2,18 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, catchError, map, concatMap } from 'rxjs/operators';
-import { GetTripPlansAction, TripPlanActionsTypes, GetTripPlansSuccesAction, GetTripPlansFailureAction, CreateTripPlanAction, CreateTripPlanSuccesAction, CreateTripPlanFailureAction, EditTripPlanAction, EditTripPlanSuccesAction, EditTripPlanFailureAction } from '../actions/trip-plan.actions';
+import { GetTripPlansAction, 
+    TripPlanActionsTypes, 
+    GetTripPlansSuccesAction, 
+    GetTripPlansFailureAction,
+    CreateTripPlanAction, 
+    CreateTripPlanSuccesAction,
+    CreateTripPlanFailureAction, 
+    EditTripPlanHoursSuccesAction, 
+    EditTripPlanHoursFailureAction, 
+    EditTripPlanHoursAction, 
+    EditTripPlanCompletedTypeAction 
+} from '../actions/trip-plan.actions';
 import { ITripPlan } from 'src/app/manager-rm/clients/shared/models/trip-plan.model';
 import { TripPlansService } from 'src/app/manager-rm/clients/shared/services/trip-plan.service';
 
@@ -41,15 +52,30 @@ export class TripPlansEffects {
     )
     
     @Effect()
-    editTripPlan$ = this.actions$.pipe(
-        ofType<EditTripPlanAction>(TripPlanActionsTypes.EDIT_TRIP_PLAN),
+    editTripPlanHours$ = this.actions$.pipe(
+        ofType<EditTripPlanHoursAction>(TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS),
         concatMap((action) =>
-            this.tripPlansService.editTripPlan(action.payload.tripPlan).pipe(
+            this.tripPlansService.editTripPlanHours(action.payload.tripPlan).pipe(
                 map((tripPlan: ITripPlan) =>
-                    new EditTripPlanSuccesAction({ tripPlan: tripPlan}) 
+                    new EditTripPlanHoursSuccesAction({ tripPlan: tripPlan}) 
                 ),
                 catchError(error =>
-                    of(new EditTripPlanFailureAction({ error: error}))
+                    of(new EditTripPlanHoursFailureAction({ error: error}))
+                )
+            )    
+        )
+    )
+
+    @Effect()
+    editTripPlanCompletedType$ = this.actions$.pipe(
+        ofType<EditTripPlanCompletedTypeAction>(TripPlanActionsTypes.EDIT_TRIP_PLAN_COMPLETED_TYPE),
+        concatMap((action) =>
+            this.tripPlansService.editTripPlanCompletedType(action.payload.tripPlan).pipe(
+                map((tripPlan: ITripPlan) =>
+                    new EditTripPlanHoursSuccesAction({ tripPlan: tripPlan}) 
+                ),
+                catchError(error =>
+                    of(new EditTripPlanHoursFailureAction({ error: error}))
                 )
             )    
         )

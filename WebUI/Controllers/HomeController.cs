@@ -16,5 +16,10 @@ namespace WebUI.Controllers
         {
             _userService = userService;
         }
+
+        public IActionResult Index()
+        {
+            return Redirect("/Account/Index");
+        }
     }
 }

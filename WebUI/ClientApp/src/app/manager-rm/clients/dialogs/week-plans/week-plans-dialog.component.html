@@ -14,13 +14,13 @@
     <div class="dialog-section-body">
       <div class="planned">
         <small>План</small>
-        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedWeek.MSplanned">{{selectedWeek.MSplanned}}</textarea>
+        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan" (focusout)="addNewWeekPlan(selectedMSWeek)">{{selectedMSWeek.plan}}</textarea>
       </div>
       
 
       <div class="fact">
         <small>Факт</small>
-        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedWeek.MSfact">{{selectedWeek.MSfact}}</textarea>
+        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact" (focusout)="addFactToWeekPlan(selectedMSWeek)">{{selectedMSWeek.fact}}</textarea>
       </div>
     </div>
   </div>
@@ -32,11 +32,11 @@
     <div class="dialog-section-body">
       <div class="planned">
         <small>План</small>
-        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedWeek.RMplanned">{{selectedWeek.RMplanned}}</textarea>
+        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan" (focusout)="addNewWeekPlan(selectedRMWeek)">{{selectedRMWeek.plan}}</textarea>
       </div>
       <div class="fact">
         <small>Факт</small>
-        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedWeek.RMfact">{{selectedWeek.RMplanned}}</textarea>
+        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact" (focusout)="addFactToWeekPlan(selectedRMWeek)">{{selectedRMWeek.fact}}</textarea>
       </div>
     </div>
   </div>
@@ -46,11 +46,11 @@
     <thead>
       <tr>
         <th style="background-color: #F1F8FF" width="50"></th>
-        <th style="background-color: #ECF5FF">Неделя 1</th>
-        <th style="background-color: #EFF6FF">Неделя 2</th>
-        <th style="background-color: #E2F0FF">Неделя 3</th>
-        <th style="background-color: #DBECFF">Неделя 4</th>
-        <th style="background-color: #D3E8FF">Неделя 5</th>
+        <th style="background-color: #ECF5FF" (click)="setWeeks(1)">Неделя 1</th>
+        <th style="background-color: #EFF6FF" (click)="setWeeks(2)">Неделя 2</th>
+        <th style="background-color: #E2F0FF" (click)="setWeeks(3)">Неделя 3</th>
+        <th style="background-color: #DBECFF" (click)="setWeeks(4)">Неделя 4</th>
+        <th style="background-color: #D3E8FF" (click)="setWeeks(5)">Неделя 5</th>
       </tr>
     </thead>
     <tbody>
@@ -58,16 +58,16 @@
         <td style="font-weight: bold">
           МС
         </td>
-        <td *ngFor="let element of data.weekPlans; let i = index" (click)="selectWeek(element, i)">
-          {{element.MSplanned}}
+        <td *ngFor="let element of getMSWeekPlans(data.weekPlans); let i = index">
+          {{element.plan}}
         </td>
       </tr>
       <tr>
         <td style="font-weight: bold">
           РМ
         </td>
-        <td *ngFor="let element of data.weekPlans; let i = index" (click)="selectWeek(element, i)">
-          {{element.RMplanned}}
+        <td *ngFor="let element of getRMWeekPlans(data.weekPlans); let i = index">
+          {{element.plan}}
         </td>
       </tr>
     </tbody>

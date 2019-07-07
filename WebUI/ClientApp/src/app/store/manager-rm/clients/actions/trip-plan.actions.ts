@@ -9,9 +9,12 @@ export enum TripPlanActionsTypes {
     CREATE_TRIP_PLAN = '[Clients Page] Create Trip Plan',
     CREATE_TRIP_PLAN_SUCCESS = '[TripPlan API] Create Trip Plan Success',
     CREATE_TRIP_PLAN_FAILURE = '[TripPlan API] Create Trip Plan Failure',
-    EDIT_TRIP_PLAN = '[Clients Page] Edit Trip Plan',
-    EDIT_TRIP_PLAN_SUCCESS = '[TripPlan API] Edit Trip Plan Success',
-    EDIT_TRIP_PLAN_FAILURE = '[TripPlan API] Edit Trip Plan Failure'
+    EDIT_TRIP_PLAN_HOURS = '[Clients Page] Edit Trip Plan Hours',
+    EDIT_TRIP_PLAN_HOURS_SUCCESS = '[TripPlan API] Edit Trip Plan Hours Success',
+    EDIT_TRIP_PLAN_HOURS_FAILURE = '[TripPlan API] Edit Trip Plan Hours Failure',
+    EDIT_TRIP_PLAN_COMPLETED_TYPE = '[Clients Page] Edit Trip Plan Completed Type',
+    EDIT_TRIP_PLAN_COMPLETED_TYPE_SUCCESS = '[TripPlan API] Edit Trip Plan Completed Type Success',
+    EDIT_TRIP_PLAN_COMPLETED_TYPE_FAILURE = '[TripPlan API] Edit Trip Plan Completed Type Failure'
 }
 
 export class GetTripPlansAction implements Action {
@@ -50,20 +53,38 @@ export class CreateTripPlanFailureAction implements Action{
     constructor(public payload: { error: any }){}
 }
 
-export class EditTripPlanAction implements Action {
-    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN;
+export class EditTripPlanHoursAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS;
 
     constructor(public payload: { tripPlan: ITripPlan }){}
 }
 
-export class EditTripPlanSuccesAction implements Action {
-    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_SUCCESS;
+export class EditTripPlanHoursSuccesAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS_SUCCESS;
 
     constructor(public payload: { tripPlan: ITripPlan }){}
 }
 
-export class EditTripPlanFailureAction implements Action {
-    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_FAILURE;
+export class EditTripPlanHoursFailureAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS_FAILURE;
+
+    constructor(public payload: { error: any }){}
+}
+
+export class EditTripPlanCompletedTypeAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_COMPLETED_TYPE;
+
+    constructor(public payload: { tripPlan: ITripPlan }){}
+}
+
+export class EditTripPlanCompletedTypeSuccesAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_COMPLETED_TYPE_SUCCESS;
+
+    constructor(public payload: { tripPlan: ITripPlan }){}
+}
+
+export class EditTripPlanCompletedTypeFailureAction implements Action {
+    readonly type = TripPlanActionsTypes.EDIT_TRIP_PLAN_COMPLETED_TYPE_FAILURE;
 
     constructor(public payload: { error: any }){}
 }
@@ -74,6 +95,9 @@ export type TripPlanActionUnion = GetTripPlansAction
     | CreateTripPlanAction
     | CreateTripPlanSuccesAction
     | CreateTripPlanFailureAction
-    | EditTripPlanAction
-    | EditTripPlanSuccesAction
-    | EditTripPlanFailureAction
+    | EditTripPlanHoursAction
+    | EditTripPlanHoursSuccesAction
+    | EditTripPlanHoursFailureAction
+    | EditTripPlanCompletedTypeAction
+    | EditTripPlanCompletedTypeSuccesAction
+    | EditTripPlanCompletedTypeFailureAction

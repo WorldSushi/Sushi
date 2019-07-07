@@ -12,6 +12,7 @@ import { WeekPlanFacade } from 'src/app/store/manager-rm/clients/facades/week-pl
 import { TripPlanFacade } from 'src/app/store/manager-rm/clients/facades/trip-plan.facade';
 import { ManagerCallsResultFacade } from 'src/app/store/manager-rm/clients/facades/manager-calls-result.facade';
 import { CallsDateFacade } from 'src/app/store/manager-rm/clients/facades/calls-date.selectors';
+import { ITripPlan } from '../../shared/models/trip-plan.model';
 
 @Component({
   selector: 'app-clients',
@@ -46,7 +47,7 @@ export class ClientsComponent implements OnInit {
       avg5Months: 0,
       clientId: client.id
     }
-    client.weekPlans = this.clientWeekPlansInit(client);
+    client.weekPlans = []
 
 
     client.MSCallsDates = this.callsDateInit(client.id);
@@ -56,10 +57,33 @@ export class ClientsComponent implements OnInit {
   }
 
   updateClient(client: IClient){
-    client.callPlan = this.clientCallPlanRecalculate(client)
-
     this.clientsFacade.editClient(client);
   }
+
+  updateCallPlan(callPlan: ICallPlan){
+    this.callPlanFacade.editCallPlan(callPlan);
+  }
+
+  updateTripPlanHours(tripPlan: ITripPlan){
+    this.tripPlanFacade.editTripPlanHours(tripPlan);
+  }
+
+  updateTripPlanCompletedType(tripPlan: ITripPlan){
+    this.tripPlanFacade.editTripPlanCompletedType(tripPlan);
+  }
+
+  updateWeekPlan(weekPlan: IWeekPlan){
+    this.weekPlanFacade.editWeekPlan(weekPlan);
+  }
+
+  createWeekPlan(weekPlan: IWeekPlan){
+    this.weekPlanFacade.createWeekPlan(weekPlan);
+  }
+
+  addFactToWeekPlan(weekPlan: IWeekPlan){
+    this.weekPlanFacade.addFactToWeekPlan(weekPlan);
+  }
+
 
   clientCallPlanInit(client: IClient): ICallPlan {
     return {
@@ -71,50 +95,7 @@ export class ClientsComponent implements OnInit {
     }
   }
 
-  clientWeekPlansInit(client: IClient): IWeekPlan[]{
-    return [
-      {
-          id: client.id,
-          clientId: client.id,
-          RMplanned: '',
-          RMfact: '',
-          MSplanned: '',
-          MSfact: ''
-      },
-      {
-          id: client.id,
-          clientId: client.id,
-          RMplanned: '',
-          RMfact: '',
-          MSplanned: '',
-          MSfact: ''
-      },
-      {
-          id: client.id,
-          clientId: client.id,
-          RMplanned: '',
-          RMfact: '',
-          MSplanned: '',
-          MSfact: ''
-      },
-      {
-          id: client.id,
-          clientId: client.id,
-          RMplanned: '',
-          RMfact: '',
-          MSplanned: '',
-          MSfact: ''
-      },
-      {
-          id: client.id,
-          clientId: client.id,
-          RMplanned: '',
-          RMfact: '',
-          MSplanned: '',
-          MSfact: ''
-      }
-    ]
-  }
+
 
   clientCallPlanRecalculate(client: IClient): ICallPlan {
     client.callPlan.totalCalls = this.translateNumberOfCallsToCollectiveCalls(client.numberOfCalls);

@@ -27,7 +27,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody]LoginCommand command)
+        public async Task<IActionResult> Login(LoginCommand command)
         {
             if (ModelState.IsValid)
             {
@@ -38,13 +38,10 @@ namespace WebUI.Controllers
                 if (user != null)
                 {
                     await Authenticate(user);
-                    return Ok(new {
-                        Login = user.Login,
-                        Password = user.Password,
-                        Role = user is Admin //Todo цифры на enum заменить
-                            ? 10
-                            : 20
-                    });
+                    if (user is Admin)
+                        return Redirect("/admin");
+                    else
+                        return Redirect("/manager-rm");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }

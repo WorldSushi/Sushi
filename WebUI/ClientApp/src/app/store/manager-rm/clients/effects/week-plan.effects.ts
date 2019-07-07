@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, catchError, map, concatMap } from 'rxjs/operators';
-import { GetWeekPlansAction, WeekPlanActionsTypes, GetWeekPlansSuccesAction, GetWeekPlansFailureAction, CreateWeekPlanAction, CreateWeekPlanSuccesAction, CreateWeekPlanFailureAction, EditWeekPlanAction, EditWeekPlanSuccesAction, EditWeekPlanFailureAction } from '../actions/week-plan.actions';
+import { GetWeekPlansAction, WeekPlanActionsTypes, GetWeekPlansSuccesAction, GetWeekPlansFailureAction, CreateWeekPlanAction, CreateWeekPlanSuccesAction, CreateWeekPlanFailureAction, EditWeekPlanAction, EditWeekPlanSuccesAction, EditWeekPlanFailureAction, AddFactToWeekPlanAction, AddFactToPlanFailureAction } from '../actions/week-plan.actions';
 import { IWeekPlan } from 'src/app/manager-rm/clients/shared/models/week-plan.model';
 import { WeekPlansService } from 'src/app/manager-rm/clients/shared/services/week-plan.service';
 
@@ -54,6 +54,22 @@ export class WeekPlansEffects {
         )
     )
 
+    @Effect()
+    addFactToWeekPlan$ = this.actions$.pipe(
+        ofType<AddFactToWeekPlanAction>(WeekPlanActionsTypes.ADD_FACT_TO_WEEK_PLAN),
+        concatMap((action) =>
+            this.weekPlansService.addFactToWeekPlan(action.payload.weekPlan).pipe(
+                map((weekPlan: IWeekPlan) =>
+                    new EditWeekPlanSuccesAction({ weekPlan: weekPlan}) 
+                ),
+                catchError(error =>
+                    of(new AddFactToPlanFailureAction({ error: error}))
+                )
+            )    
+        )
+    )
+                    
+    
     constructor(
         private weekPlansService: WeekPlansService,
         private actions$: Actions
