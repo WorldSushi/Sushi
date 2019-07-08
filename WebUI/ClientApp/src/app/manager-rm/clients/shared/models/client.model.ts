@@ -20,7 +20,6 @@ export interface IClient {
     weekPlans: IWeekPlan[],
     MSresults: IManagerCallsResult,
     RMresults: IManagerCallsResult,
-    MSCallsDates: ICallsDate[],
-    RMCallsDates: ICallsDate[],
+    clientContacts: ICallsDate[],
     managerId: number
 }

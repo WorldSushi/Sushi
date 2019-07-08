@@ -6,8 +6,11 @@ using Data;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
+using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebUI.Services.Abstract;
 
 namespace WebUI.ApiControllers.Manager
 {
@@ -16,10 +19,13 @@ namespace WebUI.ApiControllers.Manager
     public class ClientContactController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IAccountInformationService _accountInformationService;
 
-        public ClientContactController(ApplicationContext context)
+        public ClientContactController(ApplicationContext context,
+            IAccountInformationService accountInformationService)
         {
             _context = context;
+            _accountInformationService = accountInformationService;
         }
 
         [HttpGet]
@@ -32,7 +38,7 @@ namespace WebUI.ApiControllers.Manager
                     Id = x.Id,
                     ClientId = x.ClientId,
                     ContactType = x.Type,
-                    Date = x.Date,
+                    Date = x.Date.ToString("dd.MM.yyyy"),
                     ManagerType = x.ManagerType
                 }).ToListAsync();
 
@@ -42,20 +48,31 @@ namespace WebUI.ApiControllers.Manager
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientContactCreate command)
         {
-            var clientContact = await _context.Set<ClientContact>()
+            /*var clientContact = await _context.Set<ClientContact>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && x.ManagerType == command.ManagerType
                                           && x.Date.Date == DateTime.Now.Date.Date);
 
             if (clientContact != null)
-                return BadRequest("Операция на этот день уже создана");
+                return BadRequest("Операция на этот день уже создана");*/
+
+            command.ManagerId = _context.Set<ManagerForClient>()
+                .FirstOrDefault(x => x.ClientId == command.ClientId && x.Type == command.ManagerType)
+                .Id;
 
             var newClientContact = await _context.Set<ClientContact>()
                 .AddAsync(new ClientContact(command));
 
             await _context.SaveChangesAsync();
 
-            var result = newClientContact.Entity;
+            var result = new ClientContactDto()
+            {
+                Id = newClientContact.Entity.Id,
+                ClientId = newClientContact.Entity.ClientId,
+                ContactType = newClientContact.Entity.Type,
+                Date = newClientContact.Entity.Date.ToString("dd.MM.yyyy"),
+                ManagerType = newClientContact.Entity.ManagerType
+            };
 
             return Ok(result);
         } 
