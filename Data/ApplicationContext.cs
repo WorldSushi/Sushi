@@ -1,6 +1,7 @@
 ﻿using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Entities.OneCInfo;
 using Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,9 @@ namespace Data
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();
             modelBuilder.Entity<User>();
+
+            modelBuilder.Entity<UserInfo>();
+            modelBuilder.Entity<ClientInfo>();
         }
     }
 }

@@ -26,8 +26,8 @@ namespace WebUI.ApiControllers.Admin
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()
                 {
-                    EscortManagerId = x.EscortManagerId,
-                    RegionalManagerId = x.RegionalManagerId
+                    EscortManagerId = x.EscortManagerId ?? 0,
+                    RegionalManagerId = x.RegionalManagerId ?? 0
                 }).ToListAsync();
 
             return Ok(result);
@@ -47,8 +47,8 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
-                EscortManagerId = workGroup.Entity.EscortManagerId,
-                RegionalManagerId = workGroup.Entity.RegionalManagerId
+                EscortManagerId = workGroup.Entity.EscortManagerId ?? 0,
+                RegionalManagerId = workGroup.Entity.RegionalManagerId ?? 0
             };
 
             return Ok(result);
@@ -73,8 +73,8 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
-                EscortManagerId = workGroup.EscortManagerId,
-                RegionalManagerId = workGroup.RegionalManagerId
+                EscortManagerId = workGroup.EscortManagerId ?? 0,
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);
@@ -99,8 +99,8 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
-                EscortManagerId = workGroup.EscortManagerId,
-                RegionalManagerId = workGroup.RegionalManagerId
+                EscortManagerId = workGroup.EscortManagerId ?? 0,
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);
@@ -124,8 +124,8 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
-                EscortManagerId = workGroup.EscortManagerId,
-                RegionalManagerId = workGroup.RegionalManagerId
+                EscortManagerId = workGroup.EscortManagerId ?? 0,
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);
