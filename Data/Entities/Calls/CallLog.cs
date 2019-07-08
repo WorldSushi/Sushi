@@ -5,19 +5,19 @@ namespace Data.Entities.Calls
     public class CallLog : Entity
     {
         public string Direction { get; set; }
-        public string User_account { get; set; }
-        public string Client_number { get; set; }
-        public int Start_time { get; set; }
-        public string Src_number { get; set; }
+        public string UserAccount { get; set; }
+        public string ClientNumber { get; set; }
+        public int StartTime { get; set; }
+        public string SrcNumber { get; set; }
         public int Duration { get; set; }
-        public string User_id { get; set; }
+        public string UserId { get; set; }
         public string Answer_time { get; set; }
-        public string Src_id { get; set; }
-        public string Client_name { get; set; }
-        public string Src_slot { get; set; }
+        public string SrcId { get; set; }
+        public string ClientName { get; set; }
+        public string SrcSlot { get; set; }
         public string Recording { get; set; }
         public string Answered { get; set; }
-        public string Db_call_id { get; set; }
-        public int End_time { get; set; }
+        public string DbCallId { get; set; }
+        public int EndTime { get; set; }
     }
 }

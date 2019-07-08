@@ -77,7 +77,7 @@ namespace WebUI.Controllers.Users
             return View(response);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult GetCalls([FromBody]GetCallsOptions options)
         {
             if (options.DateFrom != null && options.DateFor != null)
@@ -136,6 +136,6 @@ namespace WebUI.Controllers.Users
             }
 
             return BadRequest();
-        }
+        }*/
     }
 }

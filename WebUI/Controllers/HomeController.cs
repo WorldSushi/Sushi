@@ -2,6 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Base.Helpers;
+using Data;
+using Data.Entities.Calls;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +14,13 @@ namespace WebUI.Controllers
     public class HomeController : Controller
     {
         private readonly IMyCallsAPIService _myCallsApiService;
+        private readonly ApplicationContext _context;
 
-        public HomeController(IMyCallsAPIService myCallsApiService)
+        public HomeController(IMyCallsAPIService myCallsApiService,
+            ApplicationContext context)
         {
             _myCallsApiService = myCallsApiService;
+            _context = context;
         }
 
         [HttpGet]
@@ -42,7 +48,7 @@ namespace WebUI.Controllers
 
         public void MyCallsTest()
         {
-            _myCallsApiService.GetCallsByDate(new DateTime(2019, 7, 1), new DateTime(2019, 7, 5), 0);
+            _myCallsApiService.SaveNewCalls();
         }
 
         public IActionResult Index()

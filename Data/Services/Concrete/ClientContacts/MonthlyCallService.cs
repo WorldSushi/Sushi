@@ -20,7 +20,7 @@ namespace Data.Services.Concrete.ClientContacts
             _memoryCache = memoryCache;
         }
 
-        public IQueryable<CallDTO> GetMonthlyCalls(int month)
+        /*public IQueryable<CallDTO> GetMonthlyCalls(int month)
         {
             var dateStart = new DateTime(DateTime.Now.Year, month, 1);
             var dateEnd = dateStart.AddMonths(1).AddDays(-1);
@@ -63,9 +63,9 @@ namespace Data.Services.Concrete.ClientContacts
             return calls.Results
                 .Where(x => x.Duration >= 150 && Convert.ToInt32(x.Direction) == 1)
                 .AsQueryable();
-        }
+        }*/
 
-        private void WobNeProebat()
+        /*private void WobNeProebat()
         {
             var dateStart = new DateTime(DateTime.Now.Year, 4, 1);
             var dateEnd = dateStart.AddMonths(1).AddDays(-1);
@@ -100,6 +100,6 @@ namespace Data.Services.Concrete.ClientContacts
                 .Where(x => x.Src_number == "+79009151781" && x.Duration > 150)
                 .OrderByDescending(x => x.Start_time)
                 .ToList();
-        }
+        }*/
     }
 }
