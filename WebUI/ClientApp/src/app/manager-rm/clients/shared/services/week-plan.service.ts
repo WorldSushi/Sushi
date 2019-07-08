@@ -26,6 +26,10 @@ export class WeekPlansService {
         return this.http.put<IWeekPlan>(this.API_URL + weekPlan.id, weekPlan, this.httpOptions);
     }
 
+    addFactToWeekPlan(weekPlan: IWeekPlan): Observable<IWeekPlan> {
+        return this.http.put<IWeekPlan>(this.API_URL + 'AddFact', weekPlan, this.httpOptions)
+    }
+
 
     constructor(public http: HttpClient){}
 }

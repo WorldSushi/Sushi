@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from '@ngrx/store';
 import { weekPlanQueries } from '../selectors/week-plan.selectors';
-import { GetWeekPlansAction, CreateWeekPlanAction, EditWeekPlanAction } from '../actions/week-plan.actions';
+import { GetWeekPlansAction, CreateWeekPlanAction, EditWeekPlanAction, AddFactToWeekPlanAction } from '../actions/week-plan.actions';
 import { IWeekPlan } from 'src/app/manager-rm/clients/shared/models/week-plan.model';
 import { IWeekPlanState } from '../states/week-plan.state';
 
@@ -22,6 +22,10 @@ export class WeekPlanFacade {
 
     editWeekPlan(weekPlan: IWeekPlan){
         this.store.dispatch(new EditWeekPlanAction({ weekPlan: weekPlan }));
+    }
+
+    addFactToWeekPlan(weekPlan: IWeekPlan){
+        this.store.dispatch(new AddFactToWeekPlanAction({ weekPlan: weekPlan }));
     }
 
 

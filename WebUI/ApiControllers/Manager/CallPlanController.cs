@@ -85,7 +85,7 @@ namespace WebUI.ApiControllers.Manager
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && DateHelper.IsCurrentMonth(x.Date));
 
-            callPlan.ChangeEscortManagerCalls(command.Amount);
+            callPlan.ChangeEscortManagerCalls(command.EscortManagerCalls);
 
             await _context.SaveChangesAsync();
 

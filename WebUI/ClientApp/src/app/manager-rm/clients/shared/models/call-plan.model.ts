@@ -1,7 +1,7 @@
 export interface ICallPlan {
     id: number,
-    totalCalls: number, // Общее количество звонков
-    escortManagerCalls: number, //Менеджер сопровождения количество звонков
-    regionalManagerCalls: number, // Региональный менеджер количество звонков
+    totalCalls: number, 
+    escortManagerCalls: number, 
+    regionalManagerCalls: number, 
     clientId: number
 }

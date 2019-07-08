@@ -6,6 +6,7 @@ using Data;
 using Data.Commands.ClientContacts.BusinessTripPlan;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,7 +62,7 @@ namespace WebUI.ApiControllers.Manager
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && DateHelper.IsCurrentMonth(x.Date));
 
-            businessTripPlan.ChangeCompletedType(command.CompletedType);
+            businessTripPlan.ChangeCompletedType((BusinessTripCompletedType)command.CompletedType);
 
             await _context.SaveChangesAsync();
 

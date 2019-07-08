@@ -37,7 +37,7 @@ namespace WebUI.Services.Concrete
                 throw new Exception("Роль пользователя неопределена");
         }
 
-        private User CurrentUser()
+        public User CurrentUser()
         {
             return _userService.GetAll().FirstOrDefault(x => x.Login == _httpContext.User.Identity.Name);
         }

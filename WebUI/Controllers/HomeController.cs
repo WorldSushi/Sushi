@@ -44,5 +44,10 @@ namespace WebUI.Controllers
         {
             _myCallsApiService.GetCallsByDate(new DateTime(2019, 7, 1), new DateTime(2019, 7, 5), 0);
         }
+
+        public IActionResult Index()
+        {
+            return Redirect("/Account/Index");
+        }
     }
 }

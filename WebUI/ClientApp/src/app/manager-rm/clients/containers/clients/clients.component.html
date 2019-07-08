@@ -1,5 +1,11 @@
 <app-client-list 
     [clients]="clients$ | async" 
     (clientCreated)="createClient($event)"
-    (clientUpdated)="updateClient($event)">
+    (clientUpdated)="updateClient($event)"
+    (callPlanUpdated)="updateCallPlan($event)"
+    (tripPlanHoursUpdated)="updateTripPlanHours($event)"
+    (tripPlanCompletedTypeUpdated)="updateTripPlanCompletedType($event)"
+    (weekPlanUpdated)="updateWeekPlan($event)"
+    (weekPlanCreated)="createWeekPlan($event)"
+    (weekPlanFactAdded)="addFactToWeekPlan($event)">
 </app-client-list>

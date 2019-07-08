@@ -36,7 +36,7 @@ export function tripPlansReducer(state = tripPlanInitialState, action: TripPlanA
                                 error: action.payload.error
                         }
                 
-                case TripPlanActionsTypes.EDIT_TRIP_PLAN_SUCCESS:
+                case TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS_SUCCESS:
                         const index = state.tripPlans.findIndex(item => item.id == action.payload.tripPlan.id);
                         
                         return {
@@ -49,7 +49,7 @@ export function tripPlansReducer(state = tripPlanInitialState, action: TripPlanA
                                 loading: false
                         }
                 
-                case TripPlanActionsTypes.EDIT_TRIP_PLAN_FAILURE:
+                case TripPlanActionsTypes.EDIT_TRIP_PLAN_HOURS_FAILURE:
                         return {
                                 ...state,
                                 error: action.payload.error

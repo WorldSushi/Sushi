@@ -1,6 +1,59 @@
-.mat-form-field
-    display: block
-    margin-bottom: 10px
+.dialog-title
+    margin: 
+        top: 35px
+        left: 25px
 
-.dialog-actions
-    text-align: center
+.close
+    display: block
+    position: absolute
+    z-index: 100
+    cursor: pointer
+    right: 25px
+    top: 25px
+    width: 50px 
+    height: 50px
+    border-radius: 100px
+    border: none
+    background: rgba(255, 235, 235, 0.91)
+    i
+        display: inline-block
+        color: #E79B9B
+
+form
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+
+::ng-deep .mat-dialog-container
+    position: relative
+    color: #557B91
+    padding: 0px
+    padding-bottom: 50px
+    .mat-dialog-content
+        margin: 0
+        padding: 0
+
+input, select
+    box-sizing: border-box
+    width: 100%
+    display: block
+    padding: 15px 30px
+    border-radius: 99px
+    border: 1px solid #E9F3FF
+    font-size: 14px
+    font-weight: normal
+    color: #9CB2CD
+    cursor: pointer
+
+.form-group
+    margin-bottom: 20px
+    padding: 0px 20px
+
+label
+    font-size: 13px
+    color: #9CB2CD
+    margin-left: 30px
+    margin-bottom: 10px
+    display: inline-block
+
+::placeholder
+    color: #9CB2CD

@@ -23,7 +23,7 @@ export class CallPlansService {
     }
 
     editCallPlan(callPlan: ICallPlan): Observable<ICallPlan> {
-        return this.http.put<ICallPlan>(this.API_URL + callPlan.id, callPlan, this.httpOptions);
+        return this.http.put<ICallPlan>(this.API_URL, callPlan, this.httpOptions);
     }
 
 

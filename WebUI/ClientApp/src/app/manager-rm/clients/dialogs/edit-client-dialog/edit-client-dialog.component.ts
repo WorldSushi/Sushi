@@ -11,7 +11,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class EditClientDialogComponent implements OnInit {
 
   save(){
-    console.log(this.data);
     this.dialogRef.close(this.data)
   }
 

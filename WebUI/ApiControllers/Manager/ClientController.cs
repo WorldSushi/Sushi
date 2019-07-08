@@ -66,7 +66,7 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] ClientEdit command)
+        public async Task<IActionResult> Put([FromBody] ClientEdit command)
         {
             var client = await _context.Set<Client>()
                 .FirstOrDefaultAsync(x => x.Id == command.Id);

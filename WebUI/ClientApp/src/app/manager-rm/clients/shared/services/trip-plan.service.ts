@@ -22,8 +22,12 @@ export class TripPlansService {
         return this.http.post<ITripPlan>(this.API_URL, tripPlan, this.httpOptions);
     }
 
-    editTripPlan(tripPlan: ITripPlan): Observable<ITripPlan> {
-        return this.http.put<ITripPlan>(this.API_URL + tripPlan.id, tripPlan, this.httpOptions);
+    editTripPlanHours(tripPlan: ITripPlan): Observable<ITripPlan> {
+        return this.http.put<ITripPlan>(this.API_URL + "ChangeHours", tripPlan, this.httpOptions);
+    }
+
+    editTripPlanCompletedType(tripPlan: ITripPlan): Observable<ITripPlan> {
+        return this.http.put<ITripPlan>(this.API_URL + "ChangeCompletedType", tripPlan, this.httpOptions);
     }
 
 
