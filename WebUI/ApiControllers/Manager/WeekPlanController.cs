@@ -60,6 +60,34 @@ namespace WebUI.ApiControllers.Manager
             return Ok(result);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] WeekPlanEdit command)
+        {
+            var weekPlan = await _context.Set<WeekPlan>()
+                .FirstOrDefaultAsync(x => x.Id == command.Id);
+
+            if (weekPlan == null)
+                return BadRequest("Недельный план не найден");
+
+            weekPlan.Edit(command);
+
+            await _context.SaveChangesAsync();
+
+            var result = new WeekPlanDto()
+            {
+                Id = weekPlan.Id,
+                ClientId = weekPlan.ClientId,
+                Fact = weekPlan.Fact,
+                FactTitle = weekPlan.FactTitle,
+                ManagerType = weekPlan.ManagerType,
+                Plan = weekPlan.Plan,
+                PlanTitle = weekPlan.PlanTitle,
+                WeekNumber = weekPlan.WeekNumber
+            };
+
+            return Ok(result);
+        }
+
         [HttpPut("AddFact")]
         public async Task<IActionResult> AddFact([FromBody] AddFact command)
         {
@@ -77,6 +105,34 @@ namespace WebUI.ApiControllers.Manager
             await _context.SaveChangesAsync();
 
             var result = weekPlan;
+
+            return Ok(result);
+        }
+
+        [HttpPut("EditFact")]
+        public async Task<IActionResult> EditFact([FromBody] WeekPlanFactEdit command)
+        {
+            var weekPlan = await _context.Set<WeekPlan>()
+                .FirstOrDefaultAsync(x => x.Id == command.Id);
+
+            if (weekPlan == null)
+                return BadRequest("Недельный план не найден");
+
+            weekPlan.EditFact(command);
+
+            await _context.SaveChangesAsync();
+
+            var result = new WeekPlanDto()
+            {
+                Id = weekPlan.Id,
+                ClientId = weekPlan.ClientId,
+                Fact = weekPlan.Fact,
+                FactTitle = weekPlan.FactTitle,
+                ManagerType = weekPlan.ManagerType,
+                Plan = weekPlan.Plan,
+                PlanTitle = weekPlan.PlanTitle,
+                WeekNumber = weekPlan.WeekNumber
+            };
 
             return Ok(result);
         }

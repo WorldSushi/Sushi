@@ -40,10 +40,22 @@ namespace Data.Entities.ClientContacts
             PlanTitle = command.PlanTitle;
         }
 
+        public void Edit(WeekPlanEdit command)
+        {
+            Plan = command.Plan;
+            PlanTitle = command.PlanTitle;
+        }
+
         public void AddFact(string fact, string factTitle)
         {
             FactTitle = factTitle;
             Fact = fact;
+        }
+
+        public void EditFact(WeekPlanFactEdit command)
+        {
+            Fact = command.Fact;
+            FactTitle = command.FactTitle;
         }
     }
 }
