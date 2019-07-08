@@ -52,24 +52,15 @@ namespace WebUI.Controllers
             var userInfos = _context.Set<UserInfo>()
                 .Where(x => x.UserId != 35 && x.UserId != 25)
                 .ToList();
-            /*var workGroupsDto = _context.Set<WorkGroup>()
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    EscortGuid = _context.Set<UserInfo>()
-                        .FirstOrDefault(z => z.Id == x.EscortManagerId).OneCId.ToString(),
-                    RegionalGuid = _context.Set<UserInfo>()
-                        .FirstOrDefault(z => z.Id == x.RegionalManagerId).OneCId.ToString()
-                }).ToList();*/
 
-            for (var i = 1; i < lines.Length; i++)
+            for (var i = 4990; i < 5101; i++)
             {
                 if (lines[i].Length > 2)
                 {
                     lines[i] = lines[i].Substring(1);
                     string[] rows = lines[i].Split(';');
 
-                    var client = _context.Set<Client>()
+                    /*var client = _context.Set<Client>()
                         .Add(new Client(new ClientCreate()
                         {
                             ClientType = ClientTypes.Middle1,
@@ -77,7 +68,7 @@ namespace WebUI.Controllers
                             LegalEntity = rows[1],
                             NumberOfCalls = GetNumberOfCalls(rows[4]),
                             NumberOfShipments = GetNumberOfShipments(rows[5]),
-                            Phone = "555-35-35"
+                            Phone = rows[6]
                         })).Entity;
 
                     var clientInfo = _context.Set<ClientInfo>()
@@ -85,32 +76,32 @@ namespace WebUI.Controllers
 
                     _context.SaveChanges();
 
-                    var managersGuidStr = rows[10].Split(',');
-                    var managersGuid = new List<Guid>();
-                    foreach (var str in managersGuidStr)
+                    if (rows[10] != "")
                     {
-                        managersGuid.Add(Guid.Parse(str));
-                    }
-
-                    var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
-
-                    if (userInfo != null)
-                    {
-                        var workGroup = _context.Set<WorkGroup>()
-                            .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
-                                                 || x.EscortManagerId == userInfo.UserId);
-
-                        workGroup.BindClient(new BindClient()
+                        var managersGuidStr = rows[10].Split(',');
+                        var managersGuid = new List<Guid>();
+                        foreach (var str in managersGuidStr)
                         {
-                            ClientId = client.Id,
-                            WorkGroupId = workGroup.Id
-                        });
-                    }
+                            managersGuid.Add(Guid.Parse(str));
+                        }
+
+                        var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
+
+                        if (userInfo != null)
+                        {
+                            var workGroup = _context.Set<WorkGroup>()
+                                .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
+                                                     || x.EscortManagerId == userInfo.UserId);
+
+                            workGroup.BindClient(new BindClient()
+                            {
+                                ClientId = client.Id,
+                                WorkGroupId = workGroup.Id
+                            });
+                        }
+                    }*/
                 }
             }
-            
-            
-            
             
             
             
