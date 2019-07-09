@@ -36,6 +36,7 @@ export class WeekPlansDialogComponent implements OnInit {
   weekPlans: IWeekPlan[];
 
   setWeeks(numberOfWeek: number){
+
     if(this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek);
     else
@@ -55,11 +56,31 @@ export class WeekPlansDialogComponent implements OnInit {
   }
 
   getMSWeekPlans(weekPlans: IWeekPlan[]){
-    return weekPlans.filter(item => item.managerType == 10)
+    let result = [];
+    weekPlans = this.data.weekPlans.filter(item => item.managerType == 10);
+
+    for(let i = 1; i <= 5; i++){
+      if(weekPlans.find(item => item.weekNumber == i))
+        result.push(this.data.weekPlans.find(item => item.weekNumber == i))
+      else
+        result.push({ id: 0, plan: '', clientId: this.data.id, managerType: 10, fact: '', weekNumber: i  })
+    }
+
+    return result
   }
 
   getRMWeekPlans(weekPlans: IWeekPlan[]){
-    return weekPlans.filter(item => item.managerType == 20)
+    let result = [];
+    weekPlans = this.data.weekPlans.filter(item => item.managerType == 20);
+
+    for(let i = 1; i <= 5; i++){
+      if(weekPlans.find(item => item.weekNumber == i))
+        result.push(this.data.weekPlans.find(item => item.weekNumber == i))
+      else
+        result.push({ id: 0, plan: '', clientId: this.data.id, managerType: 20, fact: '', weekNumber: i  })
+    }
+
+    return result
   }
 
   addFactToWeekPlan(weekPlan: IWeekPlan){
@@ -75,13 +96,15 @@ export class WeekPlansDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data.weekPlans.filter(item => item.managerType == 10)[this.numberOfWeek - 1])
+    if(this.data.weekPlans.find(item => item.managerType == 10 && this.numberOfWeek == item.weekNumber))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == this.numberOfWeek)
-    if(this.data.weekPlans.filter(item => item.managerType == 20)[this.numberOfWeek - 1])
+    else
+      this.selectedMSWeek = { id: 0, clientId: this.data.id, managerType: 10, plan: '', fact: '', weekNumber: this.numberOfWeek};
+    if(this.data.weekPlans.find(item => item.managerType == 20 && this.numberOfWeek == item.weekNumber))
       this.selectedRMWeek = this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == this.numberOfWeek)
+    else
+      this.selectedRMWeek = { id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: this.numberOfWeek }
 
-
-    console.log(this.numberOfWeek, this.selectedMSWeek);  
   }
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,

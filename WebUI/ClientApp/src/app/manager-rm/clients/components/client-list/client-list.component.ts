@@ -208,16 +208,16 @@ export class ClientListComponent implements OnInit {
   getCurrentMsPlan(weekPlans: IWeekPlan[]){
     const numberOfWeek = Math.ceil(new Date().getDate() / 7);
 
-    return weekPlans.filter(item => item.managerType == 10)[numberOfWeek - 1] 
-      ? weekPlans.filter(item => item.managerType == 10)[numberOfWeek - 1] 
+    return weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber) 
+      ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
       : { plan: '' };
   }
 
   getCurrentRmPlan(weekPlans: IWeekPlan[]){
     const numberOfWeek = Math.ceil(new Date().getDate() / 7);
 
-    return weekPlans.filter(item => item.managerType == 20)[numberOfWeek - 1]
-      ? weekPlans.filter(item => item.managerType == 20)[numberOfWeek - 1]
+    return weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+      ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
       : { plan: '' };
   }
 
