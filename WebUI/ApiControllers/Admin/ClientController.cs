@@ -1,17 +1,15 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Data;
-using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
-using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebUI.ApiControllers.Manager
+namespace WebUI.ApiControllers.Admin
 {
-    [Route("api/manager/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
     {
@@ -43,24 +41,21 @@ namespace WebUI.ApiControllers.Manager
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientCreate command)
         {
-            var currentManagerId = 1;
-
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
 
-            var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.EscortManagerId == currentManagerId
-                                          || x.RegionalManagerId == currentManagerId);
-
-            workGroup.BindClient(new BindClient()
-            {
-                ClientId = client.Entity.Id,
-                WorkGroupId = workGroup.Id
-            });
-
             await _context.SaveChangesAsync();
 
-            var result = client.Entity;
+            var result = new ClientDto()
+            {
+                Id = client.Entity.Id,
+                Title = client.Entity.Title,
+                LegalEntity = client.Entity.LegalEntity,
+                Phone = client.Entity.Phone,
+                ClientType = client.Entity.ClientType,
+                NumberOfCalls = client.Entity.NumberOfCalls,
+                NumberOfShipments = client.Entity.NumberOfShipments
+            };
 
             return Ok(result);
         }
@@ -75,7 +70,16 @@ namespace WebUI.ApiControllers.Manager
 
             await _context.SaveChangesAsync();
 
-            var result = client;
+            var result = new ClientDto()
+            {
+                Id = client.Id,
+                Title = client.Title,
+                LegalEntity = client.LegalEntity,
+                Phone = client.Phone,
+                ClientType = client.ClientType,
+                NumberOfCalls = client.NumberOfCalls,
+                NumberOfShipments = client.NumberOfShipments
+            };
 
             return Ok(result);
         }

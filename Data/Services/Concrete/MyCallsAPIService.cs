@@ -1,72 +1,103 @@
 ﻿using Data.DTO.Calls;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using Data.Services.Abstract;
 using Base.Extensions;
+using Base.Helpers;
+using Data.Entities.Calls;
 
 namespace Data.Services.Concrete
 {
     public class MyCallsAPIService: IMyCallsAPIService
     {
-        private readonly IManagerService _managerService;
-        private readonly DateTime referencePoint = new DateTime(2019, 2, 1);
+        private readonly ApplicationContext _context;
 
-        public MyCallsAPIService(IManagerService managerService)
+        public MyCallsAPIService(ApplicationContext context)
         {
-            _managerService = managerService;
+            _context = context;
         }
 
-        public DateTime GetReferencePoint()
+        public void SaveNewCalls()
         {
-            return referencePoint;
-        }
+            var monthCallsInfo = GetCurrentMonthCallsInfo();
 
-        public CallsDTO GetCallsByDate(DateTime dateFrom, int results_next_offset = 0)
-        {
-            Int32 dateStart = (Int32)(dateFrom.Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            Int32 dateEnd = (Int32)(dateFrom.AddDays(1).Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            var callsLog = new List<CallLog>();
 
-            string json = @"{ 
-                ""user_name"":""fin@tdmirsushi.ru"", 
-                ""api_key"":""uvxlcqy420x3i10h580036lfqooh7sa7"", 
-                ""action"":""calls.list"", 
-                ""from_date"": " + dateStart + @",
-                ""max_results"": 100, 
-                ""supervised"": 1}";
+            var response = GetCallsByDate(
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+                monthCallsInfo.Offset);
 
-            var request = (HttpWebRequest)WebRequest.Create("https://mirsushi.moizvonki.ru/api/v1");
-            request.Method = "POST";
-            request.ContentType = "application/json";
+            if (Convert.ToInt32(response.Results_next_offset) > 0)
+                monthCallsInfo.ChangeOffset(Convert.ToInt32(response.Results_next_offset));
+            else
+                monthCallsInfo.ChangeOffset(
+                    monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
 
-            using (var reqStream = request.GetRequestStream())
-            using (var writer = new StreamWriter(reqStream))
+            callsLog.AddRange(response.Results.Select(x => new CallLog()
             {
-                writer.Write(json);
-            }
+                Answer_time = x.Answer_time,
+                Answered = x.Answered,
+                ClientName = x.Client_name,
+                ClientNumber = x.Client_number,
+                DbCallId = x.Db_call_id,
+                Direction = x.Direction,
+                Duration = x.Duration,
+                EndTime = x.End_time,
+                Recording = x.Recording,
+                UserAccount = x.User_account,
+                StartTime = x.Start_time,
+                SrcNumber = x.Src_number,
+                UserId = x.User_id,
+                SrcId = x.Src_id,
+                SrcSlot = x.Src_slot
+            }));
 
-            string str;
-            CallsDTO managerCalls;
-
-            WebResponse response = request.GetResponse();
-            using (Stream stream = response.GetResponseStream())
+            while (Convert.ToInt32(response.Results_next_offset) > 0)
             {
-                using (StreamReader reader = new StreamReader(stream))
+                response = GetCallsByDate(
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+                    monthCallsInfo.Offset);
+
+                if (Convert.ToInt32(response.Results_next_offset) > 0)
+                    monthCallsInfo.ChangeOffset(Convert.ToInt32(response.Results_next_offset));
+                else
+                    monthCallsInfo.ChangeOffset(
+                        monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
+
+                callsLog.AddRange(response.Results.Select(x => new CallLog()
                 {
-                    str = reader.ReadToEnd();
-                    JObject responseJson = JObject.Parse(str);
-
-                    managerCalls = responseJson.ToObject<CallsDTO>();
-                }
+                    Answer_time = x.Answer_time,
+                    Answered = x.Answered,
+                    ClientName = x.Client_name,
+                    ClientNumber = x.Client_number,
+                    DbCallId = x.Db_call_id,
+                    Direction = x.Direction,
+                    Duration = x.Duration,
+                    EndTime = x.End_time,
+                    Recording = x.Recording,
+                    UserAccount = x.User_account,
+                    StartTime = x.Start_time,
+                    SrcNumber = x.Src_number,
+                    UserId = x.User_id,
+                    SrcId = x.Src_id,
+                    SrcSlot = x.Src_slot
+                }));
             }
-            response.Close();
 
-            return managerCalls;
+            _context.Set<CallLog>()
+                .AddRange(callsLog);
+
+            _context.SaveChanges();
         }
 
-        public CallsDTO GetCallsByDate(DateTime dateFrom, DateTime dateFor, int results_next_offset = 0)
+
+        private CallsDTO GetCallsByDate(DateTime dateFrom, DateTime dateFor, int results_next_offset)
         {
             Int32 dateStart = (Int32)(dateFrom.Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             Int32 dateEnd = (Int32)(dateFor.Date.AddDays(1).Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -109,47 +140,18 @@ namespace Data.Services.Concrete
 
             return managerCalls;
         }
-
-        public CallsDTO GetCallsByDateAndManager(DateTime dateFrom, int managerId)
+        
+        private MonthCallsInfo GetCurrentMonthCallsInfo()
         {
-            var managerPhone = _managerService.Get(managerId).Phone;
+            var monthCallsInfo = _context.Set<MonthCallsInfo>()
+                .FirstOrDefault(x => DateHelper.IsCurrentMonth(x.Date));
 
-            var managerCalls = GetCallsByDate(dateFrom);
+            if (monthCallsInfo == null)
+                monthCallsInfo = _context.Set<MonthCallsInfo>()
+                    .Add(new MonthCallsInfo(0))
+                    .Entity;
 
-            managerCalls.Results = managerCalls.Results
-                .Where(x => x.Client_number.PhoneFormat() == managerPhone
-                    && x.Duration > 150)
-                .ToList();
-
-            return managerCalls;
-        }
-
-        public CallsDTO GetCallsByDateAndManager(DateTime dateFrom, DateTime dateFor, int managerId)
-        {
-            //var managerPhone = _managerService.Get(managerId).Phone;
-
-            var managerCalls = GetCallsByDate(dateFrom, dateFor, 0);
-            var results_next_offset_index = 0;
-            
-            while(Convert.ToInt32(managerCalls.Results_next_offset) != 0)
-            {
-                results_next_offset_index += Convert.ToInt32(managerCalls.Results_next_offset);
-
-                var nextPartsOfCalls = GetCallsByDate(dateFrom, dateFor, Convert.ToInt32(results_next_offset_index));
-
-                managerCalls.Results_next_offset = nextPartsOfCalls.Results_next_offset;
-
-                managerCalls.Results = managerCalls.Results.Concat(nextPartsOfCalls.Results).ToList();
-            }
-
-
-            managerCalls.Results = managerCalls.Results
-                .Where(x => x.Client_number.PhoneFormat() == "+79009151781"
-                    && x.Duration > 150)
-                .OrderByDescending(x => x.Start_time)
-                .ToList();
-
-            return managerCalls;
+            return monthCallsInfo;
         }
     }
 }

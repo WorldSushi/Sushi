@@ -5,6 +5,6 @@ namespace Data.Services.Abstract.ClientContacts
 {
     public interface IMonthlyCallService
     {
-        IQueryable<CallDTO> GetMonthlyCalls(int month);
+        //IQueryable<CallDTO> GetMonthlyCalls(int month);
     }
 }

@@ -2,7 +2,6 @@
 using Base;
 using Data.Commands.ClientContacts.CallPlan;
 using Data.Entities.Clients;
-using Data.Entities.Users;
 
 namespace Data.Entities.ClientContacts
 {
@@ -17,12 +16,6 @@ namespace Data.Entities.ClientContacts
 
         public DateTime Date { get; protected set; }
 
-        public int EscortManagerId { get; protected set; }
-        public Manager EscortManager { get; protected set; }
-
-        public int RegionalManagerId { get; protected set; }
-        public Manager RegionalManager { get; protected set; }
-
         private CallPlan()
         {
 
@@ -32,8 +25,6 @@ namespace Data.Entities.ClientContacts
         {
             ClientId = command.ClientId;
             TotalCalls = command.TotalCalls;
-            EscortManagerId = command.EscortManagerId;
-            RegionalManagerId = command.RegionalManagerId;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
             EscortManagerCalls = 0;

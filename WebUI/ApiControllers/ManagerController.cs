@@ -39,26 +39,26 @@ namespace WebUI.ApiControllers
         }
 
         // POST: api/Manager
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Post([FromBody]ManagerCreateCommand command)
         {
             return Ok(_managerService.Create(command.Login, command.Password, command.Phone));
-        }
+        }*/
 
         // PUT: api/Manager/5
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public IActionResult Put([FromBody]ManagerEditCommand command)
         {
             return Ok(_managerService.Update(command));
-        }
+        }*/
 
         // DELETE: api/Manager/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             _managerService.Delete(id);
 
             return Ok(id);
-        }
+        }*/
     }
 }

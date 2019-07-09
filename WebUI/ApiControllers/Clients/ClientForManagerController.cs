@@ -37,7 +37,7 @@ namespace WebUI.ApiControllers.Clients
             _weekPlanService = weekPlanService;
         }
 
-        [HttpGet]
+       /* [HttpGet]
         public IEnumerable<ClientForManagerVM> Get()
         {
             var calls = new List<CallDTO>();//_monthlyCallService.GetMonthlyCalls(DateTime.Now.Month).ToList();
@@ -57,7 +57,7 @@ namespace WebUI.ApiControllers.Clients
                 }).ToList();
 
             return test;
-        }
+        }*/
 
         // GET: api/ClientForManager/5
         [HttpGet("{id}")]

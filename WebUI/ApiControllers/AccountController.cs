@@ -25,7 +25,7 @@ namespace WebUI.ApiControllers
         {
             var response = new {
                 Login = _accountService.CurrentUser().Login,
-                Role = _accountService.CurrentUser() is Admin
+                Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? "Admin"
                     : "Manager"
             };

@@ -38,7 +38,7 @@ namespace WebUI.Controllers.Users
         public IActionResult Index()
         {
             var response = _managerService.GetAll()
-                .Select(x => new ManagerDTO
+                .Select(x => new ManagerDto
                 {
                     Id = x.Id,
                     Login = x.Login,
@@ -49,7 +49,7 @@ namespace WebUI.Controllers.Users
             return View(response);
         }
 
-        public IActionResult Create()
+        /*public IActionResult Create()
         {
             return View();
         }
@@ -60,7 +60,7 @@ namespace WebUI.Controllers.Users
             _managerService.Create(login, password, phone);
 
             return RedirectToAction("Index");
-        }
+        }*/
 
         public IActionResult Detail(int id)
         {
@@ -77,7 +77,7 @@ namespace WebUI.Controllers.Users
             return View(response);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult GetCalls([FromBody]GetCallsOptions options)
         {
             if (options.DateFrom != null && options.DateFor != null)
@@ -136,6 +136,6 @@ namespace WebUI.Controllers.Users
             }
 
             return BadRequest();
-        }
+        }*/
     }
 }

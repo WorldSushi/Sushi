@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Data.DTO.Users
+﻿namespace Data.DTO.Users
 {
-    public class ManagerDTO
+    public class ManagerDto
     {
         public int Id { get; set; }
         public string Login { get; set; }

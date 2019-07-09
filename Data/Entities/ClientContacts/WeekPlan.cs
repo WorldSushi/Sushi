@@ -17,7 +17,11 @@ namespace Data.Entities.ClientContacts
 
         public string Plan { get; protected set; }
 
+        public string PlanTitle { get; protected set; }
+
         public string Fact { get; protected set; }
+
+        public string FactTitle { get; protected set; }
 
         public ManagerType ManagerType { get; protected set; }
 
@@ -33,11 +37,25 @@ namespace Data.Entities.ClientContacts
             WeekNumber = command.WeekNumber;
             ManagerType = command.ManagerType;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            PlanTitle = command.PlanTitle;
         }
 
-        public void AddFact(string fact)
+        public void Edit(WeekPlanEdit command)
         {
+            Plan = command.Plan;
+            PlanTitle = command.PlanTitle;
+        }
+
+        public void AddFact(string fact, string factTitle)
+        {
+            FactTitle = factTitle;
             Fact = fact;
+        }
+
+        public void EditFact(WeekPlanFactEdit command)
+        {
+            Fact = command.Fact;
+            FactTitle = command.FactTitle;
         }
     }
 }

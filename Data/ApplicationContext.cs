@@ -1,5 +1,7 @@
-﻿using Data.Entities.ClientContacts;
+﻿using Data.Entities.Calls;
+using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Entities.OneCInfo;
 using Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,15 +16,24 @@ namespace Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Call>();
+            modelBuilder.Entity<CallLog>();
+            modelBuilder.Entity<MonthCallsInfo>();
+
+            modelBuilder.Entity<CallPlan>();
+            modelBuilder.Entity<BusinessTripPlan>();
+            modelBuilder.Entity<ClientContact>();
+            modelBuilder.Entity<WeekPlan>();
+            modelBuilder.Entity<WorkGroup>();
+
+            modelBuilder.Entity<Client>();
+
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();
             modelBuilder.Entity<User>();
-            modelBuilder.Entity<Client>();
-            modelBuilder.Entity<CallPlan>();
-            modelBuilder.Entity<BusinessTripPlan>();
-            modelBuilder.Entity<ManagerForClient>();
-            modelBuilder.Entity<WeekPlan>();
-            modelBuilder.Entity<ClientContact>();
+
+            modelBuilder.Entity<UserInfo>();
+            modelBuilder.Entity<ClientInfo>();
         }
     }
 }

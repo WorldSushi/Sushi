@@ -5,20 +5,16 @@ using Data.Entities.Clients;
 using Data.Services.Abstract;
 using System.Linq;
 using Data.Commands.Clients;
-using Data.Entities.Users;
 
 namespace Data.Services.Concrete
 {
     public class ClientService : IClientService
     {
         private readonly IRepository<Client> _clientRepository;
-        private readonly IRepository<ManagerForClient> _managerForClientRepository;
 
-        public ClientService(IRepository<Client> clientRepository,
-            IRepository<ManagerForClient> managerForClientRepository)
+        public ClientService(IRepository<Client> clientRepository)
         {
             _clientRepository = clientRepository;
-            _managerForClientRepository = managerForClientRepository;
         }
 
         public IQueryable<Client> GetAll()
@@ -26,12 +22,12 @@ namespace Data.Services.Concrete
             return _clientRepository.All();
         }
 
-        public IQueryable<Manager> GetManagers(int clientId)
+        /*public IQueryable<Manager> GetManagers(int clientId)
         {
             return _managerForClientRepository.All()
                 .Where(x => x.ClientId == clientId)
                 .Select(x => x.Manager);
-        }
+        }*/
 
         public Client Create(ClientCreate command)
         {
