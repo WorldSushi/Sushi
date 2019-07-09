@@ -2,77 +2,80 @@
   <h3 mat-dialog-title>План по задачам <span>{{data.title}}</span></h3>
 </div>
 
-<span class="numberOfWeek">неделя {{numberOfWeek}}</span>
+<mat-dialog-content>
+  <span class="numberOfWeek">неделя {{numberOfWeek}}</span>
 
-<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
-
-<div class="dialog-body">
-  <div class="dialog-section dialog-left">
-    <div class="dialog-section-title">
-      Менеджер сопровождения
-    </div>
-    <div class="dialog-section-body">
-      <div class="planned">
-        <small>План</small>
-        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan" (focusout)="addNewWeekPlan(selectedMSWeek)">{{selectedMSWeek.plan}}</textarea>
+  <button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+  
+  <div class="dialog-body">
+    <div class="dialog-section dialog-left">
+      <div class="dialog-section-title">
+        Менеджер сопровождения
       </div>
-      
-
-      <div class="fact">
-        <small>Факт</small>
-        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact" (focusout)="addFactToWeekPlan(selectedMSWeek)">{{selectedMSWeek.fact}}</textarea>
+      <div class="dialog-section-body">
+        <div class="planned">
+          <small>План</small>
+          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan" (focusout)="addNewWeekPlan(selectedMSWeek)">{{selectedMSWeek.plan}}</textarea>
+        </div>
+        
+  
+        <div class="fact">
+          <small>Факт</small>
+          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact" (focusout)="addFactToWeekPlan(selectedMSWeek)">{{selectedMSWeek.fact}}</textarea>
+        </div>
+      </div>
+    </div>
+  
+    <div class="dialog-section dialog-right">
+      <div class="dialog-section-title">
+        Региональный сопровождения
+      </div>
+      <div class="dialog-section-body">
+        <div class="planned">
+          <small>План</small>
+          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan" (focusout)="addNewWeekPlan(selectedRMWeek)">{{selectedRMWeek.plan}}</textarea>
+        </div>
+        <div class="fact">
+          <small>Факт</small>
+          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact" (focusout)="addFactToWeekPlan(selectedRMWeek)">{{selectedRMWeek.fact}}</textarea>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="dialog-section dialog-right">
-    <div class="dialog-section-title">
-      Региональный сопровождения
-    </div>
-    <div class="dialog-section-body">
-      <div class="planned">
-        <small>План</small>
-        <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan" (focusout)="addNewWeekPlan(selectedRMWeek)">{{selectedRMWeek.plan}}</textarea>
-      </div>
-      <div class="fact">
-        <small>Факт</small>
-        <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact" (focusout)="addFactToWeekPlan(selectedRMWeek)">{{selectedRMWeek.fact}}</textarea>
-      </div>
-    </div>
-  </div>
-</div>
-
-<table style="margin-bottom: 40px">
-    <thead>
-      <tr>
-        <th style="background-color: #F1F8FF" width="50"></th>
-        <th style="background-color: #ECF5FF" (click)="setWeeks(1)">Неделя 1</th>
-        <th style="background-color: #EFF6FF" (click)="setWeeks(2)">Неделя 2</th>
-        <th style="background-color: #E2F0FF" (click)="setWeeks(3)">Неделя 3</th>
-        <th style="background-color: #DBECFF" (click)="setWeeks(4)">Неделя 4</th>
-        <th style="background-color: #D3E8FF" (click)="setWeeks(5)">Неделя 5</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-weight: bold">
-          МС
-        </td>
-        <td *ngFor="let element of getMSWeekPlans(data.weekPlans); let i = index">
-          {{element.plan}}
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold">
-          РМ
-        </td>
-        <td *ngFor="let element of getRMWeekPlans(data.weekPlans); let i = index">
-          {{element.plan}}
-        </td>
-      </tr>
-    </tbody>
-</table>
-
+  
+  <table style="margin-bottom: 40px">
+      <thead>
+        <tr>
+          <th style="background-color: #F1F8FF" width="50"></th>
+          <th style="background-color: #ECF5FF" (click)="setWeeks(1)">Неделя 1</th>
+          <th style="background-color: #EFF6FF" (click)="setWeeks(2)">Неделя 2</th>
+          <th style="background-color: #E2F0FF" (click)="setWeeks(3)">Неделя 3</th>
+          <th style="background-color: #DBECFF" (click)="setWeeks(4)">Неделя 4</th>
+          <th style="background-color: #D3E8FF" (click)="setWeeks(5)">Неделя 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight: bold">
+            МС
+          </td>
+          <td *ngFor="let element of getMSWeekPlans(data.weekPlans); let i = index">
+            {{element.plan}}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">
+            РМ
+          </td>
+          <td *ngFor="let element of getRMWeekPlans(data.weekPlans); let i = index">
+            {{element.plan}}
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  
+ 
+</mat-dialog-content>
 
 <div class="dialog-actions">
   <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
