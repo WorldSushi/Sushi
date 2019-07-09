@@ -80,20 +80,33 @@ namespace WebUI.ApiControllers.Manager
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] ChangeAmountEscortManagerCalls command)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CallPlanCreate command)
         {
             var callPlan = await _context.Set<CallPlan>()
-                .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
-                                          && DateHelper.IsCurrentMonth(x.Date));
+                .AddAsync(new CallPlan(command));
 
-            callPlan.ChangeEscortManagerCalls(command.EscortManagerCalls);
 
             await _context.SaveChangesAsync();
 
-            var result = callPlan;
-
-            return Ok(result);
+            return Ok(callPlan.Entity);
         }
-    }
+    
+
+        [HttpPut]
+            public async Task<IActionResult> Put([FromBody] ChangeAmountEscortManagerCalls command)
+            {
+                var callPlan = await _context.Set<CallPlan>()
+                    .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
+                                              && DateHelper.IsCurrentMonth(x.Date));
+
+                callPlan.ChangeEscortManagerCalls(command.EscortManagerCalls);
+
+                await _context.SaveChangesAsync();
+
+                var result = callPlan;
+
+                return Ok(result);
+            }
+        }
 }

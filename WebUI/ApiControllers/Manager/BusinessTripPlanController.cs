@@ -9,6 +9,7 @@ using Data.Entities.ClientContacts;
 using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebUI.Services.Abstract;
 
 namespace WebUI.ApiControllers.Manager
 {
@@ -17,10 +18,13 @@ namespace WebUI.ApiControllers.Manager
     public class BusinessTripPlanController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IAccountInformationService _accountInformationService;
 
-        public BusinessTripPlanController(ApplicationContext context)
+        public BusinessTripPlanController(ApplicationContext context,
+            IAccountInformationService accountInformationService)
         {
             _context = context;
+            _accountInformationService = accountInformationService;
         }
 
         [HttpGet]
@@ -37,6 +41,21 @@ namespace WebUI.ApiControllers.Manager
                 }).ToListAsync();
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(BusinessTripPlanDto command)
+        {
+            var tripPlan = await _context.Set<BusinessTripPlan>()
+                .AddAsync(new BusinessTripPlan(new BusinessTripPlanCreate {
+                    ClientId = command.ClientId,
+                    ManagerId = _accountInformationService.GetOperatorId(),
+                    NumberBusinessTripHours = command.Hours
+                }));
+
+            await _context.SaveChangesAsync();
+
+            return Ok(tripPlan.Entity);
         }
 
         [HttpPut("ChangeHours")]

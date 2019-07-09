@@ -8,6 +8,7 @@ using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebUI.Services.Abstract;
 
 namespace WebUI.ApiControllers.Manager
 {
@@ -16,10 +17,13 @@ namespace WebUI.ApiControllers.Manager
     public class ClientController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IAccountInformationService _accountInformationService;
 
-        public ClientController(ApplicationContext context)
+        public ClientController(ApplicationContext context,
+            IAccountInformationService accountInformationService)
         {
             _context = context;
+            _accountInformationService = accountInformationService;
         }
 
         [HttpGet]
@@ -43,7 +47,7 @@ namespace WebUI.ApiControllers.Manager
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientCreate command)
         {
-            var currentManagerId = 1;
+            var currentManagerId = _accountInformationService.GetOperatorId();
 
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
