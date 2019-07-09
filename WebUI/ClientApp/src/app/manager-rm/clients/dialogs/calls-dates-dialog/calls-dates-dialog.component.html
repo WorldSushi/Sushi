@@ -16,15 +16,15 @@
 
 
 <mat-dialog-content class="mat-typography mat-body"> 
-  <table mat-table #table [dataSource]="data.MSCallsDates">
+  <table mat-table #table [dataSource]="clientContacts">
     <ng-container matColumnDef="day">
       <th mat-header-cell *matHeaderCellDef width="190" style="background: #FFFCDD;">Дата</th>
-      <td mat-cell *matCellDef="let row; let i = index" style="width: 200px">{{getDate(i + 1)}}</td>
+      <td mat-cell *matCellDef="let row; let i = index" style="width: 200px">{{row.date}}</td>
     </ng-container>
-    <ng-container matColumnDef="MSvalue">
+    <ng-container matColumnDef="EMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #EEFEF6;">МС</th>
       <td mat-cell *matCellDef="let row" style="text-align: center">
-          <mat-select [(ngModel)]="row.action">
+          <mat-select [(ngModel)]="row.MScallType">
             <mat-option [value]="0">Отсутствует</mat-option>
             <mat-option [value]="10">Звонок</mat-option>
             <mat-option [value]="20">WhatsUp</mat-option>
@@ -32,10 +32,10 @@
           </mat-select>       
       </td>
     </ng-container>
-    <ng-container matColumnDef="RMvalue">
+    <ng-container matColumnDef="RMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #F5FEEE;">РМ</th>
       <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
-          <mat-select [(ngModel)]="data.RMCallsDates[i].action">
+          <mat-select [(ngModel)]="row.RMcallType">
             <mat-option [value]="0">Отсутствует</mat-option>
             <mat-option [value]="10">Звонок</mat-option>
             <mat-option [value]="20">WhatsUp</mat-option>

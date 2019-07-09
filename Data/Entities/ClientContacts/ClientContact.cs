@@ -30,6 +30,7 @@ namespace Data.Entities.ClientContacts
         {
             ClientId = command.ClientId;
             Type = command.ContactType;
+            ManagerId = command.ManagerId;
             ManagerType = command.ManagerType;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         }

@@ -32,6 +32,7 @@ export class ClientListComponent implements OnInit {
   @Output() weekPlanUpdated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() weekPlanCreated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() weekPlanFactAdded: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
    
   displayedColumns: string[] = [
     'title', 
@@ -131,21 +132,22 @@ export class ClientListComponent implements OnInit {
   }
 
   openCallsResult(client: IClient){
+
     let dialogRef = this.dialog.open(CallsResultDialogComponent, {
       width: '938px',
       data: {
         title: client.title,
         MSresults: {
-          calls: client.MSCallsDates.filter(item => item.contactType == 10).length,
-          whatsUp: client.MSCallsDates.filter(item => item.contactType == 20).length,
-          letters: client.MSCallsDates.filter(item => item.contactType == 30).length,
-          sum: client.MSCallsDates.filter(item => item.contactType != 0).length
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
+          sum: client.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10).length
         },
         RMresults: {
-          calls: client.RMCallsDates.filter(item => item.contactType == 10).length,
-          whatsUp: client.RMCallsDates.filter(item => item.contactType == 20).length,
-          letters: client.RMCallsDates.filter(item => item.contactType == 30).length,
-          sum: client.RMCallsDates.filter(item => item.contactType > 0).length
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
+          sum: client.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20).length
         }
       }
                   
@@ -153,20 +155,35 @@ export class ClientListComponent implements OnInit {
   }
 
   openCallsDates(client: IClient){
+
     let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
       width: '938px',
       data: {
         clientId: client.id,
         clientTitle: client.title,
-        MSCallsDates: client.MSCallsDates,
-        RMCallsDates: client.RMCallsDates
+        clientContacts: client.clientContacts
       } 
     })
 
     dialogRef.afterClosed().subscribe(res => {
-      let client = this.clients.find(item => item.id == res.clientId);
       if(res){
-        this.updateClient(client);
+        let newContacts = res.filter(item => (item.RMid == 0 && item.RMcallType != 0) || (item.EMid == 0 && item.MScallType != 0));
+        newContacts = newContacts.map(item => {
+          return {
+            id: 0,
+            clientId: item.clientId,
+            date: item.date,
+            contactType: item.EMid != 0 ? item.RMcallType : item.MScallType,
+            managerType:  item.EMid != 0 ? 20 : 10
+          }
+        })
+
+
+
+        newContacts.forEach(item => {
+          this.callsDateCreated.emit(item);
+        });
+
       }
     })
   }

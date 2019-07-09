@@ -9,6 +9,6 @@ namespace Data.DTO.Clients
         public int ClientId { get; set; }
         public ManagerType ManagerType { get; set; }
         public ClientContactType ContactType { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
 }

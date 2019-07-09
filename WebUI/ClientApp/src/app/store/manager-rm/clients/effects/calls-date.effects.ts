@@ -5,6 +5,8 @@ import { switchMap, catchError, map, concatMap } from 'rxjs/operators';
 import { GetCallsDatesAction, CallsDateActionsTypes, GetCallsDatesSuccesAction, GetCallsDatesFailureAction, CreateCallsDateAction, CreateCallsDateSuccesAction, CreateCallsDateFailureAction, EditCallsDateAction, EditCallsDateSuccesAction, EditCallsDateFailureAction } from '../actions/calls-date.actions';
 import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 import { CallsDatesService } from 'src/app/manager-rm/clients/shared/services/calls-date.service';
+import { ManagerCallsResultsService } from 'src/app/manager-rm/clients/shared/services/manager-calls-result.service';
+import { ManagerCallsResultFacade } from '../facades/manager-calls-result.facade';
 
 
 @Injectable()
@@ -29,8 +31,11 @@ export class CallsDatesEffects {
         ofType<CreateCallsDateAction>(CallsDateActionsTypes.CREATE_CALLS_DATE),
         concatMap((action) =>
             this.callsDatesService.createCallsDate(action.payload.callsDate).pipe(
-                map((callsDate: ICallsDate) =>
-                    new CreateCallsDateSuccesAction({ callsDate: callsDate })
+                map((callsDate: ICallsDate) =>{
+                    this.managerCallsResultFacade.loadManagerCallsResult(1);
+                    return new CreateCallsDateSuccesAction({ callsDate: callsDate })
+                }
+                   
                 ),
                 catchError(error => 
                     of(new CreateCallsDateFailureAction({ error: error }))
@@ -56,6 +61,7 @@ export class CallsDatesEffects {
 
     constructor(
         private callsDatesService: CallsDatesService,
+        private managerCallsResultFacade: ManagerCallsResultFacade, 
         private actions$: Actions
     ) {}
 }

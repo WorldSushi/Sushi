@@ -24,7 +24,7 @@ namespace WebUI
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/login");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Index");
                 });
 
             services.AddSpaStaticFiles(configuration =>

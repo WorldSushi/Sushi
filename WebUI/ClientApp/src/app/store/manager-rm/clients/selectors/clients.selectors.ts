@@ -13,6 +13,8 @@ import { INomenclatureAnalysis } from 'src/app/manager-rm/clients/shared/models/
 import { IRevenueAnalysis } from 'src/app/manager-rm/clients/shared/models/revenue-analysis';
 import { ITripPlan } from 'src/app/manager-rm/clients/shared/models/trip-plan.model';
 import { IWeekPlan } from 'src/app/manager-rm/clients/shared/models/week-plan.model';
+import { selectCallsDates } from './calls-date.selectors';
+import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 
 export const selectClients = createSelector(
     selectClientsState,
@@ -22,14 +24,16 @@ export const selectClients = createSelector(
     selectRevenueAnalyzes,
     selectTripPlans,
     selectWeekPlans,
+    selectCallsDates,
     (state: IClientsState,
         callPlans: ICallPlan[],
         managerCallsResults: IManagerCallsResult[],
         nomenclatureAnalyzes: INomenclatureAnalysis[],
         revenueAnalyzes: IRevenueAnalysis[],
         tripPlans: ITripPlan[],
-        weekPlans: IWeekPlan[]) => {
-            if(callPlans.length == 0 || managerCallsResults.length == 0 || tripPlans.length == 0 || weekPlans.length == 0)
+        weekPlans: IWeekPlan[],
+        callsDates: ICallsDate[]) => {
+            if(callPlans.length == 0 || managerCallsResults.length == 0 || tripPlans.length == 0 || weekPlans.length == 0 || callsDates.length == 0)
                 return
 
             return state.clients.map(client => {
@@ -40,7 +44,8 @@ export const selectClients = createSelector(
                     nomenclatureAnalysis: nomenclatureAnalyzes.find(item => item.clientId == client.id),
                     revenueAnalysis: revenueAnalyzes.find(item => item.clientId == client.id),
                     tripPlan: tripPlans.find(item => item.clientId == client.id),
-                    weekPlans: weekPlans.filter(item => item.clientId == client.id)
+                    weekPlans: weekPlans.filter(item => item.clientId == client.id),
+                    clientContacts: callsDates.filter(item => item.clientId == client.id)
                 }
             })
         } 

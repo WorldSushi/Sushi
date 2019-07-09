@@ -47,12 +47,8 @@ export class ClientsComponent implements OnInit {
       avg5Months: 0,
       clientId: client.id
     }
-    client.weekPlans = []
-
-
-    client.MSCallsDates = this.callsDateInit(client.id);
-    client.RMCallsDates = this.callsDateInit(client.id);
-
+    client.weekPlans = [];
+    
     this.clientsFacade.createClient(client);
   }
 
@@ -84,6 +80,9 @@ export class ClientsComponent implements OnInit {
     this.weekPlanFacade.addFactToWeekPlan(weekPlan);
   }
 
+  createCallsDate(clientContact) {
+    this.callsDateFacade.createCallsDate(clientContact);
+  }
 
   clientCallPlanInit(client: IClient): ICallPlan {
     return {
