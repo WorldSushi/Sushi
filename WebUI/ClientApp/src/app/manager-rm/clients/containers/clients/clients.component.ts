@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ClientsFacade } from '../../../../store/manager-rm/clients/facades/clients.facade';
 import { Observable } from 'rxjs';
 import { IClient } from '../../shared/models/client.model';
@@ -17,7 +17,8 @@ import { ITripPlan } from '../../shared/models/trip-plan.model';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.sass']
+  styleUrls: ['./clients.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClientsComponent implements OnInit {
 
