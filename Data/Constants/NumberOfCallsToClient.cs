@@ -24,7 +24,7 @@ namespace Data.Constants
                 case NumberOfCalls.TwoPerWeek:
                     return 8;
                 default:
-                    throw new Exception("Не указано кол-во звонков в месяц.");
+                    return 0;
             }
         }
     }
