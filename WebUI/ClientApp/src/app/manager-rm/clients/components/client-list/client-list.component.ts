@@ -14,6 +14,7 @@ import { CallsDatesDialogComponent } from '../../dialogs/calls-dates-dialog/call
 import { ICallPlan } from '../../shared/models/call-plan.model';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { weekPlanQueries } from 'src/app/store/manager-rm/clients/selectors/week-plan.selectors';
+import { ninvoke } from 'q';
 
 @Component({
   selector: 'app-client-list',
@@ -33,6 +34,8 @@ export class ClientListComponent implements OnInit {
   @Output() weekPlanCreated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() weekPlanFactAdded: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
+  @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
+  @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
    
   displayedColumns: string[] = [
     'title', 
@@ -58,7 +61,6 @@ export class ClientListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if(res){
-        res.id = this.clients.length + 1;
         this.clientCreated.emit(res);
       }
     })
@@ -199,11 +201,19 @@ export class ClientListComponent implements OnInit {
   }
 
   getCurrentMsPlan(weekPlans: IWeekPlan[]){
-    return weekPlans.filter(item => item.managerType == 10)[0];
+    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+
+    return weekPlans.filter(item => item.managerType == 10)[numberOfWeek - 1] 
+      ? weekPlans.filter(item => item.managerType == 10)[numberOfWeek - 1] 
+      : { plan: '' };
   }
 
   getCurrentRmPlan(weekPlans: IWeekPlan[]){
-    return weekPlans.filter(item => item.managerType == 20)[0];
+    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+
+    return weekPlans.filter(item => item.managerType == 20)[numberOfWeek - 1]
+      ? weekPlans.filter(item => item.managerType == 20)[numberOfWeek - 1]
+      : { plan: '' };
   }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
@@ -211,16 +221,23 @@ export class ClientListComponent implements OnInit {
   }
 
   updateCallPlan(callPlan: ICallPlan){
-    this.callPlanUpdated.emit(callPlan);
+    if(callPlan.id == 0)
+      this.callPlanCreated.emit(callPlan)
+    else
+      this.callPlanUpdated.emit(callPlan);
   }
 
   updateTripPlanHours(tripPlan: ITripPlan){
-    this.tripPlanHoursUpdated.emit(tripPlan);
+    if(tripPlan.id == 0)
+      this.tripPlanCreated.emit(tripPlan);
+    else
+      this.tripPlanHoursUpdated.emit(tripPlan);
   }
 
   updateTripPlanCompletedType(tripPlan: ITripPlan){
     this.tripPlanCompletedTypeUpdated.emit(tripPlan);
   }
+  
 
   getAnalysisProps(value) {
     if(value == 0){

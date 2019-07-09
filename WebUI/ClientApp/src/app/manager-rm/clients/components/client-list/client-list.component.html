@@ -114,7 +114,7 @@
           <ng-container matColumnDef="RMplanned">
             <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
             <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
-              {{getCurrentRmPlan(element.weekPlans).fact}}
+              {{getCurrentRmPlan(element.weekPlans).plan}}
             </td>
           </ng-container>
 

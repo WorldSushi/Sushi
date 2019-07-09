@@ -23,32 +23,7 @@ export class ClientsComponent implements OnInit {
 
   clients$: Observable<IClient[]> = this.clientsFacade.clients$;
 
-  createClient(client: IClient){
-    client.callPlan = this.clientCallPlanInit(client);
-    client.tripPlan = {
-      id: client.id,
-      planned: 0,
-      fact: 0,
-      clientId: client.id
-    }
-    client.nomenclatureAnalysis = {
-      id: client.id,
-      reportPrevMonth: 0,
-      reportAvg5Months: 0,
-      prevMonth: 0,
-      avg5Months: 0,
-      clientId: client.id
-    }
-    client.revenueAnalysis = {
-      id: client.id,
-      reportPrevMonth: 0,
-      reportAvg5Months: 0,
-      prevMonth: 0,
-      avg5Months: 0,
-      clientId: client.id
-    }
-    client.weekPlans = [];
-    
+  createClient(client: IClient){ 
     this.clientsFacade.createClient(client);
   }
 
@@ -82,6 +57,14 @@ export class ClientsComponent implements OnInit {
 
   createCallsDate(clientContact) {
     this.callsDateFacade.createCallsDate(clientContact);
+  }
+
+  createCallPlan(callPlan) {
+    this.callPlanFacade.createCallPlan(callPlan);
+  }
+
+  createTripPlan(tripPlan){
+    this.tripPlanFacade.createTripPlan(tripPlan);
   }
 
   clientCallPlanInit(client: IClient): ICallPlan {

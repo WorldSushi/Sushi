@@ -33,24 +33,45 @@ export const selectClients = createSelector(
         tripPlans: ITripPlan[],
         weekPlans: IWeekPlan[],
         callsDates: ICallsDate[]) => {
-            if(callPlans.length == 0 || managerCallsResults.length == 0 || tripPlans.length == 0 || weekPlans.length == 0 || callsDates.length == 0)
-                return
-
             return state.clients.map(client => {
                 return {
                     ...client,
-                    callPlan: callPlans.find(item => item.clientId == client.id),
-                    managerCallsResults: managerCallsResults.find(item => item.clientId == client.id),
+                    callPlan: callPlans.find(item => item.clientId == client.id) 
+                        ? callPlans.find(item => item.clientId == client.id) 
+                        : { 
+                            id: 0, 
+                            totalCalls: client.numberOfCalls / 10 == 90 ? 9 : client.numberOfCalls / 10,
+                            escortManagerCalls: 0,
+                            regionalManagerCalls: client.numberOfCalls / 10 == 90 ? 9 : client.numberOfCalls / 10,
+                            clientId: client.id
+                        },
+                    managerCallsResults: managerCallsResults.find(item => item.clientId == client.id) 
+                        ? managerCallsResults.find(item => item.clientId == client.id) 
+                        : {
+                            id: 0,
+                            escortCalls: 0,
+                            escortMails: 0,
+                            escortLetters: 0,
+                            escortTotalContacts: 0,
+                            regionalCalls: 0,
+                            regionalMails: 0,
+                            regionalLetters: 0,
+                            regionalTotalContacts: 0,
+                            clientId: client.id
+                        },
                     nomenclatureAnalysis: nomenclatureAnalyzes.find(item => item.clientId == client.id),
                     revenueAnalysis: revenueAnalyzes.find(item => item.clientId == client.id),
-                    tripPlan: tripPlans.find(item => item.clientId == client.id),
-                    weekPlans: weekPlans.filter(item => item.clientId == client.id),
-                    clientContacts: callsDates.filter(item => item.clientId == client.id)
+                    tripPlan: tripPlans.find(item => item.clientId == client.id) ? tripPlans.find(item => item.clientId == client.id) : {
+                        id: 0,
+                        hours: 0,
+                        completedType: 0,
+                        clientId: client.id
+                    },
+                    weekPlans: weekPlans.filter(item => item.clientId == client.id) ? weekPlans.filter(item => item.clientId == client.id) : [],
+                    clientContacts: callsDates.filter(item => item.clientId == client.id) ? callsDates.filter(item => item.clientId == client.id) : []
                 }
             })
         } 
-        
-        
 )
 
 export const selectLoadingStatus = createSelector(

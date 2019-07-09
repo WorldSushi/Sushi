@@ -1,6 +1,6 @@
 export interface ITripPlan {
     id: number,
-    planned: number,
-    fact: number,
+    hours: number,
+    completedType: number,
     clientId: number
 }

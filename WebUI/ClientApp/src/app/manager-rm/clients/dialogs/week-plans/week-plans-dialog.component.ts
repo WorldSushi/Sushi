@@ -32,7 +32,7 @@ export class WeekPlansDialogComponent implements OnInit {
     clientId: 0
   }
 
-  numberOfWeek: any = "Не выбрана";
+  numberOfWeek: any = Math.ceil(new Date().getDate() / 7);
   weekPlans: IWeekPlan[];
 
   setWeeks(numberOfWeek: number){
@@ -75,7 +75,13 @@ export class WeekPlansDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    if(this.data.weekPlans.filter(item => item.managerType == 10)[this.numberOfWeek - 1])
+      this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == this.numberOfWeek)
+    if(this.data.weekPlans.filter(item => item.managerType == 20)[this.numberOfWeek - 1])
+      this.selectedRMWeek = this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == this.numberOfWeek)
+
+
+    console.log(this.numberOfWeek, this.selectedMSWeek);  
   }
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,
