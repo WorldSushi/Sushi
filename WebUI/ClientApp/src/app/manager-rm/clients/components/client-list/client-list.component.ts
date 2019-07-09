@@ -55,6 +55,10 @@ export class ClientListComponent implements OnInit {
     'RMresults.sum'   
   ];
 
+  getTrackBy(index, item){
+    return item.id;
+  }
+
   openCreateClientForm() {
     const dialogRef = this.dialog.open(CreateClientDialogComponent, {
       width: '725px'
