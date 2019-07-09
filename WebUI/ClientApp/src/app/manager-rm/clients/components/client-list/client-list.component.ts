@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { IClient } from '../../shared/models/client.model';
 import { MatDialog } from '@angular/material';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
@@ -19,7 +19,8 @@ import { ninvoke } from 'q';
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.sass']
+  styleUrls: ['./client-list.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClientListComponent implements OnInit {
 
