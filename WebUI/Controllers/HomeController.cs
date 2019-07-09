@@ -33,7 +33,7 @@ namespace WebUI.Controllers
             _context = context;
         }
 
-        [HttpGet]
+       /* [HttpGet]
         public IActionResult ImportFile()
         {
             return View();
@@ -72,9 +72,9 @@ namespace WebUI.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("ImportFile");
-        }
+        }*/
 
-        [HttpGet]
+       /* [HttpGet]
         public IActionResult ImportFileClients()
         {
             return View();
@@ -147,9 +147,9 @@ namespace WebUI.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("ImportFileClients");
-        }
+        }*/
 
-        public void InitWorkGroup()
+       /* public void InitWorkGroup()
         {
             _context.Set<WorkGroup>()
                 .AddRange(
@@ -176,12 +176,7 @@ namespace WebUI.Controllers
                         Title = "Ритейл",
                         EscortManagerId = 9,
                         RegionalManagerId = 8
-                    })/*,
-                    new WorkGroup(new WorkGroupCreate()
-                    {
-                        Title = "Экспорт",
-                        RegionalManagerId = 34
-                    })*/);
+                    }));
 
             _context.SaveChanges();
         }
@@ -189,7 +184,7 @@ namespace WebUI.Controllers
         public void MyCallsTest()
         {
             _myCallsApiService.SaveNewCalls();
-        }
+        }*/
 
         public IActionResult Index()
         {
