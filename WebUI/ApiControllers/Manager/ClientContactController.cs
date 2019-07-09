@@ -54,11 +54,26 @@ namespace WebUI.ApiControllers.Manager
                                           && x.Date.Date == DateTime.Now.Date.Date);
 
             if (clientContact != null)
-                return BadRequest("Операция на этот день уже создана");*/
+                return BadRequest("Операция на этот день уже создана");
 
             command.ManagerId = _context.Set<ManagerForClient>()
                 .FirstOrDefault(x => x.ClientId == command.ClientId && x.Type == command.ManagerType)
-                .Id;
+                .Id;*/
+
+            var workGroup = await _context.Set<ClientWorkGroup>()
+                .Where(x => x.ClientId == command.ClientId)
+                .Select(x => new
+                {
+                    RegionalManagerId = x.WorkGroup.RegionalManagerId,
+                    EscortManagerId = x.WorkGroup.EscortManagerId
+                }).FirstOrDefaultAsync();
+
+            if (command.ManagerType == ManagerType.EscortManager)
+                command.ManagerId = (int)workGroup.EscortManagerId;
+            else if (command.ManagerType == ManagerType.RegionalManager)
+                command.ManagerId = (int) workGroup.RegionalManagerId;
+            else
+                return BadRequest("Не указана роль менеджера");
 
             var newClientContact = await _context.Set<ClientContact>()
                 .AddAsync(new ClientContact(command));
