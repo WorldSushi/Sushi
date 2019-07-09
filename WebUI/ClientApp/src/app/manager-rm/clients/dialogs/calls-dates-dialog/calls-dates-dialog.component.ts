@@ -12,6 +12,7 @@ export class CallsDatesDialogComponent implements OnInit {
 
   displayedColumns: string[] = ['day', 'EMcall', 'RMcall'];
   clientContacts: any[];
+  currentDate: string = new Date().toLocaleDateString();
 
   getDate(numberOfDay: number){
     const currentYear = new Date().getFullYear();

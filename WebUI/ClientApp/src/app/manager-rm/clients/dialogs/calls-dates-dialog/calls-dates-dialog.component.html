@@ -24,7 +24,13 @@
     <ng-container matColumnDef="EMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #EEFEF6;">МС</th>
       <td mat-cell *matCellDef="let row" style="text-align: center">
-          <mat-select [(ngModel)]="row.MScallType">
+          <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.MScallType">
+            <mat-option [value]="0">Отсутствует</mat-option>
+            <mat-option [value]="10">Звонок</mat-option>
+            <mat-option [value]="20">WhatsUp</mat-option>
+            <mat-option [value]="30">Письмо</mat-option>
+          </mat-select>  
+          <mat-select *ngIf="row.date != currentDate" [(ngModel)]="row.MScallType" disabled>
             <mat-option [value]="0">Отсутствует</mat-option>
             <mat-option [value]="10">Звонок</mat-option>
             <mat-option [value]="20">WhatsUp</mat-option>
@@ -35,12 +41,18 @@
     <ng-container matColumnDef="RMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #F5FEEE;">РМ</th>
       <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
-          <mat-select [(ngModel)]="row.RMcallType">
+          <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.RMcallType">
             <mat-option [value]="0">Отсутствует</mat-option>
             <mat-option [value]="10">Звонок</mat-option>
             <mat-option [value]="20">WhatsUp</mat-option>
             <mat-option [value]="30">Письмо</mat-option>
           </mat-select>       
+          <mat-select *ngIf="row.date != currentDate" [(ngModel)]="row.RMcallType" disabled>
+            <mat-option [value]="0">Отсутствует</mat-option>
+            <mat-option [value]="10">Звонок</mat-option>
+            <mat-option [value]="20">WhatsUp</mat-option>
+            <mat-option [value]="30">Письмо</mat-option>
+          </mat-select>  
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
