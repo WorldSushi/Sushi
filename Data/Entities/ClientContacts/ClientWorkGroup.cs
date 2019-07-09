@@ -20,7 +20,8 @@ namespace Data.Entities.ClientContacts
         public ClientWorkGroup(BindClient command)
         {
             WorkGroupId = command.WorkGroupId;
-            ClientId = command.ClientId;
+            //ClientId = command.ClientId;
+            Client = command.Client;
         }
     }
 }

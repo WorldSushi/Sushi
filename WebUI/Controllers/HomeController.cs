@@ -47,65 +47,8 @@ namespace WebUI.Controllers
 
             string result = Encoding.UTF8.GetString(data);
             string[] lines = result.Split('\r');
-
-
-            var userInfos = _context.Set<UserInfo>()
-                .Where(x => x.UserId != 35 && x.UserId != 25)
-                .ToList();
-
-            for (var i = 4990; i < 5101; i++)
-            {
-                if (lines[i].Length > 2)
-                {
-                    lines[i] = lines[i].Substring(1);
-                    string[] rows = lines[i].Split(';');
-
-                    /*var client = _context.Set<Client>()
-                        .Add(new Client(new ClientCreate()
-                        {
-                            ClientType = ClientTypes.Middle1,
-                            Title = rows[0],
-                            LegalEntity = rows[1],
-                            NumberOfCalls = GetNumberOfCalls(rows[4]),
-                            NumberOfShipments = GetNumberOfShipments(rows[5]),
-                            Phone = rows[6]
-                        })).Entity;
-
-                    var clientInfo = _context.Set<ClientInfo>()
-                        .Add(new ClientInfo(client, Guid.Parse(rows[9]), rows[6]));
-
-                    _context.SaveChanges();
-
-                    if (rows[10] != "")
-                    {
-                        var managersGuidStr = rows[10].Split(',');
-                        var managersGuid = new List<Guid>();
-                        foreach (var str in managersGuidStr)
-                        {
-                            managersGuid.Add(Guid.Parse(str));
-                        }
-
-                        var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
-
-                        if (userInfo != null)
-                        {
-                            var workGroup = _context.Set<WorkGroup>()
-                                .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
-                                                     || x.EscortManagerId == userInfo.UserId);
-
-                            workGroup.BindClient(new BindClient()
-                            {
-                                ClientId = client.Id,
-                                WorkGroupId = workGroup.Id
-                            });
-                        }
-                    }*/
-                }
-            }
             
-            
-            
-            /*for (var i = 1; i < lines.Length; i++)
+            for (var i = 1; i < lines.Length; i++)
             {
                 if (lines[i].Length > 2)
                 {
@@ -126,9 +69,84 @@ namespace WebUI.Controllers
                 }
             }
 
-            _context.SaveChanges();*/
+            _context.SaveChanges();
 
             return RedirectToAction("ImportFile");
+        }
+
+        [HttpGet]
+        public IActionResult ImportFileClients()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ImportFileClients(IFormFile file)
+        {
+            BinaryReader b = new BinaryReader(file.OpenReadStream());
+            byte[] data = b.ReadBytes(Convert.ToInt32(file.Length));
+
+            string result = Encoding.UTF8.GetString(data);
+            string[] lines = result.Split('\r');
+
+
+            var userInfos = _context.Set<UserInfo>()
+                .Where(x => x.UserId != 1 && x.UserId != 11)
+                .ToList();
+
+            for (var i = 1; i < lines.Length; i++)
+            {
+                if (lines[i].Length > 2)
+                {
+                    lines[i] = lines[i].Substring(1);
+                    string[] rows = lines[i].Split(';');
+
+                    var client = _context.Set<Client>()
+                        .Add(new Client(new ClientCreate()
+                        {
+                            ClientType = ClientTypes.Middle1,
+                            Title = rows[0],
+                            LegalEntity = rows[1],
+                            NumberOfCalls = GetNumberOfCalls(rows[4]),
+                            NumberOfShipments = GetNumberOfShipments(rows[5]),
+                            Phone = rows[6]
+                        })).Entity;
+
+                    var clientInfo = _context.Set<ClientInfo>()
+                        .Add(new ClientInfo(client, Guid.Parse(rows[9]), rows[6]));
+
+                    //_context.SaveChanges();
+
+                    if (rows[10] != "")
+                    {
+                        var managersGuidStr = rows[10].Split(',');
+                        var managersGuid = new List<Guid>();
+                        foreach (var str in managersGuidStr)
+                        {
+                            managersGuid.Add(Guid.Parse(str));
+                        }
+
+                        var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
+
+                        if (userInfo != null)
+                        {
+                            var workGroup = _context.Set<WorkGroup>()
+                                .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
+                                                     || x.EscortManagerId == userInfo.UserId);
+
+                            workGroup.BindClient(new BindClient()
+                            {
+                                Client = client,
+                                WorkGroupId = workGroup.Id
+                            });
+                        }
+                    }
+                }
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ImportFileClients");
         }
 
         public void InitWorkGroup()
@@ -138,26 +156,26 @@ namespace WebUI.Controllers
                     new WorkGroup(new WorkGroupCreate()
                     {
                         Title = "Северо-восток",
-                        EscortManagerId = 27,
-                        RegionalManagerId = 26
+                        EscortManagerId = 3,
+                        RegionalManagerId = 2
                     }),
                     new WorkGroup(new WorkGroupCreate()
                     {
                         Title = "Центр",
-                        EscortManagerId = 29,
-                        RegionalManagerId = 28
+                        EscortManagerId = 5,
+                        RegionalManagerId = 4
                     }),
                     new WorkGroup(new WorkGroupCreate()
                     {
                         Title = "Юго-запад",
-                        EscortManagerId = 31,
-                        RegionalManagerId = 30
+                        EscortManagerId = 7,
+                        RegionalManagerId = 6
                     }),
                     new WorkGroup(new WorkGroupCreate()
                     {
                         Title = "Ритейл",
-                        EscortManagerId = 33,
-                        RegionalManagerId = 32
+                        EscortManagerId = 9,
+                        RegionalManagerId = 8
                     })/*,
                     new WorkGroup(new WorkGroupCreate()
                     {
