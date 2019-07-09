@@ -29,17 +29,27 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _context.Set<Client>()
+            var managerId = _accountInformationService.GetOperatorId();
+
+            var workGroup = await _context.Set<WorkGroup>()
+                .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
+                                          || x.EscortManagerId == managerId);
+
+            var result = await _context.Set<ClientWorkGroup>()
+                .Where(x => x.WorkGroupId == workGroup.Id)
                 .Select(x => new ClientDto()
                 {
-                    Id = x.Id,
-                    Title = x.Title,
-                    LegalEntity = x.LegalEntity,
-                    Phone = x.Phone,
-                    ClientType = x.ClientType,
-                    NumberOfCalls = x.NumberOfCalls,
-                    NumberOfShipments = x.NumberOfShipments
-                }).ToListAsync();
+                    Id = x.Client.Id,
+                    Title = x.Client.Title,
+                    LegalEntity = x.Client.LegalEntity,
+                    Phone = x.Client.Phone,
+                    ClientType = x.Client.ClientType,
+                    NumberOfCalls = x.Client.NumberOfCalls,
+                    NumberOfShipments = x.Client.NumberOfShipments
+                })
+                .OrderByDescending(x => x.NumberOfCalls)
+                //.Take(50)
+                .ToListAsync();
 
             return Ok(result);
         }
