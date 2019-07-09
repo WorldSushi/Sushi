@@ -6,6 +6,7 @@ using Data.Commands.Clients;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Services.Abstract;
@@ -92,6 +93,26 @@ namespace WebUI.ApiControllers.Manager
             var result = client;
 
             return Ok(result);
+        }
+
+        [HttpGet("Generate")]
+        public void Test()
+        {
+            for(var i = 0; i < 250; i++)
+            {
+                _context.Set<Client>()
+                    .AddAsync(new Client(new ClientCreate
+                    {
+                        ClientType = (ClientTypes)10,
+                        LegalEntity = "Test",
+                        NumberOfCalls = (NumberOfCalls)10,
+                        NumberOfShipments = (NumberOfShipments)10,
+                        Phone = "213213123",
+                        Title = "Test"
+                    }));
+            }
+
+            _context.SaveChanges();
         }
     }
 }
