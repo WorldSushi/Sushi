@@ -13,7 +13,7 @@ import { ICallsDate } from '../../shared/models/calls-date.model';
 import { CallsDatesDialogComponent } from '../../dialogs/calls-dates-dialog/calls-dates-dialog.component';
 import { ICallPlan } from '../../shared/models/call-plan.model';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
-import { weekPlanQueries } from 'src/app/store/manager-rm/clients/selectors/week-plan.selectors';
+import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
 import { ninvoke } from 'q';
 
 @Component({

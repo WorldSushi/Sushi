@@ -1,0 +1,74 @@
+::ng-deep tr.mat-row
+    cursor: pointer   
+    &:hover
+        background-color: #f6f6f6
+
+::ng-deep .mat-form-field-infix
+    border-top: 0px
+
+.numberInputField
+    width: 45px
+    height: 27px
+    border-bottom: none
+
+.textInputField
+    height: 27px
+
+td
+    padding-left: 15px !important
+    padding-right: 5px !important
+    border-bottom: none
+
+th 
+    padding-left: 15px !important
+    padding-right: 5px !important
+    background-color: #fcfcfc
+    border-bottom: none
+
+.addEntity
+    position: absolute
+    right: 20px
+    top: 30px
+    border-radius: 20px
+    outline: none
+    border: none
+    box-shadow: none
+    background-color: #7abfff
+    color: #fff
+    cursor: pointer
+    padding: 
+        left: 25px
+        top: 15px
+        right: 20px
+        bottom: 15px
+
+.mat-card
+    padding: 0px
+    padding-bottom: 20px
+
+.card-title
+    padding: 40px 10px
+    text-transform: uppercase
+    color: #4d73a4
+    font-weight: bold
+
+::ng-deep th.mat-header-cell
+    border-bottom: 1px solid #f7f7f7
+    color: #b9b9b9
+
+.sub-header
+    ::ng-deep th.mat-header-cell
+        border-bottom: none
+
+::ng-deep td.mat-cell, td.mat-footer-cell
+    border-bottom-width: 0px !important
+    color: #9da0a5
+
+::ng-deep tr.mat-footer-row, tr.mat-row
+    &:hover
+        background-color: #eff7fa !important
+        td.mat-cell, td.mat-footer-cell
+            color: #384855
+
+    &:nth-child(2n)
+        background-color: #fafbfd

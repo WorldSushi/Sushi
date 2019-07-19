@@ -1,0 +1,16 @@
+<mat-toolbar class="mat-elevation-z2">
+  <div class="logo">
+    Мир Суши
+  </div>
+  <nav>
+    <ul>
+      <li><a [routerLink]="[ 'clients' ]" routerLinkActive="active">Клиенты</a></li>     
+      <li><a [routerLink]="[ 'managers' ]" routerLinkActive="active">Менеджеры</a></li>  
+    </ul>
+  </nav>
+</mat-toolbar>
+
+
+<div class="wrapper">
+  <router-outlet></router-outlet> 
+</div>

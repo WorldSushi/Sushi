@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ClientsFacade } from '../../../../store/manager-rm/clients/facades/clients.facade';
+import { ClientsFacade } from '../../../../store/clients/facades/clients.facade';
 import { Observable } from 'rxjs';
 import { IClient } from '../../shared/models/client.model';
 import { ICallPlan } from '../../shared/models/call-plan.model';
@@ -7,11 +7,11 @@ import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis
 import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { ICallsDate } from '../../shared/models/calls-date.model';
-import { CallPlanFacade } from 'src/app/store/manager-rm/clients/facades/call-plans.facade';
-import { WeekPlanFacade } from 'src/app/store/manager-rm/clients/facades/week-plan.facade';
-import { TripPlanFacade } from 'src/app/store/manager-rm/clients/facades/trip-plan.facade';
-import { ManagerCallsResultFacade } from 'src/app/store/manager-rm/clients/facades/manager-calls-result.facade';
-import { CallsDateFacade } from 'src/app/store/manager-rm/clients/facades/calls-date.selectors';
+import { CallPlanFacade } from 'src/app/store/clients/facades/call-plans.facade';
+import { WeekPlanFacade } from 'src/app/store/clients/facades/week-plan.facade';
+import { TripPlanFacade } from 'src/app/store/clients/facades/trip-plan.facade';
+import { ManagerCallsResultFacade } from 'src/app/store/clients/facades/manager-calls-result.facade';
+import { CallsDateFacade } from 'src/app/store/clients/facades/calls-date.selectors';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
 
 @Component({
@@ -122,7 +122,7 @@ export class ClientsComponent implements OnInit {
     public callsDateFacade: CallsDateFacade) { }
 
   ngOnInit() {
-    this.clientsFacade.loadClients(1);
+    this.clientsFacade.loadClientsForManager(1);
     this.callPlanFacade.loadCallPlan(1);
     this.weekPlanFacade.loadWeekPlan(1);
     this.tripPlanFacade.loadTripPlan(1);

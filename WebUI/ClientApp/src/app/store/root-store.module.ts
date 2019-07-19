@@ -4,10 +4,12 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from './app/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { ManagerRmStoreModule } from './manager-rm/manager-rm.module';
+
 import { UserEffects } from './app/effects/user.effects';
 import { UserFacade } from './app/facades/user.facade';
 import { UserService } from '../shared/services/user.service';
+import { ClientsStoreModule } from './clients/clients.module';
+import { ManagersStoreModule } from './managers/managers.module';
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { UserService } from '../shared/services/user.service';
     CommonModule,  
     StoreModule.forRoot(appReducer),  
     EffectsModule.forRoot([UserEffects]),
-    ManagerRmStoreModule,
+    ClientsStoreModule,
+    ManagersStoreModule,
     StoreDevtoolsModule.instrument({}),
   ],
   providers: [
