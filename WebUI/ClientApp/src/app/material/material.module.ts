@@ -34,7 +34,8 @@ import { MatPaginator } from '@angular/material/paginator';
     MatListModule,
     MatStepperModule,
     MatDialogModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+
   ],
   exports: [
     MatToolbarModule,
@@ -53,8 +54,7 @@ import { MatPaginator } from '@angular/material/paginator';
     MatListModule,
     MatStepperModule,
     MatDialogModule,
-    MatProgressBarModule,
-    
+    MatProgressBarModule,   
   ]
 })
 export class MaterialModule { }

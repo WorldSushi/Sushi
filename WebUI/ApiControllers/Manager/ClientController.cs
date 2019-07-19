@@ -85,24 +85,5 @@ namespace WebUI.ApiControllers.Manager
             return Ok(result);
         }
 
-        [HttpGet("Generate")]
-        public void Test()
-        {
-            for(var i = 0; i < 250; i++)
-            {
-                _context.Set<Client>()
-                    .AddAsync(new Client(new ClientCreate
-                    {
-                        ClientType = (ClientTypes)10,
-                        LegalEntity = "Test",
-                        NumberOfCalls = (NumberOfCalls)10,
-                        NumberOfShipments = (NumberOfShipments)10,
-                        Phone = "213213123",
-                        Title = "Test"
-                    }));
-            }
-
-            _context.SaveChanges();
-        }
     }
 }
