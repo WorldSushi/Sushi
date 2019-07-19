@@ -27,7 +27,16 @@ namespace WebUI.ApiControllers.Admin
                 .Select(x => new WorkGroupDto()
                 {
                     EscortManagerId = x.EscortManagerId ?? 0,
-                    RegionalManagerId = x.RegionalManagerId ?? 0
+                    RegionalManagerId = x.RegionalManagerId ?? 0,
+                    EscortManagerName = x.EscortManager != null
+                        ? x.EscortManager.Login
+                        : "",
+                    RegionalManagerName = x.RegionalManager != null
+                        ? x.RegionalManager.Login
+                        : "",
+                    EscortManagerEfficiency = 100,
+                    RegionalManagerEfficiency = 100,
+                    Title = x.Title
                 }).ToListAsync();
 
             return Ok(result);
@@ -74,7 +83,16 @@ namespace WebUI.ApiControllers.Admin
             var result = new WorkGroupDto()
             {
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
+                EscortManagerName = workGroup.EscortManager != null
+                    ? workGroup.EscortManager.Login
+                    : "",
+                RegionalManagerName = workGroup.RegionalManager != null
+                    ? workGroup.RegionalManager.Login
+                    : "",
+                EscortManagerEfficiency = 100,
+                RegionalManagerEfficiency = 100,
+                Title = workGroup.Title
             };
 
             return Ok(result);
@@ -100,7 +118,16 @@ namespace WebUI.ApiControllers.Admin
             var result = new WorkGroupDto()
             {
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
+                EscortManagerName = workGroup.EscortManager != null
+                    ? workGroup.EscortManager.Login
+                    : "",
+                RegionalManagerName = workGroup.RegionalManager != null
+                    ? workGroup.RegionalManager.Login
+                    : "",
+                EscortManagerEfficiency = 100,
+                RegionalManagerEfficiency = 100,
+                Title = workGroup.Title
             };
 
             return Ok(result);
@@ -125,7 +152,16 @@ namespace WebUI.ApiControllers.Admin
             var result = new WorkGroupDto()
             {
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
+                EscortManagerName = workGroup.EscortManager != null
+                    ? workGroup.EscortManager.Login
+                    : "",
+                RegionalManagerName = workGroup.RegionalManager != null
+                    ? workGroup.RegionalManager.Login
+                    : "",
+                EscortManagerEfficiency = 100,
+                RegionalManagerEfficiency = 100,
+                Title = workGroup.Title
             };
 
             return Ok(result);
