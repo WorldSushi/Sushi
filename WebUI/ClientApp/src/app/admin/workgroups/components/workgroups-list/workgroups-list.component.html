@@ -1,0 +1,49 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Рабочие группы</mat-card-title>
+    <button class="addEntity" >+ Добавить группу</button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="workgroups-wrapper">
+      <div class="workgroup-item" *ngFor="let workgroup of workgroups">
+        <div class="workgroup-title clearfix">
+          <span>
+            {{workgroup.title}}
+          </span>
+          <div class="workgroup-actions">
+            <a class="plans" href="">Планы</a>
+            <a class="calls" href="">Звонки</a>
+          </div>
+        </div>
+        <div class="workgroup-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Сегодня</th>
+                <th></th>
+                <th>Менеджер</th>
+                <th>Эффективность</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>15</td>
+                <td>МС</td>
+                <td>{{workgroup.escortManager.login}}</td>
+                <td>36%</td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>РМ</td>
+                <td>{{workgroup.regionalManager.login}}</td>
+                <td>36%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+

@@ -6,6 +6,7 @@ import { AdminComponent } from './admin.component';
 import { MaterialModule } from '../material/material.module';
 import { ClientsModule } from './clients/clients.module';
 import { ManagersModule } from './managers/managers.module';
+import { WorkgroupsModule } from './workgroups/workgroups.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ManagersModule } from './managers/managers.module';
     AdminRoutingModule,
     MaterialModule,
     ClientsModule,
-    ManagersModule
+    ManagersModule,
+    WorkgroupsModule
   ]
 })
 export class AdminModule { }
