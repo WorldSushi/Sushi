@@ -37,8 +37,7 @@ namespace WebUI.ApiControllers.Admin
                         ? x.RegionalManager.Login
                         : "",
                     EscortManagerEfficiency = 100,
-                    RegionalManagerEfficiency = 100,
-                    Title = x.Title
+                    RegionalManagerEfficiency = 100
                 }).ToListAsync();
 
             return Ok(result);

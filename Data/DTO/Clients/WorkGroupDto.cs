@@ -10,6 +10,5 @@
         public string RegionalManagerName { get; set; }
         public int EscortManagerEfficiency { get; set; }
         public int RegionalManagerEfficiency { get; set; }
-        public string Title { get; set; }
     }
 }
