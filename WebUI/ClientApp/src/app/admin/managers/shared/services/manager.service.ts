@@ -19,12 +19,12 @@ export class ManagerService {
         return this.http.get<IManager[]>(this.MANAGER_API_URL);
     }
 
-    createManager(client: IManager): Observable<IManager> {
-        return this.http.post<IManager>(this.MANAGER_API_URL, JSON.stringify(client), this.httpOptions);
+    createManager(manager: IManager): Observable<IManager> {
+        return this.http.post<IManager>(this.MANAGER_API_URL, JSON.stringify(manager), this.httpOptions);
     }
 
-    editManager(client: IManager): Observable<IManager> {
-        return this.http.put<IManager>(this.MANAGER_API_URL, JSON.stringify(client), this.httpOptions);
+    editManager(manager: IManager): Observable<IManager> {
+        return this.http.put<IManager>(this.MANAGER_API_URL, JSON.stringify(manager), this.httpOptions);
     }
 
 

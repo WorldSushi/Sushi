@@ -26,6 +26,8 @@ namespace WebUI.ApiControllers.Admin
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()
                 {
+                    Id = x.Id,
+                    Title = x.Title,
                     EscortManagerId = x.EscortManagerId ?? 0,
                     RegionalManagerId = x.RegionalManagerId ?? 0,
                     EscortManagerName = x.EscortManager != null

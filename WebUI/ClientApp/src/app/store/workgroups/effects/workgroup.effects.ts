@@ -1,0 +1,61 @@
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { switchMap, catchError, map } from 'rxjs/operators';
+import { GetWorkgroupsAction, WorkgroupsActionsTypes, GetWorkgroupsSuccesAction, GetWorkgroupsFailureAction, CreateWorkgroupAction, CreateWorkgroupSuccesAction, CreateWorkgroupFailureAction, EditWorkgroupAction, EditWorkgroupSuccesAction, EditWorkgroupFailureAction } from '../actions/workgroup.actions';
+import { IWorkgroup } from 'src/app/admin/workgroups/shared/models/workgroup.model';
+import { WorkgroupService } from 'src/app/admin/workgroups/shared/services/workgroup.service';
+
+
+@Injectable()
+export class WorkgroupsEffects {
+    @Effect() 
+    getWorkgroupWorkgroups$ = this.actions$.pipe(
+        ofType<GetWorkgroupsAction>(WorkgroupsActionsTypes.GET_WORKGROUPS),
+        switchMap((action) =>
+            this.workgroupsService.getWorkgroups().pipe(
+                map((workgroups: IWorkgroup[]) =>
+                    new GetWorkgroupsSuccesAction({ workgroups: workgroups})
+                ),
+                catchError(error => 
+                    of(new GetWorkgroupsFailureAction({ error: error }))
+                )
+            )
+        )
+    )
+
+    @Effect()
+    createWorkgroup$ = this.actions$.pipe(
+        ofType<CreateWorkgroupAction>(WorkgroupsActionsTypes.CREATE_WORKGROUP),
+        switchMap((action) =>
+            this.workgroupsService.createWorkgroup(action.payload.workgroup).pipe(
+                map((workgroup: IWorkgroup) =>
+                    new CreateWorkgroupSuccesAction({ workgroup: workgroup })
+                ),
+                catchError(error => 
+                    of(new CreateWorkgroupFailureAction({ error: error }))
+                )
+            )
+        )
+    )
+    
+    @Effect()
+    editWorkgroup$ = this.actions$.pipe(
+        ofType<EditWorkgroupAction>(WorkgroupsActionsTypes.EDIT_WORKGROUP),
+        switchMap((action) =>
+            this.workgroupsService.editWorkgroup(action.payload.workgroup).pipe(
+                map((workgroup: IWorkgroup) =>
+                    new EditWorkgroupSuccesAction({ workgroup: workgroup}) 
+                ),
+                catchError(error =>
+                    of(new EditWorkgroupFailureAction({ error: error}))
+                )
+            )    
+        )
+    )
+
+    constructor(
+        private workgroupsService: WorkgroupService,
+        private actions$: Actions
+    ) {}
+}

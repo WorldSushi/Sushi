@@ -10,6 +10,7 @@ import { UserFacade } from './app/facades/user.facade';
 import { UserService } from '../shared/services/user.service';
 import { ClientsStoreModule } from './clients/clients.module';
 import { ManagersStoreModule } from './managers/managers.module';
+import { WorkgroupsStoreModule } from './workgroups/workgroups.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ManagersStoreModule } from './managers/managers.module';
     EffectsModule.forRoot([UserEffects]),
     ClientsStoreModule,
     ManagersStoreModule,
+    WorkgroupsStoreModule,
     StoreDevtoolsModule.instrument({}),
   ],
   providers: [
