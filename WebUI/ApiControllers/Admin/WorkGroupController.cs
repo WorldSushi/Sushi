@@ -33,8 +33,7 @@ namespace WebUI.ApiControllers.Admin
                     ClientIds = _context.Set<ClientWorkGroup>()
                         .Where(z => z.WorkGroupId == x.Id)
                         .Select(z => z.ClientId)
-                        .ToList()
-                    RegionalManagerId = x.RegionalManagerId ?? 0,
+                        .ToList(),
                     EscortManagerName = x.EscortManager != null
                         ? x.EscortManager.Login
                         : "",
