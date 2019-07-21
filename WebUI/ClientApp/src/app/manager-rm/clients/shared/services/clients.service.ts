@@ -29,8 +29,16 @@ export class ClientsService {
         return this.http.post<IClient>(this.MANAGER_API_URL, JSON.stringify(client), this.httpOptions);
     }
 
+    adminCreateClient(client: IClient): Observable<IClient> {
+        return this.http.post<IClient>(this.ADMIN_API_URL, JSON.stringify(client), this.httpOptions);
+    }
+
     editClient(client: IClient): Observable<IClient> {
         return this.http.put<IClient>(this.MANAGER_API_URL, JSON.stringify(client), this.httpOptions);
+    }
+
+    adminEditClient(client: IClient): Observable<IClient> {
+        return this.http.put<IClient>(this.ADMIN_API_URL, JSON.stringify(client), this.httpOptions);
     }
 
 

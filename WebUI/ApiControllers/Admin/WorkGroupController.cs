@@ -30,6 +30,11 @@ namespace WebUI.ApiControllers.Admin
                     Title = x.Title,
                     EscortManagerId = x.EscortManagerId ?? 0,
                     RegionalManagerId = x.RegionalManagerId ?? 0,
+                    ClientIds = _context.Set<ClientWorkGroup>()
+                        .Where(z => z.WorkGroupId == x.Id)
+                        .Select(z => z.ClientId)
+                        .ToList()
+                    RegionalManagerId = x.RegionalManagerId ?? 0,
                     EscortManagerName = x.EscortManager != null
                         ? x.EscortManager.Login
                         : "",

@@ -6,5 +6,6 @@ export interface IWorkgroup {
     escortManagerId: number,
     escortManager: IManager,
     regionalManagerId: number,
-    regionalManager: IManager
+    regionalManager: IManager,
+    clientIds: number[]
 }

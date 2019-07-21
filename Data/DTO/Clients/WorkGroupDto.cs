@@ -1,4 +1,6 @@
-﻿namespace Data.DTO.Clients
+﻿using System.Collections.Generic;
+
+namespace Data.DTO.Clients
 {
     public class WorkGroupDto
     {
@@ -10,5 +12,7 @@
         public string RegionalManagerName { get; set; }
         public int EscortManagerEfficiency { get; set; }
         public int RegionalManagerEfficiency { get; set; }
+
+        public ICollection<int> ClientIds { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Data;
 using Data.Commands.Manager;
 using Data.DTO.Users;
+using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,9 @@ namespace WebUI.ApiControllers.Admin
                     Id = x.Id,
                     Login = x.Login,
                     Password = x.Password,
-                    Phone = x.Phone
+                    Phone = x.Phone,
+                    WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Id,
+                    WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title
                 }).ToListAsync();
 
             return Ok(result);
@@ -47,7 +50,9 @@ namespace WebUI.ApiControllers.Admin
                 Id = manager.Entity.Id,
                 Login = manager.Entity.Login,
                 Password = manager.Entity.Password,
-                Phone = manager.Entity.Phone
+                Phone = manager.Entity.Phone,
+                WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id).Id,
+                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Title
             };
 
             return Ok(result);
@@ -68,7 +73,9 @@ namespace WebUI.ApiControllers.Admin
                 Id = manager.Id,
                 Login = manager.Login,
                 Phone = manager.Phone,
-                Password = manager.Password
+                Password = manager.Password,
+                WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id).Id,
+                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id)?.Title
             };
 
             return Ok(result);

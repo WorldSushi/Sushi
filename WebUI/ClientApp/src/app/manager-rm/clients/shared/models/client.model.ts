@@ -10,7 +10,7 @@ import { ICallsDate } from './calls-date.model';
 export interface IClient {
     id: number,
     title: string,
-    type: number,
+    clientType: number,
     numberOfCalls: number,
     numberOfShipments: number,
     callPlan?: ICallPlan,

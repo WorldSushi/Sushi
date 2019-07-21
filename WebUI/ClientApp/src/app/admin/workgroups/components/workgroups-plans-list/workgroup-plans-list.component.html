@@ -1,0 +1,158 @@
+<mat-card class="mat-elevation-z1">
+    <mat-card-header>
+      <mat-card-title class="card-title">Планы</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="5">
+              Название клиента
+            </th>
+            <th>
+              1
+            </th>
+            <th>
+              2
+            </th>
+            <th>
+              3
+            </th>
+            <th>
+              4
+            </th>
+            <th>
+              5
+            </th>
+            <th colspan="5">
+              План
+            </th>
+            <th colspan="5">
+              Факт
+            </th>
+            <th>
+              1
+            </th>
+            <th>
+              2
+            </th>
+            <th>
+              3
+            </th>
+            <th>
+              4
+            </th>
+            <th>
+              5
+            </th>
+            <th colspan="5">
+              План
+            </th>
+            <th colspan="5">
+              Факт
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let workgroupPlan of workgroupPlans; let index = index">
+            <td colspan="5">{{workgroupPlan.clientTitle}}</td>
+            <td>
+              <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td colspan="5">
+              {{getCurrentPlan(workgroupPlan.escortManagerPlans)}}
+            </td>
+            <td colspan="5">
+              {{getCurrentFact(workgroupPlan.escortManagerPlans)}}
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+              </div>
+              <div *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans)">
+                <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
+              </div>
+            </td>
+            <td colspan="5">
+              {{getCurrentPlan(workgroupPlan.regionalManagerPlans)}}
+            </td>
+            <td colspan="5">
+              {{getCurrentFact(workgroupPlan.regionalManagerPlans)}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  
+  
+  

@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IManager } from '../../shared/models/manager.model';
+import { CreateManagerDialogComponent } from '../../dialogs/create-manager-dialog/create-manager-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-managers-list',
@@ -10,9 +12,23 @@ export class ManagersListComponent implements OnInit {
 
   @Input() managers: IManager[];
 
-  displayedColumns: string[] = ['login', 'password', 'phone']
+  @Output() managerCreated: EventEmitter<IManager> = new EventEmitter<IManager>();
 
-  constructor() { }
+  displayedColumns: string[] = ['login', 'password', 'workgroupTitle', 'phone', 'action'];
+
+  openCreateManagerForm() {
+    const dialogRef = this.dialog.open(CreateManagerDialogComponent, {
+      width: '725px'
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.managerCreated.emit(res);
+      }
+    })
+  }
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }

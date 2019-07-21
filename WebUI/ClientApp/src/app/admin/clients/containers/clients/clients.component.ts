@@ -12,6 +12,15 @@ export class ClientsComponent implements OnInit {
   
   clients$: Observable<IClient[]> = this.clientsFacade.clients$;
 
+  createClient(client: IClient){
+    this.clientsFacade.adminCreateClient(client);
+  }
+
+  updateClient(client: IClient){
+    this.clientsFacade.adminEditClient(client);
+  }
+  
+
   constructor(public clientsFacade: ClientsFacade) { }
 
   ngOnInit() {
