@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
+import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
+import { MatDialog } from '@angular/material';
+import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
+
 
 @Component({
   selector: 'app-client-list',
@@ -9,13 +13,38 @@ import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 export class ClientListComponent implements OnInit {
   @Input() clients: IClient[];
 
+  @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
+  @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
+
   displayedColumns: string[] = ['title', 'clientType', 'phone', 'numberOfCalls', 'numberOfShipments']
 
-  openEditClientForm(){
+  openCreateClientForm() {
+    const dialogRef = this.dialog.open(CreateClientDialogComponent, {
+      width: '725px'
+    })
 
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.clientCreated.emit(res);
+      }
+    })
   }
 
-  constructor() { }
+  openEditClientForm(client: IClient) {
+    const dialogRef = this.dialog.open(EditClientDialogComponent, {
+      width: '938px',
+      data: { ...client }
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.clientUpdated.emit(res);
+      }
+    })
+  }
+
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }

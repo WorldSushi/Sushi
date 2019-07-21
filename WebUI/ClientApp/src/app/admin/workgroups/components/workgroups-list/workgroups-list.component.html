@@ -11,8 +11,8 @@
             {{workgroup.title}}
           </span>
           <div class="workgroup-actions">
-            <a class="plans" href="">Планы</a>
-            <a class="calls" href="">Звонки</a>
+            <a class="plans" [routerLink]="['plans', workgroup.id]">Планы</a>
+            <a class="calls" [routerLink]="['calls', workgroup.id]">Звонки</a>
           </div>
         </div>
         <div class="workgroup-body">

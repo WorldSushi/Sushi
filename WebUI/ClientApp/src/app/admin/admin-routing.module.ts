@@ -4,12 +4,16 @@ import { AdminComponent } from './admin.component';
 import { ClientsComponent } from './clients/containers/clients/clients.component';
 import { ManagersComponent } from './managers/containers/managers/managers.component';
 import { WorkgroupsComponent } from './workgroups/containers/workgroups/workgroups.component';
+import { WorkgroupsCallsComponent } from './workgroups/containers/workgroups-calls/workgroups-calls.component';
+import { WorkgroupPlansComponent } from './workgroups/containers/workgroups-plans/workgroup-plans.component';
 
 const adminRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'clients' },
   { path: 'clients', component: ClientsComponent },
   { path: 'managers', component: ManagersComponent },
-  { path: 'workgroups', component: WorkgroupsComponent }
+  { path: 'workgroups', component: WorkgroupsComponent },
+  { path: 'workgroups/calls/:id', component: WorkgroupsCallsComponent },
+  { path: 'workgroups/plans/:id', component: WorkgroupPlansComponent }
 ]
 
 const routes: Routes = [

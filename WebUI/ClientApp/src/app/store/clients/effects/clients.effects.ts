@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { GetManagerClientsAction, ClientsActionsTypes, GetClientsSuccesAction, GetClientsFailureAction, CreateClientAction, CreateClientFailureAction, CreateClientSuccesAction, EditClientAction, EditClientSuccesAction, EditClientFailureAction, GetAdminClientsAction } from '../actions/clients.actions';
+import { GetManagerClientsAction, ClientsActionsTypes, GetClientsSuccesAction, GetClientsFailureAction, CreateClientAction, CreateClientFailureAction, CreateClientSuccesAction, EditClientAction, EditClientSuccesAction, EditClientFailureAction, GetAdminClientsAction, AdminCreateClientAction, AdminEditClientAction } from '../actions/clients.actions';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { ClientsService } from '../../../manager-rm/clients/shared/services/clients.service';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
@@ -52,12 +52,42 @@ export class ClientsEffects {
             )
         )
     )
+
+    @Effect()
+    adminCreateClient$ = this.actions$.pipe(
+        ofType<AdminCreateClientAction>(ClientsActionsTypes.ADMIN_CREATE_CLIENT),
+        switchMap((action) =>
+            this.clientsService.adminCreateClient(action.payload.client).pipe(
+                map((client: IClient) =>
+                    new CreateClientSuccesAction({ client: client })
+                ),
+                catchError(error => 
+                    of(new CreateClientFailureAction({ error: error }))
+                )
+            )
+        )
+    )
     
     @Effect()
     editClient$ = this.actions$.pipe(
         ofType<EditClientAction>(ClientsActionsTypes.EDIT_CLIENT),
         switchMap((action) =>
             this.clientsService.editClient(action.payload.client).pipe(
+                map((client: IClient) =>
+                    new EditClientSuccesAction({ client: client}) 
+                ),
+                catchError(error =>
+                    of(new EditClientFailureAction({ error: error}))
+                )
+            )    
+        )
+    )
+
+    @Effect()
+    adminEditClient$ = this.actions$.pipe(
+        ofType<AdminEditClientAction>(ClientsActionsTypes.ADMIN_EDIT_CLIENT),
+        switchMap((action) =>
+            this.clientsService.adminEditClient(action.payload.client).pipe(
                 map((client: IClient) =>
                     new EditClientSuccesAction({ client: client}) 
                 ),

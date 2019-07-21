@@ -1,1 +1,5 @@
-<app-client-list [clients]="clients$ | async"></app-client-list>
+<app-client-list 
+    [clients]="clients$ | async" 
+    (clientCreated)="createClient($event)"
+    (clientUpdated)="updateClient($event)">
+</app-client-list>

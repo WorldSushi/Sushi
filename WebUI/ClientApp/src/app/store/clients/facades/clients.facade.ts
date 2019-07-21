@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Store } from '@ngrx/store';
 import { IClientsState } from '../states/clients.state';
 import { clientsQueries } from '../selectors/clients.selectors';
-import { GetManagerClientsAction, EditClientAction, CreateClientAction, GetAdminClientsAction } from '../actions/clients.actions';
+import { GetManagerClientsAction, EditClientAction, CreateClientAction, GetAdminClientsAction, AdminCreateClientAction, AdminEditClientAction } from '../actions/clients.actions';
 import { IClient } from "../../../manager-rm/clients/shared/models/client.model";
 
 
@@ -24,8 +24,16 @@ export class ClientsFacade {
         this.store.dispatch(new CreateClientAction({ client: client }));
     }
 
+    adminCreateClient(client: IClient) {
+        this.store.dispatch(new AdminCreateClientAction({ client: client }));
+    }
+
     editClient(client: IClient){
         this.store.dispatch(new EditClientAction({ client: client }));
+    }
+
+    adminEditClient(client: IClient){
+        this.store.dispatch(new AdminEditClientAction({ client: client }))
     }
 
 

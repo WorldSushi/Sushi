@@ -29,7 +29,11 @@ namespace WebUI.ApiControllers.Admin
                     Id = x.Id,
                     Title = x.Title,
                     EscortManagerId = x.EscortManagerId ?? 0,
-                    RegionalManagerId = x.RegionalManagerId ?? 0
+                    RegionalManagerId = x.RegionalManagerId ?? 0,
+                    ClientIds = _context.Set<ClientWorkGroup>()
+                        .Where(z => z.WorkGroupId == x.Id)
+                        .Select(z => z.ClientId)
+                        .ToList()
                 }).ToListAsync();
 
             return Ok(result);
