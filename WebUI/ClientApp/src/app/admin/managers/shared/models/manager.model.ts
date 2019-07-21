@@ -3,5 +3,6 @@ export interface IManager {
     login: string,
     password: string,
     phone: string,
-    workgroupId: number
+    workgroupId: number,
+    workgroupTitle: string
 }

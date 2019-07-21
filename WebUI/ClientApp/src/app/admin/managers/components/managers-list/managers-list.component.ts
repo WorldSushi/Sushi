@@ -14,7 +14,7 @@ export class ManagersListComponent implements OnInit {
 
   @Output() managerCreated: EventEmitter<IManager> = new EventEmitter<IManager>();
 
-  displayedColumns: string[] = ['login', 'password', 'phone'];
+  displayedColumns: string[] = ['login', 'password', 'workgroupTitle', 'phone', 'action'];
 
   openCreateManagerForm() {
     const dialogRef = this.dialog.open(CreateManagerDialogComponent, {
