@@ -11,6 +11,10 @@ import { IManager } from '../../shared/models/manager.model';
 export class ManagersComponent implements OnInit {
   managers$: Observable<IManager[]> = this.managersFacade.managers$;
 
+  createManager(manager: IManager){
+    this.managersFacade.createManager(manager);
+  }
+
   constructor(public managersFacade: ManagersFacade) { }
 
   ngOnInit() {

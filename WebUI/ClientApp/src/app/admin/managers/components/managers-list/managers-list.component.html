@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-header>
     <mat-card-title class="card-title">Менеджеры</mat-card-title>
-    <button class="addEntity" >+ Добавить менеджера</button>
+    <button class="addEntity" (click)="openCreateManagerForm()" >+ Добавить менеджера</button>
   </mat-card-header>
   <mat-card-content>
     <table mat-table #table [dataSource]="managers">
