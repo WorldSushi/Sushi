@@ -13,7 +13,7 @@ namespace Data.Services.Abstract
         //Client Edit(ClientEdit command);
         void Delete(int id);
 
-        Client GetClientByPhone(string phone);
+        //Client GetClientByPhone(string phone);
         void BindManager(BindManager command);
     }
 }

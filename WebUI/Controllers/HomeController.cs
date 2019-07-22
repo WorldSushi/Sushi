@@ -197,7 +197,7 @@ namespace WebUI.Controllers
              _context.SaveChanges();
          }*/
 
-       /* [HttpGet]
+        /* [HttpGet]
         public IActionResult ImportFileExportClients()
         {
             return View();
@@ -273,79 +273,7 @@ namespace WebUI.Controllers
             _context.SaveChanges();*/
         }
 
-        public void Test()
-        {
-            var a = _context.Set<Client>()
-                .Where(x => x.Phone != "")
-                .Select(x => x.Phone)
-                .ToList();
-
-            for(int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                string pattern = @"\(";
-                string target = " ";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(s, target);
-                a[i] = result;
-            }
-            for (int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                string pattern = @"\)";
-                string target = " ";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(s, target);
-                a[i] = result;
-            }
-            for (int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                string pattern = @"\s";
-                string target = "";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(s, target);
-                a[i] = result;
-            }
-            for (int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                string pattern = @"\-";
-                string target = "";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(s, target);
-                a[i] = result;
-            }
-            for (int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                if (s.Length == 11)
-                    a[i] = s.TrimStart(new char[] {'8'});
-            }
-            for (int i = 0; i < a.Count; i++)
-            {
-                string s = a[i];
-                string pattern = @"\+\d{1}";
-                string target = "";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(s, target);
-                a[i] = result;
-            }
-
-            var onlyPhone = new List<string>();
-
-            foreach (var phone in a)
-            {
-                var b = phone.Split(',');
-                foreach (var maybePhone in b)
-                {
-                    if (maybePhone.Length == 10/* && maybePhone == @"\d{10}"*/)
-                        onlyPhone.Add(maybePhone);
-                }
-            }
-        }
-
-        public void Test1()
+        /*public void Test1()
         {
             var clients = _context.Set<Client>()
                 .Where(x => x.Phone != "")
@@ -385,6 +313,109 @@ namespace WebUI.Controllers
 
             _context.Set<ClientPhone>()
                 .AddRange(clientPhones);
+
+            _context.SaveChanges();
+        }*/
+
+        /*public void Test2()
+        {
+            var a = _context.Set<CallLog>().Select(x => x.Id).ToList();
+            var b = _context.Set<CallInfo>().Select(x => x.CallLogId).ToList();
+
+            var callLogsId = a.Except(b).ToList();
+
+            var dt = new DateTime(1970, 1, 1);
+
+            var callInfos = new List<CallInfo>();
+            var clientContacts = new List<ClientContact>();
+
+            var workGroups = _context.Set<WorkGroup>().ToList();
+
+            foreach (var callLogId in callLogsId)
+            {
+                var callLog = _context.Set<CallLog>().FirstOrDefault(x => x.Id == callLogId);
+
+                if ((callLog.ClientNumber.Length > 2
+                     && _context.Set<ClientPhone>().Any(x => x.Phone.Contains(callLog.ClientNumber.Substring(2))))
+                    && (callLog.SrcNumber.Length > 2
+                        && _context.Set<Manager>().Any(x => x.Phone.Contains(callLog.SrcNumber.Substring(2)))))
+                {
+                    var callInfo = new CallInfo()
+                    {
+                        Call = new Call()
+                        {
+                            ClientId = _context.Set<ClientPhone>()
+                                .FirstOrDefault(x => x.Phone.Contains(callLog.ClientNumber.Substring(2))).ClientId,
+                            DateTime = dt + TimeSpan.FromSeconds(callLog.StartTime),
+                            Duration = callLog.Duration,
+                            Recording = callLog.Recording,
+                            ManagerId = _context.Set<Manager>()
+                                .FirstOrDefault(x => x.Phone.Contains(callLog.SrcNumber.Substring(2))).Id
+                        },
+                        CallLogId = callLogId
+                    };
+                    callInfos.Add(callInfo);
+                    clientContacts.Add(
+                        new ClientContact(
+                            new ClientContactCreate()
+                            {
+                                ClientId = callInfo.Call.ClientId,
+                                ContactType = ClientContactType.Call,
+                                ManagerId = callInfo.Call.ManagerId,
+                                ManagerType =
+                                    workGroups.FirstOrDefault(x => x.EscortManagerId == callInfo.Call.ManagerId) != null
+                                        ? ManagerType.EscortManager
+                                        : workGroups.FirstOrDefault(x =>
+                                              x.RegionalManagerId == callInfo.Call.ManagerId) != null
+                                            ? ManagerType.RegionalManager
+                                            : ManagerType.Undefined
+                            }));
+                }
+            }
+
+            _context.Set<CallInfo>()
+                .AddRange(callInfos);
+
+            _context.Set<ClientContact>()
+                .AddRange(clientContacts);
+
+            _context.SaveChanges();
+        }*/
+
+        public void Test3()
+        {
+            var calls = _context.Set<CallInfo>()
+                .Include(x => x.Call)
+                .Include(x => x.CallLog)
+                .ToList();
+
+            var workGroups = _context.Set<WorkGroup>().ToList();
+
+            var clientContacts = new List<ClientContact>();
+
+            var dt = new DateTime(1970, 1, 1);
+
+            foreach (var call in calls)
+            {
+                var clientContact = new ClientContact(
+                    new ClientContactCreate()
+                    {
+                        ClientId = call.Call.ClientId,
+                        ManagerId = call.Call.ManagerId,
+                        ContactType = ClientContactType.Call,
+                        ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined
+                    });
+                clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+                
+                clientContacts.Add(clientContact);
+            }
+
+            _context.Set<ClientContact>()
+                .AddRange(clientContacts);
 
             _context.SaveChanges();
         }

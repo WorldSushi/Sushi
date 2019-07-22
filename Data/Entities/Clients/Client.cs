@@ -10,8 +10,6 @@ namespace Data.Entities.Clients
     {
         public string Title { get; protected set; }
 
-        public string Phone { get; set; }
-
         public string LegalEntity { get; protected set; }
 
         public ClientTypes ClientType { get; protected set; }
@@ -32,7 +30,6 @@ namespace Data.Entities.Clients
         public Client(ClientCreate command)
         {
             Title = command.Title;
-            Phone = command.Phone;
             LegalEntity = command.LegalEntity;
             ClientType = command.ClientType;
             NumberOfCalls = command.NumberOfCalls;
@@ -43,7 +40,6 @@ namespace Data.Entities.Clients
         {
             Title = command.Title;
             LegalEntity = command.LegalEntity;
-            Phone = command.Phone;
             ClientType = command.ClientType;
             NumberOfCalls = command.NumberOfCalls;
             NumberOfShipments = command.NumberOfShipments;

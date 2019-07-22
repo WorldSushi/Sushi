@@ -29,7 +29,7 @@ namespace WebUI.ApiControllers.Admin
                     Id = x.Id,
                     Title = x.Title,
                     LegalEntity = x.LegalEntity,
-                    Phone = x.Phone,
+                    Phone = "555-35-35",
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
                     NumberOfShipments = x.NumberOfShipments
@@ -51,7 +51,7 @@ namespace WebUI.ApiControllers.Admin
                 Id = client.Entity.Id,
                 Title = client.Entity.Title,
                 LegalEntity = client.Entity.LegalEntity,
-                Phone = client.Entity.Phone,
+                Phone = "555-35-35",
                 ClientType = client.Entity.ClientType,
                 NumberOfCalls = client.Entity.NumberOfCalls,
                 NumberOfShipments = client.Entity.NumberOfShipments
@@ -75,7 +75,7 @@ namespace WebUI.ApiControllers.Admin
                 Id = client.Id,
                 Title = client.Title,
                 LegalEntity = client.LegalEntity,
-                Phone = client.Phone,
+                Phone = "555-35-35",
                 ClientType = client.ClientType,
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments

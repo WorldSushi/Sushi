@@ -105,7 +105,9 @@ namespace Data.Services.Concrete
             var managersPhone = _context.Set<Manager>()
                 .Select(x => x.Phone.Substring(2).Replace(",", "")).ToList();
 
-            var clientPhone = _context.Set<Client>()
+            /*var clientPhone = _context.Set<Client>()
+                .Select(x => x.Phone).ToList();*/
+            var clientPhone = _context.Set<ClientPhone>()
                 .Select(x => x.Phone).ToList();
 
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
@@ -126,8 +128,10 @@ namespace Data.Services.Concrete
                 {
                     Call = new Call()
                     {
-                        ClientId = _context.Set<Client>()
-                            .FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).Id,
+                        ClientId =_context.Set<ClientPhone>()
+                            .FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).ClientId,
+                            //_context.Set<Client>()
+                            //.FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).Id,
                         ManagerId = _context.Set<Manager>()
                             .FirstOrDefault(x => x.Phone.Contains(call.SrcNumber.Substring(2))).Id,
                         Duration = call.Duration,
@@ -151,7 +155,7 @@ namespace Data.Services.Concrete
                             ManagerId = call.Call.ManagerId,
                             ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
                                 ? ManagerType.EscortManager
-                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ClientId) != null
+                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
                                     ? ManagerType.RegionalManager
                                     : ManagerType.Undefined
                         }));

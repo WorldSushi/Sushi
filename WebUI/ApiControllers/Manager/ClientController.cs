@@ -43,7 +43,7 @@ namespace WebUI.ApiControllers.Manager
                     Id = x.Client.Id,
                     Title = x.Client.Title,
                     LegalEntity = x.Client.LegalEntity,
-                    Phone = x.Client.Phone,
+                    Phone = "555-35-35",
                     ClientType = x.Client.ClientType,
                     NumberOfCalls = x.Client.NumberOfCalls,
                     NumberOfShipments = x.Client.NumberOfShipments
