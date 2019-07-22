@@ -10,7 +10,7 @@ namespace Data.Entities.Clients
     {
         public string Title { get; protected set; }
 
-        public string Phone { get; protected set; }
+        public string Phone { get; set; }
 
         public string LegalEntity { get; protected set; }
 

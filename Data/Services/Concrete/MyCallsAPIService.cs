@@ -1,5 +1,6 @@
 ﻿using Data.DTO.Calls;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,8 @@ using Data.Services.Abstract;
 using Base.Extensions;
 using Base.Helpers;
 using Data.Entities.Calls;
+using Data.Entities.Clients;
+using Data.Entities.Users;
 
 namespace Data.Services.Concrete
 {
@@ -90,8 +93,48 @@ namespace Data.Services.Concrete
                 }));
             }
 
+            //var a = callsLog.Where(x => x.SrcNumber == "+79009151781").ToList();
+
+            callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
+
+            var managersPhone = _context.Set<Manager>()
+                .Select(x => x.Phone.Substring(2).Replace(",", "")).ToList();
+
+            var clientPhone = _context.Set<Client>()
+                .Select(x => x.Phone).ToList();
+
+            var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
+                ? managersPhone.Contains(x.SrcNumber.Substring(2))
+                  && clientPhone.Contains(x.ClientNumber.Substring(2))
+                : false).ToList();
+
+            var calls = new List<CallInfo>();
+            var dt = new DateTime(1970, 1, 1);
+
+
+            foreach (var call in a)
+            {
+                calls.Add(new CallInfo()
+                {
+                    Call = new Call()
+                    {
+                        ClientId = _context.Set<Client>()
+                            .FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).Id,
+                        ManagerId = _context.Set<Manager>()
+                            .FirstOrDefault(x => x.Phone.Contains(call.SrcNumber.Substring(2))).Id,
+                        Duration = call.Duration,
+                        Recording = call.Recording,
+                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
+                    },
+                    CallLog = call
+                });
+            }
+
             _context.Set<CallLog>()
                 .AddRange(callsLog);
+
+            _context.Set<CallInfo>()
+                .AddRange(calls);
 
             _context.SaveChanges();
         }

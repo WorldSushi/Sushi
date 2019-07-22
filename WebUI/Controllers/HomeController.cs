@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.WorkGroup;
@@ -33,7 +34,21 @@ namespace WebUI.Controllers
             _context = context;
         }
 
-       /* [HttpGet]
+        /*public void PhoneRegular()
+        {
+            var a = _context.Set<Client>();
+            var b = new Dictionary<string, string>();
+
+            string pattern = @"(\D[0-9]{3})-[0-9]{3}-[0-9]{2}-[0-9]{2}\D";
+            
+            foreach (var client in a)
+            {
+                if(Regex.IsMatch(client.Phone, pattern))
+                    b.Add(client.Title, client.Phone);
+            }
+        }*/
+
+        /*[HttpGet]
         public IActionResult ImportFile()
         {
             return View();
@@ -74,7 +89,7 @@ namespace WebUI.Controllers
             return RedirectToAction("ImportFile");
         }*/
 
-       /* [HttpGet]
+        /*[HttpGet]
         public IActionResult ImportFileClients()
         {
             return View();
@@ -100,7 +115,7 @@ namespace WebUI.Controllers
                 {
                     lines[i] = lines[i].Substring(1);
                     string[] rows = lines[i].Split(';');
-
+                    
                     var client = _context.Set<Client>()
                         .Add(new Client(new ClientCreate()
                         {
@@ -149,42 +164,93 @@ namespace WebUI.Controllers
             return RedirectToAction("ImportFileClients");
         }*/
 
-       /* public void InitWorkGroup()
+        /* public void InitWorkGroup()
+         {
+             _context.Set<WorkGroup>()
+                 .AddRange(
+                     new WorkGroup(new WorkGroupCreate()
+                     {
+                         Title = "Северо-восток",
+                         EscortManagerId = 3,
+                         RegionalManagerId = 2
+                     }),
+                     new WorkGroup(new WorkGroupCreate()
+                     {
+                         Title = "Центр",
+                         EscortManagerId = 5,
+                         RegionalManagerId = 4
+                     }),
+                     new WorkGroup(new WorkGroupCreate()
+                     {
+                         Title = "Юго-запад",
+                         EscortManagerId = 7,
+                         RegionalManagerId = 6
+                     }),
+                     new WorkGroup(new WorkGroupCreate()
+                     {
+                         Title = "Ритейл",
+                         EscortManagerId = 9,
+                         RegionalManagerId = 8
+                     }));
+
+             _context.SaveChanges();
+         }*/
+
+       /* [HttpGet]
+        public IActionResult ImportFileExportClients()
         {
-            _context.Set<WorkGroup>()
-                .AddRange(
-                    new WorkGroup(new WorkGroupCreate()
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ImportFileExportClients(IFormFile file)
+        {
+            BinaryReader b = new BinaryReader(file.OpenReadStream());
+            byte[] data = b.ReadBytes(Convert.ToInt32(file.Length));
+
+            string result = Encoding.UTF8.GetString(data);
+            string[] lines = result.Split('\r');
+
+            var a = new List<Client>();
+
+            for (var i = 1; i < lines.Length; i++)
+            {
+                if (lines[i].Length > 2)
+                {
+                    lines[i] = lines[i].Substring(1);
+                    string[] rows = lines[i].Split(';');
+
+                    var client = _context.Set<Client>()
+                        .FirstOrDefault(x => x.Title == rows[0]);
+
+                    if (client != null)
                     {
-                        Title = "Северо-восток",
-                        EscortManagerId = 3,
-                        RegionalManagerId = 2
-                    }),
-                    new WorkGroup(new WorkGroupCreate()
-                    {
-                        Title = "Центр",
-                        EscortManagerId = 5,
-                        RegionalManagerId = 4
-                    }),
-                    new WorkGroup(new WorkGroupCreate()
-                    {
-                        Title = "Юго-запад",
-                        EscortManagerId = 7,
-                        RegionalManagerId = 6
-                    }),
-                    new WorkGroup(new WorkGroupCreate()
-                    {
-                        Title = "Ритейл",
-                        EscortManagerId = 9,
-                        RegionalManagerId = 8
-                    }));
+                        var clientInfo = _context.Set<ClientInfo>()
+                            .FirstOrDefault(x => x.ClientId == client.Id);
+                        clientInfo.Phone = client.Phone;
+
+                        client.Phone = rows[3];
+                        a.Add(client);
+                    }
+                }
+            }
 
             _context.SaveChanges();
-        }
+
+            return RedirectToAction("ImportFileExportClients");
+        }*/
 
         public void MyCallsTest()
         {
             _myCallsApiService.SaveNewCalls();
-        }*/
+        }
+
+        public void Test()
+        {
+            var a = _context.Set<Client>()
+                .Where(x => x.Phone != "")
+                .ToList();
+        }
 
         public IActionResult Index()
         {
