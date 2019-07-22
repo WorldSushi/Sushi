@@ -1,0 +1,24 @@
+<h3 class="dialog-title" mat-dialog-title>Редактирование менеджера</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+
+<form>
+  <div class="form-group">
+    <label for="">Имя менеджера</label>
+    <input placeholder="Название" [(ngModel)]="data.login" [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="form-group">
+    <label for="">Пароль менеджера</label>
+    <input placeholder="Название" [(ngModel)]="data.password" [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="form-group">
+    <label for="">Номер телефона</label>
+    <input placeholder="Телефон" [(ngModel)]="data.phone" [ngModelOptions]="{standalone: true}">
+  </div>      
+  </form>
+  
+  <div class="dialog-actions">
+    <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
+    <button mat-raised-button (click)="close()">Закрыть</button>
+  </div>
+  

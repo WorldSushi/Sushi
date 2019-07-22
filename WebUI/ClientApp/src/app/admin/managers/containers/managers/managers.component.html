@@ -1,5 +1,5 @@
 <app-managers-list 
     [managers]="managers$ | async"
-    (managerCreated)="createManager($event)">
-
+    (managerCreated)="createManager($event)"
+    (managerUpdated)="updateManager($event)">
 </app-managers-list>
