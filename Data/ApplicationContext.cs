@@ -28,6 +28,7 @@ namespace Data
             modelBuilder.Entity<WorkGroup>();
 
             modelBuilder.Entity<Client>();
+            modelBuilder.Entity<ClientPhone>();
 
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();
