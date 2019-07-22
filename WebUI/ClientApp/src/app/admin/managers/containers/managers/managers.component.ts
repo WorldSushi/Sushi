@@ -15,6 +15,10 @@ export class ManagersComponent implements OnInit {
     this.managersFacade.createManager(manager);
   }
 
+  updateManager(manager: IManager){
+    this.managersFacade.editManager(manager);
+  }
+
   constructor(public managersFacade: ManagersFacade) { }
 
   ngOnInit() {

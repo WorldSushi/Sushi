@@ -5,12 +5,15 @@ import { ManagersListComponent } from './components/managers-list/managers-list.
 import { MaterialModule } from 'src/app/material/material.module';
 import { CreateManagerDialogComponent } from './dialogs/create-manager-dialog/create-manager-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DetailManagerDialogComponent } from './dialogs/detail-manager-dialog/detail-manager-dialog.component';
+import { EditManagerDialogComponent } from './dialogs/edit-manager-dialog/edit-manager-dialog.component';
 
 @NgModule({
   declarations: [
     ManagersComponent, 
     ManagersListComponent, 
-    CreateManagerDialogComponent
+    CreateManagerDialogComponent, 
+    DetailManagerDialogComponent, EditManagerDialogComponent
   ],
   imports: [
     CommonModule,
@@ -20,10 +23,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     ManagersComponent,
-    ManagersListComponent
+    ManagersListComponent,
   ],
   entryComponents: [
-    CreateManagerDialogComponent
+    CreateManagerDialogComponent,
+    DetailManagerDialogComponent,
+    EditManagerDialogComponent
   ]
 })
 export class ManagersModule { }

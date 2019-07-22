@@ -1,0 +1,23 @@
+<h3 class="dialog-title" mat-dialog-title>Профиль менеджера <span class="phone">{{data.phone}}</span></h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+<div class="dialog-subtitle"> 
+  <div>
+    <h3>{{data.login}}</h3>
+  </div>
+  <div>
+    <small>{{data.workgroupTitle}}</small>
+  </div> 
+  <div>
+    <button class="back" (click)="openManagerEdit()">Редактирование</button>
+  </div>
+</div>
+
+
+
+<mat-dialog-content class="mat-typography mat-body"> 
+  
+  <h4 style="text-align: center">Последние Звонки</h4>
+
+</mat-dialog-content>
+

@@ -19,7 +19,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
 
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const result = [];
 
