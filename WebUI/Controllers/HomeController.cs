@@ -240,10 +240,10 @@ namespace WebUI.Controllers
             return RedirectToAction("ImportFileExportClients");
         }*/
 
-        public void MyCallsTest()
+        /*public void MyCallsTest()
         {
             _myCallsApiService.SaveNewCalls();
-        }
+        }*/
 
         public void Test()
         {
