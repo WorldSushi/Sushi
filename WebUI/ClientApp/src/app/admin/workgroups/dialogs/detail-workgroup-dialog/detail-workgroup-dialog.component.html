@@ -1,0 +1,67 @@
+<h3 class="dialog-title" mat-dialog-title>{{data.workgroup.title}}</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+<div class="dialog-subtitle"> 
+  <div style="background-color: #EFFBFF">
+    <h3>{{data.workgroup.escortManager.login}}</h3>
+    <p>Менеджер сопровождения</p>
+  </div>
+  <div style="background-color: #E2F7FF">
+    <h3>{{data.workgroup.regionalManager.login}}</h3>
+    <p>Региональный менеджер</p>
+  </div> 
+  <div style="background-color: #E2F7FF">
+    <button class="back" (click)="openManagerEdit()">Редактирование</button>
+  </div>
+</div>
+
+
+
+<mat-dialog-content class="mat-typography mat-body"> 
+  
+  <h4 style="text-align: center">Клиенты Группы</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Тип</th>
+        <th>Звонки</th>
+        <th>Отгрузки</th>
+        <th>Номен-ре</th>
+        <th>Выручка</th>
+        <th>План</th>
+        <th>МС</th>
+        <th>РМ</th>
+        <th>План</th>
+        <th>Факт</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of data.workgroup.clients">
+        <td>{{client.title}}</td>
+        <td>{{client.clientType}}</td>
+        <td>{{client.numberOfCalls}}</td>
+        <td>{{client.numberOfShipments}}</td>
+        <td>100%</td>
+        <td>100%</td>
+        <td>{{client.callPlan.totalCalls}}</td>
+        <td>{{client.callPlan.escortManagerCalls}}</td>
+        <td>{{client.callPlan.regionalManagerCalls}}</td>
+        <td>{{client.tripPlan.hours}}</td>
+        <td>{{client.tripPlan.completedType}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="free-clients">
+    <label for="">Клиенты без группы</label><br>
+    <select [(ngModel)]="newClientId">
+      <option *ngFor="let client of data.freeClients" [value]="client.id">{{client.title}}</option>
+    </select>
+    <button (click)="addNewClient()">Назначить клиента</button>
+  </div>
+
+
+</mat-dialog-content>
+

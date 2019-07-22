@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { IWorkgroup } from 'src/app/admin/workgroups/shared/models/workgroup.model';
 
 export enum WorkgroupsActionsTypes {
+    ADD_CLIENT_TO_WORKGROUP = '[Admin Workgroups Page] ADD_CLIENT_TO_WORKGROUP',
     GET_WORKGROUPS = '[Admin Workgroups Page] GET_WORKGROUPS',
     GET_WORKGROUPS_SUCCESS = '[Workgroups API] GET_WORKGROUPS_SUCCESS',
     GET_WORKGROUPS_FAILURE = '[Workgroups API] GET_WORKGROUPS_FAILURE',
@@ -67,6 +68,12 @@ export class EditWorkgroupFailureAction implements Action {
     constructor(public payload: { error: any }){}
 }
 
+export class AddClientToWorkgroupAction implements Action {
+    readonly type = WorkgroupsActionsTypes.ADD_CLIENT_TO_WORKGROUP;
+
+    constructor(public payload: { clientId: number, workgroupId: number }){}
+}
+
 export type WorkgroupsActionUnion = GetWorkgroupsAction
     | GetWorkgroupsSuccesAction
     | GetWorkgroupsFailureAction
@@ -76,3 +83,4 @@ export type WorkgroupsActionUnion = GetWorkgroupsAction
     | EditWorkgroupAction
     | EditWorkgroupSuccesAction
     | EditWorkgroupFailureAction
+    | AddClientToWorkgroupAction

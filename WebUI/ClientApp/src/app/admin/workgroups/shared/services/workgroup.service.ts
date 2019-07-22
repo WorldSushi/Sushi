@@ -25,6 +25,11 @@ export class WorkgroupService {
         return this.http.put<IWorkgroup>(this.WORKGROUP_API_URL, JSON.stringify(workgroup), this.httpOptions);
     }
 
+    addClientToWorkgroup(data) {
+        console.log(1);
+        return this.http.put<IWorkgroup>(this.WORKGROUP_API_URL + 'BindClient', JSON.stringify(data), this.httpOptions);
+    }
+
 
 
     constructor(public http: HttpClient){}

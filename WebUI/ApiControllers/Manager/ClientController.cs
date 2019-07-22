@@ -60,7 +60,7 @@ namespace WebUI.ApiControllers.Manager
             workGroup.BindClient(new BindClient()
             {
                 ClientId = client.Entity.Id,
-                WorkGroupId = workGroup.Id
+                WorkgroupId = workGroup.Id
             });
 
             await _context.SaveChangesAsync();

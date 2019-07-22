@@ -3,6 +3,6 @@
     public class BindClient
     {
         public int ClientId { get; set; }
-        public int WorkGroupId { get; set; }
+        public int WorkgroupId { get; set; }
     }
 }

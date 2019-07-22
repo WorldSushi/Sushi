@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { GetWorkgroupsAction, WorkgroupsActionsTypes, GetWorkgroupsSuccesAction, GetWorkgroupsFailureAction, CreateWorkgroupAction, CreateWorkgroupSuccesAction, CreateWorkgroupFailureAction, EditWorkgroupAction, EditWorkgroupSuccesAction, EditWorkgroupFailureAction } from '../actions/workgroup.actions';
+import { GetWorkgroupsAction, WorkgroupsActionsTypes, GetWorkgroupsSuccesAction, GetWorkgroupsFailureAction, CreateWorkgroupAction, CreateWorkgroupSuccesAction, CreateWorkgroupFailureAction, EditWorkgroupAction, EditWorkgroupSuccesAction, EditWorkgroupFailureAction, AddClientToWorkgroupAction } from '../actions/workgroup.actions';
 import { IWorkgroup } from 'src/app/admin/workgroups/shared/models/workgroup.model';
 import { WorkgroupService } from 'src/app/admin/workgroups/shared/services/workgroup.service';
 
@@ -51,6 +51,19 @@ export class WorkgroupsEffects {
                     of(new EditWorkgroupFailureAction({ error: error}))
                 )
             )    
+        )
+    )
+
+    @Effect()
+    addClientToWorkgroup$ = this.actions$.pipe(
+        ofType<AddClientToWorkgroupAction>(WorkgroupsActionsTypes.ADD_CLIENT_TO_WORKGROUP),
+        switchMap((action) => 
+            this.workgroupsService.addClientToWorkgroup(action.payload).pipe(
+                map((workgroup: IWorkgroup) => 
+                    new EditWorkgroupSuccesAction({ workgroup: workgroup })
+                ),
+                catchError(error => of(new EditWorkgroupFailureAction({ error: error })))
+            )
         )
     )
 

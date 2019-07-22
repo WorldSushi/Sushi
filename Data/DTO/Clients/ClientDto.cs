@@ -11,5 +11,7 @@ namespace Data.DTO.Clients
         public ClientTypes ClientType { get; set; }
         public NumberOfCalls NumberOfCalls { get; set; }
         public NumberOfShipments NumberOfShipments { get; set; }
+
+        public bool HasWorkgroup { get; set; }
     }
 }

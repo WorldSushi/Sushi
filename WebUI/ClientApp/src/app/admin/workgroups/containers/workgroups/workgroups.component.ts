@@ -3,6 +3,11 @@ import { WorkgroupsFacade } from 'src/app/store/workgroups/facades/workgroup.fac
 import { Observable } from 'rxjs';
 import { IWorkgroup } from '../../shared/models/workgroup.model';
 import { ManagersFacade } from 'src/app/store/managers/facades/manager.facade';
+import { ClientsFacade } from 'src/app/store/clients/facades/clients.facade';
+import { withLatestFrom, map } from 'rxjs/operators';
+import { CallPlanFacade } from 'src/app/store/clients/facades/call-plans.facade';
+import { TripPlanFacade } from 'src/app/store/clients/facades/trip-plan.facade';
+import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 
 @Component({
   selector: 'app-workgroups',
@@ -11,14 +16,72 @@ import { ManagersFacade } from 'src/app/store/managers/facades/manager.facade';
 })
 export class WorkgroupsComponent implements OnInit {
 
-  workgroups$: Observable<IWorkgroup[]> = this.workgroupsFacade.workgroups$;
+  workgroups$: Observable<any> = this.workgroupsFacade.workgroups$
+    .pipe(
+      withLatestFrom(this.clientsFacade.clients$),
+      map(([workgroups, clients]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: clients.filter(client => workgroup.clientIds.some(clientId => client.id == clientId))
+          }
+        })
+      }),
+      withLatestFrom(this.callPlanFacade.callPlan$),
+      map(([workgroups, callPlans]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: workgroup.clients.map(client => {
+              return {
+                ...client,
+                callPlan: callPlans.find(callPlan => callPlan.clientId == client.id) 
+                  ? callPlans.find(callPlan => callPlan.clientId == client.id) 
+                  : { totalCalls: 0, escortManagerCalls: 0, regionalManagerCalls: 0 }
+              }
+            })
+          }
+        })
+      }),
+      withLatestFrom(this.tripPlanFacade.tripPlan$),
+      map(([workgroups, tripPlans]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: workgroup.clients.map(client => {
+              return {
+                ...client,
+                tripPlan: tripPlans.find(callPlan => callPlan.clientId == client.id)
+                  ? tripPlans.find(callPlan => callPlan.clientId == client.id)
+                  : { hours: 0, completedType: 0 }
+              }
+            })
+          }
+        })
+      })
+    );
+
+  freeClients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(map(res => res.filter(item => !item.hasWorkgroup)))
+
+  addClientToWorkGroup(data){
+    console.log(data);
+    this.workgroupsFacade.addClientToWorkgroup(data);
+  }
 
   constructor(public workgroupsFacade: WorkgroupsFacade,
-    public managersFacade: ManagersFacade) { }
+    public clientsFacade: ClientsFacade,
+    public managersFacade: ManagersFacade,
+    public callPlanFacade: CallPlanFacade,
+    public tripPlanFacade: TripPlanFacade) {  
+      this.clientsFacade.loadClientsForAdmin(); 
+      this.workgroupsFacade.loadWorkgroups();       
+      this.callPlanFacade.loadCallPlan(0);
+      this.tripPlanFacade.loadTripPlan(0);
+      this.managersFacade.loadManagers();    
+    }
 
   ngOnInit() {
-    this.workgroupsFacade.loadWorkgroups();
-    this.managersFacade.loadManagers();
+    
   }
 
 }
