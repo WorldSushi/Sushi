@@ -382,7 +382,7 @@ namespace WebUI.Controllers
             _context.SaveChanges();
         }*/
 
-        public void Test3()
+        /*public void Test3()
         {
             var calls = _context.Set<CallInfo>()
                 .Include(x => x.Call)
@@ -418,7 +418,7 @@ namespace WebUI.Controllers
                 .AddRange(clientContacts);
 
             _context.SaveChanges();
-        }
+        }*/
 
         public IActionResult Index()
         {
