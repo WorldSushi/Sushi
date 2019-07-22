@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Base.Helpers;
 using Data;
+using Data.Commands.ClientContacts.ClientContact;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.Commands.Manager;
@@ -240,16 +241,48 @@ namespace WebUI.Controllers
             return RedirectToAction("ImportFileExportClients");
         }*/
 
-        /*public void MyCallsTest()
+        public void MyCallsTest()
         {
-            _myCallsApiService.SaveNewCalls();
-        }*/
+            //_myCallsApiService.SaveNewCalls();
+            /*var a = _context.Set<CallInfo>()
+                .Include(x => x.Call)
+                .ToList();
+
+            var b = new List<ClientContact>();
+
+            var c = _context.Set<WorkGroup>().ToList();
+            foreach (var callInfo in a)
+            {
+                b.Add(new ClientContact(
+                    new ClientContactCreate()
+                    {
+                        ClientId = callInfo.Call.ClientId,
+                        ContactType = ClientContactType.Call,
+                        ManagerType = c.FirstOrDefault(x => x.EscortManagerId == callInfo.Call.ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : c.FirstOrDefault(x => x.RegionalManagerId == callInfo.Call.ClientId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined,
+                        ManagerId = callInfo.Call.ManagerId
+                    }));
+            }
+
+            _context.Set<ClientContact>()
+                .AddRange(b);
+
+            _context.SaveChanges();*/
+        }
 
         public void Test()
         {
-            var a = _context.Set<Client>()
-                .Where(x => x.Phone != "")
-                .ToList();
+            var a = _context.Set<CallInfo>()
+                .Include(x => x.CallLog)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    ClientPhone = x.CallLog.ClientNumber,
+                    ManagerPhone = x.CallLog.SrcNumber
+                }).ToList();
         }
 
         public IActionResult Index()

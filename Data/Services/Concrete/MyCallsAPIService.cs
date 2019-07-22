@@ -9,9 +9,12 @@ using Newtonsoft.Json.Linq;
 using Data.Services.Abstract;
 using Base.Extensions;
 using Base.Helpers;
+using Data.Commands.ClientContacts.ClientContact;
 using Data.Entities.Calls;
+using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.Users;
+using Data.Enums;
 
 namespace Data.Services.Concrete
 {
@@ -24,6 +27,10 @@ namespace Data.Services.Concrete
             _context = context;
         }
 
+        //Получаю новые звонки дольше 2.5 минут
+        //Создаю CallLogs
+        //Создаю Calls
+        //Связываю с помощью CallInfo
         public void SaveNewCalls()
         {
             var monthCallsInfo = GetCurrentMonthCallsInfo();
@@ -93,8 +100,6 @@ namespace Data.Services.Concrete
                 }));
             }
 
-            //var a = callsLog.Where(x => x.SrcNumber == "+79009151781").ToList();
-
             callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
 
             var managersPhone = _context.Set<Manager>()
@@ -109,8 +114,11 @@ namespace Data.Services.Concrete
                 : false).ToList();
 
             var calls = new List<CallInfo>();
-            var dt = new DateTime(1970, 1, 1);
+            var clientContact = new List<ClientContact>();
 
+            var workGroups = _context.Set<WorkGroup>().ToList();
+
+            var dt = new DateTime(1970, 1, 1);
 
             foreach (var call in a)
             {
@@ -126,8 +134,27 @@ namespace Data.Services.Concrete
                         Recording = call.Recording,
                         DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
                     },
-                    CallLog = call
+                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                           && x.SrcNumber == call.SrcNumber
+                                                           && x.StartTime == call.StartTime)
                 });
+            }
+
+            foreach (var call in calls)
+            {
+                clientContact.Add(
+                    new ClientContact(
+                        new ClientContactCreate()
+                        {
+                            ClientId = call.Call.ClientId,
+                            ContactType = ClientContactType.Call,
+                            ManagerId = call.Call.ManagerId,
+                            ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.EscortManager
+                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ClientId) != null
+                                    ? ManagerType.RegionalManager
+                                    : ManagerType.Undefined
+                        }));
             }
 
             _context.Set<CallLog>()
@@ -135,6 +162,9 @@ namespace Data.Services.Concrete
 
             _context.Set<CallInfo>()
                 .AddRange(calls);
+
+            _context.Set<ClientContact>()
+                .AddRange(clientContact);
 
             _context.SaveChanges();
         }
