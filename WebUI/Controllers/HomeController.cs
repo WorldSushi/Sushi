@@ -275,19 +275,67 @@ namespace WebUI.Controllers
 
         public void Test()
         {
-            var a = _context.Set<CallInfo>()
-                .Include(x => x.CallLog)
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    ClientPhone = x.CallLog.ClientNumber,
-                    ManagerPhone = x.CallLog.SrcNumber
-                }).ToList();
+            var a = _context.Set<Client>()
+                .Where(x => x.Phone != "")
+                .Select(x => x.Phone)
+                .ToList();
+
+            for(int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                string pattern = @"\(";
+                string target = " ";
+                Regex regex = new Regex(pattern);
+                string result = regex.Replace(s, target);
+                a[i] = result;
+            }
+            for (int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                string pattern = @"\)";
+                string target = " ";
+                Regex regex = new Regex(pattern);
+                string result = regex.Replace(s, target);
+                a[i] = result;
+            }
+            for (int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                string pattern = @"\s";
+                string target = "";
+                Regex regex = new Regex(pattern);
+                string result = regex.Replace(s, target);
+                a[i] = result;
+            }
+            for (int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                string pattern = @"\-";
+                string target = "";
+                Regex regex = new Regex(pattern);
+                string result = regex.Replace(s, target);
+                a[i] = result;
+            }
+            for (int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                a[i] = s.TrimStart(new char[] {'8'});
+            }
+            for (int i = 0; i < a.Count; i++)
+            {
+                string s = a[i];
+                string pattern = @"\+\d{1}";
+                string target = "";
+                Regex regex = new Regex(pattern);
+                string result = regex.Replace(s, target);
+                a[i] = result;
+            }
+
         }
 
         public IActionResult Index()
         {
-            return Redirect("/Account/Index");
+            return Redirect("/Home/Test");
         }
 
         private NumberOfCalls GetNumberOfCalls(string numberStr)
