@@ -319,7 +319,8 @@ namespace WebUI.Controllers
             for (int i = 0; i < a.Count; i++)
             {
                 string s = a[i];
-                a[i] = s.TrimStart(new char[] {'8'});
+                if (s.Length == 11)
+                    a[i] = s.TrimStart(new char[] {'8'});
             }
             for (int i = 0; i < a.Count; i++)
             {
@@ -331,11 +332,66 @@ namespace WebUI.Controllers
                 a[i] = result;
             }
 
+            var onlyPhone = new List<string>();
+
+            foreach (var phone in a)
+            {
+                var b = phone.Split(',');
+                foreach (var maybePhone in b)
+                {
+                    if (maybePhone.Length == 10/* && maybePhone == @"\d{10}"*/)
+                        onlyPhone.Add(maybePhone);
+                }
+            }
+        }
+
+        public void Test1()
+        {
+            var clients = _context.Set<Client>()
+                .Where(x => x.Phone != "")
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Phone = x.Phone
+                }).ToList();
+
+            var clientPhones = new List<ClientPhone>();
+
+            foreach (var client in clients)
+            {
+                var phones = client.Phone.Split(',');
+                foreach (var phone in phones)
+                {
+                    string newPhone = Regex.Replace(phone, @"[^0-9$,]", "");
+
+                    if (newPhone.Length == 10)
+                    {
+                        clientPhones.Add(new ClientPhone()
+                        {
+                            ClientId = client.Id,
+                            Phone = newPhone
+                        });
+                    } else if (newPhone.Length == 11)
+                    {
+                        newPhone = newPhone.Substring(1);
+                        clientPhones.Add(new ClientPhone()
+                        {
+                            ClientId = client.Id,
+                            Phone = newPhone
+                        });
+                    }
+                }
+            }
+
+            _context.Set<ClientPhone>()
+                .AddRange(clientPhones);
+
+            _context.SaveChanges();
         }
 
         public IActionResult Index()
         {
-            return Redirect("/Home/Test");
+            return Redirect("/Account/Index");
         }
 
         private NumberOfCalls GetNumberOfCalls(string numberStr)
