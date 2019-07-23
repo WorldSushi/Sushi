@@ -1,0 +1,46 @@
+<h3 class="dialog-title" mat-dialog-title>Добавить рабочую группу</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+<div class="dialog-subtitle"> 
+  <div style="background-color: #EFFBFF">
+    <p>Менеджер сопровождения</p>
+  </div>
+  <div style="background-color: #E2F7FF">
+    <p>Региональный менеджер</p>
+  </div> 
+</div>
+
+<div class="selectTitle">
+  <label for="">Название группы</label>
+  <input type="text" [(ngModel)]="newWorkgroup.title">
+</div>
+
+<mat-dialog-content class="mat-typography mat-body">  
+
+  <div class="selectUser">
+    <div class="form-group">
+      <label>Пользователь</label>
+      <select [(ngModel)]="newWorkgroup.escortManagerId">
+        <option value="0">Не выбран</option>
+        <option *ngFor="let manager of data" [value]="manager.id">{{manager.login}}</option>
+      </select>
+    </div> 
+  </div>
+  <div class="selectUser">
+    <div class="form-group">
+      <label>Пользователь</label>
+      <select [(ngModel)]="newWorkgroup.regionalManagerId">
+        <option value="0">Не выбран</option>
+        <option *ngFor="let manager of data" [value]="manager.id">{{manager.login}}</option>
+      </select>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+
+
+<div class="footer">
+  <button (click)="save()">Создать группу</button>
+</div>
+

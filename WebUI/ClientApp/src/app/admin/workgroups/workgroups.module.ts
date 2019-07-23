@@ -10,6 +10,7 @@ import { WorkgroupPlansComponent } from './containers/workgroups-plans/workgroup
 import { WorkgroupPlansListComponent } from './components/workgroups-plans-list/workgroup-plans-list.component';
 import { DetailWorkgroupDialogComponent } from './dialogs/detail-workgroup-dialog/detail-workgroup-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { CreateWorkgroupDialogComponent } from './dialogs/create-workgroup-dialog/create-workgroup-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     WorkgroupsCallsListComponent, 
     WorkgroupPlansComponent, 
     WorkgroupPlansListComponent, 
-    DetailWorkgroupDialogComponent
+    DetailWorkgroupDialogComponent, 
+    CreateWorkgroupDialogComponent
   ],
   imports: [
     CommonModule,
@@ -33,10 +35,11 @@ import { FormsModule } from '@angular/forms';
     WorkgroupsCallsComponent,
     WorkgroupsCallsListComponent,
     WorkgroupPlansComponent,
-    WorkgroupPlansListComponent
+    WorkgroupPlansListComponent,
   ],
   entryComponents: [
-    DetailWorkgroupDialogComponent
+    DetailWorkgroupDialogComponent,
+    CreateWorkgroupDialogComponent
   ]
 })
 export class WorkgroupsModule { }

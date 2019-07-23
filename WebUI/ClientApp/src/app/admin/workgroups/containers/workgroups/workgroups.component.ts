@@ -8,6 +8,7 @@ import { withLatestFrom, map } from 'rxjs/operators';
 import { CallPlanFacade } from 'src/app/store/clients/facades/call-plans.facade';
 import { TripPlanFacade } from 'src/app/store/clients/facades/trip-plan.facade';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
+import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 
 @Component({
   selector: 'app-workgroups',
@@ -62,10 +63,14 @@ export class WorkgroupsComponent implements OnInit {
     );
 
   freeClients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(map(res => res.filter(item => !item.hasWorkgroup)))
+  freeManagers$: Observable<IManager[]> = this.managersFacade.managers$.pipe(map(res => res.filter(item => item.workgroupId == 0 || item.workgroupId == null)))
 
   addClientToWorkGroup(data){
-    console.log(data);
     this.workgroupsFacade.addClientToWorkgroup(data);
+  }
+
+  createWorkgroup(workgroup){
+    this.workgroupsFacade.createWorkgroup(workgroup);
   }
 
   constructor(public workgroupsFacade: WorkgroupsFacade,
