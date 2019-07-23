@@ -21,5 +21,5 @@ export interface IClient {
     MSresults: IManagerCallsResult,
     RMresults: IManagerCallsResult,
     clientContacts: ICallsDate[],
-    managerId: number
+    hasWorkgroup: boolean
 }

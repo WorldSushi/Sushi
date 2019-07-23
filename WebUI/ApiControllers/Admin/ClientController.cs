@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Data;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
+using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,8 @@ namespace WebUI.ApiControllers.Admin
                     Phone = "555-35-35",
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
-                    NumberOfShipments = x.NumberOfShipments
+                    NumberOfShipments = x.NumberOfShipments,
+                    HasWorkgroup = _context.Set<ClientWorkGroup>().Any(z => z.ClientId == x.Id)
                 }).ToListAsync();
 
             return Ok(result);
@@ -54,7 +56,8 @@ namespace WebUI.ApiControllers.Admin
                 Phone = "555-35-35",
                 ClientType = client.Entity.ClientType,
                 NumberOfCalls = client.Entity.NumberOfCalls,
-                NumberOfShipments = client.Entity.NumberOfShipments
+                NumberOfShipments = client.Entity.NumberOfShipments,
+                HasWorkgroup = _context.Set<ClientWorkGroup>().Any(x => x.ClientId == client.Entity.Id)
             };
 
             return Ok(result);
@@ -78,7 +81,8 @@ namespace WebUI.ApiControllers.Admin
                 Phone = "555-35-35",
                 ClientType = client.ClientType,
                 NumberOfCalls = client.NumberOfCalls,
-                NumberOfShipments = client.NumberOfShipments
+                NumberOfShipments = client.NumberOfShipments,
+                HasWorkgroup = _context.Set<ClientWorkGroup>().Any(x => x.ClientId == client.Id)
             };
 
             return Ok(result);

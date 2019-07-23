@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { IWorkgroup } from 'src/app/admin/workgroups/shared/models/workgroup.model';
 
 export enum WorkgroupsActionsTypes {
+    ADD_CLIENT_TO_WORKGROUP = '[Admin Workgroups Page] ADD_CLIENT_TO_WORKGROUP',
     GET_WORKGROUPS = '[Admin Workgroups Page] GET_WORKGROUPS',
     GET_WORKGROUPS_SUCCESS = '[Workgroups API] GET_WORKGROUPS_SUCCESS',
     GET_WORKGROUPS_FAILURE = '[Workgroups API] GET_WORKGROUPS_FAILURE',
@@ -10,7 +11,9 @@ export enum WorkgroupsActionsTypes {
     CREATE_WORKGROUP_FAILURE = '[Workgroups API] CREATE_WORKGROUP_FAILURE',
     EDIT_WORKGROUP = '[Admin Workgroups Page] EDIT_WORKGROUP',
     EDIT_WORKGROUP_SUCCESS = '[Workgroup API] EDIT_WORKGROUP_SUCCESS',
-    EDIT_WORKGROUP_FAILURE = '[Workgroup API] EDIT_WORKGROUP_FAILURE'
+    EDIT_WORKGROUP_FAILURE = '[Workgroup API] EDIT_WORKGROUP_FAILURE',
+    CHANGE_REGIONAL_MANAGER = '[Admin Workgroups Page] CHANGE_REGIONAL_MANAGAER',
+    CHANGE_ESCORT_MANAGER = '[Admin Workgroups Page] CHANGE_ESCORT_MANAGAER'
 }
 
 export class GetWorkgroupsAction implements Action {
@@ -67,6 +70,24 @@ export class EditWorkgroupFailureAction implements Action {
     constructor(public payload: { error: any }){}
 }
 
+export class AddClientToWorkgroupAction implements Action {
+    readonly type = WorkgroupsActionsTypes.ADD_CLIENT_TO_WORKGROUP;
+
+    constructor(public payload: { clientId: number, workgroupId: number }){}
+}
+
+export class ChangeRegionalManagerAction implements Action {
+    readonly type = WorkgroupsActionsTypes.CHANGE_REGIONAL_MANAGER;
+
+    constructor(public payload: { workgroupId: number, regionalManagerId: number }) { }
+}
+
+export class ChangeEscortManagerAction implements Action {
+    readonly type = WorkgroupsActionsTypes.CHANGE_ESCORT_MANAGER;
+
+    constructor(public payload: { workgroupId: number, escortManagerId: number }) { }
+}
+
 export type WorkgroupsActionUnion = GetWorkgroupsAction
     | GetWorkgroupsSuccesAction
     | GetWorkgroupsFailureAction
@@ -76,3 +97,6 @@ export type WorkgroupsActionUnion = GetWorkgroupsAction
     | EditWorkgroupAction
     | EditWorkgroupSuccesAction
     | EditWorkgroupFailureAction
+    | AddClientToWorkgroupAction
+    | ChangeEscortManagerAction
+    | ChangeRegionalManagerAction

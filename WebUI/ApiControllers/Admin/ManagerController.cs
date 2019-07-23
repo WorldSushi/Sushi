@@ -51,7 +51,7 @@ namespace WebUI.ApiControllers.Admin
                 Login = manager.Entity.Login,
                 Password = manager.Entity.Password,
                 Phone = manager.Entity.Phone,
-                WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id).Id,
+                WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Id,
                 WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Title
             };
 

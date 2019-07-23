@@ -61,8 +61,14 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
+                Id = workGroup.Entity.Id,
+                Title = workGroup.Entity.Title,
                 EscortManagerId = workGroup.Entity.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.Entity.RegionalManagerId ?? 0
+                RegionalManagerId = workGroup.Entity.RegionalManagerId ?? 0,
+                ClientIds = _context.Set<ClientWorkGroup>()
+                        .Where(z => z.WorkGroupId == workGroup.Entity.Id)
+                        .Select(z => z.ClientId)
+                        .ToList()
             };
 
             return Ok(result);
@@ -71,12 +77,10 @@ namespace WebUI.ApiControllers.Admin
         [HttpPut("ChangeRegionalManager")]
         public async Task<IActionResult> Put([FromBody] ChangeRegionalManager command)
         {
-            if (await _context.Set<WorkGroup>().AnyAsync(x => x.RegionalManagerId == command.RegionalManagerId
-                                                              || x.EscortManagerId == command.RegionalManagerId))
-                return BadRequest("Менеджер уже состоит в другой группе");
+
 
             var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.Id == command.WorkGroupId);
+                .FirstOrDefaultAsync(x => x.Id == command.WorkgroupId);
 
             if (workGroup == null)
                 return BadRequest("Рабочая группа не найдена");
@@ -87,8 +91,13 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
+                Id = workGroup.Id,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
                 RegionalManagerId = workGroup.RegionalManagerId ?? 0,
+                ClientIds = _context.Set<ClientWorkGroup>()
+                        .Where(z => z.WorkGroupId == workGroup.Id)
+                        .Select(z => z.ClientId)
+                        .ToList(),
                 EscortManagerName = workGroup.EscortManager != null
                     ? workGroup.EscortManager.Login
                     : "",
@@ -106,12 +115,9 @@ namespace WebUI.ApiControllers.Admin
         [HttpPut("ChangeEscortManager")]
         public async Task<IActionResult> Put([FromBody] ChangeEscortManager command)
         {
-            if (await _context.Set<WorkGroup>().AnyAsync(x => x.RegionalManagerId == command.EscortManagerId
-                                                              || x.EscortManagerId == command.EscortManagerId))
-                return BadRequest("Менеджер уже состоит в другой группе");
 
             var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.Id == command.WorkGroupId);
+                .FirstOrDefaultAsync(x => x.Id == command.WorkgroupId);
 
             if (workGroup == null)
                 return BadRequest("Рабочая группа не найдена");
@@ -122,17 +128,10 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
+                Id = workGroup.Id,
+                Title = workGroup.Title,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
-                EscortManagerName = workGroup.EscortManager != null
-                    ? workGroup.EscortManager.Login
-                    : "",
-                RegionalManagerName = workGroup.RegionalManager != null
-                    ? workGroup.RegionalManager.Login
-                    : "",
-                EscortManagerEfficiency = 100,
-                RegionalManagerEfficiency = 100,
-                Title = workGroup.Title
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);
@@ -145,7 +144,7 @@ namespace WebUI.ApiControllers.Admin
                 return BadRequest("Клиет закреплён за другой группой");
 
             var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.Id == command.WorkGroupId);
+                .FirstOrDefaultAsync(x => x.Id == command.WorkgroupId);
 
             if (workGroup == null)
                 return BadRequest("Группа не найдёна");
@@ -156,17 +155,10 @@ namespace WebUI.ApiControllers.Admin
 
             var result = new WorkGroupDto()
             {
+                Id = workGroup.Id,
+                Title = workGroup.Title,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
-                EscortManagerName = workGroup.EscortManager != null
-                    ? workGroup.EscortManager.Login
-                    : "",
-                RegionalManagerName = workGroup.RegionalManager != null
-                    ? workGroup.RegionalManager.Login
-                    : "",
-                EscortManagerEfficiency = 100,
-                RegionalManagerEfficiency = 100,
-                Title = workGroup.Title
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);

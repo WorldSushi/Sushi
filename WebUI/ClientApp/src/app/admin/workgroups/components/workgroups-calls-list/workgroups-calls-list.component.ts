@@ -61,7 +61,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    
   }
 
 }

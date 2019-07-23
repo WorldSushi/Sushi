@@ -1,1 +1,8 @@
-<app-workgroups-list [workgroups]="workgroups$ | async"></app-workgroups-list>
+<app-workgroups-list 
+    [workgroups]="workgroups$ | async" 
+    [freeClients]="freeClients$ | async"
+    [freeManagers]="freeManagers$ | async"
+    (clientAddedToWorkgroup)="addClientToWorkGroup($event)"
+    (workgroupCreated)="createWorkgroup($event)"
+    (workgroupChanged)="updateWorkgroup($event)">
+</app-workgroups-list>
