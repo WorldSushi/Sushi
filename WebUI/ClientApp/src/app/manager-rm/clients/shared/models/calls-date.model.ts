@@ -5,5 +5,6 @@ export interface ICallsDate {
     contactType: TypeOfDateAction,
     clientId: number,
     date: any,
-    managerType: number
+    managerType: number,
+    managerId: number
 }

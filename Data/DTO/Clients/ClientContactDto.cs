@@ -10,5 +10,6 @@ namespace Data.DTO.Clients
         public ManagerType ManagerType { get; set; }
         public ClientContactType ContactType { get; set; }
         public string Date { get; set; }
+        public int ManagerId { get; set; }
     }
 }

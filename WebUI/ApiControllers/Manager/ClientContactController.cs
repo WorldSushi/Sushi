@@ -31,7 +31,7 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _context.Set<ClientContact>()
+            var result = await _context.Set<ClientContact>() 
                 .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new ClientContactDto()
                 {
@@ -39,7 +39,8 @@ namespace WebUI.ApiControllers.Manager
                     ClientId = x.ClientId,
                     ContactType = x.Type,
                     Date = x.Date.ToString("dd.MM.yyyy"),
-                    ManagerType = x.ManagerType
+                    ManagerType = x.ManagerType,
+                    ManagerId = x.ManagerId
                 }).ToListAsync();
 
             return Ok(result);

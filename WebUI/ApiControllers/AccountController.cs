@@ -24,6 +24,7 @@ namespace WebUI.ApiControllers
         public IActionResult Get()
         {
             var response = new {
+                Id = _accountService.CurrentUser().Id,
                 Login = _accountService.CurrentUser().Login,
                 Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? "Admin"

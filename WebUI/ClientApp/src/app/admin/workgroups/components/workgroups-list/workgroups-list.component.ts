@@ -5,6 +5,7 @@ import { DetailWorkgroupDialogComponent } from '../../dialogs/detail-workgroup-d
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { CreateWorkgroupDialogComponent } from '../../dialogs/create-workgroup-dialog/create-workgroup-dialog.component';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
+import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class WorkgroupsListComponent implements OnInit {
 
   @Input() workgroups: IWorkgroup[];
   @Input() freeClients: IClient[];
+  @Input() clientContacts: ICallsDate[];
 
   @Input() freeManagers: IManager[];
 
@@ -40,7 +42,7 @@ export class WorkgroupsListComponent implements OnInit {
     });
 
     const sub2 = dialogRef.componentInstance.workgroupChanged.subscribe((data: any) => {
-      console.log(1);  
+       
       this.workgroupChanged.emit(data);
     });
   }
@@ -56,6 +58,12 @@ export class WorkgroupsListComponent implements OnInit {
         this.workgroupCreated.emit(res);
       }
     })
+  }
+
+  getAmountContactsToday(managerId: number){
+    const today = new Date().toLocaleDateString();
+
+    return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
   constructor(public dialog: MatDialog) { }

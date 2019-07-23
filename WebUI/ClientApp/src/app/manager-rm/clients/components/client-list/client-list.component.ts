@@ -15,6 +15,7 @@ import { ICallPlan } from '../../shared/models/call-plan.model';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
 import { ninvoke } from 'q';
+import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 
 @Component({
   selector: 'app-client-list',
@@ -25,6 +26,7 @@ import { ninvoke } from 'q';
 export class ClientListComponent implements OnInit {
 
   @Input() clients: IClient[];
+  @Input() manager: any;
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
@@ -181,13 +183,14 @@ export class ClientListComponent implements OnInit {
             clientId: item.clientId,
             date: item.date,
             contactType: item.EMid != 0 ? item.RMcallType : item.MScallType,
-            managerType:  item.EMid != 0 ? 20 : 10
+            managerType:  item.EMid != 0 ? 20 : 10,
           }
         })
 
 
 
         newContacts.forEach(item => {
+          item.managerId = this.manager.id;
           this.callsDateCreated.emit(item);
         });
 

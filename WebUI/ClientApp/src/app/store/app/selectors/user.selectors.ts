@@ -3,12 +3,12 @@ import { IAppState } from '../states';
 import { IUserState } from '../states/user.state';
 
 
-const selectUserState = createFeatureSelector<IUserState>('user');
+export const selectUserState = createFeatureSelector<IUserState>('userState');
 
 
 export const selectCurrentUser = createSelector(
     selectUserState,
-    (state: IUserState) => state.currentUser ? state.currentUser : null
+    (state: IUserState) => state.currentUser
 )
 
 
