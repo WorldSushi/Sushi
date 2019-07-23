@@ -7,7 +7,7 @@
     <div class="workgroups-wrapper">
       <div class="workgroup-item" *ngFor="let workgroup of workgroups">
         <div class="workgroup-title clearfix">
-          <span (click)="openWorkgroupDetail(workgroup)">
+          <span (click)="openWorkgroupDetail(workgroup)" style="cursor: pointer">
             {{workgroup.title}}
           </span>
           <div class="workgroup-actions">

@@ -2,7 +2,7 @@
 {
     public class ChangeRegionalManager
     {
-        public int WorkGroupId { get; set; }
+        public int WorkgroupId { get; set; }
         public int RegionalManagerId { get; set; }
     }
 }

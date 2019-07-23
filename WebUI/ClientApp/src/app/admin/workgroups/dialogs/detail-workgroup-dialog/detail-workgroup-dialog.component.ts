@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
+import { EditManagerDialogComponent } from 'src/app/admin/managers/dialogs/edit-manager-dialog/edit-manager-dialog.component';
+import { EditWorkgroupDialogComponent } from '../edit-workgroup-dialog/edit-workgroup-dialog.component';
 
 @Component({
   selector: 'app-detail-workgroup-dialog',
@@ -13,22 +15,29 @@ export class DetailWorkgroupDialogComponent implements OnInit {
 
   @Output() clientAdded = new EventEmitter();
 
+  @Output() workgroupChanged = new EventEmitter();
+
   close(){
     this.dialogRef.close();
   }
 
-  /*openWorkgroupEdit() {
-    const dialogRef = this.dialog.open(EditManagerDialogComponent, {
+  openWorkgroupEdit() {
+    const dialogRef = this.dialog.open(EditWorkgroupDialogComponent, {
       width: '725px',
-      data: this.data
+      data: {
+        workgroup: this.data.workgroup,
+        managers: this.data.freeManagers
+      }
     })
 
     dialogRef.afterClosed().subscribe(res => {
       if(res){
-        this.dialogRef.close(res);
+        this.workgroupChanged.emit(res);      
       }
+
+      this.dialogRef.close(res);
     })
-  }*/
+  }
 
 
   addNewClient(){
@@ -45,7 +54,7 @@ export class DetailWorkgroupDialogComponent implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DetailWorkgroupDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(this.data);
+
     }
 
   ngOnInit() {

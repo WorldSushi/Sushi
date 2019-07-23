@@ -27,20 +27,19 @@
     position: relative
     color: #557B91
     padding: 0px
-    padding-bottom: 50px
     
-
 .mat-dialog-content
     margin: 0
     padding: 0
     text-align: center
-    display: block 
+    display: grid
+    grid-template-columns: 1fr 1fr
 
 .dialog-subtitle
     text-align: left
     position: relative    
     display: grid
-    grid-template-columns: 1fr 1fr 1fr
+    grid-template-columns: 1fr 1fr 
     background: rgba(216, 234, 255, 0.56)
     align-items: center
     div
@@ -93,30 +92,39 @@ table
 h4
     margin-top: 20px
 
-.free-clients 
-    display: inline-block
-    margin-top: 40px
-    text-align: left
-    label
+label
         display: inline-block
         margin-bottom: 5px
-    select
-        font-size: 18px
-        padding: 15px 20px
-        border: 1px solid #E9F3FF
-        border-radius: 99px
-        color: #9CB2CD
-        min-width: 350px
+
+select, input
+    font-size: 18px
+    padding: 10px 20px
+    border: 1px solid #E9F3FF
+    border-radius: 99px
+    color: #9CB2CD
+    width: 100%
+    box-sizing: border-box
+    cursor: pointer
+
+.selectUser
+    text-align: left
+    box-sizing: border-box
+    .form-group
+        padding: 10px 20px 40px 20px
         box-sizing: border-box
-        cursor: pointer
+
+.footer
+    background-color: #E9F3FF 
+    text-align: center
+    padding: 20px 0px
     button
-        padding: 20px 20px
-        font-size: 16px
-        color: #fff
-        background: rgba(152, 235, 220, 0.91)
-        min-width: 230px
+        background: rgba(109, 185, 255, 0.91)
         border-radius: 99px
+        color: #fff
+        outline: none
         border: none
-        margin-left: 30px
+        padding: 15px 35px
         cursor: pointer
 
+.selectTitle
+    padding: 20px 20px

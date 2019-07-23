@@ -73,6 +73,14 @@ export class WorkgroupsComponent implements OnInit {
     this.workgroupsFacade.createWorkgroup(workgroup);
   }
 
+  updateWorkgroup(data) {
+    this.workgroupsFacade.changeEscortManager({ workgroupId: data.workgroup.id, escortManagerId: data.workgroup.escortManagerId });
+    this.workgroupsFacade.changeRegionalManager({ workgroupId: data.workgroup.id, regionalManagerId: data.workgroup.regionalManagerId })
+
+    this.managersFacade.loadManagers();
+    this.workgroupsFacade.loadWorkgroups();
+  }
+
   constructor(public workgroupsFacade: WorkgroupsFacade,
     public clientsFacade: ClientsFacade,
     public managersFacade: ManagersFacade,

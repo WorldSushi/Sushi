@@ -15,7 +15,6 @@ export class CreateWorkgroupDialogComponent implements OnInit {
   }
 
   save(){
-    console.log(this.newWorkgroup);
     if(this.newWorkgroup.escortManagerId == 0 || this.newWorkgroup.regionalManagerId == 0 || this.newWorkgroup.escortManagerId == this.newWorkgroup.regionalManagerId || this.newWorkgroup.title == '')
       return
     

@@ -11,7 +11,9 @@ export enum WorkgroupsActionsTypes {
     CREATE_WORKGROUP_FAILURE = '[Workgroups API] CREATE_WORKGROUP_FAILURE',
     EDIT_WORKGROUP = '[Admin Workgroups Page] EDIT_WORKGROUP',
     EDIT_WORKGROUP_SUCCESS = '[Workgroup API] EDIT_WORKGROUP_SUCCESS',
-    EDIT_WORKGROUP_FAILURE = '[Workgroup API] EDIT_WORKGROUP_FAILURE'
+    EDIT_WORKGROUP_FAILURE = '[Workgroup API] EDIT_WORKGROUP_FAILURE',
+    CHANGE_REGIONAL_MANAGER = '[Admin Workgroups Page] CHANGE_REGIONAL_MANAGAER',
+    CHANGE_ESCORT_MANAGER = '[Admin Workgroups Page] CHANGE_ESCORT_MANAGAER'
 }
 
 export class GetWorkgroupsAction implements Action {
@@ -74,6 +76,18 @@ export class AddClientToWorkgroupAction implements Action {
     constructor(public payload: { clientId: number, workgroupId: number }){}
 }
 
+export class ChangeRegionalManagerAction implements Action {
+    readonly type = WorkgroupsActionsTypes.CHANGE_REGIONAL_MANAGER;
+
+    constructor(public payload: { workgroupId: number, regionalManagerId: number }) { }
+}
+
+export class ChangeEscortManagerAction implements Action {
+    readonly type = WorkgroupsActionsTypes.CHANGE_ESCORT_MANAGER;
+
+    constructor(public payload: { workgroupId: number, escortManagerId: number }) { }
+}
+
 export type WorkgroupsActionUnion = GetWorkgroupsAction
     | GetWorkgroupsSuccesAction
     | GetWorkgroupsFailureAction
@@ -84,3 +98,5 @@ export type WorkgroupsActionUnion = GetWorkgroupsAction
     | EditWorkgroupSuccesAction
     | EditWorkgroupFailureAction
     | AddClientToWorkgroupAction
+    | ChangeEscortManagerAction
+    | ChangeRegionalManagerAction

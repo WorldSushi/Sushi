@@ -11,6 +11,7 @@ import { WorkgroupPlansListComponent } from './components/workgroups-plans-list/
 import { DetailWorkgroupDialogComponent } from './dialogs/detail-workgroup-dialog/detail-workgroup-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { CreateWorkgroupDialogComponent } from './dialogs/create-workgroup-dialog/create-workgroup-dialog.component';
+import { EditWorkgroupDialogComponent } from './dialogs/edit-workgroup-dialog/edit-workgroup-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { CreateWorkgroupDialogComponent } from './dialogs/create-workgroup-dialo
     WorkgroupPlansComponent, 
     WorkgroupPlansListComponent, 
     DetailWorkgroupDialogComponent, 
-    CreateWorkgroupDialogComponent
+    CreateWorkgroupDialogComponent, EditWorkgroupDialogComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +40,8 @@ import { CreateWorkgroupDialogComponent } from './dialogs/create-workgroup-dialo
   ],
   entryComponents: [
     DetailWorkgroupDialogComponent,
-    CreateWorkgroupDialogComponent
+    CreateWorkgroupDialogComponent,
+    EditWorkgroupDialogComponent
   ]
 })
 export class WorkgroupsModule { }

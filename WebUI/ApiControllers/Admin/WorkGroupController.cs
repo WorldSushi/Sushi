@@ -69,12 +69,10 @@ namespace WebUI.ApiControllers.Admin
         [HttpPut("ChangeRegionalManager")]
         public async Task<IActionResult> Put([FromBody] ChangeRegionalManager command)
         {
-            if (await _context.Set<WorkGroup>().AnyAsync(x => x.RegionalManagerId == command.RegionalManagerId
-                                                              || x.EscortManagerId == command.RegionalManagerId))
-                return BadRequest("Менеджер уже состоит в другой группе");
+
 
             var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.Id == command.WorkGroupId);
+                .FirstOrDefaultAsync(x => x.Id == command.WorkgroupId);
 
             if (workGroup == null)
                 return BadRequest("Рабочая группа не найдена");
@@ -101,12 +99,9 @@ namespace WebUI.ApiControllers.Admin
         [HttpPut("ChangeEscortManager")]
         public async Task<IActionResult> Put([FromBody] ChangeEscortManager command)
         {
-            if (await _context.Set<WorkGroup>().AnyAsync(x => x.RegionalManagerId == command.EscortManagerId
-                                                              || x.EscortManagerId == command.EscortManagerId))
-                return BadRequest("Менеджер уже состоит в другой группе");
 
             var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.Id == command.WorkGroupId);
+                .FirstOrDefaultAsync(x => x.Id == command.WorkgroupId);
 
             if (workGroup == null)
                 return BadRequest("Рабочая группа не найдена");

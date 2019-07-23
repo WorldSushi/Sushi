@@ -26,10 +26,16 @@ export class WorkgroupService {
     }
 
     addClientToWorkgroup(data) {
-        console.log(1);
         return this.http.put<IWorkgroup>(this.WORKGROUP_API_URL + 'BindClient', JSON.stringify(data), this.httpOptions);
     }
 
+    changeRegionalManager(data) {
+        return this.http.put<IWorkgroup>(this.WORKGROUP_API_URL + 'ChangeRegionalManager', JSON.stringify(data), this.httpOptions);
+    }
+
+    changeEscortManager(data) {
+        return this.http.put<IWorkgroup>(this.WORKGROUP_API_URL + 'ChangeEscortManager', JSON.stringify(data), this.httpOptions);
+    }
 
 
     constructor(public http: HttpClient){}

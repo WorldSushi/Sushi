@@ -21,6 +21,7 @@ export class WorkgroupsListComponent implements OnInit {
 
   @Output() clientAddedToWorkgroup = new EventEmitter();
   @Output() workgroupCreated = new EventEmitter();
+  @Output() workgroupChanged = new EventEmitter();
 
   openWorkgroupDetail(workgroup: IWorkgroup){
     const dialogRef = this.dialog.open(DetailWorkgroupDialogComponent, {
@@ -28,13 +29,19 @@ export class WorkgroupsListComponent implements OnInit {
       height: '80%',
       data: {
         workgroup: workgroup,
-        freeClients: this.freeClients
+        freeClients: this.freeClients,
+        freeManagers: this.freeManagers
       }
     })
 
-    const sub = dialogRef.componentInstance.clientAdded.subscribe((data: any) => {
+    const sub1 = dialogRef.componentInstance.clientAdded.subscribe((data: any) => {
       
       this.clientAddedToWorkgroup.emit(data);
+    });
+
+    const sub2 = dialogRef.componentInstance.workgroupChanged.subscribe((data: any) => {
+      console.log(1);  
+      this.workgroupChanged.emit(data);
     });
   }
 
