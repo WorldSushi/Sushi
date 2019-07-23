@@ -7,6 +7,7 @@ import { MaterialModule } from '../material/material.module';
 import { ClientsModule } from './clients/clients.module';
 import { ManagersModule } from './managers/managers.module';
 import { WorkgroupsModule } from './workgroups/workgroups.module';
+import { AdminGuard } from '../shared/guards/admin.guard';
 
 
 
@@ -19,6 +20,7 @@ import { WorkgroupsModule } from './workgroups/workgroups.module';
     ClientsModule,
     ManagersModule,
     WorkgroupsModule
-  ]
+  ],
+  providers: [AdminGuard]
 })
 export class AdminModule { }

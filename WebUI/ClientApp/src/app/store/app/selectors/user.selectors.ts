@@ -8,7 +8,7 @@ const selectUserState = createFeatureSelector<IUserState>('user');
 
 export const selectCurrentUser = createSelector(
     selectUserState,
-    (state: IUserState) => state.currentUser
+    (state: IUserState) => state.currentUser ? state.currentUser : null
 )
 
 
