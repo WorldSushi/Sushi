@@ -19,6 +19,7 @@ namespace Data
             modelBuilder.Entity<Call>();
             modelBuilder.Entity<CallLog>();
             modelBuilder.Entity<MonthCallsInfo>();
+            modelBuilder.Entity<CallInfo>();
 
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();
@@ -27,6 +28,7 @@ namespace Data
             modelBuilder.Entity<WorkGroup>();
 
             modelBuilder.Entity<Client>();
+            modelBuilder.Entity<ClientPhone>();
 
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();

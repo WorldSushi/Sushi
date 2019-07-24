@@ -56,11 +56,11 @@ namespace Data.Services.Concrete
             _clientRepository.Delete(id);
         }
 
-        public Client GetClientByPhone(string phone)
+       /* public Client GetClientByPhone(string phone)
         {
             return GetAll().Where(x => x.Phone.PhoneFormat() == phone.PhoneFormat())
                 .FirstOrDefault();
-        }
+        }*/
 
         public void BindManager(BindManager command)
         {

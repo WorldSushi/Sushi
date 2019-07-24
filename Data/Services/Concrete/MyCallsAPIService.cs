@@ -1,5 +1,6 @@
 ﻿using Data.DTO.Calls;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,12 @@ using Newtonsoft.Json.Linq;
 using Data.Services.Abstract;
 using Base.Extensions;
 using Base.Helpers;
+using Data.Commands.ClientContacts.ClientContact;
 using Data.Entities.Calls;
+using Data.Entities.ClientContacts;
+using Data.Entities.Clients;
+using Data.Entities.Users;
+using Data.Enums;
 
 namespace Data.Services.Concrete
 {
@@ -21,6 +27,10 @@ namespace Data.Services.Concrete
             _context = context;
         }
 
+        //Получаю новые звонки дольше 2.5 минут
+        //Создаю CallLogs
+        //Создаю Calls
+        //Связываю с помощью CallInfo
         public void SaveNewCalls()
         {
             var monthCallsInfo = GetCurrentMonthCallsInfo();
@@ -90,8 +100,75 @@ namespace Data.Services.Concrete
                 }));
             }
 
+            callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
+
+            var managersPhone = _context.Set<Manager>()
+                .Select(x => x.Phone.Substring(2).Replace(",", "")).ToList();
+
+            /*var clientPhone = _context.Set<Client>()
+                .Select(x => x.Phone).ToList();*/
+            var clientPhone = _context.Set<ClientPhone>()
+                .Select(x => x.Phone).ToList();
+
+            var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
+                ? managersPhone.Contains(x.SrcNumber.Substring(2))
+                  && clientPhone.Contains(x.ClientNumber.Substring(2))
+                : false).ToList();
+
+            var calls = new List<CallInfo>();
+            var clientContact = new List<ClientContact>();
+
+            var workGroups = _context.Set<WorkGroup>().ToList();
+
+            var dt = new DateTime(1970, 1, 1);
+
+            foreach (var call in a)
+            {
+                calls.Add(new CallInfo()
+                {
+                    Call = new Call()
+                    {
+                        ClientId =_context.Set<ClientPhone>()
+                            .FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).ClientId,
+                            //_context.Set<Client>()
+                            //.FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).Id,
+                        ManagerId = _context.Set<Manager>()
+                            .FirstOrDefault(x => x.Phone.Contains(call.SrcNumber.Substring(2))).Id,
+                        Duration = call.Duration,
+                        Recording = call.Recording,
+                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
+                    },
+                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                           && x.SrcNumber == call.SrcNumber
+                                                           && x.StartTime == call.StartTime)
+                });
+            }
+
+            foreach (var call in calls)
+            {
+                clientContact.Add(
+                    new ClientContact(
+                        new ClientContactCreate()
+                        {
+                            ClientId = call.Call.ClientId,
+                            ContactType = ClientContactType.Call,
+                            ManagerId = call.Call.ManagerId,
+                            ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.EscortManager
+                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
+                                    ? ManagerType.RegionalManager
+                                    : ManagerType.Undefined
+                        }));
+            }
+
             _context.Set<CallLog>()
                 .AddRange(callsLog);
+
+            _context.Set<CallInfo>()
+                .AddRange(calls);
+
+            _context.Set<ClientContact>()
+                .AddRange(clientContact);
 
             _context.SaveChanges();
         }

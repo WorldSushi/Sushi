@@ -6,7 +6,7 @@ using Data.Commands.Clients;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
-using Data.Enums;
+using Data.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Services.Abstract;
@@ -19,35 +19,48 @@ namespace WebUI.ApiControllers.Manager
     {
         private readonly ApplicationContext _context;
         private readonly IAccountInformationService _accountInformationService;
+        private readonly IMyCallsAPIService _myCallsApiService;
 
         public ClientController(ApplicationContext context,
-            IAccountInformationService accountInformationService)
+            IAccountInformationService accountInformationService,
+            IMyCallsAPIService myCallsApiService)
         {
             _context = context;
             _accountInformationService = accountInformationService;
+            _myCallsApiService = myCallsApiService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var manager = _accountInformationService.CurrentUser() as Data.Entities.Users.Manager;
-            var workgroup = await _context.Set<WorkGroup>().FirstOrDefaultAsync(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id);
+            var managerId = _accountInformationService.GetOperatorId();
 
-            var clientWorkgroups = await _context.Set<ClientWorkGroup>().Where(x => x.WorkGroupId == workgroup.Id).ToListAsync();
+            _myCallsApiService.SaveNewCalls();
 
+            var workGroup = await _context.Set<WorkGroup>()
+                .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
+                                          || x.EscortManagerId == managerId);
 
-            var result = await _context.Set<Client>()
-                .Where(x => clientWorkgroups.Any(z => z.ClientId == x.Id))
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
+
+            var result = await _context.Set<ClientWorkGroup>()
+                .Where(x => x.WorkGroupId == workGroup.Id)
                 .Select(x => new ClientDto()
                 {
-                    Id = x.Id,
-                    Title = x.Title,
-                    LegalEntity = x.LegalEntity,
-                    Phone = x.Phone,
-                    ClientType = x.ClientType,
-                    NumberOfCalls = x.NumberOfCalls,
-                    NumberOfShipments = x.NumberOfShipments
-                }).ToListAsync();
+                    Id = x.Client.Id,
+                    Title = x.Client.Title,
+                    LegalEntity = x.Client.LegalEntity,
+                    Phone = clientPhones.Any(z => z.ClientId == x.ClientId)
+                        ? clientPhones.FirstOrDefault(z => z.ClientId == x.ClientId).Phone
+                        : "",
+                    ClientType = x.Client.ClientType,
+                    NumberOfCalls = x.Client.NumberOfCalls,
+                    NumberOfShipments = x.Client.NumberOfShipments
+                })
+                .OrderByDescending(x => x.NumberOfCalls)
+                //.Take(50)
+                .ToListAsync();
 
             return Ok(result);
         }
@@ -59,6 +72,13 @@ namespace WebUI.ApiControllers.Manager
 
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
+
+            await _context.Set<ClientPhone>()
+                .AddAsync(new ClientPhone()
+                {
+                    Client = client.Entity,
+                    Phone = command.Phone
+                });
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.EscortManagerId == currentManagerId
@@ -85,9 +105,27 @@ namespace WebUI.ApiControllers.Manager
 
             client.Edit(command);
 
+            if (command.Phone != "")
+            {
+                var phone = await _context.Set<ClientPhone>()
+                    .FirstOrDefaultAsync(x => x.ClientId == command.Id);
+
+                phone.Phone = command.Phone;
+            }
+
             await _context.SaveChangesAsync();
 
-            var result = client;
+            var result = new ClientDto()
+            {
+                Id = client.Id,
+                ClientType = client.ClientType,
+                HasWorkgroup = true,
+                LegalEntity = client.LegalEntity,
+                NumberOfCalls = client.NumberOfCalls,
+                NumberOfShipments = client.NumberOfShipments,
+                Phone = command.Phone,
+                Title = client.Title
+            };
 
             return Ok(result);
         }

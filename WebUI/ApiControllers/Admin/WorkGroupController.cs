@@ -4,6 +4,7 @@ using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
+using Data.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,15 +15,20 @@ namespace WebUI.ApiControllers.Admin
     public class WorkGroupController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IMyCallsAPIService _myCallsApiService;
 
-        public WorkGroupController(ApplicationContext context)
+        public WorkGroupController(ApplicationContext context,
+            IMyCallsAPIService myCallsApiService)
         {
             _context = context;
+            _myCallsApiService = myCallsApiService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            _myCallsApiService.SaveNewCalls();
+
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()
                 {
@@ -33,7 +39,15 @@ namespace WebUI.ApiControllers.Admin
                     ClientIds = _context.Set<ClientWorkGroup>()
                         .Where(z => z.WorkGroupId == x.Id)
                         .Select(z => z.ClientId)
-                        .ToList()
+                        .ToList(),
+                    EscortManagerName = x.EscortManager != null
+                        ? x.EscortManager.Login
+                        : "",
+                    RegionalManagerName = x.RegionalManager != null
+                        ? x.RegionalManager.Login
+                        : "",
+                    EscortManagerEfficiency = 100,
+                    RegionalManagerEfficiency = 100
                 }).ToListAsync();
 
             return Ok(result);
@@ -84,13 +98,21 @@ namespace WebUI.ApiControllers.Admin
             var result = new WorkGroupDto()
             {
                 Id = workGroup.Id,
-                Title = workGroup.Title,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
                 RegionalManagerId = workGroup.RegionalManagerId ?? 0,
                 ClientIds = _context.Set<ClientWorkGroup>()
                         .Where(z => z.WorkGroupId == workGroup.Id)
                         .Select(z => z.ClientId)
-                        .ToList()
+                        .ToList(),
+                EscortManagerName = workGroup.EscortManager != null
+                    ? workGroup.EscortManager.Login
+                    : "",
+                RegionalManagerName = workGroup.RegionalManager != null
+                    ? workGroup.RegionalManager.Login
+                    : "",
+                EscortManagerEfficiency = 100,
+                RegionalManagerEfficiency = 100,
+                Title = workGroup.Title
             };
 
             return Ok(result);
@@ -115,11 +137,7 @@ namespace WebUI.ApiControllers.Admin
                 Id = workGroup.Id,
                 Title = workGroup.Title,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
-                ClientIds = _context.Set<ClientWorkGroup>()
-                        .Where(z => z.WorkGroupId == workGroup.Id)
-                        .Select(z => z.ClientId)
-                        .ToList()
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);
@@ -146,11 +164,7 @@ namespace WebUI.ApiControllers.Admin
                 Id = workGroup.Id,
                 Title = workGroup.Title,
                 EscortManagerId = workGroup.EscortManagerId ?? 0,
-                RegionalManagerId = workGroup.RegionalManagerId ?? 0,
-                ClientIds = _context.Set<ClientWorkGroup>()
-                        .Where(z => z.WorkGroupId == workGroup.Id)
-                        .Select(z => z.ClientId)
-                        .ToList()
+                RegionalManagerId = workGroup.RegionalManagerId ?? 0
             };
 
             return Ok(result);

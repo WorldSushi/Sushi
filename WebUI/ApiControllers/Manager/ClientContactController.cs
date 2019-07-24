@@ -49,7 +49,7 @@ namespace WebUI.ApiControllers.Manager
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientContactCreate command)
         {
-            /*var clientContact = await _context.Set<ClientContact>()
+            var clientContact = await _context.Set<ClientContact>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && x.ManagerType == command.ManagerType
                                           && x.Date.Date == DateTime.Now.Date.Date);
@@ -57,7 +57,7 @@ namespace WebUI.ApiControllers.Manager
             if (clientContact != null)
                 return BadRequest("Операция на этот день уже создана");
 
-            command.ManagerId = _context.Set<ManagerForClient>()
+            /*command.ManagerId = _context.Set<ManagerForClient>()
                 .FirstOrDefault(x => x.ClientId == command.ClientId && x.Type == command.ManagerType)
                 .Id;*/
 

@@ -62,6 +62,8 @@ namespace WebUI.ApiControllers.Manager
 
                 await _context.Set<CallPlan>()
                     .AddRangeAsync(callPlans);
+
+                await _context.SaveChangesAsync();
             }
 
             var result = await _context.Set<CallPlan>()

@@ -24,13 +24,18 @@ namespace WebUI.ApiControllers.Admin
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
+
             var result = await _context.Set<Client>()
                 .Select(x => new ClientDto()
                 {
                     Id = x.Id,
                     Title = x.Title,
                     LegalEntity = x.LegalEntity,
-                    Phone = x.Phone,
+                    Phone = clientPhones.Any(z => z.ClientId == x.Id)
+                        ? clientPhones.FirstOrDefault(z => z.ClientId == x.Id).Phone
+                        : "",
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
                     NumberOfShipments = x.NumberOfShipments,
@@ -46,14 +51,24 @@ namespace WebUI.ApiControllers.Admin
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
 
+            var clientPhone = await _context.Set<ClientPhone>()
+                .AddAsync(new ClientPhone()
+                {
+                    Client = client.Entity,
+                    Phone = command.Phone
+                });
+
             await _context.SaveChangesAsync();
+
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
 
             var result = new ClientDto()
             {
                 Id = client.Entity.Id,
                 Title = client.Entity.Title,
                 LegalEntity = client.Entity.LegalEntity,
-                Phone = client.Entity.Phone,
+                Phone = clientPhones.FirstOrDefault(z => z.ClientId == client.Entity.Id)?.Phone ?? "",
                 ClientType = client.Entity.ClientType,
                 NumberOfCalls = client.Entity.NumberOfCalls,
                 NumberOfShipments = client.Entity.NumberOfShipments,
@@ -71,14 +86,25 @@ namespace WebUI.ApiControllers.Admin
 
             client.Edit(command);
 
+            if (command.Phone != "")
+            {
+                var phone = await _context.Set<ClientPhone>()
+                    .FirstOrDefaultAsync(x => x.ClientId == command.Id);
+
+                phone.Phone = command.Phone;
+            }
+
             await _context.SaveChangesAsync();
+
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
 
             var result = new ClientDto()
             {
                 Id = client.Id,
                 Title = client.Title,
                 LegalEntity = client.LegalEntity,
-                Phone = client.Phone,
+                Phone = clientPhones.FirstOrDefault(z => z.ClientId == client.Id)?.Phone ?? "",
                 ClientType = client.ClientType,
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,
