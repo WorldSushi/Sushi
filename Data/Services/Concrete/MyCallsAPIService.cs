@@ -172,7 +172,9 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
 
-                clientContacts.Add(clientContact);
+                if(!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
+                                            && x.ManagerType == clientContact.ManagerType))
+                    clientContacts.Add(clientContact);
             }
 
             _context.Set<CallLog>()
