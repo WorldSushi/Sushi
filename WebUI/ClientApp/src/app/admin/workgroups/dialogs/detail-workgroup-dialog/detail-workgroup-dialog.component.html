@@ -15,12 +15,10 @@
   </div>
 </div>
 
-
+<h4 style="text-align: center">Клиенты Группы</h4>
 
 <mat-dialog-content class="mat-typography mat-body"> 
   
-  <h4 style="text-align: center">Клиенты Группы</h4>
-
   <table>
     <thead>
       <tr>
@@ -54,14 +52,16 @@
     </tbody>
   </table>
 
-  <div class="free-clients">
-    <label for="">Клиенты без группы</label><br>
-    <select [(ngModel)]="newClientId">
-      <option *ngFor="let client of data.freeClients" [value]="client.id">{{client.title}}</option>
-    </select>
-    <button (click)="addNewClient()">Назначить клиента</button>
-  </div>
-
-
 </mat-dialog-content>
 
+
+
+<mat-dialog-actions align="center">
+    <div class="free-clients">
+        <label for="">Клиенты без группы</label><br>
+        <select [(ngModel)]="newClientId">
+          <option *ngFor="let client of data.freeClients" [value]="client.id">{{client.title}}</option>
+        </select>
+        <button (click)="addNewClient()">Назначить клиента</button>
+    </div>
+</mat-dialog-actions>
