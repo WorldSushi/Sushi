@@ -30,12 +30,22 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return result;
   }
 
-  getClientContactType(day, clientActions){
+  getClientContactType(day, clientActions, clientId){
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
 
     const date = new Date(year, month, day).toLocaleDateString();
-    return clientActions.filter(item => item.date == date )
+
+    let result: any[] = [...new Set(clientActions.filter(item => item.date == date))];
+
+    if(!result.find(item => item.managerType == 10))
+      result = [{ clientId: clientId, contactType: 0, date: date, id: 0, managerId: 0, managerType: 10 }, ...result]
+
+    if(!result.find(item => item.managerType == 20))
+      result = [...result, { clientId: clientId, contactType: 0, date: date, id: 0, managerId: 0, managerType: 20 },]
+    
+
+    return result
   }
 
   getSumActions(managerType, clientActions){
@@ -45,7 +55,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
   getActionColor(contactType) {
     
     if(contactType == 0)
-      return 'transparent';
+      return '#e5e5e5';
     else if (contactType == 10)
       return '#9CBFF3'
     else if (contactType == 20)

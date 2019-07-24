@@ -7,7 +7,7 @@
         <thead>
           <tr>
             <th colspan="5">
-              Название клиента
+              Название 
             </th>
             <th>
               1
@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let workgroupPlan of workgroupPlans; let index = index">
-            <td colspan="5">{{workgroupPlan.clientTitle}}</td>
+            <td colspan="5" style="max-width: 300px">{{workgroupPlan.clientTitle}}</td>
             <td>
               <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>

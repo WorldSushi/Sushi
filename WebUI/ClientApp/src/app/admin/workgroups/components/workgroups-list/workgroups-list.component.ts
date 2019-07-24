@@ -66,6 +66,10 @@ export class WorkgroupsListComponent implements OnInit {
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
+  ngOnChanges(changes): void {
+
+  }
+
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {

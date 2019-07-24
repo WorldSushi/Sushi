@@ -11,8 +11,8 @@
             {{workgroup.title}}
           </span>
           <div class="workgroup-actions">
-            <a class="plans" [routerLink]="['plans', workgroup.id]">Планы</a>
-            <a class="calls" [routerLink]="['calls', workgroup.id]">Звонки</a>
+            <a class="plans" [routerLink]="workgroup.id ? ['plans', workgroup.id] : []">Планы</a>
+            <a class="calls" [routerLink]="workgroup.id ? ['calls', workgroup.id] : []">Звонки</a>
           </div>
         </div>
         <div class="workgroup-body">
@@ -27,16 +27,16 @@
             </thead>
             <tbody>
               <tr>
-                <td>{{getAmountContactsToday(workgroup.escortManager.id)}}</td>
+                <td>{{getAmountContactsToday(workgroup.escortManager?.id)}}</td>
                 <td>МС</td>
-                <td>{{workgroup.escortManager.login}}</td>
-                <td>36%</td>
+                <td>{{workgroup.escortManager?.login}}</td>
+                <td>100%</td>
               </tr>
               <tr>
-                <td>{{getAmountContactsToday(workgroup.regionalManager.id)}}</td>
+                <td>{{getAmountContactsToday(workgroup.regionalManager?.id)}}</td>
                 <td>РМ</td>
-                <td>{{workgroup.regionalManager.login}}</td>
-                <td>36%</td>
+                <td>{{workgroup.regionalManager?.login}}</td>
+                <td>100%</td>
               </tr>
             </tbody>
           </table>

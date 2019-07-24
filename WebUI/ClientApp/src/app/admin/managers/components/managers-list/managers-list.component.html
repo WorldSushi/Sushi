@@ -16,7 +16,7 @@
       <ng-container matColumnDef="workgroupTitle">
         <th mat-header-cell *matHeaderCellDef> Рабочая группа </th>
         <td mat-cell *matCellDef="let row">  
-            <button *ngIf="row.workgroupTitle != null" class="workgroup">{{row.workgroupTitle}}</button>
+            {{row.workgroupTitle}}
         </td>
       </ng-container>
       <ng-container matColumnDef="phone">

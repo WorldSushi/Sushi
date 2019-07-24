@@ -30,6 +30,7 @@ export class ManagersListComponent implements OnInit {
       }
     })
   }
+  
 
   openManagerDetail(manager: IManager) {
     const dialogRef = this.dialog.open(DetailManagerDialogComponent, {
