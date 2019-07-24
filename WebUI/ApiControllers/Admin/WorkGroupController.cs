@@ -4,6 +4,7 @@ using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
+using Data.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,15 +15,20 @@ namespace WebUI.ApiControllers.Admin
     public class WorkGroupController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IMyCallsAPIService _myCallsApiService;
 
-        public WorkGroupController(ApplicationContext context)
+        public WorkGroupController(ApplicationContext context,
+            IMyCallsAPIService myCallsApiService)
         {
             _context = context;
+            _myCallsApiService = myCallsApiService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            _myCallsApiService.SaveNewCalls();
+
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()
                 {
