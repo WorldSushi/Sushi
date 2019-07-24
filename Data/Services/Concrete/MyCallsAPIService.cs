@@ -103,7 +103,7 @@ namespace Data.Services.Concrete
             callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
 
             var managersPhone = _context.Set<Manager>()
-                .Select(x => x.Phone.Substring(2).Replace(",", "")).ToList();
+                .Select(x => x.Phone.Substring(2).Replace(",", "").Replace("-", "")).ToList();
 
             /*var clientPhone = _context.Set<Client>()
                 .Select(x => x.Phone).ToList();*/
