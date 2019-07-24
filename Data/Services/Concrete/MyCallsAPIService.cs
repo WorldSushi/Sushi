@@ -116,7 +116,7 @@ namespace Data.Services.Concrete
                 : false).ToList();
 
             var calls = new List<CallInfo>();
-            var clientContact = new List<ClientContact>();
+            var clientContacts = new List<ClientContact>();
 
             var workGroups = _context.Set<WorkGroup>().ToList();
 
@@ -146,19 +146,22 @@ namespace Data.Services.Concrete
 
             foreach (var call in calls)
             {
-                clientContact.Add(
-                    new ClientContact(
-                        new ClientContactCreate()
-                        {
-                            ClientId = call.Call.ClientId,
-                            ContactType = ClientContactType.Call,
-                            ManagerId = call.Call.ManagerId,
-                            ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
-                                ? ManagerType.EscortManager
-                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
-                                    ? ManagerType.RegionalManager
-                                    : ManagerType.Undefined
-                        }));
+                var clientContact = new ClientContact(
+                    new ClientContactCreate()
+                    {
+                        ClientId = call.Call.ClientId,
+                        ContactType = ClientContactType.Call,
+                        ManagerId = call.Call.ManagerId,
+                        ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined
+                    });
+
+                clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+
+                clientContacts.Add(clientContact);
             }
 
             _context.Set<CallLog>()
@@ -168,7 +171,7 @@ namespace Data.Services.Concrete
                 .AddRange(calls);
 
             _context.Set<ClientContact>()
-                .AddRange(clientContact);
+                .AddRange(clientContacts);
 
             _context.SaveChanges();
         }
