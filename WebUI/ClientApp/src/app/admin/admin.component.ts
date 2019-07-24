@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
+  logout(){
+    window.location.href = '/Account/Logout'
+  }
+
   constructor() { }
 
   ngOnInit() {
