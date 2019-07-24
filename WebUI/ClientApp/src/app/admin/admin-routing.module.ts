@@ -6,6 +6,7 @@ import { ManagersComponent } from './managers/containers/managers/managers.compo
 import { WorkgroupsComponent } from './workgroups/containers/workgroups/workgroups.component';
 import { WorkgroupsCallsComponent } from './workgroups/containers/workgroups-calls/workgroups-calls.component';
 import { WorkgroupPlansComponent } from './workgroups/containers/workgroups-plans/workgroup-plans.component';
+import { AdminGuard } from '../shared/guards/admin.guard';
 
 const adminRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'clients' },
@@ -17,7 +18,7 @@ const adminRoutes: Routes = [
 ]
 
 const routes: Routes = [
-  { path: '', component: AdminComponent, children: adminRoutes },
+  { path: '', component: AdminComponent, canActivate: [AdminGuard], children: adminRoutes },
 ];
 
 @NgModule({

@@ -9,6 +9,9 @@ import { CallPlanFacade } from 'src/app/store/clients/facades/call-plans.facade'
 import { TripPlanFacade } from 'src/app/store/clients/facades/trip-plan.facade';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
+import { IClientAction } from '../../shared/models/client-action.model';
+import { CallsDateFacade } from 'src/app/store/clients/facades/calls-date.selectors';
+import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 
 @Component({
   selector: 'app-workgroups',
@@ -64,6 +67,7 @@ export class WorkgroupsComponent implements OnInit {
 
   freeClients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(map(res => res.filter(item => !item.hasWorkgroup)))
   freeManagers$: Observable<IManager[]> = this.managersFacade.managers$.pipe(map(res => res.filter(item => item.workgroupId == 0 || item.workgroupId == null)))
+  clientContacts$: Observable<ICallsDate[]> = this.callsDateFacade.callsDate$;
 
   addClientToWorkGroup(data){
     this.workgroupsFacade.addClientToWorkgroup(data);
@@ -85,12 +89,14 @@ export class WorkgroupsComponent implements OnInit {
     public clientsFacade: ClientsFacade,
     public managersFacade: ManagersFacade,
     public callPlanFacade: CallPlanFacade,
-    public tripPlanFacade: TripPlanFacade) {  
+    public tripPlanFacade: TripPlanFacade,
+    public callsDateFacade: CallsDateFacade) {  
       this.clientsFacade.loadClientsForAdmin(); 
       this.workgroupsFacade.loadWorkgroups();       
       this.callPlanFacade.loadCallPlan(0);
       this.tripPlanFacade.loadTripPlan(0);
       this.managersFacade.loadManagers();    
+      this.callsDateFacade.loadCallsDate(0);
     }
 
   ngOnInit() {

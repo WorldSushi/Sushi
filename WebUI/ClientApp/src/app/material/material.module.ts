@@ -12,7 +12,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { getRusPaginatorIntl } from '../mat-paginator-intl';
 
 @NgModule({
   declarations: [],
@@ -35,6 +36,7 @@ import { MatPaginator } from '@angular/material/paginator';
     MatStepperModule,
     MatDialogModule,
     MatProgressBarModule,
+    MatPaginatorModule
 
   ],
   exports: [
@@ -54,7 +56,11 @@ import { MatPaginator } from '@angular/material/paginator';
     MatListModule,
     MatStepperModule,
     MatDialogModule,
-    MatProgressBarModule,   
+    MatProgressBarModule,
+    MatPaginatorModule  
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getRusPaginatorIntl() }
   ]
 })
 export class MaterialModule { }

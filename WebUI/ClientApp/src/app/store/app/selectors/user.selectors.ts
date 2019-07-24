@@ -3,7 +3,7 @@ import { IAppState } from '../states';
 import { IUserState } from '../states/user.state';
 
 
-const selectUserState = createFeatureSelector<IUserState>('user');
+export const selectUserState = createFeatureSelector<IUserState>('userState');
 
 
 export const selectCurrentUser = createSelector(

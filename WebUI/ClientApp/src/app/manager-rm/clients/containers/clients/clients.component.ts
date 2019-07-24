@@ -13,6 +13,8 @@ import { TripPlanFacade } from 'src/app/store/clients/facades/trip-plan.facade';
 import { ManagerCallsResultFacade } from 'src/app/store/clients/facades/manager-calls-result.facade';
 import { CallsDateFacade } from 'src/app/store/clients/facades/calls-date.selectors';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
+import { IUser } from 'src/app/shared/models/user.model';
+import { UserFacade } from 'src/app/store/app/facades/user.facade';
 
 @Component({
   selector: 'app-clients',
@@ -23,6 +25,7 @@ import { ITripPlan } from '../../shared/models/trip-plan.model';
 export class ClientsComponent implements OnInit {
 
   clients$: Observable<IClient[]> = this.clientsFacade.clients$;
+  manager$: Observable<IUser> = this.userFacade.currentUser$;
 
   createClient(client: IClient){ 
     this.clientsFacade.createClient(client);
@@ -102,7 +105,8 @@ export class ClientsComponent implements OnInit {
         contactType: 0,
         managerType: 10,
         date: new Date(),
-        clientId: clientId
+        clientId: clientId,
+        managerId: 0
       })
     }
 
@@ -119,9 +123,11 @@ export class ClientsComponent implements OnInit {
     public weekPlanFacade: WeekPlanFacade,
     public tripPlanFacade: TripPlanFacade,
     public managerCallsResult: ManagerCallsResultFacade,
-    public callsDateFacade: CallsDateFacade) { }
+    public callsDateFacade: CallsDateFacade,
+    public userFacade: UserFacade) { }
 
   ngOnInit() {
+    this.userFacade.loadCurrentUser();
     this.clientsFacade.loadClientsForManager(1);
     this.callPlanFacade.loadCallPlan(1);
     this.weekPlanFacade.loadWeekPlan(1);

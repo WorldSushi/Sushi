@@ -24,7 +24,7 @@
   <table>
     <thead>
       <tr>
-        <th>Название</th>
+        <th style="max-width: 100px">Название</th>
         <th>Тип</th>
         <th>Звонки</th>
         <th>Отгрузки</th>
@@ -39,7 +39,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let client of data.workgroup.clients">
-        <td>{{client.title}}</td>
+        <td style="max-width: 100px">{{client.title}}</td>
         <td>{{client.clientType}}</td>
         <td>{{client.numberOfCalls}}</td>
         <td>{{client.numberOfShipments}}</td>

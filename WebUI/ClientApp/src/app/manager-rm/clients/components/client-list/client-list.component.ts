@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { IClient } from '../../shared/models/client.model';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
 import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
 import { AnalysisDialogComponent } from '../../dialogs/analysis-dialog/analysis-dialog.component';
@@ -15,6 +15,7 @@ import { ICallPlan } from '../../shared/models/call-plan.model';
 import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
 import { ninvoke } from 'q';
+import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 
 @Component({
   selector: 'app-client-list',
@@ -25,6 +26,7 @@ import { ninvoke } from 'q';
 export class ClientListComponent implements OnInit {
 
   @Input() clients: IClient[];
+  @Input() manager: any;
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
@@ -37,6 +39,9 @@ export class ClientListComponent implements OnInit {
   @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
   @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
   @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
    
   displayedColumns: string[] = [
     'title', 
@@ -181,13 +186,14 @@ export class ClientListComponent implements OnInit {
             clientId: item.clientId,
             date: item.date,
             contactType: item.EMid != 0 ? item.RMcallType : item.MScallType,
-            managerType:  item.EMid != 0 ? 20 : 10
+            managerType:  item.EMid != 0 ? 20 : 10,
           }
         })
 
 
 
         newContacts.forEach(item => {
+          item.managerId = this.manager.id;
           this.callsDateCreated.emit(item);
         });
 
@@ -300,7 +306,8 @@ export class ClientListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+      this.dataSource.data = this.clients;
+      this.dataSource.paginator = this.paginator;
   }
   
   constructor(public dialog: MatDialog) { }
