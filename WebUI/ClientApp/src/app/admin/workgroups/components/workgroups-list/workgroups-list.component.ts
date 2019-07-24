@@ -28,10 +28,14 @@ export class WorkgroupsListComponent implements OnInit {
   openWorkgroupDetail(workgroup: IWorkgroup){
     const dialogRef = this.dialog.open(DetailWorkgroupDialogComponent, {
       width: '90%',
-      height: '80%',
+      height: '95%',
       data: {
         workgroup: workgroup,
-        freeClients: this.freeClients,
+        freeClients: this.freeClients.sort((a, b) => {
+          if(a.title < b.title) { return -1; }
+          if(a.title > b.title) { return 1; }
+          return 0;
+        }),
         freeManagers: this.freeManagers
       }
     })
