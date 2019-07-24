@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { IClient } from '../../shared/models/client.model';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
 import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
 import { AnalysisDialogComponent } from '../../dialogs/analysis-dialog/analysis-dialog.component';
@@ -39,6 +39,9 @@ export class ClientListComponent implements OnInit {
   @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
   @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
   @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
    
   displayedColumns: string[] = [
     'title', 
@@ -303,7 +306,8 @@ export class ClientListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+      this.dataSource.data = this.clients;
+      this.dataSource.paginator = this.paginator;
   }
   
   constructor(public dialog: MatDialog) { }

@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
 
 
@@ -15,8 +15,12 @@ export class ClientListComponent implements OnInit {
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
+  
+  
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   displayedColumns: string[] = ['title', 'clientType', 'phone', 'numberOfCalls', 'numberOfShipments']
+  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   openCreateClientForm() {
     const dialogRef = this.dialog.open(CreateClientDialogComponent, {
@@ -48,5 +52,12 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnChanges(changes): void {
+    this.dataSource.data = this.clients;
+    this.dataSource.paginator = this.paginator
+  }
+
+  
 
 }
