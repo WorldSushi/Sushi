@@ -56,9 +56,9 @@
         <tbody>
           <tr *ngFor="let workgroupPlan of workgroupPlans; let index = index">
             <td colspan="5" style="max-width: 300px">{{workgroupPlan.clientTitle}}</td>
-            <td>
+            <td (click)="workgroupPlan.selectedESWeek = 1" [style.background]="workgroupPlan.selectedESWeek == 1 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
-                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF" ></div>
               </div>
               <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
@@ -70,7 +70,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedESWeek = 2" [style.background]="workgroupPlan.selectedESWeek == 2 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -84,7 +84,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedESWeek = 3" [style.background]="workgroupPlan.selectedESWeek == 3 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -98,7 +98,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedESWeek = 4" [style.background]="workgroupPlan.selectedESWeek == 4 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -112,7 +112,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedESWeek = 5" [style.background]="workgroupPlan.selectedESWeek == 5 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -127,12 +127,12 @@
               </div>
             </td>
             <td colspan="5">
-              {{getCurrentPlan(workgroupPlan.escortManagerPlans)}}
+              {{getCurrentPlan(workgroupPlan.escortManagerPlans, workgroupPlan.selectedESWeek)}}
             </td>
             <td colspan="5">
-              {{getCurrentFact(workgroupPlan.escortManagerPlans)}}
+              {{getCurrentFact(workgroupPlan.escortManagerPlans, workgroupPlan.selectedESWeek)}}
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedRMWeek = 1" [style.background]="workgroupPlan.selectedRMWeek == 1 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -146,7 +146,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedRMWeek = 2" [style.background]="workgroupPlan.selectedRMWeek == 2 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(2, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -160,7 +160,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedRMWeek = 3" [style.background]="workgroupPlan.selectedRMWeek == 3 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(3, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -174,7 +174,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedRMWeek = 4" [style.background]="workgroupPlan.selectedRMWeek == 4 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(4, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -188,7 +188,7 @@
                 <div class="action-circle" style="background-color: #e5e5e5"></div>
               </div>
             </td>
-            <td>
+            <td (click)="workgroupPlan.selectedRMWeek = 5" [style.background]="workgroupPlan.selectedRMWeek == 5 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(5, workgroupPlan.regionalManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
@@ -203,10 +203,10 @@
               </div>
             </td>
             <td colspan="5">
-              {{getCurrentPlan(workgroupPlan.regionalManagerPlans)}}
+              {{getCurrentPlan(workgroupPlan.regionalManagerPlans, workgroupPlan.selectedRMWeek)}}
             </td>
             <td colspan="5">
-              {{getCurrentFact(workgroupPlan.regionalManagerPlans)}}
+              {{getCurrentFact(workgroupPlan.regionalManagerPlans, workgroupPlan.selectedRMWeek)}}
             </td>
           </tr>
         </tbody>
