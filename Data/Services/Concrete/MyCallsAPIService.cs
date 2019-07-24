@@ -35,6 +35,13 @@ namespace Data.Services.Concrete
         {
             var monthCallsInfo = GetCurrentMonthCallsInfo();
 
+            if(monthCallsInfo.Loading)
+                return;
+
+            monthCallsInfo.Loading = true;
+
+            _context.SaveChanges();
+
             var callsLog = new List<CallLog>();
 
             var response = GetCallsByDate(
@@ -103,16 +110,22 @@ namespace Data.Services.Concrete
             callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
 
             var managersPhone = _context.Set<Manager>()
-                .Select(x => x.Phone.Substring(2).Replace(",", "").Replace("-", "")).ToList();
+                .Select(x => new
+                {
+                    ManagerId = x.Id,
+                    Phone = PhoneHelper.ConvertToPhone(x.Phone)
+                }).ToList();
 
-            /*var clientPhone = _context.Set<Client>()
-                .Select(x => x.Phone).ToList();*/
             var clientPhone = _context.Set<ClientPhone>()
-                .Select(x => x.Phone).ToList();
+                .Select(x => new
+                {
+                    ClientId = x.ClientId,
+                    Phone = x.Phone
+                }).ToList();
 
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
-                ? managersPhone.Contains(x.SrcNumber.Substring(2))
-                  && clientPhone.Contains(x.ClientNumber.Substring(2))
+                ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
+                  && clientPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
                 : false).ToList();
 
             var calls = new List<CallInfo>();
@@ -128,12 +141,10 @@ namespace Data.Services.Concrete
                 {
                     Call = new Call()
                     {
-                        ClientId =_context.Set<ClientPhone>()
-                            .FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).ClientId,
-                            //_context.Set<Client>()
-                            //.FirstOrDefault(x => x.Phone.Contains(call.ClientNumber.Substring(2))).Id,
-                        ManagerId = _context.Set<Manager>()
-                            .FirstOrDefault(x => x.Phone.Contains(call.SrcNumber.Substring(2))).Id,
+                        ClientId = clientPhone
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
+                        ManagerId = managersPhone
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
                         Duration = call.Duration,
                         Recording = call.Recording,
                         DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
@@ -172,6 +183,8 @@ namespace Data.Services.Concrete
 
             _context.Set<ClientContact>()
                 .AddRange(clientContacts);
+
+            monthCallsInfo.Loading = false;
 
             _context.SaveChanges();
         }

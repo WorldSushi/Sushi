@@ -110,7 +110,15 @@ namespace WebUI.ApiControllers.Manager
                 var phone = await _context.Set<ClientPhone>()
                     .FirstOrDefaultAsync(x => x.ClientId == command.Id);
 
-                phone.Phone = command.Phone;
+                if (phone != null)
+                    phone.Phone = command.Phone;
+                else
+                    await _context.Set<ClientPhone>()
+                        .AddAsync(new ClientPhone()
+                        {
+                            ClientId = client.Id,
+                            Phone = command.Phone
+                        });
             }
 
             await _context.SaveChangesAsync();

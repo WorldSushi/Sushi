@@ -11,6 +11,8 @@ namespace Data.Entities.Calls
 
         public DateTime LastRequestDate { get; protected set; }
 
+        public bool Loading { get; set; }
+
         protected MonthCallsInfo()
         {
 
