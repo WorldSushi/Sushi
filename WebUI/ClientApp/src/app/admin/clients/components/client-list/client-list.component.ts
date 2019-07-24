@@ -18,9 +18,10 @@ export class ClientListComponent implements OnInit {
   
   
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   displayedColumns: string[] = ['title', 'clientType', 'phone', 'numberOfCalls', 'numberOfShipments']
-  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+  
 
   openCreateClientForm() {
     const dialogRef = this.dialog.open(CreateClientDialogComponent, {
@@ -47,6 +48,9 @@ export class ClientListComponent implements OnInit {
     })
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   constructor(public dialog: MatDialog) { }
 

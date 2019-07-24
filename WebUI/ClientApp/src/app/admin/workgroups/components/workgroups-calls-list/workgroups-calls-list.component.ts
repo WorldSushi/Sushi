@@ -30,13 +30,14 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return result;
   }
 
-  getClientContactType(day, clientActions, clientId){
+  getClientContactType(day, clientActions = [], clientId){
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
 
     const date = new Date(year, month, day).toLocaleDateString();
-
-    let result: any[] = [...new Set(clientActions.filter(item => item.date == date))];
+    let result: any[] = clientActions.filter(item => item.date == date);
+    
+    result = this.getUnique(result, 'managerType')
 
     if(!result.find(item => item.managerType == 10))
       result = [{ clientId: clientId, contactType: 0, date: date, id: 0, managerId: 0, managerType: 10 }, ...result]
@@ -62,6 +63,20 @@ export class WorkgroupsCallsListComponent implements OnInit {
       return '#B0ECDD'
     else if (contactType == 30)
       return '#FDE488'
+  }
+
+  getUnique(arr, comp) {
+
+    const unique = arr
+         .map(e => e[comp])
+  
+       // store the keys of the unique objects
+      .map((e, i, final) => final.indexOf(e) === i && i)
+  
+      // eliminate the dead keys & store unique objects
+      .filter(e => arr[e]).map(e => arr[e]);
+  
+     return unique;
   }
 
   constructor() { }

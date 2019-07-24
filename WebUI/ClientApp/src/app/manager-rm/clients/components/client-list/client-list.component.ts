@@ -305,6 +305,10 @@ export class ClientListComponent implements OnInit {
     }
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
       this.dataSource.data = this.clients;
       this.dataSource.paginator = this.paginator;
