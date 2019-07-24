@@ -9,10 +9,8 @@
         <input (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
       </div>
 
-      <mat-paginator [pageSize]="50" [pageSizeOptions]="[50, 100, 150]">
-      </mat-paginator>
+      <mat-paginator [pageSize]="50" [pageSizeOptions]="[50, 100, 150]"></mat-paginator>
       
-
       <table mat-table [dataSource]="dataSource" [trackBy]="getTrackBy">
         
           <ng-container matColumnDef="title">
@@ -173,8 +171,6 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
         </table>
 
-        <mat-paginator [pageSize]="50" [pageSizeOptions]="[50, 100, 150]">
-        </mat-paginator>
   </mat-card-content>
 </mat-card>
 
