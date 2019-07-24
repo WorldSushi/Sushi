@@ -30,7 +30,14 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            var manager = _accountInformationService.CurrentUser() as Data.Entities.Users.Manager;
+            var workgroup = await _context.Set<WorkGroup>().FirstOrDefaultAsync(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id);
+
+            var clientWorkgroups = await _context.Set<ClientWorkGroup>().Where(x => x.WorkGroupId == workgroup.Id).ToListAsync();
+
+
             var result = await _context.Set<Client>()
+                .Where(x => clientWorkgroups.Any(z => z.ClientId == x.Id))
                 .Select(x => new ClientDto()
                 {
                     Id = x.Id,
