@@ -5,5 +5,7 @@ export interface IWorkgroupPlans {
     clientTitle: string,
     clientType: number,
     escortManagerPlans: IWeekPlan[]
-    regionalManagerPlans: IWeekPlan[]
+    regionalManagerPlans: IWeekPlan[],
+    selectedESWeek?: number,
+    selectedRMWeek?: number
 }
