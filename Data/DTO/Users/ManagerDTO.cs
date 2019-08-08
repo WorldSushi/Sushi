@@ -1,4 +1,6 @@
-﻿namespace Data.DTO.Users
+﻿using Data.DTO.Clients;
+
+namespace Data.DTO.Users
 {
     public class ManagerDto
     {

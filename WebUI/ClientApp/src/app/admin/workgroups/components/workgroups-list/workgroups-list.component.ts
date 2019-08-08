@@ -66,7 +66,7 @@ export class WorkgroupsListComponent implements OnInit {
 
   getAmountContactsToday(managerId: number){
     const today = new Date().toLocaleDateString();
-
+    
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
