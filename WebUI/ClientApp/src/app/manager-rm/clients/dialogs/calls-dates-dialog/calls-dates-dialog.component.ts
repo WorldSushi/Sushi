@@ -36,14 +36,14 @@ export class CallsDatesDialogComponent implements OnInit {
         title: this.data.clientTitle,
         MSresults: {
           calls: this.data.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length,
-          whatsUp: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
-          letters: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
+          whatsUp: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
+          letters: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
           sum: this.data.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10).length
         },
         RMresults: {
           calls: this.data.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length,
-          whatsUp: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
-          letters: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
+          whatsUp: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
+          letters: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
           sum: this.data.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20).length
         }
       }

@@ -26,13 +26,13 @@
       <td mat-cell *matCellDef="let row" style="text-align: center">
           <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.MScallType">
             <mat-option [value]="10">Звонок</mat-option>
-            <mat-option [value]="20">WhatsUp</mat-option>
-            <mat-option [value]="30">Письмо</mat-option>
+            <mat-option [value]="30">WhatsUp</mat-option>
+            <mat-option [value]="20">Письмо</mat-option>
           </mat-select>  
           <mat-select *ngIf="row.date != currentDate" [(ngModel)]="row.MScallType" disabled>
             <mat-option [value]="10">Звонок</mat-option>
-            <mat-option [value]="20">WhatsUp</mat-option>
-            <mat-option [value]="30">Письмо</mat-option>
+            <mat-option [value]="30">WhatsUp</mat-option>
+            <mat-option [value]="20">Письмо</mat-option>
           </mat-select>       
       </td>
     </ng-container>
@@ -41,13 +41,13 @@
       <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
           <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.RMcallType">
             <mat-option [value]="10">Звонок</mat-option>
-            <mat-option [value]="20">WhatsUp</mat-option>
-            <mat-option [value]="30">Письмо</mat-option>
+            <mat-option [value]="30">WhatsUp</mat-option>
+            <mat-option [value]="20">Письмо</mat-option>
           </mat-select>       
           <mat-select *ngIf="row.date != currentDate" [(ngModel)]="row.RMcallType" disabled>
             <mat-option [value]="10">Звонок</mat-option>
-            <mat-option [value]="20">WhatsUp</mat-option>
-            <mat-option [value]="30">Письмо</mat-option>
+            <mat-option [value]="30">WhatsUp</mat-option>
+            <mat-option [value]="20">Письмо</mat-option>
           </mat-select>  
       </td>
     </ng-container>
