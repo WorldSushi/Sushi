@@ -5,6 +5,8 @@ import { MaterialModule } from '../material/material.module';
 import { ManagerRmRoutingModule } from './manager-rm-routing.module';
 import { ClientsModule } from './clients/clients.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     ManagerRmRoutingModule,
     ClientsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DashboardModule,
+    RouterModule
   ]
 })
 export class ManagerRmModule { }
