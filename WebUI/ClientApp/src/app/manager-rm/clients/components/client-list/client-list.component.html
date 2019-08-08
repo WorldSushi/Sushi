@@ -38,7 +38,7 @@
             <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
           </ng-container>
         
-          <!--<ng-container matColumnDef="nomenclatureAnalysis">
+          <ng-container matColumnDef="nomenclatureAnalysis">
             <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
             <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
               <div class="bar-shadow">
@@ -50,7 +50,7 @@
                 </div>
               </div>
             </td>
-          </ng-container>-->
+          </ng-container>
         
           <!--<ng-container matColumnDef="revenueAnalysis">
             <th mat-header-cell *matHeaderCellDef>Выручка</th>
@@ -127,14 +127,14 @@
 
           <ng-container matColumnDef="MSresults.sum">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td [style.background]="element.callPlan.escortManagerCalls == element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortTotalContacts}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.sum">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)"> 
+            <td [style.background]="element.callPlan.regionalManagerCalls == element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)"> 
               {{element.managerCallsResults.regionalTotalContacts}}
             </td>
           </ng-container>
