@@ -46,7 +46,8 @@ export class ClientListComponent implements OnInit {
   displayedColumns: string[] = [
     'title', 
     'phone',
-    'type', 
+    'type',
+    'legalEntity',
     'numberOfCalls', 
     'numberOfShipments',
     'callPlan.collective', 
