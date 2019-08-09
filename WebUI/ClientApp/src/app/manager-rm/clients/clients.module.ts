@@ -13,6 +13,7 @@ import { ClientTypeTranslatePipe } from 'src/app/store/shared/pipes/client-type-
 import { NumberOfCallsTranslatePipe } from 'src/app/store/shared/pipes/number-of-calls-pipe';
 import { NumberOfShipmentsTranslatePipe } from 'src/app/store/shared/pipes/number-of-shipments-pipe';
 import { CallsDatesDialogComponent } from './dialogs/calls-dates-dialog/calls-dates-dialog.component';
+import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,9 @@ import { CallsDatesDialogComponent } from './dialogs/calls-dates-dialog/calls-da
     MaterialModule,
     ReactiveFormsModule,
     FormsModule
+  ],
+  providers: [
+    DateExtensionsService
   ]
 })
 export class ClientsModule { }

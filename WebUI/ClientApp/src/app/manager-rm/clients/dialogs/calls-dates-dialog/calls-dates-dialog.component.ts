@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CallsResultDialogComponent } from '../calls-result-dialog/calls-result-dialog.component';
 import { ICallsDate } from '../../shared/models/calls-date.model';
+import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
 
 @Component({
   selector: 'app-calls-dates-dialog',
@@ -13,6 +14,7 @@ export class CallsDatesDialogComponent implements OnInit {
   displayedColumns: string[] = ['day', 'EMcall', 'RMcall'];
   clientContacts: any[];
   currentDate: string = new Date().toLocaleDateString();
+  currentMonth: string = this.dateExtensionsService.getTitleOfCurrentMonth();
 
   getDate(numberOfDay: number){
     const currentYear = new Date().getFullYear();
@@ -87,6 +89,7 @@ daysInMonth (month, year) {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
+    private dateExtensionsService: DateExtensionsService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     }
