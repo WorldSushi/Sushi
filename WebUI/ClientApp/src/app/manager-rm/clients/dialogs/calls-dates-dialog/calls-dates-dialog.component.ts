@@ -60,8 +60,6 @@ getClientContacts(){
   
   for(let i = 0; i < days; i++){
     clientContacts.push({
-      EMid: 0,
-      RMid: 0,
       clientId: this.data.clientId,
       date: this.getDate(i + 1).toString(),
       MScallType: 0,
@@ -72,8 +70,8 @@ getClientContacts(){
   clientContacts = clientContacts.map(item => {
     return {
       ...item,
-      EMid: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).id : 0,
-      RMid: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).id : 0,
+      EMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).id : 0,
+      RMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).id : 0,
       MScallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).contactType : 0,
       RMcallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).contactType : 0
     }
