@@ -11,6 +11,8 @@ namespace Data.Entities.Clients
         public string Title { get; protected set; }
 
         public string LegalEntity { get; protected set; }
+        
+        public ClientGroup Group { get; protected set; }
 
         public ClientTypes ClientType { get; protected set; }
 
@@ -43,6 +45,7 @@ namespace Data.Entities.Clients
             ClientType = command.ClientType;
             NumberOfCalls = command.NumberOfCalls;
             NumberOfShipments = command.NumberOfShipments;
+            Group = command.Group;
         }
 
        /* public CallPlan CurrentCallPlan()
