@@ -36,6 +36,7 @@ namespace Data.Entities.Clients
             ClientType = command.ClientType;
             NumberOfCalls = command.NumberOfCalls;
             NumberOfShipments = command.NumberOfShipments;
+            Group = command.Group;
         }
 
         public void Edit(ClientEdit command)

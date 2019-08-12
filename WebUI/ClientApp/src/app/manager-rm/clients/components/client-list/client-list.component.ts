@@ -42,11 +42,14 @@ export class ClientListComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  selectedGroup: any = -10;
    
   displayedColumns: string[] = [
     'title', 
     'phone',
-    'type', 
+    'type',
+    'legalEntity',
     'numberOfCalls', 
     'numberOfShipments',
     'callPlan.collective', 
@@ -60,8 +63,31 @@ export class ClientListComponent implements OnInit {
     'RMresults.sum'   
   ];
 
+
   getTrackBy(index, item){
     return item.id;
+  }
+
+  getClientsGroups(){
+    let allGroups = this.clients.map(item => item.group);
+    
+    let result = [...new Set(allGroups)];
+
+    return result;
+  }
+
+  selectedGroupChange(){
+    
+    if(this.selectedGroup == -10 || this.selectedGroup == '-10'){
+      this.dataSource.data = this.clients;
+      this.dataSource.paginator = this.paginator;
+    }
+    else {
+      this.dataSource.data = this.clients.filter(item => item.group == this.selectedGroup);
+      this.dataSource.paginator = this.paginator;
+    }
+
+    
   }
 
   openCreateClientForm() {
@@ -179,18 +205,25 @@ export class ClientListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if(res){
-        let newContacts = res.filter(item => (item.RMid == 0 && item.RMcallType != 0) || (item.EMid == 0 && item.MScallType != 0));
-        newContacts = newContacts.map(item => {
-          return {
-            id: 0,
-            clientId: item.clientId,
-            date: item.date,
-            contactType: item.EMid != 0 ? item.RMcallType : item.MScallType,
-            managerType:  item.EMid != 0 ? 20 : 10,
-          }
-        })
+        let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
 
+        let RMcontacts = [];
+        if(newContact.RMclientContactId == 0 && newContact.RMcallType != 0)
+          RMcontacts.push({
+            contactType: newContact.RMcallType,
+            managerType: 20,
+            clientId: newContact.clientId
+          }) 
 
+        let EMcontacts = []
+        if(newContact.EMclientContactId == 0 && newContact.MScallType != 0)
+          EMcontacts.push({
+            contactType: newContact.MScallType,
+            managerType: 10,
+            clientId: newContact.clientId
+          }) 
+
+        let newContacts = [...RMcontacts, ...EMcontacts]; 
 
         newContacts.forEach(item => {
           item.managerId = this.manager.id;

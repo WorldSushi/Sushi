@@ -13,6 +13,7 @@ export interface IClient {
     clientType: number,
     numberOfCalls: number,
     numberOfShipments: number,
+    group: number,
     callPlan?: ICallPlan,
     tripPlan?: ITripPlan,
     nomenclatureAnalysis: INomenclatureAnalysis,

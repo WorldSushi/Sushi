@@ -1,0 +1,100 @@
+<mat-card class="mat-elevation-z1">
+    <mat-card-header>
+      <mat-card-title class="card-title">Главная</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content-wrapper">
+      <div class="total-contacts">
+        <h3>Сегодня</h3>
+        <div class="contacts-info mat-elevation-z2">
+          {{clientContactsAmount}}
+          <span>Звонков</span>
+        </div>
+      </div>
+    </mat-card-content>
+</mat-card>
+
+<hr style="opacity: 0.2">
+
+<div class="manager-effiency">
+  <mat-card class="mat-elevation-z1">
+    <mat-card-header>
+      <mat-card-title class="card-title">Таблица эффективности менеджера</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th colspan="2">Типы контактов</th>
+            <th>План по числу смен</th>
+            <th>План в смену (шт)</th>
+            <th>Баллы за ед.</th>
+            <th colspan="2">Эталон</th>
+            <th colspan="4">Факт</th>
+          </tr>
+          <tr>
+            <th colspan="1"></th>
+            <th colspan="5"></th>
+            <th>в ед.</th>
+            <th>в баллах</th>
+            <th>согласно учету</th>
+            <th>согласно программе (звонки > 2,5 мин.)</th>
+            <th>расхождение</th>
+            <th>в баллах</th>
+          </tr>
+          <tr>
+            <th style="text-align: left" colspan="12">Менеджер Сопровождения</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0%</td>
+            <td colspan="2">Звонки развития</td>
+            <td>20</td>
+            <td>8</td>
+            <td>0.4</td>
+            <td>160</td>
+            <td>64</td>
+            <td>0</td>
+            <td>{{getEscortManagerCallContactsAmount()}}</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <th colspan="12">Региональный менеджер</th>
+          </tr>
+          <tr>
+            <td rowspan="3">0%</td>
+            <td colspan="2">Встречи и командировки развития</td>
+            <td>10</td>
+            <td></td>
+            <td>8</td>
+            <td></td>
+            <td rowspan="3">80</td>
+            <td>0</td>
+            <td>-</td>
+            <td>-</td>
+            <td rowspan="3">0</td>
+          </tr>
+          <tr>
+            <td rowspan="2">Звонки</td>
+            <td>Свои смены</td>
+            <td>8</td>
+            <td>20</td>
+            <td rowspan="2">0.4</td>
+            <td>160</td>
+            <td rowspan="2">0</td>
+            <td rowspan="2">{{getRegionalManagerCallContactsAmount()}}</td>
+            <td rowspan="2">0</td>
+          </tr>
+          <tr>
+            <td>Смены замещения</td>
+            <td>2</td>
+            <td>8</td>
+            <td>16</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -59,7 +59,7 @@ export const selectClients = createSelector(
                             regionalTotalContacts: 0,
                             clientId: client.id
                         },
-                    nomenclatureAnalysis: nomenclatureAnalyzes.find(item => item.clientId == client.id),
+                    nomenclatureAnalysis: client.nomenclatureAnalysis,
                     revenueAnalysis: revenueAnalyzes.find(item => item.clientId == client.id),
                     tripPlan: tripPlans.find(item => item.clientId == client.id) ? tripPlans.find(item => item.clientId == client.id) : {
                         id: 0,

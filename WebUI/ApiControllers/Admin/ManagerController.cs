@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Data;
 using Data.Commands.Manager;
+using Data.DTO.Clients;
 using Data.DTO.Users;
 using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace WebUI.ApiControllers.Admin
                     Password = x.Password,
                     Phone = x.Phone,
                     WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Id,
-                    WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title
+                    WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title,             
                 }).ToListAsync();
 
             return Ok(result);

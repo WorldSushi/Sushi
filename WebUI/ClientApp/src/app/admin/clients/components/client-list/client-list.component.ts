@@ -20,7 +20,9 @@ export class ClientListComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
-  displayedColumns: string[] = ['title', 'clientType', 'phone', 'numberOfCalls', 'numberOfShipments']
+  selectedGroup: number = -10;
+
+  displayedColumns: string[] = ['title', 'clientType', 'phone', 'legalEntity', 'numberOfCalls', 'numberOfShipments']
   
 
   openCreateClientForm() {
@@ -33,6 +35,28 @@ export class ClientListComponent implements OnInit {
         this.clientCreated.emit(res);
       }
     })
+  }
+
+  getClientsGroups(){
+    let allGroups = this.clients.map(item => item.group);
+    
+    let result = [...new Set(allGroups)];
+
+    return result;
+  }
+
+  selectedGroupChange(){
+    
+    if(this.selectedGroup == -10){
+      this.dataSource.data = this.clients;
+      this.dataSource.paginator = this.paginator;
+    }
+    else {
+      this.dataSource.data = this.clients.filter(item => item.group == this.selectedGroup);
+      this.dataSource.paginator = this.paginator;
+    }
+
+    
   }
 
   openEditClientForm(client: IClient) {

@@ -9,6 +9,7 @@ import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminGuard } from './shared/guards/admin.guard';
+import { DateExtensionsService } from './shared/services/date-extensions.service';
 
 @NgModule({
   declarations: [

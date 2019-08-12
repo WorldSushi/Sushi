@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CallsResultDialogComponent } from '../calls-result-dialog/calls-result-dialog.component';
 import { ICallsDate } from '../../shared/models/calls-date.model';
+import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
 
 @Component({
   selector: 'app-calls-dates-dialog',
@@ -13,6 +14,7 @@ export class CallsDatesDialogComponent implements OnInit {
   displayedColumns: string[] = ['day', 'EMcall', 'RMcall'];
   clientContacts: any[];
   currentDate: string = new Date().toLocaleDateString();
+  currentMonth: string = this.dateExtensionsService.getTitleOfCurrentMonth();
 
   getDate(numberOfDay: number){
     const currentYear = new Date().getFullYear();
@@ -36,14 +38,14 @@ export class CallsDatesDialogComponent implements OnInit {
         title: this.data.clientTitle,
         MSresults: {
           calls: this.data.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length,
-          whatsUp: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
-          letters: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
+          whatsUp: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
+          letters: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
           sum: this.data.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10).length
         },
         RMresults: {
           calls: this.data.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length,
-          whatsUp: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
-          letters: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
+          whatsUp: this.data.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
+          letters: this.data.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
           sum: this.data.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20).length
         }
       }
@@ -60,8 +62,6 @@ getClientContacts(){
   
   for(let i = 0; i < days; i++){
     clientContacts.push({
-      EMid: 0,
-      RMid: 0,
       clientId: this.data.clientId,
       date: this.getDate(i + 1).toString(),
       MScallType: 0,
@@ -72,8 +72,8 @@ getClientContacts(){
   clientContacts = clientContacts.map(item => {
     return {
       ...item,
-      EMid: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).id : 0,
-      RMid: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).id : 0,
+      EMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).id : 0,
+      RMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).id : 0,
       MScallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).contactType : 0,
       RMcallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).contactType : 0
     }
@@ -89,6 +89,7 @@ daysInMonth (month, year) {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
+    private dateExtensionsService: DateExtensionsService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     }

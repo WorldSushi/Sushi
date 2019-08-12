@@ -35,7 +35,7 @@ namespace WebUI.ApiControllers.Manager
         {
             var managerId = _accountInformationService.GetOperatorId();
 
-            _myCallsApiService.SaveNewCalls();
+            //_myCallsApiService.SaveNewCalls();
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
@@ -56,7 +56,17 @@ namespace WebUI.ApiControllers.Manager
                         : "",
                     ClientType = x.Client.ClientType,
                     NumberOfCalls = x.Client.NumberOfCalls,
-                    NumberOfShipments = x.Client.NumberOfShipments
+                    NumberOfShipments = x.Client.NumberOfShipments,
+                    Group = (int)x.Client.Group,
+                    NomenclatureAnalysis = new NomenclatureAnalysis()
+                    {
+                        Id = 1,
+                        ReportPrevMonth = 50,
+                        ReportAvg5Months = 50,
+                        PrevMonth = 20,
+                        Avg5Months = 20,
+                        ClientId = x.Id
+                    }
                 })
                 .OrderByDescending(x => x.NumberOfCalls)
                 //.Take(50)
@@ -92,7 +102,17 @@ namespace WebUI.ApiControllers.Manager
 
             await _context.SaveChangesAsync();
 
-            var result = client.Entity;
+
+            var result = new ClientDto
+            {
+                Id = client.Entity.Id,
+                Title = client.Entity.Title,
+                LegalEntity = client.Entity.LegalEntity,
+                ClientType = client.Entity.ClientType,
+                NumberOfCalls = client.Entity.NumberOfCalls,
+                NumberOfShipments = client.Entity.NumberOfShipments,
+                Group = (int)client.Entity.Group,
+            };
 
             return Ok(result);
         }
@@ -132,7 +152,8 @@ namespace WebUI.ApiControllers.Manager
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,
                 Phone = command.Phone,
-                Title = client.Title
+                Title = client.Title,
+                Group = (int)client.Group
             };
 
             return Ok(result);

@@ -9,8 +9,10 @@ namespace Data.DTO.Clients
         public string LegalEntity { get; set; }
         public string Phone { get; set; }
         public ClientTypes ClientType { get; set; }
+        public int Group { get; set; }
         public NumberOfCalls NumberOfCalls { get; set; }
         public NumberOfShipments NumberOfShipments { get; set; }
+        public NomenclatureAnalysis NomenclatureAnalysis { get; set; }
 
         public bool HasWorkgroup { get; set; }
     }

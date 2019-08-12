@@ -9,6 +9,7 @@ import { NumberOfShipmentsTranslatePipe } from 'src/app/store/shared/pipes/numbe
 import { CreateClientDialogComponent } from './dialogs/create-client-dialog/create-client-dialog.component';
 import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-client-dialog.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     NumberOfCallsTranslatePipe,
     NumberOfShipmentsTranslatePipe,
     CreateClientDialogComponent,
-    EditClientDialogComponent
+    EditClientDialogComponent,
+    ClientGroupTranslatePipe
   ],
   imports: [
     CommonModule,

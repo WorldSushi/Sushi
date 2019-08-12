@@ -1,4 +1,5 @@
 export interface IUser {
     login: string,
-    role: string
+    role: string,
+    workgroup: any
 }

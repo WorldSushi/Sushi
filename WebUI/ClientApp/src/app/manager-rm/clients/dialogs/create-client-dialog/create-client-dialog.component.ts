@@ -16,7 +16,8 @@ export class CreateClientDialogComponent implements OnInit {
     legalEntity: new FormControl(''),
     clientType: new FormControl(0),
     numberOfCalls: new FormControl(0),
-    numberOfShipments: new FormControl(0)
+    numberOfShipments: new FormControl(0),
+    group: new FormControl(0)
   })
 
   save(){

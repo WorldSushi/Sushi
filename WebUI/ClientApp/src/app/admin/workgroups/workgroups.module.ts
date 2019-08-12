@@ -22,7 +22,8 @@ import { EditWorkgroupDialogComponent } from './dialogs/edit-workgroup-dialog/ed
     WorkgroupPlansComponent, 
     WorkgroupPlansListComponent, 
     DetailWorkgroupDialogComponent, 
-    CreateWorkgroupDialogComponent, EditWorkgroupDialogComponent
+    CreateWorkgroupDialogComponent, 
+    EditWorkgroupDialogComponent
   ],
   imports: [
     CommonModule,
