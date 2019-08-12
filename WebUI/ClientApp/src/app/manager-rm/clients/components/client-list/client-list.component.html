@@ -6,8 +6,13 @@
   <mat-card-content>
 
       <div class="filter clearfix">
+        <select [(ngModel)]="selectedGroup" (change)="selectedGroupChange()">
+          <option [value]="-10">Все клиенты</option>
+          <option *ngFor="let group of getClientsGroups()" [value]="group">{{group | clientGroupPipeTranslate}}</option>
+        </select>
         <input (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
       </div>
+      
 
       <mat-paginator [pageSize]="50" [pageSizeOptions]="[50, 100, 150]"></mat-paginator>
       

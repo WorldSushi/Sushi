@@ -38,6 +38,7 @@ namespace WebUI.ApiControllers.Admin
                         : "",
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
+                    Group = (int)x.Group,
                     NumberOfShipments = x.NumberOfShipments,
                     HasWorkgroup = _context.Set<ClientWorkGroup>().Any(z => z.ClientId == x.Id)
                 }).ToListAsync();
@@ -72,7 +73,8 @@ namespace WebUI.ApiControllers.Admin
                 ClientType = client.Entity.ClientType,
                 NumberOfCalls = client.Entity.NumberOfCalls,
                 NumberOfShipments = client.Entity.NumberOfShipments,
-                HasWorkgroup = _context.Set<ClientWorkGroup>().Any(x => x.ClientId == client.Entity.Id)
+                HasWorkgroup = _context.Set<ClientWorkGroup>().Any(x => x.ClientId == client.Entity.Id),
+                Group = (int)client.Entity.Group
             };
 
             return Ok(result);
@@ -108,6 +110,7 @@ namespace WebUI.ApiControllers.Admin
                 ClientType = client.ClientType,
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,
+                Group = (int)client.Group,
                 HasWorkgroup = _context.Set<ClientWorkGroup>().Any(x => x.ClientId == client.Id)
             };
 
