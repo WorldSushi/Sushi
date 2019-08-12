@@ -1,4 +1,6 @@
-﻿using Data.Enums;
+﻿using Data.DTO.Clients;
+using Data.Enums;
+using System.Collections.Generic;
 
 namespace Data.Commands.Clients
 {
@@ -7,7 +9,7 @@ namespace Data.Commands.Clients
         public int Id { get; set; }
         public string Title { get; set; }
         public string LegalEntity { get; set; }
-        public string Phone { get; set; }
+        public ICollection<ClientPhoneDTO> Phones { get; set; }
         
         public ClientGroup Group { get; set; }
         public ClientTypes ClientType { get; set; }
