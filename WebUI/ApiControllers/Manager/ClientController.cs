@@ -51,9 +51,11 @@ namespace WebUI.ApiControllers.Manager
                     Id = x.Client.Id,
                     Title = x.Client.Title,
                     LegalEntity = x.Client.LegalEntity,
-                    Phone = clientPhones.Any(z => z.ClientId == x.ClientId)
-                        ? clientPhones.FirstOrDefault(z => z.ClientId == x.ClientId).Phone
-                        : "",
+                    Phones = clientPhones.Where(z => z.ClientId == x.Id)
+                        .Select(z => new ClientPhoneDTO {
+                            Id = z.Id,
+                            Phone = z.Phone
+                        }).ToList(),
                     ClientType = x.Client.ClientType,
                     NumberOfCalls = x.Client.NumberOfCalls,
                     NumberOfShipments = x.Client.NumberOfShipments,
@@ -83,12 +85,7 @@ namespace WebUI.ApiControllers.Manager
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
 
-            await _context.Set<ClientPhone>()
-                .AddAsync(new ClientPhone()
-                {
-                    Client = client.Entity,
-                    Phone = command.Phone
-                });
+            
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.EscortManagerId == currentManagerId
@@ -99,9 +96,18 @@ namespace WebUI.ApiControllers.Manager
                 ClientId = client.Entity.Id,
                 WorkgroupId = workGroup.Id
             });
+        
+            foreach(var phone in command.Phones)
+            {
+                await _context.Set<ClientPhone>()
+                .AddAsync(new ClientPhone()
+                {
+                    ClientId = client.Entity.Id,
+                    Phone = phone.Phone
+                });
+            }
 
             await _context.SaveChangesAsync();
-
 
             var result = new ClientDto
             {
@@ -112,6 +118,11 @@ namespace WebUI.ApiControllers.Manager
                 NumberOfCalls = client.Entity.NumberOfCalls,
                 NumberOfShipments = client.Entity.NumberOfShipments,
                 Group = (int)client.Entity.Group,
+                Phones = _context.Set<ClientPhone>().Where(z => z.ClientId == client.Entity.Id).Select(z => new ClientPhoneDTO
+                {
+                    Id = z.Id,
+                    Phone = z.Phone
+                }).ToList(),
             };
 
             return Ok(result);
@@ -125,20 +136,31 @@ namespace WebUI.ApiControllers.Manager
 
             client.Edit(command);
 
-            if (command.Phone != "")
+            foreach (var phone in command.Phones)
             {
-                var phone = await _context.Set<ClientPhone>()
-                    .FirstOrDefaultAsync(x => x.ClientId == command.Id);
+                if (phone.Deleted == true && phone.Id > 0)
+                {
+                    var deletingPhone = _context.Set<ClientPhone>().FirstOrDefault(x => x.Id == phone.Id);
 
-                if (phone != null)
-                    phone.Phone = command.Phone;
-                else
-                    await _context.Set<ClientPhone>()
-                        .AddAsync(new ClientPhone()
-                        {
-                            ClientId = client.Id,
-                            Phone = command.Phone
-                        });
+                    _context.Set<ClientPhone>().Remove(deletingPhone);
+                }
+                else if (phone.Id > 0 && phone.Deleted == false)
+                {
+                    var editingPhone = _context.Set<ClientPhone>().FirstOrDefault(x => x.Id == phone.Id);
+
+                    editingPhone.Phone = phone.Phone;
+
+                    _context.Update(editingPhone);
+                }
+                else if (phone.Id == 0 && phone.Deleted == false)
+                {
+                    await _context.Set<ClientPhone>().AddAsync(new ClientPhone
+                    {
+                        Phone = phone.Phone,
+                        ClientId = phone.ClientId
+                    });
+                }
+
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +173,12 @@ namespace WebUI.ApiControllers.Manager
                 LegalEntity = client.LegalEntity,
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,
-                Phone = command.Phone,
+                Phones = _context.Set<ClientPhone>().Where(x => x.ClientId == client.Id)
+                    .Select(z => new ClientPhoneDTO {
+                        Id = z.Id,
+                        ClientId = z.ClientId,
+                        Phone = z.Phone
+                    }).ToList(),
                 Title = client.Title,
                 Group = (int)client.Group
             };

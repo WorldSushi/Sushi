@@ -47,6 +47,7 @@ namespace Data.Entities.Clients
             NumberOfCalls = command.NumberOfCalls;
             NumberOfShipments = command.NumberOfShipments;
             Group = command.Group;
+
         }
 
        /* public CallPlan CurrentCallPlan()

@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminGuard } from './shared/guards/admin.guard';
 import { DateExtensionsService } from './shared/services/date-extensions.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,10 @@ import { DateExtensionsService } from './shared/services/date-extensions.service
     HttpClientModule,
     MaterialModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: [] },
   ],
   bootstrap: [AppComponent]
 })

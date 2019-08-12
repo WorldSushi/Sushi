@@ -33,9 +33,11 @@ namespace WebUI.ApiControllers.Admin
                     Id = x.Id,
                     Title = x.Title,
                     LegalEntity = x.LegalEntity,
-                    Phone = clientPhones.Any(z => z.ClientId == x.Id)
-                        ? clientPhones.FirstOrDefault(z => z.ClientId == x.Id).Phone
-                        : "",
+                    Phones = clientPhones.Where(z => z.ClientId == x.Id).Select(z => new ClientPhoneDTO
+                    {
+                        Id = z.Id,
+                        Phone = z.Phone
+                    }).ToList(),
                     ClientType = x.ClientType,
                     NumberOfCalls = x.NumberOfCalls,
                     Group = (int)x.Group,
@@ -52,12 +54,15 @@ namespace WebUI.ApiControllers.Admin
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
 
-            var clientPhone = await _context.Set<ClientPhone>()
+            foreach (var phone in command.Phones)
+            {
+                await _context.Set<ClientPhone>()
                 .AddAsync(new ClientPhone()
                 {
-                    Client = client.Entity,
-                    Phone = command.Phone
+                    ClientId = client.Entity.Id,
+                    Phone = phone.Phone
                 });
+            }
 
             await _context.SaveChangesAsync();
 
@@ -69,7 +74,11 @@ namespace WebUI.ApiControllers.Admin
                 Id = client.Entity.Id,
                 Title = client.Entity.Title,
                 LegalEntity = client.Entity.LegalEntity,
-                Phone = clientPhones.FirstOrDefault(z => z.ClientId == client.Entity.Id)?.Phone ?? "",
+                Phones = clientPhones.Where(z => z.ClientId == client.Entity.Id).Select(z => new ClientPhoneDTO {
+                    Id = z.Id,
+                    ClientId = client.Entity.Id,
+                    Phone = z.Phone
+                }).ToList(),
                 ClientType = client.Entity.ClientType,
                 NumberOfCalls = client.Entity.NumberOfCalls,
                 NumberOfShipments = client.Entity.NumberOfShipments,
@@ -88,13 +97,33 @@ namespace WebUI.ApiControllers.Admin
 
             client.Edit(command);
 
-            if (command.Phone != "")
+            foreach(var phone in command.Phones)
             {
-                var phone = await _context.Set<ClientPhone>()
-                    .FirstOrDefaultAsync(x => x.ClientId == command.Id);
+                if (phone.Deleted == true && phone.Id > 0)
+                {
+                    var deletingPhone = _context.Set<ClientPhone>().FirstOrDefault(x => x.Id == phone.Id);
 
-                phone.Phone = command.Phone;
+                    _context.Set<ClientPhone>().Remove(deletingPhone);
+                }
+                else if(phone.Id > 0 && phone.Deleted == false)
+                {
+                    var editingPhone = _context.Set<ClientPhone>().FirstOrDefault(x => x.Id == phone.Id);
+
+                    editingPhone.Phone = phone.Phone;
+
+                    _context.Update(editingPhone);                  
+                }
+                else if(phone.Id == 0 && phone.Deleted == false)
+                {
+                    await _context.Set<ClientPhone>().AddAsync(new ClientPhone
+                    {
+                        Phone = phone.Phone,
+                        ClientId = phone.ClientId
+                    });
+                }
+               
             }
+
 
             await _context.SaveChangesAsync();
 
@@ -106,7 +135,11 @@ namespace WebUI.ApiControllers.Admin
                 Id = client.Id,
                 Title = client.Title,
                 LegalEntity = client.LegalEntity,
-                Phone = clientPhones.FirstOrDefault(z => z.ClientId == client.Id)?.Phone ?? "",
+                Phones = clientPhones.Where(z => z.ClientId == client.Id).Select(z => new ClientPhoneDTO
+                {
+                    Id = z.Id,
+                    Phone = z.Phone
+                }).ToList(),
                 ClientType = client.ClientType,
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,

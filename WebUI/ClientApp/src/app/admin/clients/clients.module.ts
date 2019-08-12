@@ -10,6 +10,7 @@ import { CreateClientDialogComponent } from './dialogs/create-client-dialog/crea
 import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-client-dialog.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
+import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-grou
     NumberOfShipmentsTranslatePipe,
     CreateClientDialogComponent,
     EditClientDialogComponent,
-    ClientGroupTranslatePipe
+    ClientGroupTranslatePipe,
+    ClientPhonesComponent,
   ],
   imports: [
     CommonModule,
@@ -30,11 +32,12 @@ import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-grou
   ],
   exports: [
     ClientsComponent,
-    ClientListComponent
+    ClientListComponent,
   ],
   entryComponents: [
     CreateClientDialogComponent,
-    EditClientDialogComponent
+    EditClientDialogComponent,
+    ClientPhonesComponent
   ]
 })
 export class ClientsModule { }
