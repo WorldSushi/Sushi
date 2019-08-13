@@ -15,7 +15,9 @@ import { UserFacade } from 'src/app/store/app/facades/user.facade';
 export class DashboardComponent implements OnInit {
 
   clientContactsAmountToday$: Observable<number> = this.callsDateFacade.callsDate$.pipe(
-    map(res => res.filter(item => item.date == new Date().toLocaleDateString()).length)
+    map(res => res.filter(item => item.date == new Date().toLocaleDateString())),
+    withLatestFrom(this.userFacade.currentUser$),
+    map(([clientContacts, manager]) => clientContacts.filter(item => item.managerId == manager.id).length)
   );
 
   clientContacts$ = this.clientContactFacade.callsDate$.pipe(
