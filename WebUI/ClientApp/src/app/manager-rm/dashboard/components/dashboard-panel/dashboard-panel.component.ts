@@ -11,6 +11,8 @@ export class DashboardPanelComponent implements OnInit {
   @Input() clientContactsAmount: number = 0;
   @Input() clientContacts: ICallsDate[];
 
+  contactsStandard = 160;
+
   getEscortManagerCallContactsAmount(){
     return this.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length
   }
