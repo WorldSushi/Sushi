@@ -25,6 +25,8 @@ export class WorkgroupsListComponent implements OnInit {
   @Output() workgroupCreated = new EventEmitter();
   @Output() workgroupChanged = new EventEmitter();
 
+  contactsStandard = 160;
+
   openWorkgroupDetail(workgroup: IWorkgroup){
     const dialogRef = this.dialog.open(DetailWorkgroupDialogComponent, {
       width: '90%',
@@ -68,6 +70,10 @@ export class WorkgroupsListComponent implements OnInit {
     const today = new Date().toLocaleDateString();
     
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
+  }
+
+  getCallContactsByManager(managerId){
+    return this.clientContacts.filter(item => item.managerId == managerId && item.contactType == 10).length;
   }
 
   ngOnChanges(changes): void {

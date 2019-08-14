@@ -30,13 +30,13 @@
                 <td>{{getAmountContactsToday(workgroup.escortManager?.id)}}</td>
                 <td>МС</td>
                 <td>{{workgroup.escortManager?.login}}</td>
-                <td>100%</td>
+                <td>{{(getCallContactsByManager(workgroup.escortManager?.id) / 160 * 100).toFixed(1)}}%</td>
               </tr>
               <tr>
                 <td>{{getAmountContactsToday(workgroup.regionalManager?.id)}}</td>
                 <td>РМ</td>
                 <td>{{workgroup.regionalManager?.login}}</td>
-                <td>100%</td>
+                <td>{{(getCallContactsByManager(workgroup.regionalManager?.id) / 176 * 100).toFixed(1)}}%</td>
               </tr>
             </tbody>
           </table>
