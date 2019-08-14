@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,15 +30,10 @@
 
   <ItemGroup>
     <None Include="wwwroot\3rdpartylicenses.txt" />
-    <None Include="wwwroot\6.ea4ace78e194618818af.js" />
-    <None Include="wwwroot\7.424f2a3269eda0646bcf.js" />
-    <None Include="wwwroot\common.2fc049c9b38c7138d039.js" />
     <None Include="wwwroot\favicon.ico" />
     <None Include="wwwroot\index.html" />
-    <None Include="wwwroot\main.c66c76b9229937f1965f.js" />
     <None Include="wwwroot\polyfills-es5.5b81d9003219a04d2670.js" />
     <None Include="wwwroot\polyfills.386c9f4385b0f0ec30e1.js" />
-    <None Include="wwwroot\runtime.3f21396c0dcd9b2f1e1d.js" />
     <None Include="wwwroot\styles.71924668efd9ff6be3e3.css" />
   </ItemGroup>
 

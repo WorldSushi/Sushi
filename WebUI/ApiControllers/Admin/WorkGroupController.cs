@@ -27,7 +27,7 @@ namespace WebUI.ApiControllers.Admin
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-           // _myCallsApiService.SaveNewCalls();
+            _myCallsApiService.SaveNewCalls();
 
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()

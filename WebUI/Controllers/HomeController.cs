@@ -90,7 +90,7 @@ namespace WebUI.Controllers
             return RedirectToAction("ImportFile");
         }*/
 
-        /*[HttpGet]
+        [HttpGet]
         public IActionResult ImportFileClients()
         {
             return View();
@@ -110,13 +110,19 @@ namespace WebUI.Controllers
                 .Where(x => x.UserId != 1 && x.UserId != 11)
                 .ToList();
 
+            var clientPhones = new List<ClientPhone>();
+
             for (var i = 1; i < lines.Length; i++)
             {
                 if (lines[i].Length > 2)
                 {
                     lines[i] = lines[i].Substring(1);
                     string[] rows = lines[i].Split(';');
-                    
+
+                    var d = rows[6];
+
+                    var g = 0;                    
+
                     var client = _context.Set<Client>()
                         .Add(new Client(new ClientCreate()
                         {
@@ -124,18 +130,49 @@ namespace WebUI.Controllers
                             Title = rows[0],
                             LegalEntity = rows[1],
                             NumberOfCalls = GetNumberOfCalls(rows[4]),
-                            NumberOfShipments = GetNumberOfShipments(rows[5]),
-                            Phone = rows[6]
+                            NumberOfShipments = GetNumberOfShipments(rows[5])
                         })).Entity;
-
-                    var clientInfo = _context.Set<ClientInfo>()
-                        .Add(new ClientInfo(client, Guid.Parse(rows[9]), rows[6]));
-
-                    //_context.SaveChanges();
 
                     if (rows[10] != "")
                     {
-                        var managersGuidStr = rows[10].Split(',');
+                        var e = rows[10].Split(',');
+                        foreach (var phone in e)
+                        {
+                            string newPhone = Regex.Replace(phone, @"[^0-9]", "");
+                            
+                            if (newPhone.Length == 10)
+                            {
+                                clientPhones.Add(new ClientPhone()
+                                {
+                                    Client = client,
+                                    Phone = newPhone
+                                });
+                            }
+                            else if (newPhone.Length == 11)
+                            {
+                                newPhone = newPhone.Substring(1);
+                                clientPhones.Add(new ClientPhone()
+                                {
+                                    Client = client,
+                                    Phone = newPhone
+                                });
+                            }
+                        }
+                    }
+
+                    //Guid c;
+
+                    //if (!Guid.TryParse(rows[9 + g], out c))
+                    //    a.Add(rows[0]);
+
+                    var clientInfo = _context.Set<ClientInfo>()
+                        .Add(new ClientInfo(client, Guid.Parse(rows[8]), rows[10]));
+
+                    _context.SaveChanges();
+
+                    if (rows[9] != "")
+                    {
+                        var managersGuidStr = rows[9].Split(',');
                         var managersGuid = new List<Guid>();
                         foreach (var str in managersGuidStr)
                         {
@@ -152,18 +189,20 @@ namespace WebUI.Controllers
 
                             workGroup.BindClient(new BindClient()
                             {
-                                Client = client,
-                                WorkGroupId = workGroup.Id
+                                ClientId = client.Id,
+                                WorkgroupId = workGroup.Id
                             });
                         }
                     }
                 }
             }
 
+            _context.Set<ClientPhone>().AddRange(clientPhones);
+
             _context.SaveChanges();
 
             return RedirectToAction("ImportFileClients");
-        }*/
+        }
 
         /* public void InitWorkGroup()
          {
@@ -239,6 +278,69 @@ namespace WebUI.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("ImportFileExportClients");
+        }*/
+
+        /*[HttpGet]
+        public IActionResult ImportFileRevune()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ImportFileRevune(IFormFile file)
+        {
+            BinaryReader b = new BinaryReader(file.OpenReadStream());
+            byte[] data = b.ReadBytes(Convert.ToInt32(file.Length));
+
+            string result = Encoding.UTF8.GetString(data);
+            string[] lines = result.Split('\r');
+
+            var clients = _context.Set<Client>()
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Title
+                }).ToList();
+
+            var clientsRevenue = new List<ClientRevenue>(); 
+
+            for (var i = 14; i < lines.Length; i++)
+            {
+                if (lines[i].Length > 2)
+                {
+                    lines[i] = lines[i].Substring(1);
+                    string[] rows = lines[i].Split(';');
+
+                    if (clients.Select(x => x.Name).Any(x => x == rows[0]))
+                    {
+                        var clientId = clients.FirstOrDefault(x => x.Name == rows[0]).Id;
+
+                        if (rows[1].Length > 0)
+                            clientsRevenue.Add(new ClientRevenue()
+                            {
+                                ClientId = clientId,
+                                Revenue = Convert.ToDecimal(rows[1]),
+                                Date = new DateTime(2019, 2, 1)
+                            });
+
+                        for (var k = 1; k <= 6; k++)
+                            if (rows[k].Length > 0)
+                                clientsRevenue.Add(new ClientRevenue()
+                                {
+                                    ClientId = clientId,
+                                    Revenue = Convert.ToDecimal(rows[k]),
+                                    Date = new DateTime(2019, k + 1, 1)
+                                });
+                    }
+                }
+            }
+
+            _context.Set<ClientRevenue>()
+                .AddRange(clientsRevenue);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ImportFileRevune");
         }*/
 
         public void MyCallsTest()
@@ -515,6 +617,11 @@ namespace WebUI.Controllers
 
             _context.SaveChanges();
         }*/
+
+        public void Test5()
+        {
+            var a = _context.Set<CallLog>().ToList().Count;
+        }
         
         public IActionResult Index()
         {
