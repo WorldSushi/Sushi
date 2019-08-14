@@ -51,7 +51,7 @@ namespace WebUI.ApiControllers.Manager
                     Id = x.Client.Id,
                     Title = x.Client.Title,
                     LegalEntity = x.Client.LegalEntity,
-                    Phones = clientPhones.Where(z => z.ClientId == x.Id)
+                    Phones = clientPhones.Where(z => z.ClientId == x.ClientId)
                         .Select(z => new ClientPhoneDTO {
                             Id = z.Id,
                             Phone = z.Phone
