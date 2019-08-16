@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDividerModule } from '@angular/material';
+import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDividerModule, MatSortModule } from '@angular/material';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -36,8 +36,8 @@ import { getRusPaginatorIntl } from '../mat-paginator-intl';
     MatStepperModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatPaginatorModule
-
+    MatPaginatorModule,
+    MatSortModule
   ],
   exports: [
     MatToolbarModule,
@@ -57,7 +57,8 @@ import { getRusPaginatorIntl } from '../mat-paginator-intl';
     MatStepperModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatPaginatorModule  
+    MatPaginatorModule,
+    MatSortModule 
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: getRusPaginatorIntl() }

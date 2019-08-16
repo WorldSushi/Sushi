@@ -11,6 +11,7 @@ import { EditClientDialogComponent } from './dialogs/edit-client-dialog/edit-cli
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.component';
+import { MatSortModule } from '@angular/material';
 
 @NgModule({
   declarations: [
