@@ -42,7 +42,13 @@ export class EditClientDialogComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    
+    if(this.data.phones.length == 0){
+      this.data.phones = [{
+        id: 0,
+        phone: '',
+        clientId: this.data.id
+      }]
+    }
   }
 
 }
