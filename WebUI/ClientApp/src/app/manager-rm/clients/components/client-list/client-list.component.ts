@@ -40,7 +40,7 @@ export class ClientListComponent implements OnInit {
   @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
   @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   selectedGroup: any = -10;
@@ -337,6 +337,8 @@ export class ClientListComponent implements OnInit {
       '#fff'
     }
   }
+
+  
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

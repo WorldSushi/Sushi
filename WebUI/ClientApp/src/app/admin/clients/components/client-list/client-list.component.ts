@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource, Sort, MatSort } from '@angular/material';
 import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
 
 
@@ -17,7 +17,7 @@ export class ClientListComponent implements OnInit {
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
   
   
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   selectedGroup: number = -10;
@@ -79,12 +79,16 @@ export class ClientListComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+
   }
 
   ngOnChanges(changes): void {
     this.dataSource.data = this.clients;
-    this.dataSource.paginator = this.paginator
+    this.dataSource.paginator = this.paginator;
+
+    
   }
+
 
   
 

@@ -8,7 +8,12 @@
       <div class="filter clearfix">
         <select [(ngModel)]="selectedGroup" (change)="selectedGroupChange()">
           <option [value]="-10">Все клиенты</option>
-          <option *ngFor="let group of getClientsGroups()" [value]="group">{{group | clientGroupPipeTranslate}}</option>
+          <option [value]="0">Неопределен</option>
+          <option [value]="10">Актуальные</option>
+          <option [value]="20">С редкой отгрузкой</option>
+          <option [value]="30">Новые или реанимируемые</option>
+          <option [value]="40">Рестораны</option>
+          <option [value]="50">Другие</option>
         </select>
         <input (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
       </div>

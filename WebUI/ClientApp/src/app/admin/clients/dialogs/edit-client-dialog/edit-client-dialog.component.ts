@@ -42,6 +42,7 @@ export class EditClientDialogComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    
   }
 
 }
