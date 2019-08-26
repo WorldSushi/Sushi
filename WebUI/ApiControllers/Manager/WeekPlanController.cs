@@ -37,7 +37,7 @@ namespace WebUI.ApiControllers.Manager
                 }).ToListAsync();
 
             return Ok(result);
-        }
+            }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] WeekPlanCreate command)
