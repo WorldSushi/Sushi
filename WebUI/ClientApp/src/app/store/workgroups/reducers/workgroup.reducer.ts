@@ -5,20 +5,20 @@ import { WorkgroupsActionUnion, WorkgroupsActionsTypes } from '../actions/workgr
 export function workgroupReducer(state = workgroupsInitialState, action: WorkgroupsActionUnion): IWorkgroupsState {
     
         switch(action.type) {
-                case WorkgroupsActionsTypes.GET_WORKGROUPS: 
+          case WorkgroupsActionsTypes.GET_WORKGROUPS:
                         return {
                                 ...state,
                                 loading: true
                         }
                 
-                case WorkgroupsActionsTypes.GET_WORKGROUPS_SUCCESS:
+          case WorkgroupsActionsTypes.GET_WORKGROUPS_SUCCESS:
                         return {
                                 ...state,
                                 workgroups: action.payload.workgroups,
                                 loading: false
                         }
                 
-                case WorkgroupsActionsTypes.GET_WORKGROUPS_FAILURE:
+          case WorkgroupsActionsTypes.GET_WORKGROUPS_FAILURE:
                         return {
                                 ...state,
                                 error: action.payload.error

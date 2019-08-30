@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\" />
     <Folder Include="ClientApp\dist\SushiWorldApp\" />
   </ItemGroup>
 

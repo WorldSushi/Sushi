@@ -23,6 +23,11 @@ namespace WebUI.Controllers
 
         public IActionResult Index()
         {
+            var user = _userService.GetAll().ToList();
+            if(user == null || user.Count == 0)
+            {
+                _userService.CreateAdmin();
+            }
             return View();
         }
 
@@ -34,7 +39,6 @@ namespace WebUI.Controllers
                 var user = _userService.GetAll()
                     .FirstOrDefault(x => x.Login == command.Login
                                          && x.Password == command.Password);
-
                 if (user != null)
                 {
                     await Authenticate(user);

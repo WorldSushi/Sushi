@@ -13,7 +13,9 @@ export class WorkgroupService {
         })
     }
 
-    getWorkgroups(): Observable<IWorkgroup[]>{
+  getWorkgroups(): Observable<IWorkgroup[]>{
+
+    console.log("E");
         return this.http.get<IWorkgroup[]>(this.WORKGROUP_API_URL);
     }
 

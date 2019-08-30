@@ -35,13 +35,13 @@ namespace WebUI.ApiControllers.Manager
         {
             var managerId = _accountInformationService.GetOperatorId();
 
-            //_myCallsApiService.SaveNewCalls();
+            _myCallsApiService.SaveNewCalls();
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
                                           || x.EscortManagerId == managerId);
 
-            var clientPhones = await _context.Set<ClientPhone>()
+             var clientPhones = await _context.Set<ClientPhone>()
                 .ToListAsync();
 
             var result = await _context.Set<ClientWorkGroup>()

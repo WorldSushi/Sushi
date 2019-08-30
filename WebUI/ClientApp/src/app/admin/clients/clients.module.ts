@@ -12,6 +12,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.component';
 import { MatSortModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreModule, ReducerManager } from '@ngrx/store';
+import { workgroupReducer } from '../../store/workgroups/reducers/workgroup.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { WorkgroupsEffects } from '../../store/workgroups/effects/workgroup.effects';
 
 @NgModule({
   declarations: [
@@ -29,16 +34,19 @@ import { MatSortModule } from '@angular/material';
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    StoreModule.forRoot({ workGrupe: workgroupReducer }),
+    EffectsModule.forRoot([WorkgroupsEffects])
   ],
   exports: [
-    ClientsComponent,
+    ClientsComponent, 
     ClientListComponent,
   ],
   entryComponents: [
     CreateClientDialogComponent,
     EditClientDialogComponent,
     ClientPhonesComponent
-  ]
+  ],
 })
 export class ClientsModule { }

@@ -14,6 +14,11 @@ namespace Data.Services.Concrete
             _userRepository = userRepository;
         }
 
+        public void CreateAdmin()
+        {
+            //throw new System.NotImplementedException();
+        }
+
         public IQueryable<User> GetAll()
         {
             return _userRepository.All();
