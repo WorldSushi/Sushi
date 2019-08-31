@@ -7,6 +7,7 @@ namespace Data.DTO.Clients
     {
         public int Id { get; set; }
         public int ClientId { get; set; }
+        public int Durations { get; set; }
         public ManagerType ManagerType { get; set; }
         public ClientContactType ContactType { get; set; }
         public string Date { get; set; }

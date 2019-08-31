@@ -24,6 +24,9 @@ namespace WebUI.ApiControllers
         {
             _accountService = accountService;
             _context = context;
+            Data.Entities.Users.Admin admin = new Data.Entities.Users.Admin();
+            //admin.
+            //_context.Set<Data.Entities.Users.Admin>
         }
 
         [HttpGet]

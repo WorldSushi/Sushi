@@ -1,13 +1,11 @@
 ﻿using Data.DTO.Calls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using Data.Services.Abstract;
-using Base.Extensions;
 using Base.Helpers;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.Entities.Calls;
@@ -44,7 +42,7 @@ namespace Data.Services.Concrete
 
             var callsLog = new List<CallLog>();
 
-            var response = GetCallsByDate(
+            CallsDTO response = GetCallsByDate(
                 new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
                 new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
                 monthCallsInfo.Offset);
@@ -167,7 +165,7 @@ namespace Data.Services.Concrete
                             ? ManagerType.EscortManager
                             : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
                                 ? ManagerType.RegionalManager
-                                : ManagerType.Undefined
+                                : ManagerType.Undefined,
                     });
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);

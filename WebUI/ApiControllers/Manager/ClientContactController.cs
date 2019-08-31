@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.DTO.Clients;
+using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Enums;
@@ -31,6 +33,7 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            List<Call> calls = _context.Set<Call>().Where(x => DateHelper.IsCurrentMonth(x.DateTime)).ToList();
             var result = await _context.Set<ClientContact>() 
                 .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new ClientContactDto()
@@ -42,7 +45,10 @@ namespace WebUI.ApiControllers.Manager
                     ManagerType = x.ManagerType,
                     ManagerId = x.ManagerId
                 }).ToListAsync();
-
+            for(int i = 0; i< result.Count; i++)
+            {
+                result[i].Durations = calls.Find(c => c.ClientId == result[i].ClientId).Duration;
+            }
             return Ok(result);
         }
 

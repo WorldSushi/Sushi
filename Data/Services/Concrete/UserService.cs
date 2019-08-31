@@ -16,7 +16,10 @@ namespace Data.Services.Concrete
 
         public void CreateAdmin()
         {
-            //throw new System.NotImplementedException();
+            Admin admin = new Admin();
+            admin.Login = "admin";
+            admin.Password = "admin";
+            _userRepository.Create(admin);
         }
 
         public IQueryable<User> GetAll()

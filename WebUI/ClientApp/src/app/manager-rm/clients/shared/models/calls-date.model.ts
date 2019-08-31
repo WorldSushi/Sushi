@@ -6,5 +6,6 @@ export interface ICallsDate {
     clientId: number,
     date: any,
     managerType: number,
-    managerId: number
+    managerId: number,
+    Durations: number
 }

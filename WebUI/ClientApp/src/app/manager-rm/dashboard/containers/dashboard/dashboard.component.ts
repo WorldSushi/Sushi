@@ -6,6 +6,7 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { UserService } from 'src/app/shared/services/user.service';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { UserFacade } from 'src/app/store/app/facades/user.facade';
+import { ManagersFacade } from '../../../../store/managers/facades/manager.facade';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,11 +28,25 @@ export class DashboardComponent implements OnInit {
     })
   )
 
+  managerId: number;
+
+  managerId$ = this.userFacade.currentUser$.pipe(
+    withLatestFrom(this.userFacade.currentUser$),
+    map(([clientContacts, manager]) => {
+      this.managerId = clientContacts.id;
+      console.log(clientContacts.id);
+      console.log(manager.id);
+    })
+  )
+
   constructor(public callsDateFacade: CallsDateFacade,
     public userFacade: UserFacade,
     public clientContactFacade: CallsDateFacade) { }
 
   ngOnInit() {
+    this.userFacade.loadCurrentUser();
+    this.clientContactFacade.loadCallsDate(this.managerId);
+    this.callsDateFacade.loadCallsDate(this.managerId);
   }
 
 }

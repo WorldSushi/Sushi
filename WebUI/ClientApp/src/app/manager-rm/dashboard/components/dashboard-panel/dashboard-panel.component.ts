@@ -21,9 +21,14 @@ export class DashboardPanelComponent implements OnInit {
     return this.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    console.log(this.clientContacts);
   }
 
 }

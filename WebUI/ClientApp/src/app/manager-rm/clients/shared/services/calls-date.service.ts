@@ -14,7 +14,8 @@ export class CallsDatesService {
         })
     }
 
-    getCallsDates(managerId: number): Observable<ICallsDate[]>{
+  getCallsDates(managerId: number): Observable<ICallsDate[]>{
+    console.log(123);
         return this.http.get<ICallsDate[]>(this.API_URL);
     }
 

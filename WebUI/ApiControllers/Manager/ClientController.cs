@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
+using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Services.Abstract;
@@ -20,14 +22,17 @@ namespace WebUI.ApiControllers.Manager
         private readonly ApplicationContext _context;
         private readonly IAccountInformationService _accountInformationService;
         private readonly IMyCallsAPIService _myCallsApiService;
+        private readonly IMyCallsAPIServiceAstrics _myCallsAPIServiceAstrics;
 
         public ClientController(ApplicationContext context,
             IAccountInformationService accountInformationService,
-            IMyCallsAPIService myCallsApiService)
+            IMyCallsAPIService myCallsApiService,
+            IMyCallsAPIServiceAstrics myCallsAPIServiceAstrics)
         {
             _context = context;
             _accountInformationService = accountInformationService;
             _myCallsApiService = myCallsApiService;
+            _myCallsAPIServiceAstrics = myCallsAPIServiceAstrics;
         }
 
         [HttpGet]
@@ -36,6 +41,7 @@ namespace WebUI.ApiControllers.Manager
             var managerId = _accountInformationService.GetOperatorId();
 
             _myCallsApiService.SaveNewCalls();
+            //_myCallsAPIServiceAstrics.SaveNewCalls();
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
@@ -73,7 +79,6 @@ namespace WebUI.ApiControllers.Manager
                 .OrderByDescending(x => x.NumberOfCalls)
                 //.Take(50)
                 .ToListAsync();
-
             return Ok(result);
         }
 
