@@ -68,9 +68,9 @@ export class ClientListComponent implements OnInit {
 
   getClientsGroups(){
     let allGroups = this.clients.map(item => item.group);
-    
+    console.log(allGroups);
     let result = [...new Set(allGroups)];
-
+    console.log(result);
     return result;
   }
 

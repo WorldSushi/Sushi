@@ -4,10 +4,12 @@
     {
         Undefined = 0,
 
-        Call = 10,
+        NoAcceptCall = 10,
 
         Mail = 20,
 
-        WhatsUp = 30
+        WhatsUp = 30,
+
+        AcceptCall = 40
     }
 }

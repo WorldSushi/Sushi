@@ -159,7 +159,7 @@ namespace Data.Services.Concrete
                     new ClientContactCreate()
                     {
                         ClientId = call.Call.ClientId,
-                        ContactType = ClientContactType.Call,
+                        ContactType = ClientContactType.NoAcceptCall,
                         ManagerId = call.Call.ManagerId,
                         ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
                             ? ManagerType.EscortManager
