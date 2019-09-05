@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, Input, SimpleChanges } from '@angular/cor
 import { IWorkgroup } from '../../shared/models/workgroup.model';
 import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 import { IWorkgroupCalls } from '../../shared/models/workgroup-calls.model';
+import { retry } from 'rxjs/operators';
+import { concat } from 'rxjs';
 
 
 @Component({
@@ -11,7 +13,8 @@ import { IWorkgroupCalls } from '../../shared/models/workgroup-calls.model';
 })
 export class WorkgroupsCallsListComponent implements OnInit {
   
-  @Input() workgroupsCalls: IWorkgroupCalls;
+  @Input() workgroupsCalls: IWorkgroupCalls[];
+  @Input() workgroups: IWorkgroup[];
 
   days: number[] = this.getDaysInMonth();
 
@@ -65,6 +68,47 @@ export class WorkgroupsCallsListComponent implements OnInit {
       return '#FDE488'
   }
 
+  sortActionClient(day: number) {
+    let workGruope = [];
+    for (let i = 0; i < this.workgroupsCalls.length; i++) {
+      if (this.workgroupsCalls[i].clientActions != null && this.workgroupsCalls[i].clientActions.length != 0) {
+        for (let j = 0; j < this.workgroupsCalls[i].clientActions.length; j++) {
+          let tmpDate = this.workgroupsCalls[i].clientActions[j].date.split(".");
+          if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getDate() == day
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == new Date().getMonth()
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == new Date().getFullYear()) {
+            workGruope.unshift(this.workgroupsCalls[i]);
+            break;
+          }
+          else if (j == this.workgroupsCalls[i].clientActions.length-1) {
+            workGruope.push(this.workgroupsCalls[i]);
+          }
+        }
+      }
+      else {
+        workGruope.push(this.workgroupsCalls[i]);
+      }
+    }
+    this.workgroupsCalls = workGruope;
+  }
+
+  sortActionClientToName() {
+    this.workgroupsCalls.sort(function (a, b) {
+      var nameA = a.clientTitle.toLowerCase(), nameB = b.clientTitle.toLowerCase()
+      if (nameA < nameB) 
+        return -1
+    })
+  }
+
+  snitWorkGroupForClient() {
+    for (let i = 0; i < this.workgroupsCalls.length; i++) {
+      let workgroup = this.workgroups.find(w => w.clientIds.find(c => c == this.workgroupsCalls[i].clientId) != null)
+      if (workgroup != null) {
+        this.workgroupsCalls[i].nameWorkGroup = workgroup.title;
+      }
+    }
+  }
+
   getUnique(arr, comp) {
 
     const unique = arr
@@ -86,7 +130,11 @@ export class WorkgroupsCallsListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    
+    let month = new Date().getMonth();
+    this.workgroupsCalls = this.workgroupsCalls.filter(w => w.clientActions.find(c => c.date.slice(3, 5) == "0"+ month) != null);
+    let dayofMonth = new Date().getDate();
+    this.sortActionClient(dayofMonth);
+    this.snitWorkGroupForClient();
   }
 
 }

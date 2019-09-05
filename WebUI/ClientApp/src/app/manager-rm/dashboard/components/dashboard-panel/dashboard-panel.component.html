@@ -1,16 +1,71 @@
 <mat-card class="mat-elevation-z1">
-    <mat-card-header>
-      <mat-card-title class="card-title">Главная</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content-wrapper">
-      <div class="total-contacts">
-        <h3>Сегодня</h3>
-        <div class="contacts-info mat-elevation-z2">
-          {{clientContactsAmount}}
-          <span>Звонков</span>
-        </div>
+  <mat-card-header>
+    <mat-card-title class="card-title">Главная</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="card-content-wrapper">
+    <div class="total-contacts">
+      <h3>Сегодня</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setToDayCall()}}
+        <span>Звонков</span>
       </div>
-    </mat-card-content>
+    </div>
+    <div class="total-contacts">
+      <h3>Неделя</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setToWeekCall()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+    <div class="total-contacts">
+      <h3>Месяц</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setToMonthkCall()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+    <div class="total-contacts">
+      <h3>Всего</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setAllCall()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-content class="card-content-wrapper">
+    <div class="total-contacts">
+      <h3>более 2,5 минут</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setMoreTwoFiveCall()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+    <div class="total-contacts">
+      <h3>
+        менее 2,5 минут, но более 10 с
+      </h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setMore10to2_5Call()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+    <div class="total-contacts">
+      <h3>
+        менее 10 с
+      </h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{setLes10SecCall()}}
+        <span>Звонков</span>
+      </div>
+    </div>
+    <div class="total-contacts">
+      <h3>Коллегам и руководителю</h3>
+      <div class="contacts-info mat-elevation-z2">
+        {{0}}
+        <span>Звонков</span>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>
 
 <hr style="opacity: 0.2">

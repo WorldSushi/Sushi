@@ -15,7 +15,8 @@ import { CallsDateFacade } from 'src/app/store/clients/facades/calls-date.select
 import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { IUser } from 'src/app/shared/models/user.model';
 import { UserFacade } from 'src/app/store/app/facades/user.facade';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { WorkgroupsFacade } from '../../../../store/workgroups/facades/workgroup.facade';
 
 @Component({
   selector: 'app-clients',
@@ -116,7 +117,9 @@ export class ClientsComponent implements OnInit {
         managerType: 10,
         date: new Date(),
         clientId: clientId,
-        managerId: 0
+        managerId: 0,
+        durations: 0,
+        isAccept: false
       })
     }
 
@@ -128,8 +131,54 @@ export class ClientsComponent implements OnInit {
     return new Date(year, month, 0).getDate();
   }
 
+  workgroups$: Observable<any> = this.workgroupsFacade.workgroups$
+    .pipe(
+      withLatestFrom(this.clientsFacade.clients$),
+      map(([workgroups, clients]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: clients.filter(client => workgroup.clientIds.some(clientId => client.id == clientId))
+          }
+        })
+      }),
+      withLatestFrom(this.callPlanFacade.callPlan$),
+      map(([workgroups, callPlans]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: workgroup.clients.map(client => {
+              return {
+                ...client,
+                callPlan: callPlans.find(callPlan => callPlan.clientId == client.id)
+                  ? callPlans.find(callPlan => callPlan.clientId == client.id)
+                  : { totalCalls: 0, escortManagerCalls: 0, regionalManagerCalls: 0 }
+              }
+            })
+          }
+        })
+      }),
+      withLatestFrom(this.tripPlanFacade.tripPlan$),
+      map(([workgroups, tripPlans]) => {
+        return workgroups.map(workgroup => {
+          return {
+            ...workgroup,
+            clients: workgroup.clients.map(client => {
+              return {
+                ...client,
+                tripPlan: tripPlans.find(callPlan => callPlan.clientId == client.id)
+                  ? tripPlans.find(callPlan => callPlan.clientId == client.id)
+                  : { hours: 0, completedType: 0 }
+              }
+            })
+          }
+        })
+      })
+    );
+
   constructor(public clientsFacade: ClientsFacade,
     public callPlanFacade: CallPlanFacade,
+    public workgroupsFacade: WorkgroupsFacade,
     public weekPlanFacade: WeekPlanFacade,
     public tripPlanFacade: TripPlanFacade,
     public managerCallsResult: ManagerCallsResultFacade,
@@ -139,6 +188,7 @@ export class ClientsComponent implements OnInit {
   ngOnInit() {
     this.userFacade.loadCurrentUser();
     this.clientsFacade.loadClientsForManager(1);
+    this.workgroupsFacade.loadWorkgroups();
     this.callPlanFacade.loadCallPlan(1);
     this.weekPlanFacade.loadWeekPlan(1);
     this.tripPlanFacade.loadTripPlan(1);

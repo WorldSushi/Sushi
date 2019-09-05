@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CallsResultDialogComponent } from '../calls-result-dialog/calls-result-dialog.component';
 import { ICallsDate } from '../../shared/models/calls-date.model';
 import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
+import { select } from '@ngrx/store';
 
 @Component({
   selector: 'app-calls-dates-dialog',
@@ -12,7 +13,7 @@ import { DateExtensionsService } from 'src/app/shared/services/date-extensions.s
 export class CallsDatesDialogComponent implements OnInit {
 
   displayedColumns: string[] = ['day', 'EMcall', 'RMcall'];
-  clientContacts: any[];
+  clientContacts: ICallsDate[];
   currentDate: string = new Date().toLocaleDateString();
   currentMonth: string = this.dateExtensionsService.getTitleOfCurrentMonth();
 
@@ -21,6 +22,22 @@ export class CallsDatesDialogComponent implements OnInit {
     const currentMonth = new Date().getMonth();
 
     return new Date(currentYear, currentMonth, numberOfDay).toLocaleDateString();
+  }
+
+  chngeColor(el: any) {
+    if (el == 10) {
+      return "rgba(255, 0, 0, 0.29)";
+    }
+    else if (el== 10) {
+      return "rgba(255, 0, 0, 0.29)"
+    }
+    else if (el== 40) {
+      return "rgba(76, 255, 0, 0.17)";
+    }
+    else if (el== 40) {
+      return "rgba(76, 255, 0, 0.17)";
+    }
+    return "";
   }
 
   save(){
@@ -65,7 +82,7 @@ getClientContacts(){
       clientId: this.data.clientId,
       date: this.getDate(i + 1).toString(),
       MScallType: 0,
-      RMcallType: 0 
+      RMcallType: 0
     })
   }
 
@@ -75,12 +92,19 @@ getClientContacts(){
       EMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).id : 0,
       RMclientContactId: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).id : 0,
       MScallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).contactType : 0,
-      RMcallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).contactType : 0
+      RMcallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).contactType : 0,
+      Durations: this.data.clientContacts.find(element => element.date == item.date) ? this.data.clientContacts.find(element => element.date == item.date).durations : 0,
+      IsAccept: this.data.clientContacts.find(element => element.date == item.date) ? this.data.clientContacts.find(element => element.date == item.date).isAccept : false
     }
   })
 
   return clientContacts;
-}
+  }
+
+  selectEl(el: ICallsDate): void {
+    let date = new Date(el.date.split(".")[2] + "/" + el.date.split(".")[1] + "/" + el.date.split(".")[0]);
+    this.clientContacts.find(c => new Date(c.date.split(".")[2] + "/" + c.date.split(".")[1] + "/" + c.date.split(".")[0]).getDate() == date.getDate()).isAccept = true;
+  }
 
 daysInMonth (month, year) {
     return new Date(year, month + 1, 0).getDate();

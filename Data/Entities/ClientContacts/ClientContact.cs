@@ -21,6 +21,8 @@ namespace Data.Entities.ClientContacts
 
         public ManagerType ManagerType { get; protected set; }
 
+        //public bool IsAccept { get; protected set; }
+
         protected ClientContact()
         {
 
@@ -32,6 +34,7 @@ namespace Data.Entities.ClientContacts
             Type = command.ContactType;
             ManagerId = command.ManagerId;
             ManagerType = command.ManagerType;
+            //IsAccept = command.IsAccept;
             Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         }
     }

@@ -7,6 +7,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { UserFacade } from 'src/app/store/app/facades/user.facade';
 import { ManagersFacade } from '../../../../store/managers/facades/manager.facade';
+import { IUser } from '../../../../shared/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,14 +29,10 @@ export class DashboardComponent implements OnInit {
     })
   )
 
-  managerId: number;
-
-  managerId$ = this.userFacade.currentUser$.pipe(
+  managerId$: Observable<IUser> = this.userFacade.currentUser$.pipe(
     withLatestFrom(this.userFacade.currentUser$),
-    map(([clientContacts, manager]) => {
-      this.managerId = clientContacts.id;
-      console.log(clientContacts.id);
-      console.log(manager.id);
+    map(([manager]) => {
+      return manager;
     })
   )
 
@@ -45,8 +42,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.userFacade.loadCurrentUser();
-    this.clientContactFacade.loadCallsDate(this.managerId);
-    this.callsDateFacade.loadCallsDate(this.managerId);
+
+    this.userFacade.currentUser$.pipe(
+      withLatestFrom(this.userFacade.currentUser$),
+      map(([manager]) => {
+        this.clientContactFacade.loadCallsDate(manager.id);
+        this.callsDateFacade.loadCallsDate(manager.id);
+      })
+    );
   }
 
 }

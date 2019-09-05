@@ -47,7 +47,7 @@ export class ClientListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
-  selectedGroup: number = -10;
+  selectedGroup: any = -10;
 
   displayedColumns: string[] = ['title', 'clientType', 'phone', 'legalEntity', 'numberOfCalls', 'numberOfShipments']
 
@@ -76,7 +76,7 @@ export class ClientListComponent implements OnInit {
 
   clientsTmp: IClient[] = [];
   clientsTmp1: IClient[] = [];
-  selectedWorkGroupChange(){
+  selectedWorkGroupChange() {
     if (this.selectedGroup == -10) {
       this.hidenDivFull = false;
       this.hidenDivSrrch = true;

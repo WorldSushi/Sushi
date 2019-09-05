@@ -12,5 +12,6 @@ namespace Data.DTO.Clients
         public ClientContactType ContactType { get; set; }
         public string Date { get; set; }
         public int ManagerId { get; set; }
+        public bool IsAccept { get; set; }
     }
 }

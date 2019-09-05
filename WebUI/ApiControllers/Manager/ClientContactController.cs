@@ -33,9 +33,9 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<Call> calls = _context.Set<Call>().Where(x => DateHelper.IsCurrentMonth(x.DateTime)).ToList();
+            List<Call> calls = _context.Set<Call>().ToList();
             var result = await _context.Set<ClientContact>() 
-                .Where(x => DateHelper.IsCurrentMonth(x.Date))
+                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new ClientContactDto()
                 {
                     Id = x.Id,
@@ -43,13 +43,11 @@ namespace WebUI.ApiControllers.Manager
                     ContactType = x.Type,
                     Date = x.Date.ToString("dd.MM.yyyy"),
                     ManagerType = x.ManagerType,
-                    ManagerId = x.ManagerId
+                    ManagerId = x.ManagerId,
+                    Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                    //IsAccept = x.IsAccept
                 }).ToListAsync();
-            for(int i = 0; i< result.Count; i++)
-            {
-                result[i].Durations = calls.Find(c => c.ClientId == result[i].ClientId).Duration;
-            }
-            return Ok(result);
+                return Ok(result);
         }
 
         [HttpPost]
@@ -98,5 +96,22 @@ namespace WebUI.ApiControllers.Manager
 
             return Ok(result);
         } 
+
+        private int GetAccount()
+        {
+            var response = new
+            {
+                Id = _accountInformationService.CurrentUser().Id,
+                Login = _accountInformationService.CurrentUser().Login,
+                Role = _accountInformationService.CurrentUser() is Data.Entities.Users.Admin
+                    ? "Admin"
+                    : "Manager",
+                Workgroup = _accountInformationService.CurrentUser() is Data.Entities.Users.Admin
+                    ? null
+                    : _context.Set<WorkGroup>()
+                        .FirstOrDefault(x => x.EscortManagerId == _accountInformationService.GetOperatorId() || x.RegionalManagerId == _accountInformationService.GetOperatorId())
+            };
+            return response.Id;
+        }
     }
 }

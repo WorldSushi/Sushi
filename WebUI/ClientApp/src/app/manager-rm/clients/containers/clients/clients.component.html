@@ -1,6 +1,7 @@
 <app-client-list 
     [clients]="clients$ | async"
     [manager]="manager$ | async"
+    [workgroup]="workgroups$ | async"
     (clientCreated)="createClient($event)"
     (clientUpdated)="updateClient($event)"
     (callPlanUpdated)="updateCallPlan($event)"

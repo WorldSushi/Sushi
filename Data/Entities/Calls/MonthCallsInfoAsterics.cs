@@ -3,7 +3,7 @@ using System;
 
 namespace Data.Entities.Calls
 {
-    public class MonthCallsInfoAsterics : Entity
+    public class MonthCallsInfoAsterics //: Entity
     {
         public int LastId { get; protected set; }
 

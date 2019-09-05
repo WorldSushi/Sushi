@@ -16,6 +16,7 @@ import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
 import { ninvoke } from 'q';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
+import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
 
 @Component({
   selector: 'app-client-list',
@@ -25,6 +26,7 @@ import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 })
 export class ClientListComponent implements OnInit {
 
+  @Input() workgroup: IWorkgroup[];
   @Input() clients: IClient[];
   @Input() manager: any;
 
@@ -44,7 +46,28 @@ export class ClientListComponent implements OnInit {
   dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   selectedGroup: any = -10;
-   
+
+  //actualLength: number;
+  actual: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //recordShipmentLength: number;
+  recordShipment: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //restaurantsLength: number;
+  restaurants: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //newOrResuscitatingLength: number;
+  newOrResuscitating: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //notDeterminedLength: number;
+  notDetermined: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //notDeterminedLength: number;
+  other: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  hidenDivFull = false;
+  hidenDivSrrch = true;
+
   displayedColumns: string[] = [
     'title', 
     'phone',
@@ -63,6 +86,40 @@ export class ClientListComponent implements OnInit {
     'RMresults.sum'   
   ];
 
+  clientsTmp: IClient[] = [];
+  clientsTmp1: IClient[] = [];
+  selectedWorkGroupChange() {
+    if (this.selectedGroup == -10) {
+      this.hidenDivFull = false;
+      this.hidenDivSrrch = true;
+    }
+    else {
+      this.clientsTmp = [];
+      this.clientsTmp1 = [];
+      for (let i = 0; i < this.workgroup[this.selectedGroup].clientIds.length; i++) {
+        this.clientsTmp = this.clients.filter(c => c.id == this.workgroup[this.selectedGroup].clientIds[i]);
+        for (let j = 0; j < this.clientsTmp.length; j++) {
+          this.clientsTmp1.push(this.clientsTmp[j]);
+        }
+      }
+      this.dataSource.data = this.clientsTmp1;
+      this.dataSource.paginator = this.paginator;
+      this.hidenDivFull = true;
+      this.hidenDivSrrch = false;
+    }
+  }
+
+  applyFilter(filterValue: string) {
+    if (filterValue != "") {
+      this.hidenDivFull = true;
+      this.hidenDivSrrch = false;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else {
+      this.hidenDivFull = false;
+      this.hidenDivSrrch = true;
+    }
+  }
 
   getTrackBy(index, item){
     return item.id;
@@ -86,8 +143,6 @@ export class ClientListComponent implements OnInit {
       this.dataSource.data = this.clients.filter(item => item.group == this.selectedGroup);
       this.dataSource.paginator = this.paginator;
     }
-
-    
   }
 
   openCreateClientForm() {
@@ -176,30 +231,29 @@ export class ClientListComponent implements OnInit {
       data: {
         title: client.title,
         MSresults: {
-          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length,
-          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10).length,
-          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10).length,
-          sum: client.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10).length
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10 && item.durations >= 150).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10 && item.durations >= 150).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10 && item.durations >= 150).length,
+          sum: client.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10 && item.durations >= 150).length
         },
         RMresults: {
-          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length,
-          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20).length,
-          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20).length,
-          sum: client.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20).length
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20 && item.durations >= 150).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20 && item.durations >= 150).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20 && item.durations >= 150).length,
+          sum: client.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20 && item.durations >= 150).length
         }
       }
                   
     })
   }
 
-  openCallsDates(client: IClient){
-
+  openCallsDates(client: IClient) {;
     let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
       width: '938px',
       data: {
         clientId: client.id,
         clientTitle: client.title,
-        clientContacts: client.clientContacts
+        clientContacts: client.clientContacts.filter(item => item.durations >= 150)
       } 
     })
 
@@ -208,7 +262,7 @@ export class ClientListComponent implements OnInit {
         let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
 
         let RMcontacts = [];
-        if(newContact.RMclientContactId == 0 && newContact.RMcallType != 0)
+        if (newContact.RMclientContactId == 0 && newContact.RMcallType != 0)
           RMcontacts.push({
             contactType: newContact.RMcallType,
             managerType: 20,
@@ -216,7 +270,7 @@ export class ClientListComponent implements OnInit {
           }) 
 
         let EMcontacts = []
-        if(newContact.EMclientContactId == 0 && newContact.MScallType != 0)
+        if (newContact.EMclientContactId == 0 && newContact.MScallType != 0)
           EMcontacts.push({
             contactType: newContact.MScallType,
             managerType: 10,
@@ -229,7 +283,6 @@ export class ClientListComponent implements OnInit {
           item.managerId = this.manager.id;
           this.callsDateCreated.emit(item);
         });
-
       }
     })
   }
@@ -338,15 +391,15 @@ export class ClientListComponent implements OnInit {
     }
   }
 
-  
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-      this.dataSource.data = this.clients;
-      this.dataSource.paginator = this.paginator;
+    this.actual.data = this.clients.filter(c => c.group == 10);
+    this.recordShipment.data = this.clients.filter(c => c.group == 20);
+    this.restaurants.data = this.clients.filter(c => c.group == 40);
+    this.newOrResuscitating.data = this.clients.filter(c => c.group == 30);
+    this.notDetermined.data = this.clients.filter(c => c.group == 0);
+    this.other.data = this.clients.filter(c => c.group == 50);
+    this.dataSource.data = this.clients;
+    this.dataSource.paginator = this.paginator;
   }
   
   constructor(public dialog: MatDialog) { }

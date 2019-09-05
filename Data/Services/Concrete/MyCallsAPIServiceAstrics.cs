@@ -34,9 +34,9 @@ namespace Data.Services.Concrete
             if (monthCallsInfo.Loading)
                 return;
 
-            //monthCallsInfo.Loading = true;
+            monthCallsInfo.Loading = true;
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             var callsLog = new List<CallLog>();
 
@@ -134,19 +134,19 @@ namespace Data.Services.Concrete
                     clientContacts.Add(clientContact);
             }
 
-            //monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
-            //_context.Set<CallLog>()
-            //    .AddRange(callsLog);
+            monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
+            _context.Set<CallLog>()
+                .AddRange(callsLog);
 
-            //_context.Set<CallInfo>()
-            //    .AddRange(calls);
+            _context.Set<CallInfo>()
+                .AddRange(calls);
 
-            //_context.Set<ClientContact>()
-            //    .AddRange(clientContacts);
+            _context.Set<ClientContact>()
+                .AddRange(clientContacts);
 
-            //monthCallsInfo.Loading = false;
+            monthCallsInfo.Loading = false;
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
         }
 
         private CallsDTOAstrics GetCallsByDate(int idLastCall, DateTime dateFrom, DateTime dateFor)

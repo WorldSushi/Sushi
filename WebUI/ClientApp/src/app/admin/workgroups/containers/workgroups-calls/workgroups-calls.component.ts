@@ -33,7 +33,7 @@ export class WorkgroupsCallsComponent implements OnInit {
     public callsFacade: CallsDateFacade,
     public managersFacade: ManagersFacade,
     public route: ActivatedRoute) {
-      
+    this.workgroupsFacade.loadWorkgroups();
       this.route.paramMap.pipe(
         switchMap(params => params.get('id'))
       )
@@ -52,8 +52,8 @@ export class WorkgroupsCallsComponent implements OnInit {
             clientId: client.id,
             clientTitle: client.title,
             clientType: client.clientType,
-            clientActions: calls.filter(call => call.clientId == client.id)           
-              
+            clientActions: calls.filter(call => call.clientId == client.id),
+            nameWorkGroup: ""
           }
         })
       }),

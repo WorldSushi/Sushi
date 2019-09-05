@@ -19,7 +19,7 @@ namespace Data
             modelBuilder.Entity<Call>();
             modelBuilder.Entity<CallLog>();
             modelBuilder.Entity<MonthCallsInfo>();
-            modelBuilder.Entity<MonthCallsInfoAsterics>();
+            //modelBuilder.Entity<MonthCallsInfoAsterics>();
             modelBuilder.Entity<CallInfo>();
 
             modelBuilder.Entity<CallPlan>();

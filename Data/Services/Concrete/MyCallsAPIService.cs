@@ -105,7 +105,7 @@ namespace Data.Services.Concrete
                 }));
             }
 
-            callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
+            //callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
 
             var managersPhone = _context.Set<Manager>()
                 .Select(x => new

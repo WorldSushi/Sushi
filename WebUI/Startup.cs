@@ -36,7 +36,7 @@ namespace WebUI
                 //"Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=SushiWorldSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
                 //"Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=sushiImportTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
                 "Data Source=31.31.196.202;Initial Catalog=u0720797_sushi_test;User ID=u0720797_sushi_test;Password=sushi_test1";
-                //@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\tets.mdf;Integrated Security=True;Connect Timeout=30";
+                //@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Db.mdf;Integrated Security=True;Connect Timeout=30";
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("Data")));
