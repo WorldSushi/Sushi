@@ -38,48 +38,53 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var managerId = _accountInformationService.GetOperatorId();
+            List<ClientDto> clientsDto = new List<ClientDto>();
+               var managerId = _accountInformationService.GetOperatorId();
 
             _myCallsApiService.SaveNewCalls();
             //_myCallsAPIServiceAstrics.SaveNewCalls();
 
-            var workGroup = await _context.Set<WorkGroup>()
-                .FirstOrDefaultAsync(x => x.RegionalManagerId == managerId
-                                          || x.EscortManagerId == managerId);
+            var workGroups = await _context.Set<WorkGroup>()
+                .Where(x => x.RegionalManagerId == managerId
+                                          || x.EscortManagerId == managerId).ToListAsync();
 
              var clientPhones = await _context.Set<ClientPhone>()
                 .ToListAsync();
-
-            var result = await _context.Set<ClientWorkGroup>()
-                .Where(x => x.WorkGroupId == workGroup.Id)
-                .Select(x => new ClientDto()
-                {
-                    Id = x.Client.Id,
-                    Title = x.Client.Title,
-                    LegalEntity = x.Client.LegalEntity,
-                    Phones = clientPhones.Where(z => z.ClientId == x.ClientId)
-                        .Select(z => new ClientPhoneDTO {
-                            Id = z.Id,
-                            Phone = z.Phone
-                        }).ToList(),
-                    ClientType = x.Client.ClientType,
-                    NumberOfCalls = x.Client.NumberOfCalls,
-                    NumberOfShipments = x.Client.NumberOfShipments,
-                    Group = (int)x.Client.Group,
-                    NomenclatureAnalysis = new NomenclatureAnalysis()
-                    {
-                        Id = 1,
-                        ReportPrevMonth = 50,
-                        ReportAvg5Months = 50,
-                        PrevMonth = 20,
-                        Avg5Months = 20,
-                        ClientId = x.Id
-                    }
-                })
-                .OrderByDescending(x => x.NumberOfCalls)
-                //.Take(50)
-                .ToListAsync();
-            return Ok(result);
+            foreach (WorkGroup workGroup in workGroups)
+            {
+                var result = await _context.Set<ClientWorkGroup>()
+                   .Where(x => x.WorkGroupId == workGroup.Id)
+                   .Select(x => new ClientDto()
+                   {
+                       Id = x.Client.Id,
+                       Title = x.Client.Title,
+                       LegalEntity = x.Client.LegalEntity,
+                       Phones = clientPhones.Where(z => z.ClientId == x.ClientId)
+                           .Select(z => new ClientPhoneDTO
+                           {
+                               Id = z.Id,
+                               Phone = z.Phone
+                           }).ToList(),
+                       ClientType = x.Client.ClientType,
+                       NumberOfCalls = x.Client.NumberOfCalls,
+                       NumberOfShipments = x.Client.NumberOfShipments,
+                       Group = (int)x.Client.Group,
+                       NomenclatureAnalysis = new NomenclatureAnalysis()
+                       {
+                           Id = 1,
+                           ReportPrevMonth = 50,
+                           ReportAvg5Months = 50,
+                           PrevMonth = 20,
+                           Avg5Months = 20,
+                           ClientId = x.Id
+                       }
+                   })
+                   .OrderByDescending(x => x.NumberOfCalls)
+                   //.Take(50)
+                   .ToListAsync();
+                clientsDto.AddRange(result);
+            }
+            return Ok(clientsDto);
         }
 
         [HttpPost]
