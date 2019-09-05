@@ -5,8 +5,7 @@
 <!--<form>-->
   <div class="form-group" *ngFor="let phone of getPhones()">
     <label for="">Номер клиента</label>
-    <input  [(ngModel)]="phone.phone" [ngModelOptions]="{standalone: true}">
-    <button class="deletePhone" (click)="removePhone(phone)"><i class="fas fa-times fa-2x"></i></button>
+    <input  [(ngModel)]="phone.phone" [ngModelOptions]="{standalone: true}" disabled>
   </div>
 <!--</form>-->
 

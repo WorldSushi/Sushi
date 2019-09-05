@@ -9,13 +9,13 @@
   </div>
   <div class="form-group">
     <label for="">Номер телефона</label>
-    <input placeholder="Телефон" [(ngModel)]="data.phones[0].phone" [ngModelOptions]="{standalone: true}">
+    <input placeholder="Телефон" [(ngModel)]="data.phones[0].phone" [ngModelOptions]="{standalone: true}" disabled>
     <button (click)="openClientPhones()">Еще номера</button>
   </div>      
 
   <div class="form-group">
     <label for="">Юридическое лицо</label>
-    <input placeholder="Юридическое лицо" [(ngModel)]="data.legalEntity" [ngModelOptions]="{standalone: true}">
+    <input placeholder="Юридическое лицо" [(ngModel)]="data.legalEntity" [ngModelOptions]="{standalone: true}" disabled>
   </div>
       
   <div class="form-group">
