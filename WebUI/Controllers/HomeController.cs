@@ -4,22 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Base.Helpers;
 using Data;
-using Data.Commands.ClientContacts.ClientContact;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
-using Data.Commands.Manager;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
-using Data.Entities.Users;
 using Data.Enums;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebUI.Controllers
 {
