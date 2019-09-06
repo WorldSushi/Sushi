@@ -26,6 +26,7 @@ export class WorkgroupsListComponent implements OnInit {
   @Output() workgroupChanged = new EventEmitter();
 
   contactsStandard = 160;
+  fullClientContacts: ICallsDate[];
 
   openWorkgroupDetail(workgroup: IWorkgroup) {
     console.log(this.freeManagers);
@@ -73,12 +74,28 @@ export class WorkgroupsListComponent implements OnInit {
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
-  getCallContactsByManager(managerId){
+  getCallContactsByManager(managerId) {
     return this.clientContacts.filter(item => item.managerId == managerId && item.contactType == 10).length;
   }
 
-  ngOnChanges(changes): void {
+  sortClientForMonthAndYear(month: number, year: number) {
+    this.clientContacts = [];
+    for (let i = 0; i < this.fullClientContacts.length; i++) {
+      let tmpDate = this.fullClientContacts[i].date.split(".");
+      if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == month
+        && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == year) {
+        this.clientContacts.push(this.fullClientContacts[i]);
+      }
+    }
+  }
 
+  ngOnChanges(changes): void {
+    if (this.fullClientContacts == null || this.fullClientContacts.length == 0) {
+      const toMonth = new Date().getMonth();
+      const toYear = new Date().getFullYear();
+      this.fullClientContacts = this.clientContacts;
+      this.sortClientForMonthAndYear(toMonth, toYear)
+    }
   }
 
   constructor(public dialog: MatDialog) { }
