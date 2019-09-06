@@ -14,7 +14,7 @@ export class EditWorkgroupDialogComponent implements OnInit {
     this.data.workgroup.escortManagerId == parseInt(this.data.workgroup.escortManagerId)
     this.data.workgroup.regionalManagerId == parseInt(this.data.workgroup.regionalManagerId)
 
-    if(this.data.workgroup.escortManagerId == 0 || this.data.workgroup.regionalManagerId == 0 || this.data.workgroup.escortManagerId == this.data.workgroup.regionalManagerId || this.data.workgroup.title == '')
+    if(this.data.workgroup.escortManagerId == 0 || this.data.workgroup.regionalManagerId == 0 || this.data.workgroup.title == '')
       return
 
     this.dialogRef.close(this.data);
@@ -25,7 +25,9 @@ export class EditWorkgroupDialogComponent implements OnInit {
   }
 
   getManagers() {
-    return [this.data.workgroup.escortManager, this.data.workgroup.regionalManager, ...this.data.managers]
+    //console.log(this.data.freeManagers);
+    console.log([...this.data.managers]);
+    return [...this.data.managers];
   }
 
   constructor(public dialogRef: MatDialogRef<EditWorkgroupDialogComponent>,

@@ -22,6 +22,7 @@ export class DetailWorkgroupDialogComponent implements OnInit {
   }
 
   openWorkgroupEdit() {
+    console.log(this.data.freeManagers);  
     const dialogRef = this.dialog.open(EditWorkgroupDialogComponent, {
       width: '725px',
       data: {
@@ -31,7 +32,8 @@ export class DetailWorkgroupDialogComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res){
+      if (res) {
+        console.log(res);
         this.workgroupChanged.emit(res);      
       }
 

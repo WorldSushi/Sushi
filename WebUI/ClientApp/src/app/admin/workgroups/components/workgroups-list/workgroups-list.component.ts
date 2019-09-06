@@ -27,7 +27,8 @@ export class WorkgroupsListComponent implements OnInit {
 
   contactsStandard = 160;
 
-  openWorkgroupDetail(workgroup: IWorkgroup){
+  openWorkgroupDetail(workgroup: IWorkgroup) {
+    console.log(this.freeManagers);
     const dialogRef = this.dialog.open(DetailWorkgroupDialogComponent, {
       width: '90%',
       height: '95%',

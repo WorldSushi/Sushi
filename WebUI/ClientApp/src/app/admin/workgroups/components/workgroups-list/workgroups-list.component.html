@@ -11,6 +11,7 @@
             {{workgroup.title}}
           </span>
           <div class="workgroup-actions">
+            <a class="plans" (click)="openWorkgroupDetail(workgroup)">Осмотр</a>
             <a class="plans" [routerLink]="workgroup.id ? ['plans', workgroup.id] : []">Планы</a>
             <a class="calls" [routerLink]="workgroup.id ? ['calls', workgroup.id] : []">Звонки</a>
           </div>

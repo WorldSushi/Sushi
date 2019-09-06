@@ -66,7 +66,7 @@ export class WorkgroupsComponent implements OnInit {
     );
 
   freeClients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(map(res => res.filter(item => !item.hasWorkgroup)))
-  freeManagers$: Observable<IManager[]> = this.managersFacade.managers$.pipe(map(res => res.filter(item => item.workgroupId == 0 || item.workgroupId == null)))
+  freeManagers$: Observable<IManager[]> = this.managersFacade.managers$;
   clientContacts$: Observable<ICallsDate[]> = this.callsDateFacade.callsDate$;
 
   addClientToWorkGroup(data){
