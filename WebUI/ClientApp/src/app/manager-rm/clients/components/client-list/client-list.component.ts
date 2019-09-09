@@ -38,6 +38,7 @@ export class ClientListComponent implements OnInit {
   @Output() weekPlanUpdated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() weekPlanCreated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() weekPlanFactAdded: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekGet: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
   @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
   @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
   @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
@@ -67,6 +68,10 @@ export class ClientListComponent implements OnInit {
 
   hidenDivFull = false;
   hidenDivSrrch = true;
+  fullClientContacts: ICallsDate[];
+  dateCollections: string[] = [];
+  numberMonthe: number = 0;
+  numberYear: number = 0;
 
   displayedColumns: string[] = [
     'title', 
@@ -400,6 +405,7 @@ export class ClientListComponent implements OnInit {
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
     this.dataSource.paginator = this.paginator;
+    console.log(this.clients);
   }
   
   constructor(public dialog: MatDialog) { }

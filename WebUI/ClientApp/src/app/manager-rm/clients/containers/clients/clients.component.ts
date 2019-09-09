@@ -38,6 +38,10 @@ export class ClientsComponent implements OnInit {
   );
   manager$: Observable<IUser> = this.userFacade.currentUser$;
 
+  getWeek(date: string) {
+    this.weekPlanFacade.loadWeekPlan(1);
+  }
+
   createClient(client: IClient){ 
     this.clientsFacade.createClient(client);
   }

@@ -15,7 +15,7 @@ export class ManagerCallsResultsService {
     }
 
     getManagerCallsResults(managerId: number): Observable<IManagerCallsResult[]>{
-        return this.http.get<IManagerCallsResult[]>(this.API_URL);
+      return this.http.get<IManagerCallsResult[]>(this.API_URL + "?date=02.09.2019");
     }
 
     createManagerCallsResult(managerCallsResult: IManagerCallsResult): Observable<IManagerCallsResult> {

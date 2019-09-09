@@ -26,9 +26,12 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string date)
         {
             List<Call> calls = _context.Set<Call>().ToList();
+
+            var result1 =  _context.Set<ClientContact>().Where(x => DateHelper.MonthAndYearEqual(DateTime.Parse(date), x.Date)).ToList();
+
             var result = await _context.Set<ClientContact>()
                 .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .GroupBy(x => x.ClientId)

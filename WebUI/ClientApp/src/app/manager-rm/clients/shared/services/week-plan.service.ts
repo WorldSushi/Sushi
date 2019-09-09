@@ -15,7 +15,7 @@ export class WeekPlansService {
     }
 
     getWeekPlans(managerId: number): Observable<IWeekPlan[]>{
-        return this.http.get<IWeekPlan[]>(this.API_URL);
+      return this.http.get<IWeekPlan[]>(this.API_URL);
     }
 
     createWeekPlan(weekPlan: IWeekPlan): Observable<IWeekPlan> {
