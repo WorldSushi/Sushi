@@ -6,6 +6,7 @@ import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { CreateWorkgroupDialogComponent } from '../../dialogs/create-workgroup-dialog/create-workgroup-dialog.component';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class WorkgroupsListComponent implements OnInit {
 
   contactsStandard = 160;
   fullClientContacts: ICallsDate[];
+  dateCollections: string[] = [];
 
   openWorkgroupDetail(workgroup: IWorkgroup) {
     console.log(this.freeManagers);
@@ -74,6 +76,32 @@ export class WorkgroupsListComponent implements OnInit {
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
+  getAmountContactsToWeek(managerId: number) {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == managerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString()).length;;
+    }
+    return countWeekCall;
+  }
+
+  getAmountContactsToMonth(managerId: number) {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == managerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString()).length;;
+    }
+    return countWeekCall;
+  }
+
   getCallContactsByManager(managerId) {
     return this.clientContacts.filter(item => item.managerId == managerId && item.contactType == 10).length;
   }
@@ -87,14 +115,41 @@ export class WorkgroupsListComponent implements OnInit {
         this.clientContacts.push(this.fullClientContacts[i]);
       }
     }
+    //this.initDateArchiv();
+  }
+
+  toFormatDate(dateSelect) {
+    let partDate = dateSelect.split('.');
+    let date = new Date(partDate[1] + "/" + partDate[0]);
+    this.sortClientForMonthAndYear(date.getMonth(), date.getFullYear());
+  }
+
+  initDateArchiv() {
+    if (this.fullClientContacts.length != 0 && this.dateCollections.length == 0) {
+      this.dateCollections = [];
+      let firstDate = new Date();
+      for (let i = 0; i < this.fullClientContacts.length; i++) {
+        let tmpDate = this.fullClientContacts[i].date.split(".");
+        if (firstDate > new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0])) {
+          firstDate = new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]);
+        }
+      }
+      for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
+        for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
+          let date = new Date(i + "/0" + (j + 1));
+          this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+        }
+      }
+    }
   }
 
   ngOnChanges(changes): void {
-    if (this.fullClientContacts == null || this.fullClientContacts.length == 0) {
+    if (this.fullClientContacts == null || this.fullClientContacts.length == 0 || this.fullClientContacts.length == this.clientContacts.length) {
       const toMonth = new Date().getMonth();
       const toYear = new Date().getFullYear();
       this.fullClientContacts = this.clientContacts;
       this.sortClientForMonthAndYear(toMonth, toYear)
+      this.initDateArchiv();
     }
   }
 

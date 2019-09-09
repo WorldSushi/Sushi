@@ -1,6 +1,9 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-header>
     <mat-card-title class="card-title">Рабочие группы</mat-card-title>
+    <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+    </select>
     <button class="addEntity" (click)="openWorkgroupCreate()" >+ Добавить группу</button>
   </mat-card-header>
   <mat-card-content>
@@ -21,20 +24,26 @@
             <thead>
               <tr>
                 <th>Сегодня</th>
+                <th>Неделя</th>
+                <th>Месяц</th>
                 <th></th>
                 <th>Менеджер</th>
-                <th>Эффективность</th>
+                <th>Эффективность звонков</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{{getAmountContactsToday(workgroup.escortManager?.id)}}</td>
+                <td>{{getAmountContactsToWeek(workgroup.escortManager?.id)}}</td>
+                <td>{{getAmountContactsToMonth(workgroup.escortManager?.id)}}</td>
                 <td>МС</td>
                 <td>{{workgroup.escortManager?.login}}</td>
                 <td>{{(getCallContactsByManager(workgroup.escortManager?.id) / 160 * 100).toFixed(1)}}%</td>
               </tr>
               <tr>
                 <td>{{getAmountContactsToday(workgroup.regionalManager?.id)}}</td>
+                <td>{{getAmountContactsToWeek(workgroup.escortManager?.id)}}</td>
+                <td>{{getAmountContactsToMonth(workgroup.escortManager?.id)}}</td>
                 <td>РМ</td>
                 <td>{{workgroup.regionalManager?.login}}</td>
                 <td>{{(getCallContactsByManager(workgroup.regionalManager?.id) / 176 * 100).toFixed(1)}}%</td>
