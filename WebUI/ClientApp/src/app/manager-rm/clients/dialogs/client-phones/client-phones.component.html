@@ -5,20 +5,19 @@
 <form>
   <div class="form-group" *ngFor="let phone of getPhones()">
     <label for="">Номер клиента</label>
-    <input  [(ngModel)]="phone.phone" [ngModelOptions]="{standalone: true}">
-    <button class="deletePhone" (click)="removePhone(phone)"><i class="fas fa-times fa-2x"></i></button>
+    <input  [(ngModel)]="phone.phone" [ngModelOptions]="{standalone: true}"  disabled>
+    <!--<button class="deletePhone" (click)="removePhone(phone)"><i class="fas fa-times fa-2x"></i></button>-->
   </div>
        
 </form>
 
-<div class="add-entity">
+<!--<div class="add-entity">
     <button class="add-phone" (click)="addPhone()">Добавить Телефон</button>
-</div>
+</div>-->
 
   
 <div class="dialog-actions">
   <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
   <button mat-raised-button (click)="close()">Закрыть</button>
 </div>
-  
   
