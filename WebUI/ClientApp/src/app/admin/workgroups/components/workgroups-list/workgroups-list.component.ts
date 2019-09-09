@@ -29,6 +29,8 @@ export class WorkgroupsListComponent implements OnInit {
   contactsStandard = 160;
   fullClientContacts: ICallsDate[];
   dateCollections: string[] = [];
+  numberMonthe: number = 0;
+  numberYear: number = 0;
 
   openWorkgroupDetail(workgroup: IWorkgroup) {
     console.log(this.freeManagers);
@@ -92,8 +94,8 @@ export class WorkgroupsListComponent implements OnInit {
 
   getAmountContactsToMonth(managerId: number) {
     var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    var firstday = new Date(this.numberYear, this.numberMonthe, 1);
+    var lastday = new Date(this.numberYear, this.numberMonthe + 1, 0);
     let clientContactsSort = this.clientContacts.filter(item => item.managerId == managerId);
     let countWeekCall = 0;
     for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
@@ -115,12 +117,13 @@ export class WorkgroupsListComponent implements OnInit {
         this.clientContacts.push(this.fullClientContacts[i]);
       }
     }
-    //this.initDateArchiv();
   }
 
   toFormatDate(dateSelect) {
     let partDate = dateSelect.split('.');
     let date = new Date(partDate[1] + "/" + partDate[0]);
+    this.numberMonthe = date.getMonth();
+    this.numberYear = date.getFullYear();
     this.sortClientForMonthAndYear(date.getMonth(), date.getFullYear());
   }
 
@@ -147,6 +150,8 @@ export class WorkgroupsListComponent implements OnInit {
     if (this.fullClientContacts == null || this.fullClientContacts.length == 0 || this.fullClientContacts.length == this.clientContacts.length) {
       const toMonth = new Date().getMonth();
       const toYear = new Date().getFullYear();
+      this.numberMonthe = toMonth;
+      this.numberYear = toYear;
       this.fullClientContacts = this.clientContacts;
       this.sortClientForMonthAndYear(toMonth, toYear)
       this.initDateArchiv();

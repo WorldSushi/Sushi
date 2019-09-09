@@ -18,6 +18,11 @@ export class WorkgroupsCallsListComponent implements OnInit {
 
   days: number[] = this.getDaysInMonth();
 
+  dateCollections: string[] = [];
+  fullworkgroupsCalls: IWorkgroupCalls[];
+  numberMonthe: number = 0;
+  numberYear: number = 0;
+
   getDaysInMonth(){
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
@@ -33,9 +38,9 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return result;
   }
 
-  getClientContactType(day, clientActions = [], clientId){
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth();
+  getClientContactType(day, clientActions = [], clientId) {
+    const year = this.numberYear;
+    const month = this.numberMonthe;
 
     const date = new Date(year, month, day).toLocaleDateString();
     let result: any[] = clientActions.filter(item => item.date == date);
@@ -75,12 +80,35 @@ export class WorkgroupsCallsListComponent implements OnInit {
         for (let j = 0; j < this.workgroupsCalls[i].clientActions.length; j++) {
           let tmpDate = this.workgroupsCalls[i].clientActions[j].date.split(".");
           if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getDate() == day
-            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == new Date().getMonth()
-            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == new Date().getFullYear()) {
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == this.numberMonthe
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == this.numberYear) {
             workGruope.unshift(this.workgroupsCalls[i]);
             break;
           }
           else if (j == this.workgroupsCalls[i].clientActions.length-1) {
+            workGruope.push(this.workgroupsCalls[i]);
+          }
+        }
+      }
+      else {
+        workGruope.push(this.workgroupsCalls[i]);
+      }
+    }
+    this.workgroupsCalls = workGruope;
+  }
+
+  sortActionClientMonte(month: number, year: number) {
+    let workGruope = [];
+    for (let i = 0; i < this.workgroupsCalls.length; i++) {
+      if (this.workgroupsCalls[i].clientActions != null && this.workgroupsCalls[i].clientActions.length != 0) {
+        for (let j = 0; j < this.workgroupsCalls[i].clientActions.length; j++) {
+          let tmpDate = this.workgroupsCalls[i].clientActions[j].date.split(".");
+          if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == new Date().getMonth()
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == new Date().getFullYear()) {
+            workGruope.unshift(this.workgroupsCalls[i]);
+            break;
+          }
+          else if (j == this.workgroupsCalls[i].clientActions.length - 1) {
             workGruope.push(this.workgroupsCalls[i]);
           }
         }
@@ -101,10 +129,10 @@ export class WorkgroupsCallsListComponent implements OnInit {
   }
 
   snitWorkGroupForClient() {
-    for (let i = 0; i < this.workgroupsCalls.length; i++) {
-      let workgroup = this.workgroups.find(w => w.clientIds.find(c => c == this.workgroupsCalls[i].clientId) != null)
+    for (let i = 0; i < this.fullworkgroupsCalls.length; i++) {
+      let workgroup = this.workgroups.find(w => w.clientIds.find(c => c == this.fullworkgroupsCalls[i].clientId) != null)
       if (workgroup != null) {
-        this.workgroupsCalls[i].nameWorkGroup = workgroup.title;
+        this.fullworkgroupsCalls[i].nameWorkGroup = workgroup.title;
       }
     }
   }
@@ -123,6 +151,50 @@ export class WorkgroupsCallsListComponent implements OnInit {
      return unique;
   }
 
+  initDateArchiv() {
+    if (this.fullworkgroupsCalls.length != 0 && this.dateCollections.length == 0) {
+      this.dateCollections = [];
+      let firstDate = new Date();
+      for (let i = 0; i < this.fullworkgroupsCalls.length; i++) {
+        for (let j = 0; j < this.fullworkgroupsCalls[i].clientActions.length; j++) {
+          let tmpDate = this.fullworkgroupsCalls[i].clientActions[j].date.split(".");
+          if (firstDate > new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0])) {
+            firstDate = new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]);
+          }
+        }
+      }
+      for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
+        for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
+          let date = new Date(i + "/0" + (j + 1));
+          this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+        }
+      }
+    }
+  }
+
+  sortClientForMonthAndYear(month: number, year: number) {
+    this.workgroupsCalls = [];
+    for (let i = 0; i < this.fullworkgroupsCalls.length; i++) {
+      for (let j = 0; j < this.fullworkgroupsCalls[i].clientActions.length; j++) {
+        let tmpDate = this.fullworkgroupsCalls[i].clientActions[j].date.split(".");
+        if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == month
+          && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == year) {
+          this.workgroupsCalls.push(this.fullworkgroupsCalls[i]);
+          break;
+        }
+      }
+    }
+    console.log(this.workgroupsCalls);
+  }
+
+  toFormatDate(dateSelect) {
+    let partDate = dateSelect.split('.');
+    let date = new Date(partDate[1] + "/" + partDate[0]);
+    this.numberMonthe = date.getMonth();
+    this.numberYear = date.getFullYear();
+    this.sortClientForMonthAndYear(date.getMonth(), date.getFullYear());
+  }
+
   constructor() { }
 
   ngOnInit() {
@@ -130,11 +202,18 @@ export class WorkgroupsCallsListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let month = new Date().getMonth();
-    this.workgroupsCalls = this.workgroupsCalls.filter(w => w.clientActions.find(c => c.date.slice(3, 5) == "0"+ month) != null);
-    let dayofMonth = new Date().getDate();
-    this.sortActionClient(dayofMonth);
-    this.snitWorkGroupForClient();
+    if (this.fullworkgroupsCalls == null || this.fullworkgroupsCalls.length == 0 || this.fullworkgroupsCalls.length == this.workgroupsCalls.length) {
+      const toMonth = new Date().getMonth();
+      const toYear = new Date().getFullYear();
+      this.numberMonthe = toMonth;
+      this.numberYear = toYear;
+      let dayofMonth = new Date().getDate();
+      this.fullworkgroupsCalls = this.workgroupsCalls;
+      this.sortClientForMonthAndYear(toMonth, toYear)
+      this.sortActionClient(dayofMonth);
+      this.snitWorkGroupForClient();
+      this.initDateArchiv();
+    }
   }
 
 }
