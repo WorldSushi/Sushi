@@ -51,11 +51,11 @@ export class DashboardPanelComponent implements OnInit {
     var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
     var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
     let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
-    let countWeekCall = 0;
+    let countMonthCall = 0;
     for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString()).length;;
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString()).length;;
     }
-    return countWeekCall;
+    return countMonthCall;
   }
 
   setMoreTwoFiveCall(): number {
@@ -63,14 +63,143 @@ export class DashboardPanelComponent implements OnInit {
       .filter(item => item.durations > 149).length;
   }
 
+  setMoreTwoFiveCallMonth(): number {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countMonthCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations > 149).length;;
+    }
+    return countMonthCall;
+  }
+
+  setMoreTwoFiveCallWeek(): number {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations > 149).length;;
+    }
+    return countWeekCall;
+  }
+
+  setMoreTwoFiveCallDays(): number {
+    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.durations > 149).length;
+  }
+
   setMore10to2_5Call(): number {
     return this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId)
       .filter(item => item.durations < 149 && item.durations > 10).length;
   }
 
+  setMore10to2_5CallMonth(): number {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countMonthCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations < 149 && item.durations > 10).length;;
+    }
+    return countMonthCall;
+  }
+
+  setMore10to2_5CallWeek(): number {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations < 149 && item.durations > 10).length;;
+    }
+    return countWeekCall;
+  }
+
+  setMore10to2_5CallDays(): number {
+    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.durations < 149 && item.durations > 10).length;
+  }
+
   setLes10SecCall(): number {
     return this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId)
       .filter(item => item.durations < 10).length;
+  }
+
+  setLes10SecCallMonth(): number {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countMonthCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations < 10).length;;
+    }
+    return countMonthCall;
+  }
+
+  setLes10SecCallWeek(): number {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.durations < 10).length;;
+    }
+    return countWeekCall;
+  }
+
+  setLes10SecCallDays(): number {
+    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.durations < 10).length;
+  }
+
+  setDevelopmentCall(): number {
+    return this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId)
+      .filter(item => item.contactType == 40).length;
+  }
+
+  setDevelopmentCallMonth(): number {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countMonthCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 40).length;;
+    }
+    return countMonthCall;
+  }
+
+  setDevelopmentCallWeek(): number {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 40).length;;
+    }
+    return countWeekCall;
+  }
+
+  setDevelopmentCallDays(): number {
+    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 40).length;
   }
 
   setAllCall(): number {
