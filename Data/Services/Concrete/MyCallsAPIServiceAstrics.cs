@@ -81,10 +81,15 @@ namespace Data.Services.Concrete
 
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
                 ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
-                  && clientPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
+                  && (clientPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber)) || x.ClientNumber == "143")
                 : false).ToList();
 
+            var b = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
+                ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
+                  && x.ClientNumber.Length == 3 && x.ClientNumber != "143" : false).ToList();
+
             var calls = new List<CallInfo>();
+            var calls1 = new List<CallInfo>();
             var clientContacts = new List<ClientContact>();
 
             var workGroups = _context.Set<WorkGroup>().ToList();
@@ -94,6 +99,26 @@ namespace Data.Services.Concrete
             foreach (var call in a)
             {
                 calls.Add(new CallInfo()
+                {
+                    Call = new Call()
+                    {
+                        ClientId = clientPhone
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
+                        ManagerId = managersPhone
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
+                        Duration = call.Duration,
+                        Recording = call.Recording,
+                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
+                    },
+                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                           && x.SrcNumber == call.SrcNumber
+                                                           && x.StartTime == call.StartTime)
+                });
+            }
+
+            foreach (var call in b)
+            {
+                calls1.Add(new CallInfo()
                 {
                     Call = new Call()
                     {
@@ -134,12 +159,37 @@ namespace Data.Services.Concrete
                     clientContacts.Add(clientContact);
             }
 
+            foreach (var call in calls1)
+            {
+                var clientContact = new ClientContact(
+                    new ClientContactCreate()
+                    {
+                        ClientId = call.Call.ClientId,
+                        ContactType = ClientContactType.ManagerCall,
+                        ManagerId = call.Call.ManagerId,
+                        ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined
+                    });
+
+                clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+
+                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
+                                             && x.ManagerId == clientContact.ManagerId
+                                             && x.ClientId == clientContact.ClientId))
+                    clientContacts.Add(clientContact);
+            }
+
             monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
             _context.Set<CallLog>()
                 .AddRange(callsLog);
 
             _context.Set<CallInfo>()
                 .AddRange(calls);
+            _context.Set<CallInfo>()
+                .AddRange(calls1);
 
             _context.Set<ClientContact>()
                 .AddRange(clientContacts);

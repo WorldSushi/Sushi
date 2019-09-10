@@ -127,6 +127,7 @@ namespace Data.Services.Concrete
                 : false).ToList();
 
             var calls = new List<CallInfo>();
+            var calls1 = new List<CallInfo>();
             var clientContacts = new List<ClientContact>();
 
             var workGroups = _context.Set<WorkGroup>().ToList();

@@ -28,7 +28,7 @@ namespace WebUI.Controllers
             {
                 _userService.CreateAdmin();
             }
-            return View();
+            return View(); //Redirect("/Home/ImportFileClients");
         }
 
         [HttpPost]

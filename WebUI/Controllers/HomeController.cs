@@ -13,6 +13,8 @@ using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
 using Data.Enums;
 using Data.Services.Abstract;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -90,7 +92,131 @@ namespace WebUI.Controllers
         [HttpGet]
         public IActionResult ImportFileClients()
         {
+            var userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>()
+                  .Where(x => x.UserId != 1 && x.UserId != 11)
+                  .ToList();
+
+            var clientPhones = new List<ClientPhone>();
+            using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open($"R.xlsx", true))
+            {
+                SharedStringTable sharedStringTable = spreadSheet.WorkbookPart.SharedStringTablePart.SharedStringTable;
+                foreach (WorksheetPart worksheetPart in spreadSheet.WorkbookPart.WorksheetParts)
+                {
+                    foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
+                    {
+                        if (sheetData.HasChildren)
+                        {
+                            string table = null;
+                            foreach (Row row in sheetData.Elements<Row>())
+                            {
+                                if (row.ToList().Count > 7)
+                                {
+                                    try
+                                    {
+                                        string tmp = null;
+                                        var Cells = row.Elements<Cell>().ToList();
+                                        if (table == "Наименование")
+                                        {
+                                            var client = _context.Set<Client>()
+                                                .Add(new Client(new ClientCreate()
+                                                {
+                                                    ClientType = ClientTypes.Middle1,
+                                                    Title = GetData(Cells[0], sharedStringTable),
+                                                    LegalEntity = GetData(Cells[1], sharedStringTable),
+                                                    NumberOfCalls = GetNumberOfCalls(GetData(Cells[4], sharedStringTable)),
+                                                    NumberOfShipments = GetNumberOfShipments(GetData(Cells[5], sharedStringTable))
+                                                })).Entity;
+                                            if (GetData(Cells[8], sharedStringTable) != "")
+                                            {
+                                                var e = GetData(Cells[8], sharedStringTable).Split(',');
+                                                foreach (var phone in e)
+                                                {
+                                                    string newPhone = Regex.Replace(phone, @"[^0-9]", "");
+
+                                                    if (newPhone.Length == 10)
+                                                    {
+                                                        clientPhones.Add(new ClientPhone()
+                                                        {
+                                                            Client = client,
+                                                            Phone = newPhone
+                                                        });
+                                                    }
+                                                    else if (newPhone.Length == 11)
+                                                    {
+                                                        newPhone = newPhone.Substring(1);
+                                                        clientPhones.Add(new ClientPhone()
+                                                        {
+                                                            Client = client,
+                                                            Phone = newPhone
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                            var clientInfo = _context.Set<ClientInfo>()
+                                                .Add(new ClientInfo(client, Guid.Parse(GetData(Cells[10], sharedStringTable)), GetData(Cells[8], sharedStringTable)));
+                                            _context.SaveChanges();
+
+                                            if (GetData(Cells[11], sharedStringTable) != "")
+                                            {
+                                                var managersGuidStr = GetData(Cells[11], sharedStringTable).Split(',');
+                                                var managersGuid = new List<Guid>();
+                                                foreach (var str in managersGuidStr)
+                                                {
+                                                    managersGuid.Add(Guid.Parse(str));
+                                                }
+
+                                                var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
+
+                                                if (userInfo != null)
+                                                {
+                                                    var workGroup = _context.Set<WorkGroup>()
+                                                        .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
+                                                                             || x.EscortManagerId == userInfo.UserId);
+
+                                                    workGroup.BindClient(new BindClient()
+                                                    {
+                                                        ClientId = client.Id,
+                                                        WorkgroupId = workGroup.Id
+                                                    });
+                                                }
+                                            }
+                                            continue;
+                                        }
+                                        table = GetData(Cells[0], sharedStringTable);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                spreadSheet.Close();
+            }
             return View();
+        }
+
+        private string GetData(Cell cell, SharedStringTable sharedStringTable)
+        {
+            string data = null;
+            if (cell.DataType != null)
+            {
+                if (cell.DataType == CellValues.SharedString)
+                {
+                    data = sharedStringTable.ElementAt(Int32.Parse(cell.InnerText)).InnerText;
+                }
+                else
+                {
+                    data = cell.InnerText;
+                }
+            }
+            else
+            {
+                data = cell.InnerText;
+            }
+            return data;
         }
 
         [HttpPost]
@@ -99,11 +225,11 @@ namespace WebUI.Controllers
             BinaryReader b = new BinaryReader(file.OpenReadStream());
             byte[] data = b.ReadBytes(Convert.ToInt32(file.Length));
 
-            string result = Encoding.UTF8.GetString(data);
+            string result = Encoding.Default.GetString(data);
             string[] lines = result.Split('\r');
 
 
-            var userInfos = _context.Set<UserInfo>()
+            var userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>()
                 .Where(x => x.UserId != 1 && x.UserId != 11)
                 .ToList();
 
@@ -627,10 +753,10 @@ namespace WebUI.Controllers
 
         private NumberOfCalls GetNumberOfCalls(string numberStr)
         {
-            if (numberStr == "")
+            if (numberStr == "" || numberStr == null)
                 return NumberOfCalls.WithoutType;
 
-            var number = float.Parse(numberStr);
+            var number = float.Parse(numberStr.Replace('.', ','));
 
             if (number <= 0)
                 return NumberOfCalls.WithoutType;
@@ -654,10 +780,10 @@ namespace WebUI.Controllers
 
         private NumberOfShipments GetNumberOfShipments(string numberStr)
         {
-            if (numberStr == "")
+            if (numberStr == "" || numberStr == null)
                 return NumberOfShipments.WithoutType;
 
-            var number = float.Parse(numberStr);
+            var number = float.Parse(numberStr.Replace('.', ','));
 
             if (number <= 0)
                 return NumberOfShipments.WithoutType;

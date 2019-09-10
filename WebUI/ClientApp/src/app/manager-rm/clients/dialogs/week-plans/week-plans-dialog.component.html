@@ -14,13 +14,13 @@
       </div>
       <div class="dialog-section-body">
         <div class="planned">
-          <small>План</small>
+          <small>План - Звонки</small>
           <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan" (focusout)="addNewWeekPlan(selectedMSWeek)">{{selectedMSWeek.plan}}</textarea>
         </div>
         
   
         <div class="fact">
-          <small>Факт</small>
+          <small>Факт - Звонки</small>
           <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact" (focusout)="addFactToWeekPlan(selectedMSWeek)">{{selectedMSWeek.fact}}</textarea>
         </div>
       </div>
@@ -32,11 +32,11 @@
       </div>
       <div class="dialog-section-body">
         <div class="planned">
-          <small>План</small>
+          <small>План - Звонки/Компания/</small>
           <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan" (focusout)="addNewWeekPlan(selectedRMWeek)">{{selectedRMWeek.plan}}</textarea>
         </div>
         <div class="fact">
-          <small>Факт</small>
+          <small>Факт - Звонки/Компания</small>
           <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact" (focusout)="addFactToWeekPlan(selectedRMWeek)">{{selectedRMWeek.fact}}</textarea>
         </div>
       </div>
@@ -48,11 +48,11 @@
       <thead>
         <tr>
           <th style="background-color: #F1F8FF" width="50"></th>
-          <th style="background-color: #ECF5FF" (click)="setWeeks(1)"><span>Неделя 1</span></th>
-          <th style="background-color: #EFF6FF" (click)="setWeeks(2)">Неделя 2</th>
-          <th style="background-color: #E2F0FF" (click)="setWeeks(3)">Неделя 3</th>
-          <th style="background-color: #DBECFF" (click)="setWeeks(4)">Неделя 4</th>
-          <th style="background-color: #D3E8FF" (click)="setWeeks(5)">Неделя 5</th>
+          <th style="background-color: #ECF5FF" (click)="setWeeks(1)"><span>Неделя 1  </span> <br /> <span>С {{firstdayOneWeek}} - До {{lastdayOneWeek}}</span></th>
+          <th style="background-color: #EFF6FF" (click)="setWeeks(2)"><span>Неделя 2  </span> <br /> <span>С {{firstdayTwoWeek}} - До {{lastdayTwoWeek}}</span></th>
+          <th style="background-color: #E2F0FF" (click)="setWeeks(3)"><span>Неделя 3  </span> <br /> <span>С {{firstdaythreeWeek}} - До {{lastdaythreeWeek}}</span></th>
+          <th style="background-color: #DBECFF" (click)="setWeeks(4)"><span>Неделя 4  </span> <br /> <span>С {{firstdayFourWeek}} - До {{lastdayFourWeek}}</span></th>
+          <th style="background-color: #D3E8FF" (click)="setWeeks(5)"><span>Неделя 5  </span> <br /> <span>С {{firstdayFiveWeek}} - До {{lastdayFiveWeek}}</span></th>
         </tr>
       </thead>
       <tbody>

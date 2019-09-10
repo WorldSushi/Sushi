@@ -5,6 +5,7 @@ using Data.Commands.Clients;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Entities.OneCInfo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,6 @@ namespace WebUI.ApiControllers.Admin
         {
             var clientPhones = await _context.Set<ClientPhone>()
                 .ToListAsync();
-
             var result = await _context.Set<Client>()
                 .Select(x => new ClientDto()
                 {

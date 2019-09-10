@@ -10,6 +10,8 @@
 
         WhatsUp = 30,
 
-        AcceptCall = 40
+        AcceptCall = 40,
+
+        ManagerCall = 50
     }
 }

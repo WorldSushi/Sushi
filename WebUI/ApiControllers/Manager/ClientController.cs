@@ -41,7 +41,7 @@ namespace WebUI.ApiControllers.Manager
             List<ClientDto> clientsDto = new List<ClientDto>();
                var managerId = _accountInformationService.GetOperatorId();
 
-            _myCallsApiService.SaveNewCalls();
+            //_myCallsApiService.SaveNewCalls();
             //_myCallsAPIServiceAstrics.SaveNewCalls();
 
             var workGroups = await _context.Set<WorkGroup>()

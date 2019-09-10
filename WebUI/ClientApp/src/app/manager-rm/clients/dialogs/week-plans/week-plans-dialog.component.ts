@@ -14,6 +14,22 @@ export class WeekPlansDialogComponent implements OnInit {
 
   displayedColumns: string[] = ['Number', 'MSplanned', 'RMplanned', 'MSfact', 'RMfact'];
 
+
+  firstdayOneWeek: any;
+  lastdayOneWeek: any;
+
+  firstdayTwoWeek: any;
+  lastdayTwoWeek: any;
+
+  firstdaythreeWeek: any;
+  lastdaythreeWeek: any;
+
+  firstdayFourWeek: any;
+  lastdayFourWeek: any;
+
+  firstdayFiveWeek: any;
+  lastdayFiveWeek: any;
+
   selectedMSWeek: IWeekPlan = {
     id: 0,
     managerType: 0,
@@ -34,6 +50,35 @@ export class WeekPlansDialogComponent implements OnInit {
 
   numberOfWeek: any = Math.ceil(new Date().getDate() / 7);
   weekPlans: IWeekPlan[];
+
+
+  initDate() {
+    let day = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
+    let tmpDate = new Date(new Date().getFullYear(), new Date().getMonth(), (7 - (7 - day)) + 2);
+    this.firstdayOneWeek = tmpDate.toLocaleDateString();
+    tmpDate.setDate(tmpDate.getDate() + 4);
+    this.lastdayOneWeek = tmpDate.toLocaleDateString();
+
+    tmpDate.setDate(tmpDate.getDate() + 3);
+    this.firstdayTwoWeek = tmpDate.toLocaleDateString();
+    tmpDate.setDate(tmpDate.getDate() + 4);
+    this.lastdayTwoWeek = tmpDate.toLocaleDateString();
+
+    tmpDate.setDate(tmpDate.getDate() + 3);
+    this.firstdaythreeWeek = tmpDate.toLocaleDateString();
+    tmpDate.setDate(tmpDate.getDate() + 4);
+    this.lastdaythreeWeek = tmpDate.toLocaleDateString();
+
+    tmpDate.setDate(tmpDate.getDate() + 3);
+    this.firstdayFourWeek = tmpDate.toLocaleDateString();
+    tmpDate.setDate(tmpDate.getDate() + 4);
+    this.lastdayFourWeek = tmpDate.toLocaleDateString();
+
+    tmpDate.setDate(tmpDate.getDate() + 3);
+    this.firstdayFiveWeek = tmpDate.toLocaleDateString();
+    tmpDate.setDate(tmpDate.getDate() + 4);
+    this.lastdayFiveWeek = tmpDate.toLocaleDateString();
+  }
 
   setWeeks(numberOfWeek: number){
 
@@ -104,7 +149,7 @@ export class WeekPlansDialogComponent implements OnInit {
       this.selectedRMWeek = this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == this.numberOfWeek)
     else
       this.selectedRMWeek = { id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: this.numberOfWeek }
-
+    this.initDate();
   }
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,

@@ -6,6 +6,7 @@ namespace Data.Commands.Clients
 {
     public class ClientCreate
     {
+        public string ID { get; set; }
         public string Title { get; set; }
         public string LegalEntity { get; set; }
         public ICollection<ClientPhone> Phones { get; set; }

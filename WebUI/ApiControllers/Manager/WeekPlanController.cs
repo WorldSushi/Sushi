@@ -25,7 +25,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             var result = await _context.Set<WeekPlan>()
-                .Where(x => DateHelper.IsCurrentMonth(x.Date))
+               //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new WeekPlanDto()
                 {
                     Id = x.Id,
@@ -37,7 +37,7 @@ namespace WebUI.ApiControllers.Manager
                 }).ToListAsync();
 
             return Ok(result);
-            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] WeekPlanCreate command)
