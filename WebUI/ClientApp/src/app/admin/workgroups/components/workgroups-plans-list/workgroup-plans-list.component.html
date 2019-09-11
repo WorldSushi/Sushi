@@ -1,7 +1,10 @@
 <mat-card class="mat-elevation-z1">
-    <mat-card-header>
-      <mat-card-title class="card-title">Планы</mat-card-title>
-    </mat-card-header>
+  <mat-card-header>
+    <mat-card-title class="card-title">Планы звонков</mat-card-title>
+    <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+    </select>
+  </mat-card-header>
     <mat-card-content>
       <table>
         <thead>
@@ -213,6 +216,5 @@
       </table>
     </mat-card-content>
   </mat-card>
-  
   
   

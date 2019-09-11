@@ -3,7 +3,7 @@
     <mat-card-title class="card-title">Клиенты</mat-card-title>
     <button class="addEntity" (click)="openCreateClientForm()">+ Добавить клиента</button>
   </mat-card-header>
-  <div class="filter clearfix">
+  <div class="filter">
     <!--<select [(ngModel)]="selectedGroup" (change)="selectedGroupChange()">
     <option [value]="-10">Все клиенты</option>
     <option [value]="0">Неопределен</option>
@@ -13,9 +13,13 @@
     <option [value]="40">Рестораны</option>
     <option [value]="50">Другие</option>
   </select>-->
+    <a class="report">Отчёт Номенклатура</a>
+    <a class="report">Отчёт Анализ продаж</a>
+    <a class="report">Отчёт По опросу</a>
+    <a class="report">Отчёт По дебиторке</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
       <option [ngValue]=-10>Все рабочие групы</option>
-      <option *ngFor="let wg of workgroup; let i = index"[ngValue]=i>
+      <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>
         {{wg.title}}
       </option>
     </select>

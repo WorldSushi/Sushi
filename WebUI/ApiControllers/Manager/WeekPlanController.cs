@@ -33,7 +33,8 @@ namespace WebUI.ApiControllers.Manager
                     Plan = x.Plan,
                     Fact = x.Fact,
                     WeekNumber = x.WeekNumber,
-                    ManagerType = x.ManagerType
+                    ManagerType = x.ManagerType,
+                    DateTime = x.Date.ToString("dd.MM.yyyy")
                 }).ToListAsync();
 
             return Ok(result);

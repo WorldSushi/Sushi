@@ -50,8 +50,8 @@ export class WorkgroupPlansComponent implements OnInit {
             clientId: client.id,
             clientTitle: client.title,
             clientType: client.clientType,
-            escortManagerPlans: plans.filter(plan => plan.clientId == client.id && plan.managerType == 10),      
-            regionalManagerPlans: plans.filter(plan => plan.clientId == client.id && plan.managerType == 20)
+            escortManagerPlans: [], //plans.filter(plan => plan.clientId == client.id && plan.managerType == 10),      
+            regionalManagerPlans: [] //plans.filter(plan => plan.clientId == client.id && plan.managerType == 20)
           }
         })
       }),

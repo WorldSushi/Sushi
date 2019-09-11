@@ -19,6 +19,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
   days: number[] = this.getDaysInMonth();
 
   dateCollections: string[] = [];
+  dateCollection: string;
   fullworkgroupsCalls: IWorkgroupCalls[];
   numberMonthe: number = 0;
   numberYear: number = 0;
@@ -169,6 +170,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
           this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
         }
       }
+      this.dateCollection = this.dateCollections[0];
     }
   }
 

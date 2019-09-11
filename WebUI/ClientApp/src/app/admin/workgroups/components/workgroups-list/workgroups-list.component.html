@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title class="card-title">Рабочие группы</mat-card-title>
     <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
-      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+      <option *ngFor="let dateCollection of dateCollections let i=index">{{dateCollection}}</option>
     </select>
     <button class="addEntity" (click)="openWorkgroupCreate()" >+ Добавить группу</button>
   </mat-card-header>

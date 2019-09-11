@@ -4,5 +4,6 @@ export interface IWeekPlan {
     managerType: number,
     plan: string,
     fact: string,
-    weekNumber: number
+  weekNumber: number,
+  dateTime: string
 }

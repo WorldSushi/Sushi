@@ -29,6 +29,7 @@ export class WorkgroupsListComponent implements OnInit {
   contactsStandard = 160;
   fullClientContacts: ICallsDate[];
   dateCollections: string[] = [];
+  dateCollection: string;
   numberMonthe: number = 0;
   numberYear: number = 0;
 
@@ -143,6 +144,7 @@ export class WorkgroupsListComponent implements OnInit {
           this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
         }
       }
+      this.dateCollection = this.dateCollections[0];
     }
   }
 

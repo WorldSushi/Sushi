@@ -36,7 +36,8 @@ export class WeekPlansDialogComponent implements OnInit {
     plan: '',
     fact: '',
     weekNumber: 0,
-    clientId: 0
+    clientId: 0,
+    dateTime: ""
   }
 
   selectedRMWeek: IWeekPlan = {
@@ -45,7 +46,8 @@ export class WeekPlansDialogComponent implements OnInit {
     plan: '',
     fact: '',
     weekNumber: 0,
-    clientId: 0
+    clientId: 0,
+    dateTime: ""
   }
 
   numberOfWeek: any = Math.ceil(new Date().getDate() / 7);
@@ -85,12 +87,14 @@ export class WeekPlansDialogComponent implements OnInit {
     if(this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek);
     else
-      this.selectedMSWeek = { id: 0, clientId: this.data.id, managerType: 10, plan: '', fact: '', weekNumber: numberOfWeek};
+      this.selectedMSWeek = {
+        id: 0, clientId: this.data.id, managerType: 10, plan: '', fact: '', weekNumber: numberOfWeek, dateTime: ""};
     
     if(this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == numberOfWeek))
       this.selectedRMWeek = this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == numberOfWeek);
     else
-      this.selectedRMWeek = { id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: numberOfWeek}
+      this.selectedRMWeek = {
+        id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: numberOfWeek, dateTime: ""}
 
     this.numberOfWeek = numberOfWeek;
   }
@@ -144,17 +148,17 @@ export class WeekPlansDialogComponent implements OnInit {
     if(this.data.weekPlans.find(item => item.managerType == 10 && this.numberOfWeek == item.weekNumber))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == this.numberOfWeek)
     else
-      this.selectedMSWeek = { id: 0, clientId: this.data.id, managerType: 10, plan: '', fact: '', weekNumber: this.numberOfWeek};
+      this.selectedMSWeek = { id: 0, clientId: this.data.id, managerType: 10, plan: '', fact: '', weekNumber: this.numberOfWeek, dateTime: ""};
     if(this.data.weekPlans.find(item => item.managerType == 20 && this.numberOfWeek == item.weekNumber))
       this.selectedRMWeek = this.data.weekPlans.find(item => item.managerType == 20 && item.weekNumber == this.numberOfWeek)
     else
-      this.selectedRMWeek = { id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: this.numberOfWeek }
+      this.selectedRMWeek = { id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: this.numberOfWeek, dateTime: ""}
     this.initDate();
   }
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-
-    }
+    console.log(this.weekPlans);
+  }
 
 }

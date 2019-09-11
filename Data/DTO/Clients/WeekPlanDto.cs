@@ -10,6 +10,7 @@ namespace Data.DTO.Clients
         public string Fact { get; set; }
         public string PlanTitle { get; set; }
         public string FactTitle { get; set; }
+        public string DateTime { get; set; }
         public int WeekNumber { get; set; }
         public ManagerType ManagerType { get; set; }
     }
