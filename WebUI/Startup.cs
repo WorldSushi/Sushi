@@ -4,12 +4,15 @@ using Data.Services.Abstract;
 using Data.Services.Abstract.ClientContacts;
 using Data.Services.Concrete;
 using Data.Services.Concrete.ClientContacts;
+using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebUI.Background;
+using WebUI.Background.Report;
 using WebUI.Services.Abstract;
 using WebUI.Services.Concrete;
 
@@ -43,6 +46,7 @@ namespace WebUI
 
             #region Services
 
+            var provider = services.BuildServiceProvider();
             services.AddTransient<DbContext, ApplicationContext>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
 
@@ -57,6 +61,7 @@ namespace WebUI
             services.AddTransient<IMonthlyCallPlanService, MonthlyCallPlanService>();
             services.AddTransient<IMonthlyBusinessTripService, MonthlyBusinessTripPlanService>();
             services.AddTransient<IWeekPlanService, WeekPlanService>();
+            JobManager.Initialize(new MyRegistry(provider.GetRequiredService<ApplicationContext>()));
             #endregion
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
