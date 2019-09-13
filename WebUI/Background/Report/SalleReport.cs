@@ -60,12 +60,12 @@ namespace WebUI.Background.Report
             doc.Open();
             doc.SetMargins(0, 0, 3, 3);
             BaseFont baseFont = BaseFont.CreateFont(@"C:\Windows\Fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
             PdfPTable table = new PdfPTable(8);
 
             table.TotalWidth = 590f;
             table.LockedWidth = true;
-            PdfPCell cell = new PdfPCell(new Phrase($"Отчёт за {DateTime.Now.ToLongDateString()}", font));
+            PdfPCell cell = new PdfPCell(new Phrase($"Отчёт за {DateTime.Now.ToLongDateString()} по продажам", font));
             cell.Colspan = 8;
             cell.HorizontalAlignment = 0;
             cell.Border = 0;
@@ -90,42 +90,42 @@ namespace WebUI.Background.Report
             table.AddCell(cell);
             foreach (AdminAndSalles adminAndSalles in adminAndSalless)
             {
-                font = new iTextSharp.text.Font(baseFont, 14, iTextSharp.text.Font.NORMAL);
+                font = new iTextSharp.text.Font(baseFont, 11, iTextSharp.text.Font.NORMAL);
                 cell = new PdfPCell(new Phrase($"{adminAndSalles.Name}", font));
                 cell.Colspan = 1;
-                cell.HorizontalAlignment = 1;
+                cell.HorizontalAlignment = 0;
                 cell.BackgroundColor = new BaseColor(245, 242, 221);
                 table.AddCell(cell);
                 for (int i = adminAndSalles.SumeMonthe.Length - 1; i >= 0; i--)
                 {
                     cell = new PdfPCell(new Phrase($"{adminAndSalles.SumeMonthe[i]} руб", font));
                     cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
+                    cell.HorizontalAlignment = 2;
                     cell.BackgroundColor = new BaseColor(245, 242, 221);
                     table.AddCell(cell);
                 }
                 cell = new PdfPCell(new Phrase($"{adminAndSalles.Sume} руб", font));
                 cell.Colspan = 1;
-                cell.HorizontalAlignment = 1;
+                cell.HorizontalAlignment = 2;
                 cell.BackgroundColor = new BaseColor(245, 242, 221);
                 table.AddCell(cell);
                 foreach (GoupAndSalle goupAndSalle in adminAndSalles.GoupAndSalles)
                 {
-                    font = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
+                    font = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL);
                     cell = new PdfPCell(new Phrase($"{goupAndSalle.Name}", font));
                     cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
+                    cell.HorizontalAlignment = 0;
                     table.AddCell(cell);
                     for (int i = goupAndSalle.SumeMonthe.Length-1; i >= 0; i--)
                     {
                         cell = new PdfPCell(new Phrase($"{goupAndSalle.SumeMonthe[i]} руб", font));
                         cell.Colspan = 1;
-                        cell.HorizontalAlignment = 1;
+                        cell.HorizontalAlignment = 2;
                         table.AddCell(cell);
                     }
                     cell = new PdfPCell(new Phrase($"{goupAndSalle.Sume} руб", font));
                     cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
+                    cell.HorizontalAlignment = 2;
                     table.AddCell(cell);
                 }
             }
