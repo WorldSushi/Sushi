@@ -9,7 +9,8 @@ namespace WebUI.Background
         public MyRegistry(ApplicationContext applicationContext)
         {
             //Schedule<SalesReport>().ToRunEvery(1).Days().At(5, 59);
-            Schedule(() => new SalesReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
+            //Schedule(() => new DebitoryReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
+            Schedule(() => new SalleReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
         }
     }
 }

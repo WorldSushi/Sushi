@@ -1,5 +1,4 @@
-﻿
-namespace WebUI.Background.Report.Model
+﻿namespace WebUI.Background.Report.Model
 {
     public class Debitorka
     {

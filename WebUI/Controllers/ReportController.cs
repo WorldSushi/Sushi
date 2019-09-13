@@ -14,6 +14,10 @@ namespace WebUI.Controllers
             {
                 stream = new FileStream("PDF/All/Debytory.pdf", FileMode.Open);
             }
+            else if(name == "AllSalle")
+            {
+                stream = new FileStream("PDF/All/Salles.pdf", FileMode.Open);
+            }
             return new FileStreamResult(stream, "application/pdf");
         }
     }

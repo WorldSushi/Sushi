@@ -8,7 +8,6 @@ namespace WebUI.Background.Report.Model
         public int ClientId { get; set; }
         public Guid OneCId { get; set; }
         public string Name { get; set; }
-        //public List<Debitorka> Debitorkas { get; set; }
         public List<Data> Datas { get; set; }
         public double Sume { get; set; }
     }

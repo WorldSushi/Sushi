@@ -16,12 +16,12 @@ using WebUI.Background.Report.Model;
 
 namespace WebUI.Background.Report
 {
-    public class SalesReport : IJob
+    public class DebitoryReport : IJob
     {
         private HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://mir-sushi-web.esit.info/buh5/ru_RU/odata/standard.odata/InformationRegister_CRM_Debitory?$format=json");
         private readonly ApplicationContext _context;
 
-        public SalesReport(ApplicationContext context)
+        public DebitoryReport(ApplicationContext context)
         {
             _context = context;
         }
@@ -31,10 +31,10 @@ namespace WebUI.Background.Report
             request.UserAgent = "World Sushi";
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
             request.Credentials = new NetworkCredential("chuprina.r.v@gmail.com", "123");
-            Task.Run(() => WorkSales());
+            Task.Run(() => WorkDebitory());
         }
 
-        private void WorkSales()
+        private void WorkDebitory()
         {
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream receiveStream = response.GetResponseStream();

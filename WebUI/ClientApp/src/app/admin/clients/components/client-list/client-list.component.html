@@ -14,7 +14,7 @@
     <option [value]="50">Другие</option>
   </select>-->
     <a class="report">Отчёт Номенклатура</a>
-    <a class="report">Отчёт Анализ продаж</a>
+    <a class="report" href="http://localhost:5000/Report?name=AllSalle">Отчёт Анализ продаж</a>
     <a class="report">Отчёт По опросу</a>
     <a class="report" href="http://localhost:5000/Report?name=AllDebitory">Отчёт По дебиторке</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
