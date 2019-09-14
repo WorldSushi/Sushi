@@ -22,6 +22,10 @@ namespace WebUI.Controllers
             {
                 stream = new FileStream("PDF/All/Opros.pdf", FileMode.Open);
             }
+            else if (name == "AllNomll")
+            {
+                stream = new FileStream("PDF/All/Nomkl.pdf", FileMode.Open);
+            }
             return new FileStreamResult(stream, "application/pdf");
         }
     }
