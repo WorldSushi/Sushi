@@ -79,6 +79,7 @@ namespace WebUI.Background.Report
             table.AddCell(cell);
             foreach(ManagerModel managerModel in managerModels)
             {
+                CreateManagerPdf(managerModel);
                 cell = new PdfPCell(new Phrase($"{managerModel.Name}", font));
                 cell.Colspan = 8;
                 cell.HorizontalAlignment = 0;
@@ -112,6 +113,73 @@ namespace WebUI.Background.Report
                         cell.HorizontalAlignment = 2;
                         table.AddCell(cell);
                     }
+                }
+            }
+            doc.Add(table);
+            doc.Close();
+        }
+
+        private void CreateManagerPdf(ManagerModel managerModel)
+        {
+            Document doc = new Document();
+            if (!Directory.Exists("PDF/Manager"))
+            {
+                Directory.CreateDirectory("PDF/Manager");
+            }
+            PdfWriter.GetInstance(doc, new FileStream($"PDF/Manager/Nomkl{managerModel.MangerId}.pdf", FileMode.Create));
+            doc.Open();
+            doc.SetMargins(0, 0, 3, 3);
+            BaseFont baseFont = BaseFont.CreateFont(@"C:\Windows\Fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
+            PdfPTable table = new PdfPTable(10);
+            table.TotalWidth = 550f;
+            table.LockedWidth = true;
+            PdfPCell cell = new PdfPCell(new Phrase($"Анализ проданных позиций товаров за период {new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)} - {DateTime.Now}", font));
+            cell.Colspan = 10;
+            cell.HorizontalAlignment = 0;
+            cell.Border = 0;
+            table.AddCell(cell);
+            font = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL);
+            cell = new PdfPCell(new Phrase($"Менеджер (ответственный за заказ) /Контрагент/ Номенклатура", font));
+            cell.Colspan = 8;
+            cell.HorizontalAlignment = 1;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Phrase($"Количество номен-ры", font));
+            cell.Colspan = 2;
+            cell.HorizontalAlignment = 1;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Phrase($"{managerModel.Name}", font));
+            cell.Colspan = 8;
+            cell.HorizontalAlignment = 0;
+            cell.BackgroundColor = new BaseColor(255, 204, 153);
+            table.AddCell(cell);
+            cell = new PdfPCell(new Phrase($"{managerModel.SumeKolNom}", font));
+            cell.Colspan = 2;
+            cell.HorizontalAlignment = 2;
+            cell.BackgroundColor = new BaseColor(255, 204, 153);
+            table.AddCell(cell);
+            foreach (GRContragent gRContragent in managerModel.GRContragents)
+            {
+                cell = new PdfPCell(new Phrase($"{gRContragent.Name}", font));
+                cell.Colspan = 8;
+                cell.HorizontalAlignment = 0;
+                cell.BackgroundColor = new BaseColor(178, 172, 132);
+                table.AddCell(cell);
+                cell = new PdfPCell(new Phrase($"{gRContragent.SumeKolNom}", font));
+                cell.Colspan = 2;
+                cell.HorizontalAlignment = 2;
+                cell.BackgroundColor = new BaseColor(178, 172, 132);
+                table.AddCell(cell);
+                foreach (string nomekl in gRContragent.Nomenclatures)
+                {
+                    cell = new PdfPCell(new Phrase($"{nomekl}", font));
+                    cell.Colspan = 8;
+                    cell.HorizontalAlignment = 0;
+                    table.AddCell(cell);
+                    cell = new PdfPCell(new Phrase($"{1}", font));
+                    cell.Colspan = 2;
+                    cell.HorizontalAlignment = 2;
+                    table.AddCell(cell);
                 }
             }
             doc.Add(table);

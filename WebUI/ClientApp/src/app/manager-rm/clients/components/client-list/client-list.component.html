@@ -15,8 +15,12 @@
     <option [value]="50">Другие</option>
   </select>-->
     <!--<select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
-      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
-    </select>-->
+    <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+  </select>-->
+    <a class="report" href="ReportManager?name=Nomll">Отчёт Номенклатура</a>
+    <a class="report" href="ReportManager?name=Salle">Отчёт Анализ продаж</a>
+    <a class="report" href="ReportManager?name=Opros">Отчёт По опросу</a>
+    <a class="report" href="ReportManager?name=Debitory">Отчёт По дебиторке</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
       <option [ngValue]=-10>Все рабочие групы</option>
       <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>

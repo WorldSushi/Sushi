@@ -1,10 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using WebUI.Services.Abstract;
 
 namespace WebUI.Controllers
 {
     public class ReportController : ControllerBase
     {
+        private readonly IAccountInformationService _accountService;
+
+
+        public ReportController(IAccountInformationService accountService)
+        {
+            _accountService = accountService;
+            //admin.
+            //_context.Set<Data.Entities.Users.Admin>
+        }
+
         [HttpGet]
         [Route("Report")]
         public IActionResult Get(string name)
@@ -25,6 +36,31 @@ namespace WebUI.Controllers
             else if (name == "AllNomll")
             {
                 stream = new FileStream("PDF/All/Nomkl.pdf", FileMode.Open);
+            }
+            return new FileStreamResult(stream, "application/pdf");
+        }
+
+        [HttpGet]
+        [Route("ReportManager")]
+        public IActionResult GetReortForManager(string name)
+        {
+            int idManager = _accountService.CurrentUser().Id;
+            FileStream stream = null;
+            if (name == "Debitory")
+            {
+                stream = new FileStream($"PDF/Manager/Debytory{idManager}.pdf", FileMode.Open);
+            }
+            else if (name == "Salle")
+            {
+                stream = new FileStream($"PDF/Manager/Salles{idManager}.pdf", FileMode.Open);
+            }
+            else if (name == "Opros")
+            {
+                stream = new FileStream($"PDF/Manager/Opros{idManager}.pdf", FileMode.Open);
+            }
+            else if (name == "Nomll")
+            {
+                stream = new FileStream($"PDF/Manager/Nomkl{idManager}.pdf", FileMode.Open);
             }
             return new FileStreamResult(stream, "application/pdf");
         }
