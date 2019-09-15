@@ -112,6 +112,7 @@ namespace WebUI.Background.Report
                 table.AddCell(cell);
                 foreach (GoupAndSalle goupAndSalle in adminAndSalles.GoupAndSalles)
                 {
+                    CreateClienrPdf(goupAndSalle);
                     font = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL);
                     cell = new PdfPCell(new Phrase($"{goupAndSalle.Name}", font));
                     cell.Colspan = 1;
@@ -132,6 +133,67 @@ namespace WebUI.Background.Report
             }
             doc.Add(table);
             doc.Close();
+        }
+
+        private void CreateClienrPdf(GoupAndSalle goupAndSalle)
+        {
+            if (!Directory.Exists("PDF/Client"))
+            {
+                Directory.CreateDirectory("PDF/Client");
+            }
+            foreach (int idClient in goupAndSalle.ClientIdS)
+            {
+                Document doc = new Document();
+                PdfWriter.GetInstance(doc, new FileStream($"PDF/Client/Salles{idClient}.pdf", FileMode.Create));
+                doc.Open();
+                doc.SetMargins(0, 0, 3, 3);
+                BaseFont baseFont = BaseFont.CreateFont(@"C:\Windows\Fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+                iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
+                PdfPTable table = new PdfPTable(8);
+
+                table.TotalWidth = 590f;
+                table.LockedWidth = true;
+                PdfPCell cell = new PdfPCell(new Phrase($"Отчёт за {DateTime.Now.ToLongDateString()} по продажам", font));
+                cell.Colspan = 8;
+                cell.HorizontalAlignment = 0;
+                cell.Border = 0;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Phrase($"Групы контнр-агентов", font));
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 1;
+                cell.BackgroundColor = new BaseColor(245, 242, 221);
+                table.AddCell(cell);
+                for (DateTime i = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-5); i <= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); i = i.AddMonths(1))
+                {
+                    cell = new PdfPCell(new Phrase($"{i.ToLongDateString().Remove(0, 2)}", font));
+                    cell.Colspan = 1;
+                    cell.HorizontalAlignment = 1;
+                    cell.BackgroundColor = new BaseColor(245, 242, 221);
+                    table.AddCell(cell);
+                }
+                cell = new PdfPCell(new Phrase($"Итог", font));
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 1;
+                cell.BackgroundColor = new BaseColor(245, 242, 221);
+                table.AddCell(cell); font = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL);
+                cell = new PdfPCell(new Phrase($"{goupAndSalle.Name}", font));
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 0;
+                table.AddCell(cell);
+                for (int i = goupAndSalle.SumeMonthe.Length - 1; i >= 0; i--)
+                {
+                    cell = new PdfPCell(new Phrase($"{goupAndSalle.SumeMonthe[i]} руб", font));
+                    cell.Colspan = 1;
+                    cell.HorizontalAlignment = 2;
+                    table.AddCell(cell);
+                }
+                cell = new PdfPCell(new Phrase($"{goupAndSalle.Sume} руб", font));
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 2;
+                table.AddCell(cell);
+                doc.Add(table);
+                doc.Close();
+            }
         }
 
         private void CreateManagerPdf(AdminAndSalles adminAndSalles)

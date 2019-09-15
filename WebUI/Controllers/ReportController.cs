@@ -64,5 +64,29 @@ namespace WebUI.Controllers
             }
             return new FileStreamResult(stream, "application/pdf");
         }
+
+        [HttpGet]
+        [Route("ReportClienr")]
+        public IActionResult GetReortForManager(string name, string clientId)
+        {
+            FileStream stream = null;
+            if (name == "Debitory")
+            {
+                stream = new FileStream($"PDF/Client/Debytory{clientId}.pdf", FileMode.Open);
+            }
+            else if (name == "Salle")
+            {
+                stream = new FileStream($"PDF/Client/Salles{clientId}.pdf", FileMode.Open);
+            }
+            else if (name == "Opros")
+            {
+                stream = new FileStream($"PDF/Client/Opros{clientId}.pdf", FileMode.Open);
+            }
+            else if (name == "Nomll")
+            {
+                stream = new FileStream($"PDF/Client/Nomkl{clientId}.pdf", FileMode.Open);
+            }
+            return new FileStreamResult(stream, "application/pdf");
+        }
     }
 }

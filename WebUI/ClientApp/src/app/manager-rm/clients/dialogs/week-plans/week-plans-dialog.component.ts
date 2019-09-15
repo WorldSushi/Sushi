@@ -158,7 +158,7 @@ export class WeekPlansDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(this.weekPlans);
+    console.log(data);
   }
 
 }
