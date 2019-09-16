@@ -10,7 +10,13 @@
         <thead>
           <tr>
             <th colspan="5">
-              Название 
+              Название
+            </th>
+            <th colspan="4">
+              Рабочие группы
+            </th>
+            <th>
+              
             </th>
             <th>
               1
@@ -32,6 +38,9 @@
             </th>
             <th colspan="5">
               Факт
+            </th>
+            <th>
+              
             </th>
             <th>
               1
@@ -59,9 +68,14 @@
         <tbody>
           <tr *ngFor="let workgroupPlan of workgroupPlans; let index = index">
             <td colspan="5" style="max-width: 300px">{{workgroupPlan.clientTitle}}</td>
+            <td colspan="4" style="max-width: 300px">{{workgroupPlan.nameWorkGroup}}</td>
+            <td>
+              <p>MC</p>
+              <p>PM</p>
+            </td>
             <td (click)="workgroupPlan.selectedESWeek = 1" [style.background]="workgroupPlan.selectedESWeek == 1 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
-                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF" ></div>
+                <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).plan != ''" style="background-color: #9AE6FF"></div>
               </div>
               <div *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans)">
                 <div class="action-circle" *ngIf="getWeekPlan(1, workgroupPlan.escortManagerPlans).fact != ''" style="background-color: #D5E3EB"></div>
@@ -134,6 +148,10 @@
             </td>
             <td colspan="5">
               {{getCurrentFact(workgroupPlan.escortManagerPlans, workgroupPlan.selectedESWeek)}}
+            </td>
+            <td>
+              <p>MC</p>
+              <p>PM</p>
             </td>
             <td (click)="workgroupPlan.selectedRMWeek = 1" [style.background]="workgroupPlan.selectedRMWeek == 1 ? '#eefef5' : 'inherit'">
               <div *ngIf="getWeekPlan(1, workgroupPlan.regionalManagerPlans)">

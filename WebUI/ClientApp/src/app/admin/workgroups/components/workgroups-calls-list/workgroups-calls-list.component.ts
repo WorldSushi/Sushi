@@ -63,7 +63,6 @@ export class WorkgroupsCallsListComponent implements OnInit {
   }
 
   getActionColor(contactType) {
-    
     if(contactType == 0)
       return '#e5e5e5';
     else if (contactType == 10)

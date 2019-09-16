@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IWorkgroupPlans } from '../../shared/models/workgroup-plans.model';
 import { find } from 'rxjs/operators';
 import { IWeekPlan } from 'src/app/manager-rm/clients/shared/models/week-plan.model';
+import { IWorkgroup } from '../../shared/models/workgroup.model';
 
 @Component({
   selector: 'app-workgroup-plans-list',
@@ -12,6 +13,7 @@ export class WorkgroupPlansListComponent implements OnInit {
 
   @Input() workgroupPlans: IWorkgroupPlans[];
   @Input() weekPlans: IWeekPlan[];
+  @Input() workgroups: IWorkgroup[];
 
   selectedWeek: number = Math.ceil(new Date().getDate() / 7);
   dateCollections: string[] = [];
@@ -83,6 +85,15 @@ export class WorkgroupPlansListComponent implements OnInit {
     this.sortWeekPlan(date.getMonth(), date.getFullYear());
   }
 
+  snitWorkGroupForClient() {
+    for (let i = 0; i < this.workgroupPlans.length; i++) {
+      let workgroup = this.workgroups.find(w => w.clientIds.find(c => c == this.workgroupPlans[i].clientId) != null)
+      if (workgroup != null) {
+        this.workgroupPlans[i].nameWorkGroup = workgroup.title;
+      }
+    }
+  }
+
   constructor() {
     
   }
@@ -97,7 +108,7 @@ export class WorkgroupPlansListComponent implements OnInit {
     })
     this.initDateArchiv();
     this.sortWeekPlan(new Date().getMonth(), new Date().getFullYear());
-    console.log(this.dateCollections);
+    this.snitWorkGroupForClient();
   }
 
 }

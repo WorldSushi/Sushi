@@ -12,9 +12,10 @@
           <th style="max-width: 100px" (click)="sortActionClientToName()">
             Название
           </th>
-          <th style="max-width: 2 00px" >
+          <th style="max-width: 200px" >
             Рабочие группы
           </th>
+          <th></th>
           <th *ngFor="let day of days" (click)="sortActionClient(day)">
             {{day}}
           </th>
@@ -33,6 +34,10 @@
         <tr *ngFor="let workgroupCalls of workgroupsCalls">
           <td style="max-width: 100px">{{workgroupCalls.clientTitle}}</td>
           <td style="max-width: 100px">{{workgroupCalls.nameWorkGroup}}</td>
+          <td>
+            <p>MC</p>
+            <p>PM</p>
+          </td>
           <td *ngFor="let day of days">
             <div *ngFor="let clientAction of getClientContactType(day, workgroupCalls.clientActions, workgroupCalls.clientId)" class="action-circle" [style.background]="getActionColor(clientAction.contactType)">
             </div>
