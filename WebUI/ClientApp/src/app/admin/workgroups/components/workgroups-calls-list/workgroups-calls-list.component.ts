@@ -66,11 +66,13 @@ export class WorkgroupsCallsListComponent implements OnInit {
     if(contactType == 0)
       return '#e5e5e5';
     else if (contactType == 10)
-      return '#9CBFF3'
+      return '#F7819F'
     else if (contactType == 20)
       return '#B0ECDD'
     else if (contactType == 30)
       return '#FDE488'
+    else if (contactType == 40)
+      return '#9CBFF3'
   }
 
   sortActionClient(day: number) {

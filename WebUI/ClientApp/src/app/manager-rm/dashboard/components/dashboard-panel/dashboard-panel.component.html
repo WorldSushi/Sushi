@@ -2,12 +2,12 @@
 <div class="manager-effiency">
   <mat-card class="mat-elevation-z1">
     <mat-card-header>
-      <mat-card-title class="card-title">Главная</mat-card-title>
+      <mat-card-title class="card-title">Ваша статистика по всем звонкам</mat-card-title>
     </mat-card-header>
       <table>
         <thead>
           <tr>
-            <th></th>
+            <th style="max-width:50px !important"></th>
             <th>Сегодня</th>
             <th>Неделя</th>
             <th>Месяц</th>
@@ -16,112 +16,49 @@
         </thead>
         <tbody>
           <tr>
-            <td>Все звонки</td>
+            <td style="background-color:#fcfcfc; max-width:50px !important">Все звонки</td>
             <td>{{setToDayCall()}}</td>
             <td>{{setToWeekCall()}}</td>
             <td>{{setToMonthkCall()}}</td>
             <td>{{setAllCall()}}</td>
           </tr>
           <tr>
-            <td>более 2,5 мин</td>
+            <td style="background-color:#fcfcfc; max-width:50px !important">более 2,5 мин</td>
             <td>{{setMoreTwoFiveCallDays()}}</td>
             <td>{{setMoreTwoFiveCallWeek()}}</td>
             <td>{{setMoreTwoFiveCallMonth()}}</td>
             <td>{{setMoreTwoFiveCall()}}</td>
           </tr>
           <tr>
-            <td>Менее 2.5 мин, более 10 сек</td>
+            <td style="background-color:#fcfcfc; max-width:50px !important">Менее 2.5 мин, более 10 сек</td>
             <td>{{setMore10to2_5CallDays()}}</td>
             <td>{{setMore10to2_5CallWeek()}}</td>
             <td>{{setMore10to2_5CallMonth()}}</td>
             <td>{{setMore10to2_5Call()}}</td>
           </tr>
           <tr>
-            <td>мение 10 сек</td>
+            <td style="background-color:#fcfcfc; max-width:50px !important">мение 10 сек</td>
             <td>{{setLes10SecCallDays()}}</td>
             <td>{{setLes10SecCallWeek()}}</td>
             <td>{{setLes10SecCallMonth()}}</td>
             <td>{{setLes10SecCall()}}</td>
           </tr>
           <tr>
-            <td>Звонки развития</td>
+            <td style="background-color:#fcfcfc;max-width:50px !important">Звонки развития</td>
             <td>{{setDevelopmentCallDays()}}</td>
             <td>{{setDevelopmentCallWeek()}}</td>
             <td>{{setDevelopmentCallMonth()}}</td>
             <td>{{setDevelopmentCall()}}</td>
           </tr>
           <tr>
-            <td>Звонки колегам</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
+            <td style="background-color:#fcfcfc; max-width:50px !important">Звонки колегам</td>
+            <td>{{setManagerCallDays()}}</td>
+            <td>{{setmanagerCallWeek()}}</td>
+            <td>{{setManagertCallMonth()}}</td>
+            <td>{{setManagerCall()}}</td>
           </tr>
         </tbody>
       </table>
-
-      <!--<div class="total-contacts">
-          <h3>Сегодня</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setToDayCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>Неделя</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setToWeekCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>Месяц</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setToMonthkCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>Всего</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setAllCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-      </mat-card-content>
-      <mat-card-content class="card-content-wrapper">
-        <div class="total-contacts">
-          <h3>более 2,5 минут</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setMoreTwoFiveCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>
-            менее 2,5 минут, но более 10 с
-          </h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setMore10to2_5Call()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>
-            менее 10 с
-          </h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{setLes10SecCall()}}
-            <span>Звонков</span>
-          </div>
-        </div>
-        <div class="total-contacts">
-          <h3>Коллегам и руководителю</h3>
-          <div class="contacts-info mat-elevation-z2">
-            {{0}}
-            <span>Звонков</span>
-          </div>
-        </div>-->
   </mat-card>
 </div>
   <hr style="opacity: 0.2">

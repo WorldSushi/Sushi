@@ -202,6 +202,42 @@ export class DashboardPanelComponent implements OnInit {
       .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 40).length;
   }
 
+  setManagerCall(): number {
+    return this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId)
+      .filter(item => item.contactType == 50).length;
+  }
+
+  setManagertCallMonth(): number {
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countMonthCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 50).length;;
+    }
+    return countMonthCall;
+  }
+
+  setmanagerCallWeek(): number {
+    var curr = new Date();
+    var first = (curr.getDate() - curr.getDay()) + 1;
+    var last = first + 6;
+    var firstday = new Date(curr.setDate(first));
+    var lastday = new Date(curr.setDate(last));
+    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId);
+    let countWeekCall = 0;
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 50).length;;
+    }
+    return countWeekCall;
+  }
+
+  setManagerCallDays(): number {
+    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 50).length;
+  }
+
   setAllCall(): number {
     return this.clientContacts.length;
   }
