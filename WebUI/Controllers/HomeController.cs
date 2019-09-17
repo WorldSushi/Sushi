@@ -221,7 +221,7 @@ namespace WebUI.Controllers
                 }
                 spreadSheet.Close();
             }
-            return View();
+             return View();
         }
 
         private string GetData(Cell cell, SharedStringTable sharedStringTable)
