@@ -23,5 +23,6 @@ export interface IClient {
   RMresults: IManagerCallsResult,
   clientContacts: ICallsDate[],
   hasWorkgroup: boolean,
-  phones: any[]
+  phones: any[],
+  contactName: string
 }

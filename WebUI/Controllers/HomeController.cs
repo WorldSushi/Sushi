@@ -95,6 +95,8 @@ namespace WebUI.Controllers
             var userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>()
                   .Where(x => x.UserId != 1 && x.UserId != 11)
                   .ToList();
+            List<ClientInfo> clientInfos = _context.Set<ClientInfo>().ToList(); 
+            List<Client> clients = _context.Set<Client>().ToList();
 
             var clientPhones = new List<ClientPhone>();
             using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open($"R.xlsx", true))
@@ -115,7 +117,7 @@ namespace WebUI.Controllers
                                     {
                                         string tmp = null;
                                         var Cells = row.Elements<Cell>().ToList();
-                                        if (table == "Наименование")
+                                        if (table == "!Наименование")
                                         {
                                             var client = _context.Set<Client>()
                                                 .Add(new Client(new ClientCreate()
@@ -182,9 +184,33 @@ namespace WebUI.Controllers
                                             }
                                             continue;
                                         }
+                                        else if(table == "Контрагент")
+                                        {
+                                            ContactName contactName = new ContactName();
+                                            ClientInfo clientInfo = clientInfos.FirstOrDefault(c => c.OneCId.ToString() == GetData(Cells[1], sharedStringTable));
+                                            if(clientInfo != null)
+                                            {
+                                                Client client = clients.FirstOrDefault(c => c.Id == clientInfo.ClientId);
+                                                contactName.ClientId = client.Id;
+                                                contactName.Name = GetData(Cells[2], sharedStringTable);
+                                                contactName.Position = GetData(Cells[3], sharedStringTable);
+                                                contactName.ContactRole = GetData(Cells[4], sharedStringTable);
+                                                contactName.Type = GetData(Cells[5], sharedStringTable);
+                                                var s = _context.Set<ContactName>().Add(new ContactName()
+                                                {
+                                                    ClientId = client.Id,
+                                                    ContactRole = GetData(Cells[4], sharedStringTable),
+                                                    Name = GetData(Cells[2], sharedStringTable),
+                                                    Position = GetData(Cells[3], sharedStringTable),
+                                                    Type = GetData(Cells[5], sharedStringTable)
+                                                });
+                                                _context.SaveChanges();
+                                            }
+                                            continue;
+                                        }
                                         table = GetData(Cells[0], sharedStringTable);
                                     }
-                                    catch
+                                    catch (Exception e)
                                     {
 
                                     }

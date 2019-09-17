@@ -42,7 +42,8 @@ namespace WebUI.ApiControllers.Admin
                     NumberOfCalls = x.NumberOfCalls,
                     Group = (int)x.Group,
                     NumberOfShipments = x.NumberOfShipments,
-                    HasWorkgroup = _context.Set<ClientWorkGroup>().Any(z => z.ClientId == x.Id)
+                    HasWorkgroup = _context.Set<ClientWorkGroup>().Any(z => z.ClientId == x.Id),
+                    ContactName = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.Id) != null ? _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.Id).Name : ""
                 }).ToListAsync();
 
             return Ok(result);

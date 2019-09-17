@@ -8,6 +8,7 @@ namespace Data.DTO.Clients
         public int Id { get; set; }
         public string Title { get; set; }
         public string LegalEntity { get; set; }
+        public string ContactName { get; set; }
         public ICollection<ClientPhoneDTO> Phones { get; set; }
         public ClientTypes ClientType { get; set; }
         public int Group { get; set; }
