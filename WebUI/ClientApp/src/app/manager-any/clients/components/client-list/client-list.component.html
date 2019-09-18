@@ -1,0 +1,1218 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Клиенты</mat-card-title>
+    <button class="addEntity" (click)="openCreateClientForm()">+ Добавить клиента</button>
+  </mat-card-header>
+
+  <div class="filter clearfix">
+    <!--<select [(ngModel)]="selectedGroup" (change)="selectedGroupChange()">
+    <option [value]="-10">Все клиенты</option>
+    <option [value]="0">Неопределен</option>
+    <option [value]="10">Актуальные</option>
+    <option [value]="20">С редкой отгрузкой</option>
+    <option [value]="30">Новые или реанимируемые</option>
+    <option [value]="40">Рестораны</option>
+    <option [value]="50">Другие</option>
+  </select>-->
+    <!--<select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+    <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+  </select>-->
+    <a class="report" href="Report?name=AllNomll">Отчёт Номенклатура</a>
+    <a class="report" href="Report?name=AllSalle">Отчёт Анализ продаж</a>
+    <a class="report" href="Report?name=AllOpros">Отчёт По опросу</a>
+    <a class="report" href="Report?name=AllDebitory">Отчёт По дебиторке</a>
+    <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
+      <option [ngValue]=-10>Все рабочие групы</option>
+      <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>
+        {{wg.title}}
+      </option>
+    </select>
+    <input (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+  </div>
+
+  <div [hidden]="hidenDivFull">
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Актуальные</span>
+      <table mat-table [dataSource]="actual" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">С редкой отгрузкой</span>
+      <table mat-table [dataSource]="recordShipment" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Рестораны</span>
+      <table mat-table [dataSource]="restaurants" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Новые или реанимируемые</span>
+      <table mat-table [dataSource]="newOrResuscitating" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Другие</span>
+      <table mat-table [dataSource]="other" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+    <mat-card-content style="background-color:#f7f7f7">
+
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Неопределен</span>
+      <table mat-table [dataSource]="notDetermined" [trackBy]="getTrackBy">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Название</th>
+          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Тип</th>
+          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="legalEntity">
+          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfCalls">
+          <th mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfShipments">
+          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomenclatureAnalysis">
+          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <div class="bar-shadow">
+              <div class="bar"
+                   [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                   [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                   [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="revenueAnalysis">
+        <th mat-header-cell *matHeaderCellDef>Выручка</th>
+        <td mat-cell *matCellDef="let element"
+        (click)="openRevenueAnalysis(element)">
+        <div class="bar-shadow">
+            <div class="bar"
+            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+              <b>
+                {{getAvgAnalysis(element.revenueAnalysis)}}%
+              </b>
+            </div>
+        </div>
+      </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="callPlan.collective">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+          <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.MS">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="callPlan.RM">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+          <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.planned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tripPlan.fact">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="numberInputField">
+              <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                <mat-option [value]="30">1</mat-option>
+                <mat-option [value]="20">0.5</mat-option>
+                <mat-option [value]="10">0.3</mat-option>
+                <mat-option [value]="0">0</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentMsPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMplanned">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+            {{getCurrentRmPlan(element.weekPlans).plan}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MSresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.escortTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RMresults.sum">
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            {{element.managerCallsResults.regionalTotalContacts}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filler">
+          <th mat-header-cell *matHeaderCellDef
+              [style.text-align]="center"
+              [attr.colspan]="6"
+              style="background-color: #fff"></th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allCalls">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+        </ng-container>
+
+        <ng-container matColumnDef="todos">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+        </ng-container>
+
+
+        <ng-container matColumnDef="allResults">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+        </ng-container>
+
+        <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+      </table>
+
+    </mat-card-content>
+
+  </div>
+
+    <div [hidden]="hidenDivSrrch">
+      <mat-card-content>
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[50, 100, 150]"></mat-paginator>
+
+        <table mat-table [dataSource]="dataSource" [trackBy]="getTrackBy">
+
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Название</th>
+            <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>Телефон</th>
+            <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Тип</th>
+            <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="legalEntity">
+            <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+            <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numberOfCalls">
+            <th mat-header-cell *matHeaderCellDef>Звонки</th>
+            <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numberOfShipments">
+            <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
+            <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nomenclatureAnalysis">
+            <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
+            <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+              <div class="bar-shadow">
+                <div class="bar"
+                     [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
+                     [style.color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).font"
+                     [style.width.px]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).width">
+                  <b>{{getAvgAnalysis(element.nomenclatureAnalysis)}}%</b>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!--<ng-container matColumnDef="revenueAnalysis">
+            <th mat-header-cell *matHeaderCellDef>Выручка</th>
+            <td mat-cell *matCellDef="let element"
+            (click)="openRevenueAnalysis(element)">
+            <div class="bar-shadow">
+                <div class="bar"
+                [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+                [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+                [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+                  <b>
+                    {{getAvgAnalysis(element.revenueAnalysis)}}%
+                  </b>
+                </div>
+            </div>
+          </td>
+          </ng-container>-->
+
+          <ng-container matColumnDef="callPlan.collective">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
+            <td mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="callPlan.MS">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field class="numberInputField">
+                <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="callPlan.RM">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ</th>
+            <td mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tripPlan.planned">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field class="numberInputField">
+                <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tripPlan.fact">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field class="numberInputField">
+                <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
+                  <mat-option [value]="30">1</mat-option>
+                  <mat-option [value]="20">0.5</mat-option>
+                  <mat-option [value]="10">0.3</mat-option>
+                  <mat-option [value]="0">0</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="MSplanned">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+            <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+              {{getCurrentMsPlan(element.weekPlans).plan}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="RMplanned">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+            <td mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
+              {{getCurrentRmPlan(element.weekPlans).plan}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="MSresults.sum">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+              {{element.managerCallsResults.escortTotalContacts}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="RMresults.sum">
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+              {{element.managerCallsResults.regionalTotalContacts}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="filler">
+            <th mat-header-cell *matHeaderCellDef
+                [style.text-align]="center"
+                [attr.colspan]="6"
+                style="background-color: #fff"></th>
+          </ng-container>
+
+
+          <ng-container matColumnDef="allCalls">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center; background-color: #ffe8ff; color: #9e7cae">Звонки </th>
+          </ng-container>
+
+          <ng-container matColumnDef="trips">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e6efff; color: #bcc1df">Команд. </th>
+          </ng-container>
+
+          <ng-container matColumnDef="todos">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          </ng-container>
+
+
+          <ng-container matColumnDef="allResults">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Итоги </th>
+          </ng-container>
+
+          <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResults']" style="height: 30px"></tr>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+        </table>
+
+      </mat-card-content>
+    </div>
+</mat-card>
+

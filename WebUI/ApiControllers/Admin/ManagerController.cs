@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Data;
 using Data.Commands.Manager;
-using Data.DTO.Clients;
 using Data.DTO.Users;
 using Data.Entities.ClientContacts;
 using Microsoft.AspNetCore.Mvc;

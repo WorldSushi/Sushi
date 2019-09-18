@@ -21,21 +21,28 @@ namespace WebUI.Controllers
         public IActionResult Get(string name)
         {
             FileStream stream = null;
-            if (name == "AllDebitory")
+            try
             {
-                stream = new FileStream("PDF/All/Debytory.pdf", FileMode.Open);
+                if (name == "AllDebitory")
+                {
+                    stream = new FileStream("PDF/All/Debytory.pdf", FileMode.Open);
+                }
+                else if (name == "AllSalle")
+                {
+                    stream = new FileStream("PDF/All/Salles.pdf", FileMode.Open);
+                }
+                else if (name == "AllOpros")
+                {
+                    stream = new FileStream("PDF/All/Opros.pdf", FileMode.Open);
+                }
+                else if (name == "AllNomll")
+                {
+                    stream = new FileStream("PDF/All/Nomkl.pdf", FileMode.Open);
+                }
             }
-            else if(name == "AllSalle")
+            catch
             {
-                stream = new FileStream("PDF/All/Salles.pdf", FileMode.Open);
-            }
-            else if (name == "AllOpros")
-            {
-                stream = new FileStream("PDF/All/Opros.pdf", FileMode.Open);
-            }
-            else if (name == "AllNomll")
-            {
-                stream = new FileStream("PDF/All/Nomkl.pdf", FileMode.Open);
+                stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }
             return new FileStreamResult(stream, "application/pdf");
         }
@@ -44,23 +51,35 @@ namespace WebUI.Controllers
         [Route("ReportManager")]
         public IActionResult GetReortForManager(string name)
         {
-            int idManager = _accountService.CurrentUser().Id;
+            int idManager = 0;
+            var manager = _accountService.CurrentUser();
+            if(manager != null)
+            {
+                idManager = manager.Id;
+            }
             FileStream stream = null;
-            if (name == "Debitory")
+            try
             {
-                stream = new FileStream($"PDF/Manager/Debytory{idManager}.pdf", FileMode.Open);
+                if (name == "Debitory")
+                {
+                    stream = new FileStream($"PDF/Manager/Debytory{idManager}.pdf", FileMode.Open);
+                }
+                else if (name == "Salle")
+                {
+                    stream = new FileStream($"PDF/Manager/Salles{idManager}.pdf", FileMode.Open);
+                }
+                else if (name == "Opros")
+                {
+                    stream = new FileStream($"PDF/Manager/Opros{idManager}.pdf", FileMode.Open);
+                }
+                else if (name == "Nomll")
+                {
+                    stream = new FileStream($"PDF/Manager/Nomkl{idManager}.pdf", FileMode.Open);
+                }
             }
-            else if (name == "Salle")
+            catch
             {
-                stream = new FileStream($"PDF/Manager/Salles{idManager}.pdf", FileMode.Open);
-            }
-            else if (name == "Opros")
-            {
-                stream = new FileStream($"PDF/Manager/Opros{idManager}.pdf", FileMode.Open);
-            }
-            else if (name == "Nomll")
-            {
-                stream = new FileStream($"PDF/Manager/Nomkl{idManager}.pdf", FileMode.Open);
+                stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }
             return new FileStreamResult(stream, "application/pdf");
         }
@@ -70,21 +89,29 @@ namespace WebUI.Controllers
         public IActionResult GetReortForManager(string name, string clientId)
         {
             FileStream stream = null;
-            if (name == "Debitory")
+            try
             {
-                stream = new FileStream($"PDF/Client/Debytory{clientId}.pdf", FileMode.Open);
+
+                if (name == "Debitory")
+                {
+                    stream = new FileStream($"PDF/Client/Debytory{clientId}.pdf", FileMode.Open);
+                }
+                else if (name == "Salle")
+                {
+                    stream = new FileStream($"PDF/Client/Salles{clientId}.pdf", FileMode.Open);
+                }
+                else if (name == "Opros")
+                {
+                    stream = new FileStream($"PDF/Client/Opros{clientId}.pdf", FileMode.Open);
+                }
+                else if (name == "Nomll")
+                {
+                    stream = new FileStream($"PDF/Client/Nomkl{clientId}.pdf", FileMode.Open);
+                }
             }
-            else if (name == "Salle")
+            catch
             {
-                stream = new FileStream($"PDF/Client/Salles{clientId}.pdf", FileMode.Open);
-            }
-            else if (name == "Opros")
-            {
-                stream = new FileStream($"PDF/Client/Opros{clientId}.pdf", FileMode.Open);
-            }
-            else if (name == "Nomll")
-            {
-                stream = new FileStream($"PDF/Client/Nomkl{clientId}.pdf", FileMode.Open);
+                stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }
             return new FileStreamResult(stream, "application/pdf");
         }

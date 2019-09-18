@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Data;
 using Data.Commands.Account;
+using Data.Commands.Manager;
 using Data.Entities.Users;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Authentication;
@@ -15,10 +17,12 @@ namespace WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ApplicationContext _applicationContext;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, ApplicationContext applicationContext)
         {
             _userService = userService;
+            _applicationContext = applicationContext;
         }
 
         public IActionResult Index()
@@ -44,8 +48,10 @@ namespace WebUI.Controllers
                     await Authenticate(user);
                     if (user is Admin)
                         return Redirect("/admin");
-                    else
+                    else if(user is Manager)
                         return Redirect("/manager-rm");
+                    else if (user is Marketolog)
+                        return Redirect("/manager-any");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }

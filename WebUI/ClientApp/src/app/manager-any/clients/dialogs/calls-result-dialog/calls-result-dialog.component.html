@@ -1,0 +1,42 @@
+<h3 class="dialog-title" mat-dialog-title>{{data.title}}</h3>
+<button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
+
+<div class="dialog-subtitle">
+  <div>
+    <button class="back" (click)="close()">Назад</button>
+  </div>
+  <div>
+    <h3>Итоги звонков за месяц</h3>
+  </div>
+  <div>
+    <small>{{currentMonth}}</small>
+  </div> 
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Звонки</th>
+      <th>WhatsApp</th>
+      <th>Письма</th>
+      <th>Итого</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background: rgba(238, 254, 246, 0.4);">
+      <th style="background: #EEFEF6;">Менеджер сопровождения</th>
+      <td>{{data.MSresults.calls}}</td>
+      <td>{{data.MSresults.whatsUp}}</td>
+      <td>{{data.MSresults.letters}}</td>
+      <td>{{data.MSresults.sum}}</td>
+    </tr>
+    <tr style="background: rgba(245, 254, 238, 0.4);">
+      <th style="background: #F5FEEE;">Региональный менеджер</th>
+      <td>{{data.RMresults.calls}}</td>
+      <td>{{data.RMresults.whatsUp}}</td>
+      <td>{{data.RMresults.letters}}</td>
+      <td>{{data.RMresults.sum}}</td>
+    </tr>
+  </tbody>
+</table>

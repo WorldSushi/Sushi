@@ -1,0 +1,416 @@
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { IClient } from '../../shared/models/client.model';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
+import { EditClientDialogComponent } from '../../dialogs/edit-client-dialog/edit-client-dialog.component';
+import { AnalysisDialogComponent } from '../../dialogs/analysis-dialog/analysis-dialog.component';
+import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
+import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
+import { IWeekPlan } from '../../shared/models/week-plan.model';
+import { WeekPlansDialogComponent } from '../../dialogs/week-plans/week-plans-dialog.component';
+import { CallsResultDialogComponent } from '../../dialogs/calls-result-dialog/calls-result-dialog.component';
+import { ICallsDate } from '../../shared/models/calls-date.model';
+import { CallsDatesDialogComponent } from '../../dialogs/calls-dates-dialog/calls-dates-dialog.component';
+import { ICallPlan } from '../../shared/models/call-plan.model';
+import { ITripPlan } from '../../shared/models/trip-plan.model';
+import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
+import { ninvoke } from 'q';
+import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
+import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
+
+@Component({
+  selector: 'app-client-list',
+  templateUrl: './client-list.component.html',
+  styleUrls: ['./client-list.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ClientListComponent implements OnInit {
+
+  @Input() workgroup: IWorkgroup[];
+  @Input() clients: IClient[];
+  @Input() manager: any;
+
+  @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
+  @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
+  @Output() callPlanUpdated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
+  @Output() tripPlanHoursUpdated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+  @Output() tripPlanCompletedTypeUpdated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+  @Output() weekPlanUpdated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekPlanCreated: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekPlanFactAdded: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() weekGet: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+  @Output() callsDateCreated: EventEmitter<ICallsDate> = new EventEmitter<ICallsDate>();
+  @Output() callPlanCreated: EventEmitter<ICallPlan> = new EventEmitter<ICallPlan>();
+  @Output() tripPlanCreated: EventEmitter<ITripPlan> = new EventEmitter<ITripPlan>();
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  dataSource: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  selectedGroup: any = -10;
+
+  //actualLength: number;
+  actual: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //recordShipmentLength: number;
+  recordShipment: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //restaurantsLength: number;
+  restaurants: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //newOrResuscitatingLength: number;
+  newOrResuscitating: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //notDeterminedLength: number;
+  notDetermined: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  //notDeterminedLength: number;
+  other: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
+  hidenDivFull = false;
+  hidenDivSrrch = true;
+  fullClientContacts: ICallsDate[];
+  dateCollections: string[] = [];
+  numberMonthe: number = 0;
+  numberYear: number = 0;
+
+  displayedColumns: string[] = [
+    'title', 
+    'phone',
+    'type',
+    'legalEntity',
+    'numberOfCalls', 
+    'numberOfShipments',
+    'callPlan.collective', 
+    'callPlan.MS', 
+    'callPlan.RM',
+    'tripPlan.planned',
+    'tripPlan.fact',
+    'MSplanned',
+    'RMplanned',
+    'MSresults.sum',
+    'RMresults.sum'   
+  ];
+
+  clientsTmp: IClient[] = [];
+  clientsTmp1: IClient[] = [];
+  selectedWorkGroupChange() {
+    if (this.selectedGroup == -10) {
+      this.hidenDivFull = false;
+      this.hidenDivSrrch = true;
+    }
+    else {
+      this.clientsTmp = [];
+      this.clientsTmp1 = [];
+      for (let i = 0; i < this.workgroup[this.selectedGroup].clientIds.length; i++) {
+        this.clientsTmp = this.clients.filter(c => c.id == this.workgroup[this.selectedGroup].clientIds[i]);
+        for (let j = 0; j < this.clientsTmp.length; j++) {
+          this.clientsTmp1.push(this.clientsTmp[j]);
+        }
+      }
+      this.dataSource.data = this.clientsTmp1;
+      this.dataSource.paginator = this.paginator;
+      this.hidenDivFull = true;
+      this.hidenDivSrrch = false;
+    }
+  }
+
+  applyFilter(filterValue: string) {
+    if (filterValue != "") {
+      this.hidenDivFull = true;
+      this.hidenDivSrrch = false;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else {
+      this.hidenDivFull = false;
+      this.hidenDivSrrch = true;
+    }
+  }
+
+  getTrackBy(index, item){
+    return item.id;
+  }
+
+  getClientsGroups(){
+    let allGroups = this.clients.map(item => item.group);
+    
+    let result = [...new Set(allGroups)];
+
+    return result;
+  }
+
+  selectedGroupChange(){
+    
+    if(this.selectedGroup == -10 || this.selectedGroup == '-10'){
+      this.dataSource.data = this.clients;
+      this.dataSource.paginator = this.paginator;
+    }
+    else {
+      this.dataSource.data = this.clients.filter(item => item.group == this.selectedGroup);
+      this.dataSource.paginator = this.paginator;
+    }
+  }
+
+  openCreateClientForm() {
+    const dialogRef = this.dialog.open(CreateClientDialogComponent, {
+      width: '725px'
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.clientCreated.emit(res);
+      }
+    })
+  }
+
+  openEditClientForm(client: IClient) {
+    const dialogRef = this.dialog.open(EditClientDialogComponent, {
+      width: '938px',
+      data: { ...client }
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.updateClient(res);
+      }
+    })
+  }
+
+  updateClient(client: IClient) {
+    this.clientUpdated.emit(client);
+  }
+
+  openNomenclatureAnalysis(client: IClient) {
+    this.dialog.open(AnalysisDialogComponent, {
+      width: '938px',
+      data: {
+        title: client.title,
+        analysisTitle: 'Анализ по номенклатуре',
+        analysis: client.nomenclatureAnalysis
+      }
+    })
+  }
+
+  openRevenueAnalysis(client: IClient) {
+    this.dialog.open(AnalysisDialogComponent, {
+      width: '938px',
+      data: {
+        title: client.title,
+        analysisTitle: 'Анализ по выручке',
+        analysis: client.revenueAnalysis
+      }
+    })
+  }
+
+  openWeekPlans(client: IClient){
+    let dialogRef = this.dialog.open(WeekPlansDialogComponent, {
+      width: '70%',
+      data: {
+        id: client.id,
+        title: client.title,
+        weekPlans: JSON.parse(JSON.stringify(client.weekPlans))
+      }
+    })
+
+    const sub = dialogRef.componentInstance.addFact.subscribe(res => {
+      this.weekPlanFactAdded.emit(res);
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        res.forEach(element => {
+          if(element.id == 0)
+            this.weekPlanCreated.emit(element);
+          else if(element.id > 0)
+            this.weekPlanUpdated.emit(element);
+
+          sub.unsubscribe();
+        });
+      }
+    })
+  }
+
+  openCallsResult(client: IClient){
+
+    let dialogRef = this.dialog.open(CallsResultDialogComponent, {
+      width: '938px',
+      data: {
+        title: client.title,
+        MSresults: {
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10 && item.durations >= 150).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 10 && item.durations >= 150).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 10 && item.durations >= 150).length,
+          sum: client.clientContacts.filter(item => item.contactType != 0 && item.managerType == 10 && item.durations >= 150).length
+        },
+        RMresults: {
+          calls: client.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20 && item.durations >= 150).length,
+          whatsUp: client.clientContacts.filter(item => item.contactType == 20 && item.managerType == 20 && item.durations >= 150).length,
+          letters: client.clientContacts.filter(item => item.contactType == 30 && item.managerType == 20 && item.durations >= 150).length,
+          sum: client.clientContacts.filter(item => item.contactType > 0 && item.managerType == 20 && item.durations >= 150).length
+        }
+      }
+                  
+    })
+  }
+
+  openCallsDates(client: IClient) {;
+    let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
+      width: '938px',
+      data: {
+        clientId: client.id,
+        clientTitle: client.title,
+        clientContacts: client.clientContacts.filter(item => item.durations >= 150)
+      } 
+    })
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
+
+        let RMcontacts = [];
+        if (newContact.RMclientContactId == 0 && newContact.RMcallType != 0)
+          RMcontacts.push({
+            contactType: newContact.RMcallType,
+            managerType: 20,
+            clientId: newContact.clientId
+          }) 
+
+        let EMcontacts = []
+        if (newContact.EMclientContactId == 0 && newContact.MScallType != 0)
+          EMcontacts.push({
+            contactType: newContact.MScallType,
+            managerType: 10,
+            clientId: newContact.clientId
+          }) 
+
+        let newContacts = [...RMcontacts, ...EMcontacts]; 
+
+        newContacts.forEach(item => {
+          item.managerId = this.manager.id;
+          this.callsDateCreated.emit(item);
+        });
+      }
+    })
+  }
+
+  getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){
+
+    const a = value.reportPrevMonth;
+    const b = value.reportAvg5Months;
+    const c = value.prevMonth;
+    const d = value.avg5Months;
+
+    return Math.round((a + b + c + d) / 4);
+  }
+
+  getCurrentMsPlan(weekPlans: IWeekPlan[]){
+    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+
+    return weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber) 
+      ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
+      : { plan: '' };
+  }
+
+  getCurrentRmPlan(weekPlans: IWeekPlan[]){
+    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+
+    return weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+      ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+      : { plan: '' };
+  }
+
+  getSumOfCallsDates(callsDates: ICallsDate[]){
+    return callsDates.filter(item => item.contactType > 0).length;
+  }
+
+  updateCallPlan(callPlan: ICallPlan){
+    if(callPlan.id == 0)
+      this.callPlanCreated.emit(callPlan)
+    else
+      this.callPlanUpdated.emit(callPlan);
+  }
+
+  updateTripPlanHours(tripPlan: ITripPlan){
+    if(tripPlan.id == 0)
+      this.tripPlanCreated.emit(tripPlan);
+    else
+      this.tripPlanHoursUpdated.emit(tripPlan);
+  }
+
+  updateTripPlanCompletedType(tripPlan: ITripPlan){
+    this.tripPlanCompletedTypeUpdated.emit(tripPlan);
+  }
+  
+
+  getAnalysisProps(value) {
+    if(value == 0){
+      return {
+        background: "#ac0800",
+        font: "#384855",
+        width: '30'
+      } 
+    }
+    else if(value > 0 && value < 25){
+      return {
+        background: "#ffbc6d",
+        font: "#384855",
+        width: "40"
+      }
+    }
+    else if(value >= 25 && value <= 49){
+      return {
+        background: "#fee789",
+        font: "#384855",
+        width: "50"
+      }
+    }
+    else if(value > 49 && value <= 74){
+      return {
+        background: '#ebb4d3',
+        font: '#384855',
+        width: "70"
+      }
+    }
+    else if(value > 74 && value <= 99){
+      return {
+        background: "#ccffc6",
+        font: "#384855",
+        width: "80"
+      }
+    }
+    else if(value > 99 && value <= 124){
+      return {
+        background: "#85e5fe",
+        font: "#384855",
+        width: '100'
+      }
+    }
+    else if(value > 124){
+      return {
+        background: "#85e5fe",
+        font: "#384855",
+        width: '100'
+      }
+    }
+    else {
+      '#fff'
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.actual.data = this.clients.filter(c => c.group == 10);
+    this.recordShipment.data = this.clients.filter(c => c.group == 20);
+    this.restaurants.data = this.clients.filter(c => c.group == 40);
+    this.newOrResuscitating.data = this.clients.filter(c => c.group == 30);
+    this.notDetermined.data = this.clients.filter(c => c.group == 0);
+    this.other.data = this.clients.filter(c => c.group == 50);
+    this.dataSource.data = this.clients;
+    this.dataSource.paginator = this.paginator;
+    console.log(this.clients);
+  }
+  
+  constructor(public dialog: MatDialog) { }
+
+  ngOnInit() {
+  }
+
+}

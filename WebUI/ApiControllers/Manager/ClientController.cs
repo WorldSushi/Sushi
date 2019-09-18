@@ -8,6 +8,7 @@ using Data.DTO.Clients;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Entities.Users;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,16 +41,23 @@ namespace WebUI.ApiControllers.Manager
         {
             List<ClientDto> clientsDto = new List<ClientDto>();
                var managerId = _accountInformationService.GetOperatorId();
-
-            //_myCallsApiService.SaveNewCalls();
+            User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
+            _myCallsApiService.SaveNewCalls();
             //_myCallsAPIServiceAstrics.SaveNewCalls();
 
-            var workGroups = await _context.Set<WorkGroup>()
+            List<WorkGroup> workGroups = null;
+            if (user is Data.Entities.Users.Manager)
+            {
+                workGroups = await _context.Set<WorkGroup>()
                 .Where(x => x.RegionalManagerId == managerId
                                           || x.EscortManagerId == managerId).ToListAsync();
-
-             var clientPhones = await _context.Set<ClientPhone>()
-                .ToListAsync();
+            }
+            else if (user is Marketolog)
+            {
+                workGroups = await _context.Set<WorkGroup>().ToListAsync();
+            }
+                var clientPhones = await _context.Set<ClientPhone>()
+                    .ToListAsync();
             foreach (WorkGroup workGroup in workGroups)
             {
                 var result = await _context.Set<ClientWorkGroup>()

@@ -4,6 +4,7 @@ import { AdminGuard } from './shared/guards/admin.guard';
 
 const routes: Routes = [
   { path: 'manager-rm', loadChildren: './manager-rm/manager-rm.module#ManagerRmModule' },
+  { path: 'manager-any', loadChildren: './manager-any/manager-any.module#ManagerAnyModule' },
   { path: 'admin',  loadChildren: './admin/admin.module#AdminModule' },
 ];
 
