@@ -43,7 +43,7 @@ namespace WebUI.ApiControllers.Manager
                var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             _myCallsApiService.SaveNewCalls();
-            //_myCallsAPIServiceAstrics.SaveNewCalls();
+            _myCallsAPIServiceAstrics.SaveNewCalls();
 
             List<WorkGroup> workGroups = null;
             if (user is Data.Entities.Users.Manager)

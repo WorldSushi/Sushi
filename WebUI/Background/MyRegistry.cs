@@ -14,11 +14,17 @@ namespace WebUI.Background
         public MyRegistry(ApplicationContext applicationContext)
         {
             Task.Run(() => CreateEmtypdf());
-            Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(9, 22);
-            Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(9, 24);
-            Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(9, 26);
-            Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(9, 28);
+            Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(4, 00);
+            Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(4, 10);
+            Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(4, 20);
+            Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(4, 30);
             //Schedule(() => new OprosReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
+
+
+            Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(18, 40);
+            Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(18, 50);
+            Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(19, 00);
+            Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(19, 10);
         }
 
         private void CreateEmtypdf()

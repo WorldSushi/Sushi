@@ -127,7 +127,7 @@ export class DashboardPanelComponent implements OnInit {
 
   setMore10to2_5CallDays(): number {
     return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.durations < 149 && item.durations > 10).length;
+      .filter(item => item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && (item.durations < 149 && item.durations > 10)).length;
   }
 
   setLes10SecCall(): number {
@@ -163,7 +163,7 @@ export class DashboardPanelComponent implements OnInit {
 
   setLes10SecCallDays(): number {
     return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.durations < 10).length;
+      .filter(item => item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && item.durations < 10).length;
   }
 
   setDevelopmentCall(): number {
@@ -198,8 +198,10 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   setDevelopmentCallDays(): number {
-    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 40).length;
+    let s = this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && item.contactType == 40);
+    console.log(s);
+    return s.length;
   }
 
   setManagerCall(): number {
@@ -234,8 +236,10 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   setManagerCallDays(): number {
-    return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 50).length;
+    let s = this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
+      .filter(item => item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && item.contactType == 50);
+    console.log(s);
+    return s.length;
   }
 
   setAllCall(): number {
@@ -249,8 +253,6 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log(this.Managerid);
-    console.log(this.clientContacts);
   }
 
 }

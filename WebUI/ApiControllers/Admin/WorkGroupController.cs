@@ -16,18 +16,22 @@ namespace WebUI.ApiControllers.Admin
     {
         private readonly ApplicationContext _context;
         private readonly IMyCallsAPIService _myCallsApiService;
+        private readonly IMyCallsAPIServiceAstrics _myCallsAPIServiceAstrics;
 
         public WorkGroupController(ApplicationContext context,
-            IMyCallsAPIService myCallsApiService)
+            IMyCallsAPIService myCallsApiService,
+            IMyCallsAPIServiceAstrics myCallsAPIServiceAstrics)
         {
             _context = context;
             _myCallsApiService = myCallsApiService;
+            _myCallsAPIServiceAstrics = myCallsAPIServiceAstrics;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             _myCallsApiService.SaveNewCalls();
+            _myCallsAPIServiceAstrics.SaveNewCalls();
 
             var result = await _context.Set<WorkGroup>()
                 .Select(x => new WorkGroupDto()
