@@ -48,10 +48,10 @@ namespace WebUI.Background.Report
             shahmatcaModels = shahmatcaModels.Where(s => DateTime.Parse(s.Period) >= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).ToList();
             List<ColummnNoklName> colummnNoklNames = GetColummn(shahmatcaModels);
             List<RowManagerContrAgGr> rowManagerContrAgGrs = GetRows(shahmatcaModels);
-            CreateCountXsml(colummnNoklNames, rowManagerContrAgGrs);
+            CreateCountXsml(colummnNoklNames, rowManagerContrAgGrs, shahmatcaModels);
         }
 
-        private void CreateCountXsml(List<ColummnNoklName> colummnNoklNames, List<RowManagerContrAgGr> rowManagerContrAgGrs)
+        private void CreateCountXsml(List<ColummnNoklName> colummnNoklNames, List<RowManagerContrAgGr> rowManagerContrAgGrs, List<ShahmatcaModel> shahmatcaModels)
         {
             if (!Directory.Exists("PDF/All"))
             {
@@ -65,6 +65,9 @@ namespace WebUI.Background.Report
             worksheetPart.Worksheet = new Worksheet(new SheetData());
             Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.
                 AppendChild<Sheets>(new Sheets());
+            WorkbookStylesPart stylePart = workbookpart.AddNewPart<WorkbookStylesPart>();
+            stylePart.Stylesheet = GenerateStylesheet();
+            stylePart.Stylesheet.Save();
             Sheet sheet = new Sheet()
             {
                 Id = spreadsheetDocument.WorkbookPart.
@@ -73,52 +76,285 @@ namespace WebUI.Background.Report
                 Name = "mySheet"
             };
             sheets.Append(sheet);
-            workbookpart.Workbook.Save();
-            SharedStringTablePart shareStringPart;
-            if (spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0)
-            {
-                shareStringPart = spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First();
-            }
-            else
-            {
-                shareStringPart = spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
-            }
-            char s = Convert.ToChar(3);
-            int index = InsertSharedStringItem("222", shareStringPart);
-            Cell cell = InsertCellInWorksheet("A", 3, worksheetPart);
-            cell.CellValue = new CellValue(index.ToString());
+            int i = 0;
+            SharedStringTablePart shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+            string nameColummn = GetCharOfTabel(0);
+            InsertSharedStringItem("Группа контрагентов", shareStringPart);
+            Cell cell = InsertCellInWorksheet(nameColummn, 2, worksheetPart, 1, 80);
+            cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+            nameColummn = GetCharOfTabel(1);
+            InsertSharedStringItem("Контрагент/Номенклатура", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, 2, worksheetPart, 2, 80);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            foreach (ColummnNoklName colummnNoklName in colummnNoklNames)
+            {
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                nameColummn = GetCharOfTabel(colummnNoklName.NumberColummn + 2);
+                InsertSharedStringItem(colummnNoklName.NameNomkl, shareStringPart);
+                cell = InsertCellInWorksheet(nameColummn, 2, worksheetPart, 2, 80);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+            }
+            foreach (RowManagerContrAgGr rowManagerContrAgGr in rowManagerContrAgGrs)
+            {
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.GR_Contragent, shareStringPart);
+                cell = InsertCellInWorksheet("A", (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.Contragent, shareStringPart);
+                cell = InsertCellInWorksheet("B", (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
 
+                nameColummn = GetCharOfTabel(colummnNoklNames.Count + 2);
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.Manager, shareStringPart);
+                cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+            }
+            foreach (ShahmatcaModel shahmatcaModel in shahmatcaModels)
+            {
+                ColummnNoklName colummnNoklName = colummnNoklNames.FirstOrDefault(c => c.NameNomkl == shahmatcaModel.Nomenclature);
+                RowManagerContrAgGr rowManagerContrAgGr = rowManagerContrAgGrs.FirstOrDefault(r => r.Contragent == shahmatcaModel.Contragent);
+                if (rowManagerContrAgGr != null)
+                {
+                    shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                    nameColummn = GetCharOfTabel(colummnNoklName.NumberColummn + 2);
+                    InsertSharedStringItem(shahmatcaModel.Kol, shareStringPart);
+                    if (shahmatcaModel.KolColor == "R" || shahmatcaModel.KolColor == "Н")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 3, 30);
+                    }
+                    else if (shahmatcaModel.KolColor == "B")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 4, 30);
+                    }
+                    else if (shahmatcaModel.KolColor == "W")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 5, 30);
+                    }
 
+                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                    cell.CellValue = new CellValue(i.ToString());
+                    worksheetPart.Worksheet.Save();
+                    i++;
+                }
+                else
+                {
+
+                }
+            }
             worksheetPart.Worksheet.Save();
             spreadsheetDocument.Close();
         }
 
+        private SharedStringTablePart GetSharedStringTablePart(WorkbookPart workbookPart)
+        {
+            SharedStringTablePart shareStringPart = null;
+            if (workbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0)
+            {
+                shareStringPart = workbookPart.GetPartsOfType<SharedStringTablePart>().First();
+            }
+            else
+            {
+                shareStringPart = workbookPart.AddNewPart<SharedStringTablePart>();
+            }
+            return shareStringPart;
+        }
 
+        private string GetCharOfTabel(int indexColummmn)
+        {
+            string charTabel = null;
+            List<int> numberChars = new List<int>();
+            while(indexColummmn > 25)
+            {
+                int ost = indexColummmn - 26;
+                numberChars.Add(ost);
+                indexColummmn = ost;
+            }
+            if(numberChars.Count != 0)
+            {
+                charTabel += GetChar(numberChars.Count - 1);
+            }
+            else
+            {
+                charTabel += GetChar(indexColummmn);
+            }
+            foreach(int numberChar in numberChars)
+            {
+                charTabel += GetChar(numberChar);
+            }
+            return charTabel;
+        }
 
-        private int InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
+        private string GetChar(int number)
+        {
+            string charT = null;
+            switch(number)
+            {
+                case 0:
+                    {
+                        charT = "A";
+                        break;
+                    }
+                case 1:
+                    {
+                        charT = "B";
+                        break;
+                    }
+                case 2:
+                    {
+                        charT = "C";
+                        break;
+                    }
+                case 3:
+                    {
+                        charT = "D";
+                        break;
+                    }
+                case 4:
+                    {
+                        charT = "E";
+                        break;
+                    }
+                case 5:
+                    {
+                        charT = "F";
+                        break;
+                    }
+                case 6:
+                    {
+                        charT = "G";
+                        break;
+                    }
+                case 7:
+                    {
+                        charT = "H";
+                        break;
+                    }
+                case 8:
+                    {
+                        charT = "I";
+                        break;
+                    }
+                case 9:
+                    {
+                        charT = "J";
+                        break;
+                    }
+                case 10:
+                    {
+                        charT = "K";
+                        break;
+                    }
+                case 11:
+                    {
+                        charT = "L";
+                        break;
+                    }
+                case 12:
+                    {
+                        charT = "M";
+                        break;
+                    }
+                case 13:
+                    {
+                        charT = "N";
+                        break;
+                    }
+                case 14:
+                    {
+                        charT = "O";
+                        break;
+                    }
+                case 15:
+                    {
+                        charT = "P";
+                        break;
+                    }
+                case 16:
+                    {
+                        charT = "Q";
+                        break;
+                    }
+                case 17:
+                    {
+                        charT = "R";
+                        break;
+                    }
+                case 18:
+                    {
+                        charT = "S";
+                        break;
+                    }
+                case 19:
+                    {
+                        charT = "T";
+                        break;
+                    }
+                case 20:
+                    {
+                        charT = "U";
+                        break;
+                    }
+                case 21:
+                    {
+                        charT = "V";
+                        break;
+                    }
+                case 22:
+                    {
+                        charT = "W";
+                        break;
+                    }
+                case 23:
+                    {
+                        charT = "X";
+                        break;
+                    }
+                case 24:
+                    {
+                        charT = "Y";
+                        break;
+                    }
+                case 25:
+                    {
+                        charT = "Z";
+                        break;
+                    }
+            }
+            return charT;
+        }
+
+        private void InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
         {
             if (shareStringPart.SharedStringTable == null)
             {
                 shareStringPart.SharedStringTable = new SharedStringTable();
             }
-            int i = 0;
-            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>())
-            {
-                if (item.InnerText == text)
-                {
-                    return i;
-                }
-
-                i++;
-            }
-            shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
+            shareStringPart.SharedStringTable.Append(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
             shareStringPart.SharedStringTable.Save();
-
-            return i;
         }
 
-        private Cell InsertCellInWorksheet(string columnName, uint rowIndex, WorksheetPart worksheetPart)
+        private Cell InsertCellInWorksheet(string columnName, uint rowIndex, WorksheetPart worksheetPart, UInt32 stleIndex, double height)
         {
             Worksheet worksheet = worksheetPart.Worksheet;
             SheetData sheetData = worksheet.GetFirstChild<SheetData>();
@@ -131,6 +367,8 @@ namespace WebUI.Background.Report
             else
             {
                 row = new Row() { RowIndex = rowIndex };
+                row.CustomHeight = true;
+                row.Height = height;
                 sheetData.Append(row);
             }
             if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0)
@@ -152,16 +390,122 @@ namespace WebUI.Background.Report
                     }
                 }
 
-                Cell newCell = new Cell() { CellReference = cellReference };
+                Cell newCell = new Cell() { CellReference = cellReference};
+                newCell.StyleIndex = stleIndex;
                 row.InsertBefore(newCell, refCell);
                 worksheet.Save();
                 return newCell;
             }
         }
 
+        private Stylesheet GenerateStylesheet()
+        {
+            Stylesheet styleSheet = null;
+
+            Fills fills = new Fills(
+                    new Fill(new PatternFill() { PatternType = PatternValues.None }),
+                    new Fill(new PatternFill() { PatternType = PatternValues.None }),
+                    new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#DF013A") }) { PatternType = PatternValues.Solid }),
+                    new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#0404B4") }) { PatternType = PatternValues.Solid })
+                );
+
+            Borders borders = new Borders(
+                    new Border(
+                        new LeftBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+                        new RightBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+                        new TopBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+                        new BottomBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+                        new DiagonalBorder())
+                );
+
+            Fonts font = new Fonts(
+                new Font() { Bold = new Bold() },
+                new Font()
+                );
+
+            CellFormats cellFormats = new CellFormats(
+                new CellFormat
+                {
+                    FillId = 2,
+                    BorderId = 0,
+                    ApplyFill = true,
+                    FontId = 1
+                },
+                    new CellFormat
+                    {
+                        Alignment = new Alignment()
+                        {
+                            Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Left),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
+                            WrapText = true
+                        },
+                        FillId = 0,
+                        BorderId = 0,
+                        ApplyFill = true,
+                        FontId = 1
+                    },
+                    new CellFormat
+                    {
+                        Alignment = new Alignment()
+                        {
+                            Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Center),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Bottom),
+                            WrapText = true
+                        },
+                        FillId = 0,
+                        BorderId = 0,
+                        ApplyFill = true,
+                        FontId = 1
+                    },
+                    new CellFormat
+                    {
+                        Alignment = new Alignment()
+                        {
+                            Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Right),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
+                            WrapText = true
+                        },
+                        FillId = 2,
+                        BorderId = 0,
+                        ApplyFill = true,
+                        FontId = 0
+                    },
+                    new CellFormat
+                    {
+                        Alignment = new Alignment()
+                        {
+                            Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Right),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
+                            WrapText = true
+                        },
+                        FillId = 3,
+                        BorderId = 0,
+                        ApplyFill = true,
+                        FontId = 0
+                    },
+                    new CellFormat
+                    {
+                        Alignment = new Alignment()
+                        {
+                            Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Right),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
+                            WrapText = true
+                        },
+                        FillId = 1,
+                        BorderId = 0,
+                        ApplyFill = true,
+                        FontId = 0
+                    }
+                );
+
+            styleSheet = new Stylesheet(font, fills, borders, cellFormats);
+
+            return styleSheet;
+        }
+
         private List<RowManagerContrAgGr> GetRows(List<ShahmatcaModel> shahmatcaModels)
         {
-            int numberRow = 1;
+            int numberRow = 0;
             List<ClientInfo> clientInfos = _context.Set<ClientInfo>().ToList();
             List<Data.Entities.OneCInfo.UserInfo> userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>().ToList();
             List<RowManagerContrAgGr> rowManagerContrAgGrs = new List<RowManagerContrAgGr>();
@@ -193,7 +537,7 @@ namespace WebUI.Background.Report
 
         private List<ColummnNoklName> GetColummn(List<ShahmatcaModel> shahmatcaModels)
         {
-            int numberColummn = 1;
+            int numberColummn = 0;
             List<ColummnNoklName> colummnNoklNames = new List<ColummnNoklName>();
             foreach(ShahmatcaModel shahmatcaModel in shahmatcaModels)
             {
