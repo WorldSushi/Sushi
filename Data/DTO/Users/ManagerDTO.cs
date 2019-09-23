@@ -1,4 +1,5 @@
 ﻿using Data.DTO.Clients;
+using Data.Enums;
 
 namespace Data.DTO.Users
 {
@@ -10,5 +11,6 @@ namespace Data.DTO.Users
         public string Phone { get; set; }
         public int? WorkgroupId { get; set; }
         public string WorkgroupTitle { get; set; }
+        public string TypeManager { get; set; }
     }
 }

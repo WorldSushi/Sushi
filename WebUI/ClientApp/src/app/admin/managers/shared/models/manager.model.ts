@@ -4,5 +4,6 @@ export interface IManager {
     password: string,
     phone: string,
     workgroupId: number,
-    workgroupTitle: string
+    workgroupTitle: string,
+    typeManager: number
 }

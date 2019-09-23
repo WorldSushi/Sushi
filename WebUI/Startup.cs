@@ -37,10 +37,10 @@ namespace WebUI
             var connection =
             //"Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=SushiWorldSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             //"Data Source=DESKTOP-MEBU400\\SQLEXPRESS;Initial Catalog=sushiImportTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            "Data Source=31.31.196.202;Initial Catalog=u0720797_sushi_test;User ID=u0720797_sushi_test;Password=sushi_test1";
+            //"Data Source=31.31.196.202;Initial Catalog=u0720797_sushi_test;User ID=u0720797_sushi_test;Password=sushi_test1";
             //@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\SushiWorld.mdf;Integrated Security=True;Connect Timeout=30";
             //@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\SushiWorld.mdf;Integrated Security=True;Connect Timeout=30";
-            //"Server=(localdb)\\mssqllocaldb;Database=Sushi;Trusted_Connection=True;";
+            "Server=(localdb)\\mssqllocaldb;Database=Sushi;Trusted_Connection=True;";
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("Data")));
@@ -80,7 +80,7 @@ namespace WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+            //app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseDeveloperExceptionPage();
 

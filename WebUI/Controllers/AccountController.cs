@@ -7,6 +7,7 @@ using Data;
 using Data.Commands.Account;
 using Data.Commands.Manager;
 using Data.Entities.Users;
+using Data.Enums;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -38,7 +39,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginCommand command)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 var user = _userService.GetAll()
                     .FirstOrDefault(x => x.Login == command.Login
@@ -49,9 +50,20 @@ namespace WebUI.Controllers
                     if (user is Admin)
                         return Redirect("/admin");
                     else if(user is Manager)
-                        return Redirect("/manager-rm");
-                    else if (user is Marketolog)
-                        return Redirect("/manager-any");
+                    {
+                        if(((Manager)user).typeManager == TypeManager.Manager)
+                        {
+                            return Redirect("/manager-rm");
+                        }
+                        else if (((Manager)user).typeManager == TypeManager.Marketolog)
+                        {
+                            return Redirect("/manager-any");
+                        }
+                        else if (((Manager)user).typeManager == TypeManager.Call_Checker)
+                        {
+                            throw new Exception("Этот тип менеджера ещё в разработке");
+                        }
+                    }
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }

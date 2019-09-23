@@ -77,6 +77,99 @@ namespace WebUI.Background.Report
             };
             sheets.Append(sheet);
             int i = 0;
+            CreatXMLSCount(spreadsheetDocument, ref i, colummnNoklNames, rowManagerContrAgGrs, shahmatcaModels, worksheetPart);
+            CreatXMLSSumme(spreadsheetDocument, ref i, colummnNoklNames, rowManagerContrAgGrs, shahmatcaModels, worksheetPart);
+            worksheetPart.Worksheet.Save();
+            spreadsheetDocument.Close();
+        }
+
+        private void CreatXMLSSumme(SpreadsheetDocument spreadsheetDocument, ref int i, List<ColummnNoklName> colummnNoklNames, List<RowManagerContrAgGr> rowManagerContrAgGrs, List<ShahmatcaModel> shahmatcaModels, WorksheetPart worksheetPart)
+        {
+            SharedStringTablePart shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+            string nameColummn = GetCharOfTabel(0);
+            InsertSharedStringItem("Группа контрагентов", shareStringPart);
+            Cell cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + 3), worksheetPart, 1, 80);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+            nameColummn = GetCharOfTabel(1);
+            InsertSharedStringItem("Контрагент/Номенклатура", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + 3), worksheetPart, 1, 80);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            foreach (ColummnNoklName colummnNoklName in colummnNoklNames)
+            {
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                nameColummn = GetCharOfTabel(colummnNoklName.NumberColummn + 2);
+                InsertSharedStringItem(colummnNoklName.NameNomkl, shareStringPart);
+                cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + 3), worksheetPart, 2, 80);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+            }
+            foreach (RowManagerContrAgGr rowManagerContrAgGr in rowManagerContrAgGrs)
+            {
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.GR_Contragent, shareStringPart);
+                cell = InsertCellInWorksheet("A", (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.Contragent, shareStringPart);
+                cell = InsertCellInWorksheet("B", (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+
+                nameColummn = GetCharOfTabel(colummnNoklNames.Count + 2);
+                shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                InsertSharedStringItem(rowManagerContrAgGr.Manager, shareStringPart);
+                cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 1, 30);
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(i.ToString());
+                worksheetPart.Worksheet.Save();
+                i++;
+            }
+            foreach (ShahmatcaModel shahmatcaModel in shahmatcaModels)
+            {
+                ColummnNoklName colummnNoklName = colummnNoklNames.FirstOrDefault(c => c.NameNomkl == shahmatcaModel.Nomenclature);
+                RowManagerContrAgGr rowManagerContrAgGr = rowManagerContrAgGrs.FirstOrDefault(r => r.Contragent == shahmatcaModel.Contragent);
+                if (rowManagerContrAgGr != null)
+                {
+                    shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
+                    nameColummn = GetCharOfTabel(colummnNoklName.NumberColummn + 2);
+                    InsertSharedStringItem(shahmatcaModel.Summa, shareStringPart);
+                    if (shahmatcaModel.KolColor == "R" || shahmatcaModel.KolColor == "Н")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 4, 30);
+                    }
+                    else if (shahmatcaModel.KolColor == "B")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 5, 30);
+                    }
+                    else if (shahmatcaModel.KolColor == "W")
+                    {
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 3, 30);
+                    }
+
+                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                    cell.CellValue = new CellValue(i.ToString());
+                    worksheetPart.Worksheet.Save();
+                    i++;
+                }
+            }
+        }
+
+        private void CreatXMLSCount(SpreadsheetDocument spreadsheetDocument, ref int i, List<ColummnNoklName> colummnNoklNames, List<RowManagerContrAgGr> rowManagerContrAgGrs, List<ShahmatcaModel> shahmatcaModels, WorksheetPart worksheetPart)
+        {
             SharedStringTablePart shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
             string nameColummn = GetCharOfTabel(0);
             InsertSharedStringItem("Группа контрагентов", shareStringPart);
@@ -88,7 +181,7 @@ namespace WebUI.Background.Report
             shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
             nameColummn = GetCharOfTabel(1);
             InsertSharedStringItem("Контрагент/Номенклатура", shareStringPart);
-            cell = InsertCellInWorksheet(nameColummn, 2, worksheetPart, 2, 80);
+            cell = InsertCellInWorksheet(nameColummn, 2, worksheetPart, 1, 80);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
             worksheetPart.Worksheet.Save();
@@ -141,15 +234,15 @@ namespace WebUI.Background.Report
                     InsertSharedStringItem(shahmatcaModel.Kol, shareStringPart);
                     if (shahmatcaModel.KolColor == "R" || shahmatcaModel.KolColor == "Н")
                     {
-                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 3, 30);
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 4, 30);
                     }
                     else if (shahmatcaModel.KolColor == "B")
                     {
-                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 4, 30);
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 5, 30);
                     }
                     else if (shahmatcaModel.KolColor == "W")
                     {
-                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 5, 30);
+                        cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGr.NumberRow + 3), worksheetPart, 3, 30);
                     }
 
                     cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
@@ -157,13 +250,7 @@ namespace WebUI.Background.Report
                     worksheetPart.Worksheet.Save();
                     i++;
                 }
-                else
-                {
-
-                }
             }
-            worksheetPart.Worksheet.Save();
-            spreadsheetDocument.Close();
         }
 
         private SharedStringTablePart GetSharedStringTablePart(WorkbookPart workbookPart)
@@ -404,8 +491,8 @@ namespace WebUI.Background.Report
 
             Fills fills = new Fills(
                     new Fill(new PatternFill() { PatternType = PatternValues.None }),
-                    new Fill(new PatternFill() { PatternType = PatternValues.None }),
                     new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#DF013A") }) { PatternType = PatternValues.Solid }),
+                    new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#2EFE9A") }) { PatternType = PatternValues.Solid }),
                     new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#0404B4") }) { PatternType = PatternValues.Solid })
                 );
 
@@ -426,7 +513,7 @@ namespace WebUI.Background.Report
             CellFormats cellFormats = new CellFormats(
                 new CellFormat
                 {
-                    FillId = 2,
+                    FillId = 0,
                     BorderId = 0,
                     ApplyFill = true,
                     FontId = 1
@@ -436,7 +523,7 @@ namespace WebUI.Background.Report
                         Alignment = new Alignment()
                         {
                             Horizontal = new EnumValue<HorizontalAlignmentValues>(HorizontalAlignmentValues.Left),
-                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
+                            Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Bottom),
                             WrapText = true
                         },
                         FillId = 0,
@@ -478,7 +565,7 @@ namespace WebUI.Background.Report
                             Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
                             WrapText = true
                         },
-                        FillId = 3,
+                        FillId = 1,
                         BorderId = 0,
                         ApplyFill = true,
                         FontId = 0
@@ -491,7 +578,7 @@ namespace WebUI.Background.Report
                             Vertical = new EnumValue<VerticalAlignmentValues>(VerticalAlignmentValues.Center),
                             WrapText = true
                         },
-                        FillId = 1,
+                        FillId = 3,
                         BorderId = 0,
                         ApplyFill = true,
                         FontId = 0

@@ -14,7 +14,7 @@ export class CreateManagerDialogComponent implements OnInit {
     login: new FormControl(''),
     password: new FormControl(''),
     phone: new FormControl(''),
-
+    typeManager: new FormControl(2),
   })
 
   save(){

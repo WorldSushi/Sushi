@@ -14,12 +14,25 @@
   <div class="form-group">
     <label for="">Номер телефона</label>
     <input placeholder="Телефон" formControlName="phone">
-  </div>      
-  </form>
+  </div>
+  <div class="form-group">
+    <label for="">Тип менеджера</label>
+    <select formControlName="typeManager">
+      <option [value]="2">
+        Менеджр
+      </option>
+      <option [value]="3">
+        Маркетолог
+      </option>
+      <option [value]="4">
+        Проверяющий звонков
+      </option>
+    </select>
+  </div>
+</form>
   
   <div class="dialog-actions">
     <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
     <button mat-raised-button (click)="close()">Закрыть</button>
   </div>
-  
   

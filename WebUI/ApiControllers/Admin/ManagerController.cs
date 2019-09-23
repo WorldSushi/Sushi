@@ -31,7 +31,8 @@ namespace WebUI.ApiControllers.Admin
                     Password = x.Password,
                     Phone = x.Phone,
                     WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Id,
-                    WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title,             
+                    WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title,
+                    TypeManager = x.typeManager == Data.Enums.TypeManager.Manager ? "Менеджр" : x.typeManager == Data.Enums.TypeManager.Marketolog ? "Маркетолог" : x.typeManager == Data.Enums.TypeManager.Call_Checker ? "Проверяющий звонков" : "Не опредиленый"
                 }).ToListAsync();
 
             return Ok(result);
@@ -52,7 +53,8 @@ namespace WebUI.ApiControllers.Admin
                 Password = manager.Entity.Password,
                 Phone = manager.Entity.Phone,
                 WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Id,
-                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Title
+                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Title,
+                TypeManager = manager.Entity.typeManager == Data.Enums.TypeManager.Manager ? "Менеджр" : manager.Entity.typeManager == Data.Enums.TypeManager.Marketolog ? "Маркетолог" : manager.Entity.typeManager == Data.Enums.TypeManager.Call_Checker ? "Проверяющий звонков" : "Не опредиленый"
             };
 
             return Ok(result);
