@@ -27,7 +27,7 @@ import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup
 export class ClientListComponent implements OnInit {
 
   @Input() workgroup: IWorkgroup[];
-  @Input() clients: IClient[];
+  @Input() clients: any[];
   @Input() manager: any;
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
@@ -72,6 +72,8 @@ export class ClientListComponent implements OnInit {
   dateCollections: string[] = [];
   numberMonthe: number = 0;
   numberYear: number = 0;
+
+  dateCollection: string;
 
   displayedColumns: string[] = [
     'title', 
@@ -339,7 +341,61 @@ export class ClientListComponent implements OnInit {
   updateTripPlanCompletedType(tripPlan: ITripPlan){
     this.tripPlanCompletedTypeUpdated.emit(tripPlan);
   }
-  
+
+  sorDataClients(year: number, month: number) {
+    for (let i = 0; i < this.clients.length; i++) {
+      this.clients[i].managerCallsResults.escortCalls = 0;
+      this.clients[i].managerCallsResults.escortTotalContacts = 0;
+      this.clients[i].managerCallsResults.regionalCalls = 0;
+      this.clients[i].managerCallsResults.regionalTotalContacts = 0;
+      this.clients[i].managerCallsResults.escortCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 10
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
+      this.clients[i].managerCallsResults.escortTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 10
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
+
+      this.clients[i].managerCallsResults.regionalCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 20
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
+      this.clients[i].managerCallsResults.regionalTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 20
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
+        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
+    }
+    console.log(this.clients);
+  }
+
+  initDateArchiv() {
+    if (this.clients.length != 0) {
+      if (this.clients.find(c => c.clientContacts.find(cc => cc.length != 0)).length != 0 && this.dateCollections.length == 0) {
+        this.dateCollections = [];
+        let firstDate = new Date();
+        for (let i = 0; i < this.clients.length; i++) {
+          for (let j = 0; j < this.clients[i].clientContacts.length; j++) {
+            let tmpDate = this.clients[i].clientContacts[j].date.split(".");
+            if (firstDate > new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0])) {
+              firstDate = new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]);
+            }
+          }
+        }
+        for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
+          for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
+            let date = new Date(i + "/0" + (j + 1));
+            this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+          }
+        }
+        this.dateCollection = this.dateCollections[0];
+      }
+    }
+  }
+
+  toFormatDate(dateSelect) {
+    let partDate = dateSelect.split('.');
+    let date = new Date(partDate[1] + "/" + partDate[0]);
+    this.numberMonthe = date.getMonth();
+    this.numberYear = date.getFullYear();
+    this.sorDataClients(date.getFullYear(), date.getMonth());
+  }
 
   getAnalysisProps(value) {
     if(value == 0){
@@ -397,6 +453,10 @@ export class ClientListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const toMonth = new Date().getMonth();
+    const toYear = new Date().getFullYear();
+    this.sorDataClients(toYear, toMonth);
+    this.initDateArchiv();
     this.actual.data = this.clients.filter(c => c.group == 10);
     this.recordShipment.data = this.clients.filter(c => c.group == 20);
     this.restaurants.data = this.clients.filter(c => c.group == 40);
@@ -405,7 +465,8 @@ export class ClientListComponent implements OnInit {
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
     this.dataSource.paginator = this.paginator;
-    console.log(this.clients);
+    //console.log(this.manager);
+    //console.log(this.workgroup);
   }
   
   constructor(public dialog: MatDialog) { }

@@ -6,7 +6,7 @@ namespace Data.Entities.Users
     public class Manager : User
     {
         public string Phone { get; protected set; }
-        public TypeManager typeManager { get; protected set; }
+        //public TypeManager typeManager { get; protected set; }
 
         protected Manager()
         {
@@ -18,7 +18,7 @@ namespace Data.Entities.Users
             Login = command.Login;
             Password = command.Password;
             Phone = command.Phone;
-            typeManager = command.typeManager;
+            //typeManager = command.typeManager;
         }
 
         public void Edit(ManagerEditCommand command)
@@ -26,7 +26,7 @@ namespace Data.Entities.Users
             Login = command.Login;
             Password = command.Password;
             Phone = command.Phone;
-            typeManager = command.typeManager;
+            //typeManager = command.typeManager;
         }
     }
 }

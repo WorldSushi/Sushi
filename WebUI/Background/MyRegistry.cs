@@ -18,7 +18,7 @@ namespace WebUI.Background
             Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(4, 10);
             Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(4, 20);
             Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(4, 30);
-            Schedule(() => new ShahMatReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
+            Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(4, 40);
 
 
             //Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(10, 51);

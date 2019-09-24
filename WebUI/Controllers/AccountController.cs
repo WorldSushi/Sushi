@@ -51,18 +51,18 @@ namespace WebUI.Controllers
                         return Redirect("/admin");
                     else if(user is Manager)
                     {
-                        if(((Manager)user).typeManager == TypeManager.Manager)
-                        {
-                            return Redirect("/manager-rm");
-                        }
-                        else if (((Manager)user).typeManager == TypeManager.Marketolog)
-                        {
-                            return Redirect("/manager-any");
-                        }
-                        else if (((Manager)user).typeManager == TypeManager.Call_Checker)
-                        {
-                            throw new Exception("Этот тип менеджера ещё в разработке");
-                        }
+                        return Redirect("/manager-rm");
+                        //if (((Manager)user).typeManager == TypeManager.Manager)
+                        //{
+                        //}
+                        //else if (((Manager)user).typeManager == TypeManager.Marketolog)
+                        //{
+                        //    return Redirect("/manager-any");
+                        //}
+                        //else if (((Manager)user).typeManager == TypeManager.Call_Checker)
+                        //{
+                        //    throw new Exception("Этот тип менеджера ещё в разработке");
+                        //}
                     }
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");

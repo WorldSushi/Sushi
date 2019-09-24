@@ -31,7 +31,7 @@ namespace Data.Services.Concrete
         {
             var monthCallsInfo = GetCurrentMonthCallsInfo();
 
-            if (monthCallsInfo.Loading)
+            if (true)
                 return;
 
             monthCallsInfo.Loading = true;

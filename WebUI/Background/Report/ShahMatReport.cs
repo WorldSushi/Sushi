@@ -147,15 +147,15 @@ namespace WebUI.Background.Report
                     shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
                     nameColummn = GetCharOfTabel(colummnNoklName.NumberColummn + 2);
                     InsertSharedStringItem(shahmatcaModel.Summa, shareStringPart);
-                    if (shahmatcaModel.KolColor == "R" || shahmatcaModel.KolColor == "Н")
+                    if (shahmatcaModel.SummaColor == "R" || shahmatcaModel.SummaColor == "Н")
                     {
                         cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 4, 30);
                     }
-                    else if (shahmatcaModel.KolColor == "B")
+                    else if (shahmatcaModel.SummaColor == "B")
                     {
                         cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 5, 30);
                     }
-                    else if (shahmatcaModel.KolColor == "W")
+                    else if (shahmatcaModel.SummaColor == "W")
                     {
                         cell = InsertCellInWorksheet(nameColummn, (UInt32)(rowManagerContrAgGrs.Count + rowManagerContrAgGr.NumberRow + 4), worksheetPart, 3, 30);
                     }
@@ -493,7 +493,7 @@ namespace WebUI.Background.Report
                     new Fill(new PatternFill() { PatternType = PatternValues.None }),
                     new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#DF013A") }) { PatternType = PatternValues.Solid }),
                     new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#2EFE9A") }) { PatternType = PatternValues.Solid }),
-                    new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#0404B4") }) { PatternType = PatternValues.Solid })
+                    new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue("#81BEF7") }) { PatternType = PatternValues.Solid })
                 );
 
             Borders borders = new Borders(

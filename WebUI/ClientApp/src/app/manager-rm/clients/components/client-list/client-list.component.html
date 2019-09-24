@@ -1,6 +1,9 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-header>
     <mat-card-title class="card-title">Клиенты</mat-card-title>
+    <select class="archiv" [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+    </select>
     <button class="addEntity" (click)="openCreateClientForm()">+ Добавить клиента</button>
   </mat-card-header>
 
