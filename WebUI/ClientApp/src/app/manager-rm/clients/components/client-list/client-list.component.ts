@@ -205,7 +205,7 @@ export class ClientListComponent implements OnInit {
 
   openWeekPlans(client: IClient){
     let dialogRef = this.dialog.open(WeekPlansDialogComponent, {
-      width: '70%',
+      width: '95%',
       data: {
         id: client.id,
         title: client.title,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using System.Threading.Tasks;
 using WebUI.Services.Abstract;
 
 namespace WebUI.Controllers
@@ -18,7 +19,7 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("Report")]
-        public IActionResult Get(string name)
+        public async Task<IActionResult> Get(string name)
         {
             FileStream stream = null;
             try
@@ -39,11 +40,21 @@ namespace WebUI.Controllers
                 {
                     stream = new FileStream("PDF/All/Nomkl.pdf", FileMode.Open);
                 }
+                else if (name == "AllShahmat")
+                {
+                    stream = new FileStream("PDF/All/shahmat.xsml", FileMode.Open);
+                    MemoryStream memoryStream = new MemoryStream();
+                    await memoryStream.CopyToAsync(stream);
+                    memoryStream.Close();
+                    stream.Close();
+                    return File(memoryStream.ToArray(), "application/xml", Path.GetFileName("PDF/All/shahmat.xsml"));
+                }
             }
             catch
             {
                 stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }
+            stream.Close();
             return new FileStreamResult(stream, "application/pdf");
         }
 

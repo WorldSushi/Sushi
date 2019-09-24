@@ -15,8 +15,9 @@
   </select>-->
     <a class="report" href="Report?name=AllNomll">Отчёт Номенклатура</a>
     <a class="report" href="Report?name=AllSalle">Отчёт Анализ продаж</a>
-    <a class="report" href="Report?name=AllOpros">Отчёт По опросу</a>
-    <a class="report" href="Report?name=AllDebitory">Отчёт По дебиторке</a>
+    <a class="report" href="Report?name=AllOpros">Отчёт По Опросу</a>
+    <a class="report" href="Report?name=AllDebitory">Отчёт По Дебиторке</a>
+    <a class="report" href="Report?name=AllShahmat">Отчёт По Шахматке</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
       <option [ngValue]=-10>Все рабочие групы</option>
       <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>
