@@ -1,0 +1,104 @@
+::ng-deep tr.mat-row
+    cursor: pointer   
+    &:hover
+        background-color: #f6f6f6
+
+::ng-deep .mat-form-field-infix
+    border-top: 0px
+
+.numberInputField
+    width: 45px
+    height: 27px
+    border-bottom: none
+
+.textInputField
+    height: 27px
+
+table
+    table-layout: fixed
+
+td
+    padding-left: 15px !important
+    padding-right: 5px !important
+    border-bottom: none
+    white-space:nowrap
+    overflow:hidden
+    color: #1C1C1C !important
+    text-overflow:ellipsis
+
+th 
+    padding-left: 15px !important
+    padding-right: 5px !important
+    background-color: #fcfcfc
+    border-bottom: none
+    color: #000000 !important
+
+
+.mat-card
+    padding: 0px
+    padding-bottom: 20px
+
+.bodyAll
+    margin: 10px
+    .manager
+        .dialog-section-title
+            background-color: #c4e4ff
+            font-size: 18px
+            padding: 15px 10px
+            .btnAccept
+                font-family: Roboto,"Helvetica Neue",sans-serif
+                baground-color: #A9D0F5
+                pading:10px
+
+.card-title
+    padding: 40px 10px
+    text-transform: uppercase
+    color: #4d73a4
+    font-weight: bold
+
+::ng-deep th.mat-header-cell
+    border-bottom: 1px solid #f7f7f7
+    color: #b9b9b9
+
+.sub-header
+    ::ng-deep th.mat-header-cell
+        border-bottom: none
+
+::ng-deep td.mat-cell, td.mat-footer-cell
+    border-bottom-width: 0px !important
+    color: #9da0a5
+
+::ng-deep tr.mat-footer-row, tr.mat-row
+    &:hover
+        background-color: #eff7fa !important
+        td.mat-cell, td.mat-footer-cell
+            color: #384855
+
+    &:nth-child(2n)
+        background-color: #fafbfd
+
+.numberInputField
+    ::ng-deep .mat-form-field-underline 
+        display: none
+
+.bar
+    padding: 5px 5px
+    border-radius: 60px
+    display: inline-block
+    font-weight: bold
+    text-align: center
+
+.bar-shadow
+    background-color: #e7f0f5
+    border-radius: 60px
+    max-width: 110px
+.btnAccept
+    background: -moz-linear-gradient(#c4e4ff, #EBFFFF)
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#c4e4ff), to(#EBFFFF))
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4e4ff', endColorstr='#EBFFFF')
+    padding: 3px 7px
+    -moz-border-radius: 5px
+    -webkit-border-radius: 5px
+    border-radius: 5px
+    border: 1px solid #c4e4ff
+    font-family: Roboto,"Helvetica Neue",sans-serif

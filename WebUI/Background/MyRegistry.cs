@@ -21,10 +21,11 @@ namespace WebUI.Background
             Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(4, 40);
 
 
-            //Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(10, 51);
-            //Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(10, 52);
-            //Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(10, 54);
-            //Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(10, 56);
+            Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(9, 34);
+            Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(9, 35);
+            Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(9, 36);
+            Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(9, 37);
+            Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(9, 38);
         }
 
         private void CreateEmtypdf()

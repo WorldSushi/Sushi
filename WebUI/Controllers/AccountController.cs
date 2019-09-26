@@ -51,7 +51,6 @@ namespace WebUI.Controllers
                         return Redirect("/admin");
                     else if(user is Manager)
                     {
-                        //return Redirect("/manager-rm");
                         if (((Manager)user).typeManager == TypeManager.Manager)
                         {
                             return Redirect("/manager-rm");
@@ -62,7 +61,7 @@ namespace WebUI.Controllers
                         }
                         else if (((Manager)user).typeManager == TypeManager.Call_Checker)
                         {
-                            throw new Exception("Этот тип менеджера ещё в разработке");
+                            return Redirect("/controler");
                         }
                     }
                 }

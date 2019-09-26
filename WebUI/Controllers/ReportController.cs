@@ -54,7 +54,6 @@ namespace WebUI.Controllers
             {
                 stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }
-            stream.Close();
             return new FileStreamResult(stream, "application/pdf");
         }
 

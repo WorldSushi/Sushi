@@ -103,7 +103,6 @@ getClientContacts(){
 
   selectEl(el: ICallsDate): void {
     let date = new Date(el.date.split(".")[2] + "/" + el.date.split(".")[1] + "/" + el.date.split(".")[0]);
-    this.clientContacts.find(c => new Date(c.date.split(".")[2] + "/" + c.date.split(".")[1] + "/" + c.date.split(".")[0]).getDate() == date.getDate()).isAccept = true;
   }
 
 daysInMonth (month, year) {

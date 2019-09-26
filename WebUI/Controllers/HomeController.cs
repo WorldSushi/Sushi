@@ -11,6 +11,7 @@ using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
+using Data.Entities.Users;
 using Data.Enums;
 using Data.Services.Abstract;
 using DocumentFormat.OpenXml.Packaging;
@@ -32,7 +33,7 @@ namespace WebUI.Controllers
             _context = context;
         }
 
-        
+
 
         /*public void PhoneRegular()
         {
@@ -88,6 +89,13 @@ namespace WebUI.Controllers
 
             return RedirectToAction("ImportFile");
         }*/
+
+        [HttpGet]
+        [Route("Init")]
+        public void Init()
+        {
+           
+        }
 
         [HttpGet]
         public IActionResult ImportFileClients()

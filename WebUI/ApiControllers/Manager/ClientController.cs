@@ -5,10 +5,10 @@ using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
-using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.Users;
+using Data.Enums;
 using Data.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,13 +46,13 @@ namespace WebUI.ApiControllers.Manager
             _myCallsAPIServiceAstrics.SaveNewCalls();
 
             List<WorkGroup> workGroups = null;
-            if (user is Data.Entities.Users.Manager)
+            if (((Data.Entities.Users.Manager)user).typeManager == TypeManager.Manager)
             {
                 workGroups = await _context.Set<WorkGroup>()
                 .Where(x => x.RegionalManagerId == managerId
                                           || x.EscortManagerId == managerId).ToListAsync();
             }
-            else if (user is Marketolog)
+            else if (((Data.Entities.Users.Manager)user).typeManager == TypeManager.Marketolog)
             {
                 workGroups = await _context.Set<WorkGroup>().ToListAsync();
             }

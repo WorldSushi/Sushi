@@ -39,10 +39,21 @@ namespace Data.Services.Concrete
             _context.SaveChanges();
 
             var callsLog = new List<CallLog>();
+            CallsDTOAstrics response = null;
 
-            CallsDTOAstrics response = GetCallsByDate(monthCallsInfo.LastId,
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
+            try
+            {
+
+                response = GetCallsByDate(monthCallsInfo.LastId,
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
+            }
+            catch
+            {
+                monthCallsInfo.Loading = false;
+
+                _context.SaveChanges();
+            }
 
             callsLog.AddRange(response.Results.Select(x => new CallLog()
             {

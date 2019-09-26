@@ -265,7 +265,7 @@ export class ClientListComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res){
+      if (res) {
         let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
 
         let RMcontacts = [];
@@ -290,6 +290,7 @@ export class ClientListComponent implements OnInit {
           item.managerId = this.manager.id;
           this.callsDateCreated.emit(item);
         });
+        location.reload();
       }
     })
   }

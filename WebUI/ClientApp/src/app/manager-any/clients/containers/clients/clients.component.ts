@@ -123,7 +123,6 @@ export class ClientsComponent implements OnInit {
         clientId: clientId,
         managerId: 0,
         durations: 0,
-        isAccept: false
       })
     }
 

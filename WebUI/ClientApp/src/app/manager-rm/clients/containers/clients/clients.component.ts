@@ -3,8 +3,6 @@ import { ClientsFacade } from '../../../../store/clients/facades/clients.facade'
 import { Observable } from 'rxjs';
 import { IClient } from '../../shared/models/client.model';
 import { ICallPlan } from '../../shared/models/call-plan.model';
-import { INomenclatureAnalysis } from '../../shared/models/nomenclature-analysis';
-import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { ICallsDate } from '../../shared/models/calls-date.model';
 import { CallPlanFacade } from 'src/app/store/clients/facades/call-plans.facade';
@@ -123,7 +121,6 @@ export class ClientsComponent implements OnInit {
         clientId: clientId,
         managerId: 0,
         durations: 0,
-        isAccept: false
       })
     }
 

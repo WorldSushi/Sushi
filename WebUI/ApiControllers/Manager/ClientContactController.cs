@@ -59,7 +59,11 @@ namespace WebUI.ApiControllers.Manager
                                           && x.Date.Date == DateTime.Now.Date.Date);
 
             if (clientContact != null)
-                return BadRequest("Операция на этот день уже создана");
+            {
+                clientContact.Type = command.ContactType;
+                await _context.SaveChangesAsync();
+                return Ok(null);
+            }
 
             /*command.ManagerId = _context.Set<ManagerForClient>()
                 .FirstOrDefault(x => x.ClientId == command.ClientId && x.Type == command.ManagerType)

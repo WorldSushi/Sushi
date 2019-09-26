@@ -24,6 +24,15 @@ export class CallsDatesDialogComponent implements OnInit {
     return new Date(currentYear, currentMonth, numberOfDay).toLocaleDateString();
   }
 
+  setidZeroOnAccept(row, typeManager: string) {
+    if (typeManager == "MScallType" && row.MScallType == 10) {
+      row.EMclientContactId = 0;
+    }
+    else if (typeManager == "RMcallType" && row.RMcallType == 10){
+      row.RMclientContactId = 0;
+    }
+  }
+
   chngeColor(el: any) {
     if (el == 10) {
       return "rgba(255, 0, 0, 0.29)";
@@ -103,7 +112,6 @@ getClientContacts(){
 
   selectEl(el: ICallsDate): void {
     let date = new Date(el.date.split(".")[2] + "/" + el.date.split(".")[1] + "/" + el.date.split(".")[0]);
-    this.clientContacts.find(c => new Date(c.date.split(".")[2] + "/" + c.date.split(".")[1] + "/" + c.date.split(".")[0]).getDate() == date.getDate()).isAccept = true;
   }
 
 daysInMonth (month, year) {

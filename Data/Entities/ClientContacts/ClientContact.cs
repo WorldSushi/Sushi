@@ -17,7 +17,7 @@ namespace Data.Entities.ClientContacts
 
         public DateTime Date { get; set; }
 
-        public ClientContactType Type { get; protected set; }
+        public ClientContactType Type { get; set; }
 
         public ManagerType ManagerType { get; protected set; }
 

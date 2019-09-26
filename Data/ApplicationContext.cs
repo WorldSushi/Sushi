@@ -35,7 +35,6 @@ namespace Data
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();
             modelBuilder.Entity<User>();
-            modelBuilder.Entity<Marketolog>();
 
             modelBuilder.Entity<UserInfo>();
             modelBuilder.Entity<ClientInfo>();

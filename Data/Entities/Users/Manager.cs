@@ -6,7 +6,7 @@ namespace Data.Entities.Users
     public class Manager : User
     {
         public string Phone { get; protected set; }
-        public TypeManager typeManager { get; protected set; }
+        public TypeManager? typeManager { get; set; }
 
         protected Manager()
         {
