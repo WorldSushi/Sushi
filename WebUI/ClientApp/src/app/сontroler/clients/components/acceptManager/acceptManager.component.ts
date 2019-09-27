@@ -29,7 +29,7 @@ export class AcceptManagerComponent implements OnInit {
   acceptManagers: AcceptManager[] = [];
 
 
-  displayedColumns: string[] = ['title', 'duration', 'refAudio', 'controls']
+  displayedColumns: string[] = ['title', 'phone', 'duration', 'refAudio', 'controls', 'date']
 
   ngOnChanges() {
   }
@@ -45,6 +45,12 @@ export class AcceptManagerComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+  }
+
+  AccepCallsControler(element: ICallsDate) {
+    this.acceptManagers.find(a => a.id == element.managerId).callsDate = this.acceptManagers.find(a => a.id == element.managerId).callsDate.filter(c => c.id != element.id);
+    this.cdr.detectChanges();
+    this.http.get('api/conroler/ClientAccept/AcceptCall?id=' + element.id).subscribe();
   }
 
   getcallsDater() {
@@ -63,6 +69,7 @@ export class AcceptManagerComponent implements OnInit {
       let newItem: AcceptManager = {
         id: item.id,
         login: item.login,
+        phone: item.phone,
         callsDate: colleCallsDate
       }
       this.acceptManagers.push(newItem);

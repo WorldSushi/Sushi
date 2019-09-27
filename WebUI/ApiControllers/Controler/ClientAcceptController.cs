@@ -6,6 +6,8 @@ using Data;
 using Data.DTO.Clients;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
+using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +29,11 @@ namespace WebUI.ApiControllers.Controler
             _accountInformationService = accountInformationService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             List<Call> calls = _context.Set<Call>().ToList();
+            List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
             var result = await _context.Set<ClientContact>()
                 //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new AcceptCallsDto()
@@ -43,8 +47,18 @@ namespace WebUI.ApiControllers.Controler
                     Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
                     ReferenceAudioVoice = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Recording : "",
                     TitleClient = x.Client.LegalEntity,
+                    Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
                 }).ToListAsync();
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("AcceptCall")]
+        public void AcceptCall(string id)
+        {
+            ClientContact clientContact = _context.Set<ClientContact>().FirstOrDefault(c => c.Id.ToString() == id);
+            clientContact.Type = ClientContactType.AcceptCallControler;
+            _context.SaveChanges();
         }
     }
 }

@@ -4,14 +4,20 @@
   </mat-card-header>
   <div class="bodyAll">
     <div class="manager" *ngFor="let acceptManager of acceptManagers">
+      <div *ngIf="acceptManager.callsDate.length != 0">
       <p class="dialog-section-title">
-        {{acceptManager.login}}
+        {{acceptManager.login}} "{{acceptManager.phone}}"
       </p>
       <table mat-table [dataSource]="acceptManager.callsDate">
 
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef>Название</th>
           <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.titleClient}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Номер телефона клиента</th>
+          <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.phone}} Сек</td>
         </ng-container>
 
         <ng-container matColumnDef="duration">
@@ -26,12 +32,18 @@
 
         <ng-container matColumnDef="controls">
           <th mat-header-cell *matHeaderCellDef>Подтвердить</th>
-          <td mat-cell *matCellDef="let element" style="max-width: 300px"><button class="btnAccept">Подтвердить</button></td>
+          <td mat-cell *matCellDef="let element" style="max-width: 300px"><button (click)="AccepCallsControler(element)" class="btnAccept">Подтвердить</button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Дата начала звонка</th>
+          <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.date}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
       </table>
+    </div>
     </div>
   </div>
 </mat-card>
