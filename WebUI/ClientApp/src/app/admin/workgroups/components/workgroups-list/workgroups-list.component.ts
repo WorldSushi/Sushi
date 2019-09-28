@@ -106,7 +106,7 @@ export class WorkgroupsListComponent implements OnInit {
   }
 
   getCallContactsByManager(managerId) {
-    return this.clientContacts.filter(item => item.managerId == managerId && item.contactType == 10).length;
+    return this.clientContacts.filter(item => item.managerId == managerId).length;
   }
 
   sortClientForMonthAndYear(month: number, year: number) {

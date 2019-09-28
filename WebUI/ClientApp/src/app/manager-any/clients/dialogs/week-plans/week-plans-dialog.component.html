@@ -20,17 +20,18 @@
       <div class="dialog-section-body">
         <div class="planned">
           <small>План - Звонки</small>
-          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan" (focusout)="addNewWeekPlan(selectedMSWeek)">{{selectedMSWeek.plan}}</textarea>
+          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedMSWeek.plan">{{selectedMSWeek.plan}}</textarea>
         </div>
 
 
         <div class="fact">
           <small>Факт - Звонки</small>
-          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact" (focusout)="addFactToWeekPlan(selectedMSWeek)">{{selectedMSWeek.fact}}</textarea>
+          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedMSWeek.fact">{{selectedMSWeek.fact}}</textarea>
         </div>
       </div>
     </div>
-
+    <!--(focusout)="addNewWeekPlan(selectedMSWeek)"-->
+    <!--(focusout)="addFactToWeekPlan(selectedMSWeek)"-->
     <div class="dialog-section dialog-right">
       <div class="dialog-section-title">
         Региональный Менеджер
@@ -38,11 +39,11 @@
       <div class="dialog-section-body">
         <div class="planned">
           <small>План - Звонки/Командировка</small>
-          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan" (focusout)="addNewWeekPlan(selectedRMWeek)">{{selectedRMWeek.plan}}</textarea>
+          <textarea matInput placeholder="Введите план" [(ngModel)]="selectedRMWeek.plan">{{selectedRMWeek.plan}}</textarea>
         </div>
         <div class="fact">
           <small>Факт - Звонки/Командировка</small>
-          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact" (focusout)="addFactToWeekPlan(selectedRMWeek)">{{selectedRMWeek.fact}}</textarea>
+          <textarea matInput placeholder="Введите факт" [(ngModel)]="selectedRMWeek.fact">{{selectedRMWeek.fact}}</textarea>
         </div>
       </div>
     </div>
@@ -97,6 +98,6 @@
 </mat-dialog-content>
 
 <div class="dialog-actions">
-  <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
+  <!--<button color="primary" mat-raised-button (click)="save()">Сохранить</button>-->
   <button mat-raised-button (click)="close()">Закрыть</button>
 </div>
