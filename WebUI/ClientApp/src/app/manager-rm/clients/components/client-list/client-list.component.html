@@ -39,39 +39,39 @@
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Актуальные</span>
       <table mat-table [dataSource]="actual" [trackBy]="getTrackBy">
 
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+        <ng-container matColumnDef="title" >
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+        <ng-container matColumnDef="phone" >
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+        <ng-container matColumnDef="type" >
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+        <ng-container matColumnDef="legalEntity" >
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+        <ng-container matColumnDef="numberOfCalls" >
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+        <ng-container matColumnDef="nomenclatureAnalysis" >
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -173,7 +173,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -202,44 +202,45 @@
       </table>
 
     </mat-card-content>
+
     <mat-card-content style="background-color:#f7f7f7">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">С редкой отгрузкой</span>
       <table mat-table [dataSource]="recordShipment" [trackBy]="getTrackBy">
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -252,21 +253,21 @@
         </ng-container>
 
         <!--<ng-container matColumnDef="revenueAnalysis">
-        <th mat-header-cell *matHeaderCellDef>Выручка</th>
-        <td mat-cell *matCellDef="let element"
-        (click)="openRevenueAnalysis(element)">
-        <div class="bar-shadow">
-            <div class="bar"
-            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-              <b>
-                {{getAvgAnalysis(element.revenueAnalysis)}}%
-              </b>
-            </div>
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
         </div>
-      </td>
-      </ng-container>-->
+    </div>
+  </td>
+  </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -341,7 +342,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -377,38 +378,38 @@
       <table mat-table [dataSource]="restaurants" [trackBy]="getTrackBy">
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -421,21 +422,21 @@
         </ng-container>
 
         <!--<ng-container matColumnDef="revenueAnalysis">
-        <th mat-header-cell *matHeaderCellDef>Выручка</th>
-        <td mat-cell *matCellDef="let element"
-        (click)="openRevenueAnalysis(element)">
-        <div class="bar-shadow">
-            <div class="bar"
-            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-              <b>
-                {{getAvgAnalysis(element.revenueAnalysis)}}%
-              </b>
-            </div>
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
         </div>
-      </td>
-      </ng-container>-->
+    </div>
+  </td>
+  </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -510,7 +511,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -546,38 +547,38 @@
       <table mat-table [dataSource]="newOrResuscitating" [trackBy]="getTrackBy">
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -590,21 +591,21 @@
         </ng-container>
 
         <!--<ng-container matColumnDef="revenueAnalysis">
-        <th mat-header-cell *matHeaderCellDef>Выручка</th>
-        <td mat-cell *matCellDef="let element"
-        (click)="openRevenueAnalysis(element)">
-        <div class="bar-shadow">
-            <div class="bar"
-            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-              <b>
-                {{getAvgAnalysis(element.revenueAnalysis)}}%
-              </b>
-            </div>
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
         </div>
-      </td>
-      </ng-container>-->
+    </div>
+  </td>
+  </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -679,7 +680,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -714,38 +715,38 @@
       <table mat-table [dataSource]="other" [trackBy]="getTrackBy">
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -758,21 +759,21 @@
         </ng-container>
 
         <!--<ng-container matColumnDef="revenueAnalysis">
-        <th mat-header-cell *matHeaderCellDef>Выручка</th>
-        <td mat-cell *matCellDef="let element"
-        (click)="openRevenueAnalysis(element)">
-        <div class="bar-shadow">
-            <div class="bar"
-            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-              <b>
-                {{getAvgAnalysis(element.revenueAnalysis)}}%
-              </b>
-            </div>
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
         </div>
-      </td>
-      </ng-container>-->
+    </div>
+  </td>
+  </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -847,7 +848,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -882,38 +883,38 @@
       <table mat-table [dataSource]="notDetermined" [trackBy]="getTrackBy">
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Название</th>
-          <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Телефон</th>
-          <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+          <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Тип</th>
-          <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="legalEntity">
-          <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-          <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+          <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+          <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfCalls">
-          <th mat-header-cell *matHeaderCellDef>Звонки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberOfShipments">
-          <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-          <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nomenclatureAnalysis">
-          <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-          <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+          <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+          <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
             <div class="bar-shadow">
               <div class="bar"
                    [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -926,21 +927,21 @@
         </ng-container>
 
         <!--<ng-container matColumnDef="revenueAnalysis">
-        <th mat-header-cell *matHeaderCellDef>Выручка</th>
-        <td mat-cell *matCellDef="let element"
-        (click)="openRevenueAnalysis(element)">
-        <div class="bar-shadow">
-            <div class="bar"
-            [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-            [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-            [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-              <b>
-                {{getAvgAnalysis(element.revenueAnalysis)}}%
-              </b>
-            </div>
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
         </div>
-      </td>
-      </ng-container>-->
+    </div>
+  </td>
+  </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -1015,7 +1016,7 @@
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
-              [attr.colspan]="6"
+              [attr.colspan]="18"
               style="background-color: #fff"></th>
         </ng-container>
 
@@ -1054,38 +1055,38 @@
         <table mat-table [dataSource]="dataSource" [trackBy]="getTrackBy">
 
           <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Название</th>
-            <td mat-cell *matCellDef="let element" style="color: #324A60" style="max-width: 300px">{{element.title}} </td>
+            <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Название</th>
+            <td [attr.colspan]="3" mat-cell *matCellDef="let element" style="color: #324A60">{{element.title}} </td>
           </ng-container>
 
           <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>Телефон</th>
-            <td mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
+            <th [attr.colspan]="3" mat-header-cell *matHeaderCellDef>Телефон</th>
+            <td [attr.colspan]="3" mat-cell *matCellDef="let element">{{element.phones[0]?.phone}} </td>
           </ng-container>
 
           <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>Тип</th>
-            <td mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
+            <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Тип</th>
+            <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.clientType | clientTypeTranslate}} </td>
           </ng-container>
 
           <ng-container matColumnDef="legalEntity">
-            <th mat-header-cell *matHeaderCellDef>Юр. лицо</th>
-            <td mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+            <th [attr.colspan]="6" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+            <td [attr.colspan]="6" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
           </ng-container>
 
           <ng-container matColumnDef="numberOfCalls">
-            <th mat-header-cell *matHeaderCellDef>Звонки</th>
-            <td mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
+            <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+            <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfCalls | numberOfCallsTranslate}} </td>
           </ng-container>
 
           <ng-container matColumnDef="numberOfShipments">
-            <th mat-header-cell *matHeaderCellDef>Отгрузки</th>
-            <td mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
+            <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Отгрузки</th>
+            <td [attr.colspan]="2" mat-cell *matCellDef="let element">{{element.numberOfShipments | numberOfShipmentsTranslate}} </td>
           </ng-container>
 
           <ng-container matColumnDef="nomenclatureAnalysis">
-            <th mat-header-cell *matHeaderCellDef>Номен-ра</th>
-            <td mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
+            <th [attr.colspan]="2" mat-header-cell *matHeaderCellDef>Номен-ра</th>
+            <td [attr.colspan]="2" mat-cell *matCellDef="let element" (click)="openNomenclatureAnalysis(element)">
               <div class="bar-shadow">
                 <div class="bar"
                      [style.background-color]="getAnalysisProps(getAvgAnalysis(element.nomenclatureAnalysis)).background"
@@ -1098,21 +1099,21 @@
           </ng-container>
 
           <!--<ng-container matColumnDef="revenueAnalysis">
-            <th mat-header-cell *matHeaderCellDef>Выручка</th>
-            <td mat-cell *matCellDef="let element"
-            (click)="openRevenueAnalysis(element)">
-            <div class="bar-shadow">
-                <div class="bar"
-                [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-                [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-                [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-                  <b>
-                    {{getAvgAnalysis(element.revenueAnalysis)}}%
-                  </b>
-                </div>
-            </div>
-          </td>
-          </ng-container>-->
+    <th mat-header-cell *matHeaderCellDef>Выручка</th>
+    <td mat-cell *matCellDef="let element"
+    (click)="openRevenueAnalysis(element)">
+    <div class="bar-shadow">
+        <div class="bar"
+        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
+        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
+        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
+          <b>
+            {{getAvgAnalysis(element.revenueAnalysis)}}%
+          </b>
+        </div>
+    </div>
+  </td>
+  </ng-container>-->
 
           <ng-container matColumnDef="callPlan.collective">
             <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План</th>
@@ -1187,7 +1188,7 @@
           <ng-container matColumnDef="filler">
             <th mat-header-cell *matHeaderCellDef
                 [style.text-align]="center"
-                [attr.colspan]="6"
+                [attr.colspan]="18"
                 style="background-color: #fff"></th>
           </ng-container>
 
