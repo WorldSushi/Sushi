@@ -349,17 +349,22 @@ export class ClientListComponent implements OnInit {
       this.clients[i].managerCallsResults.escortTotalContacts = 0;
       this.clients[i].managerCallsResults.regionalCalls = 0;
       this.clients[i].managerCallsResults.regionalTotalContacts = 0;
-      this.clients[i].managerCallsResults.escortCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 10
+
+      this.clients[i].managerCallsResults.escortCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
+        c.managerType == 10 && c.durations > 149
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
-      this.clients[i].managerCallsResults.escortTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 10
+      this.clients[i].managerCallsResults.escortTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
+        c.managerType == 10 && c.durations > 149
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
 
-      this.clients[i].managerCallsResults.regionalCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 20
+      this.clients[i].managerCallsResults.regionalCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
+        c.managerType == 20 && c.durations > 149
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
-      this.clients[i].managerCallsResults.regionalTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c => c.managerType == 20
+      this.clients[i].managerCallsResults.regionalTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
+        c.managerType == 20 && c.durations > 149
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
     }
