@@ -26,7 +26,7 @@ import { WorkgroupsFacade } from '../../../../store/workgroups/facades/workgroup
 })
 export class ClientsComponent implements OnInit {
 
-  clients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(
+  clients$: Observable<object[]> = this.clientsFacade.clients$.pipe(
     map(res => {
       let actualData = res.filter(item => item.group > 0);
       let undefinedData = res.filter(item => item.group == 0);

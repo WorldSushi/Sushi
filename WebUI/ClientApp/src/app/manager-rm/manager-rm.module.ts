@@ -7,6 +7,7 @@ import { ClientsModule } from './clients/clients.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
+import { ReachOutcomesModule } from './reach-outcomes/reach-outcomes.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RouterModule } from '@angular/router';
     ClientsModule,
     ReactiveFormsModule,
     DashboardModule,
-    RouterModule
+    RouterModule,
+    ReachOutcomesModule
   ]
 })
 export class ManagerRmModule { }

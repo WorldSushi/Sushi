@@ -41,7 +41,6 @@ export class AcceptManagerComponent implements OnInit {
   getManager() {
     this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
       this.managers = data.filter(d => d.typeManager == "Менеджр");
-      console.log(this.managers);
       this.cdr.detectChanges();
     });
 
@@ -56,7 +55,6 @@ export class AcceptManagerComponent implements OnInit {
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
       this.cientAccept = data.filter(r => r.durations > 149 && r.contactType == 40);
-      console.log(this.cientAccept);
       this.sortManagerToCalls();
       this.cdr.detectChanges();
     });

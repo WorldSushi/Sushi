@@ -24,5 +24,6 @@ export interface IClient {
   clientContacts: ICallsDate[],
   hasWorkgroup: boolean,
   phones: any[],
-  contactName: string
+  contactName: string,
+  isCoverage: boolean 
 }

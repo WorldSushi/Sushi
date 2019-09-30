@@ -15,7 +15,7 @@ namespace Data.DTO.Clients
         public NumberOfCalls NumberOfCalls { get; set; }
         public NumberOfShipments NumberOfShipments { get; set; }
         public NomenclatureAnalysis NomenclatureAnalysis { get; set; }
-
         public bool HasWorkgroup { get; set; }
+        public bool IsCoverage { get; set; }
     }
 }

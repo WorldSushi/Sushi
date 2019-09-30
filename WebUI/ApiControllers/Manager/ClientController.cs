@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data;
@@ -40,7 +41,7 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             List<ClientDto> clientsDto = new List<ClientDto>();
-               var managerId = _accountInformationService.GetOperatorId();
+            var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             _myCallsApiService.SaveNewCalls();
             _myCallsAPIServiceAstrics.SaveNewCalls();
@@ -56,8 +57,8 @@ namespace WebUI.ApiControllers.Manager
             {
                 workGroups = await _context.Set<WorkGroup>().ToListAsync();
             }
-                var clientPhones = await _context.Set<ClientPhone>()
-                    .ToListAsync();
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
             foreach (WorkGroup workGroup in workGroups)
             {
                 var result = await _context.Set<ClientWorkGroup>()
@@ -85,7 +86,8 @@ namespace WebUI.ApiControllers.Manager
                            PrevMonth = 20,
                            Avg5Months = 20,
                            ClientId = x.Id
-                       }
+                       },
+                       IsCoverage = x.Client.IsCoverage != null || x.Client.IsCoverage != "" ? Convert.ToBoolean(x.Client.IsCoverage) : false
                    })
                    .OrderByDescending(x => x.NumberOfCalls)
                    //.Take(50)
@@ -103,7 +105,7 @@ namespace WebUI.ApiControllers.Manager
             var client = await _context.Set<Client>()
                 .AddAsync(new Client(command));
 
-            
+
 
             var workGroup = await _context.Set<WorkGroup>()
                 .FirstOrDefaultAsync(x => x.EscortManagerId == currentManagerId
@@ -114,8 +116,8 @@ namespace WebUI.ApiControllers.Manager
                 ClientId = client.Entity.Id,
                 WorkgroupId = workGroup.Id
             });
-        
-            foreach(var phone in command.Phones)
+
+            foreach (var phone in command.Phones)
             {
                 await _context.Set<ClientPhone>()
                 .AddAsync(new ClientPhone()
@@ -192,7 +194,8 @@ namespace WebUI.ApiControllers.Manager
                 NumberOfCalls = client.NumberOfCalls,
                 NumberOfShipments = client.NumberOfShipments,
                 Phones = _context.Set<ClientPhone>().Where(x => x.ClientId == client.Id)
-                    .Select(z => new ClientPhoneDTO {
+                    .Select(z => new ClientPhoneDTO
+                    {
                         Id = z.Id,
                         ClientId = z.ClientId,
                         Phone = z.Phone
@@ -204,5 +207,16 @@ namespace WebUI.ApiControllers.Manager
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Coverage")]
+        public void SetCoverage(string isCoverage, string idClient)
+        {
+            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id.ToString() == idClient);
+            if (client != null)
+            {
+                client.IsCoverage = isCoverage.ToString();
+                _context.SaveChanges();
+            }
+        }
     }
 }

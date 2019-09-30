@@ -17,6 +17,7 @@ import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selec
 import { ninvoke } from 'q';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-client-list',
@@ -76,6 +77,7 @@ export class ClientListComponent implements OnInit {
   dateCollection: string;
 
   displayedColumns: string[] = [
+    'elect',
     'title', 
     'phone',
     'type',
@@ -458,6 +460,17 @@ export class ClientListComponent implements OnInit {
     }
   }
 
+  checkFluency(element: IClient) {
+    console.log(element.isCoverage);
+    if (element.isCoverage) {
+      element.isCoverage = false;
+    }
+    else {
+      element.isCoverage = true;
+    }
+    this.http.get('api/manager/Client/Coverage?isCoverage=' + element.isCoverage + "&idClient=" + element.id).subscribe();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const toMonth = new Date().getMonth();
     const toYear = new Date().getFullYear();
@@ -475,7 +488,8 @@ export class ClientListComponent implements OnInit {
     //console.log(this.workgroup);
   }
   
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,
+    private http: HttpClient) { }
 
   ngOnInit() {
   }

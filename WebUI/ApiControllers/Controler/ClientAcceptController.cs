@@ -41,7 +41,7 @@ namespace WebUI.ApiControllers.Controler
                     Id = x.Id,
                     ClientId = x.ClientId,
                     ContactType = x.Type,
-                    Date = x.Date.ToString("dd.MM.yyyy"),
+                    Date = x.Date.ToString("dd.MM.yyyy hh:mm:ss"),
                     ManagerType = x.ManagerType,
                     ManagerId = x.ManagerId,
                     Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,

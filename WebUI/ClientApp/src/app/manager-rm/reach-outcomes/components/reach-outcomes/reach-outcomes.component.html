@@ -1,0 +1,31 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Динамика работы с компаниями по итогам Дня рождени компании</mat-card-title>
+  </mat-card-header>
+
+  <table mat-table [dataSource]="reachOutcomess">
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Название</th>
+      <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.nameClient}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone1">
+      <th mat-header-cell *matHeaderCellDef>Номер телефона клиента</th>
+      <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.phones[0]?.phone}}, {{element.phones[1]?.phone}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="resume1">
+      <th mat-header-cell *matHeaderCellDef>Резюме</th>
+      <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.resume1}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="resume2">
+      <th mat-header-cell *matHeaderCellDef>Резюме</th>
+      <td mat-cell *matCellDef="let element" style="max-width: 300px">{{element.resume2}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
+  </table>
+</mat-card>
