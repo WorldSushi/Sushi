@@ -1,0 +1,26 @@
+<h3 class="dialog-title" mat-dialog-title>{{data.nameClient}}</h3>
+<h4 class="dialog-title" mat-dialog-title>Результаты переговоров на каждую пятницу</h4>
+
+<mat-dialog-content>
+  <div style="display:flex">
+    <table style="margin-bottom: 40px">
+      <thead>
+        <tr>
+          <th style="background-color: #ECF5FF" *ngFor="let dat of date">{{dat.datee}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td *ngFor="let dat of date">
+            <textarea (focusout)="addResuldFriyDay($event, data.clientId, dat.datee)" style="min-height:75px; min-width:185px">{{dat.resume}}</textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</mat-dialog-content>
+
+<div class="dialog-actions">
+  <button mat-raised-button (click)="close()">Закрыть</button>
+</div>

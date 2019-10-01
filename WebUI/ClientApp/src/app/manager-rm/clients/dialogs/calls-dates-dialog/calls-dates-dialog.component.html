@@ -25,7 +25,7 @@
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #EEFEF6;">МС</th>
       <td mat-cell *matCellDef="let row" style="text-align: center">
         <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.MScallType" [style.background]="chngeColor(row.MScallType)">
-          <mat-option [value]="60" *ngIf="row.contactType == 60">Звонок - Развитие подтверждён контролером</mat-option>
+          <mat-option *ngIf="row.MScallType == 60" [value]="60" hidden>Звонок - Развитие подтверждён контролером</mat-option>
           <mat-option (onSelectionChange)="setidZeroOnAccept(row, 'MScallType')" [value]="40" style="background-color:rgba(76, 255, 0, 0.17)">Звонок - развитие подтверждён</mat-option>
           <mat-option [value]="10" style="background-color:rgba(255, 0, 0, 0.29)">Звонок - развитие не подтверждён</mat-option>
           <mat-option [value]="30">WhatsUp</mat-option>
@@ -44,7 +44,7 @@
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #F5FEEE;">РМ</th>
       <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
         <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.RMcallType" [style.background]="chngeColor(row.RMcallType)">
-          <mat-option *ngIf="row.contactType == 60" [value]="60" hidden>Звонок - Развитие подтверждён контролером</mat-option>
+          <mat-option *ngIf="row.RMcallType == 60" [value]="60">Звонок - Развитие подтверждён контролером</mat-option>
           <mat-option (onSelectionChange)="setidZeroOnAccept(row, 'RMcallType')" [value]="40" style="background-color:rgba(76, 255, 0, 0.17)">Звонок - развитие подтверждён</mat-option>
           <mat-option [value]="10" style="background-color:rgba(255, 0, 0, 0.29)">Звонок - развитие не подтверждён</mat-option>
           <mat-option [value]="30">WhatsUp</mat-option>

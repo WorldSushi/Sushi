@@ -36,6 +36,7 @@ namespace WebUI.ApiControllers.Manager
             var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             var clientPhones = _context.Set<ClientPhone>().ToList();
+            var resultFriday = _context.Set<ResultFriday>().ToList();
 
             List<WorkGroup> workGroups = null;
             if (((Data.Entities.Users.Manager)user).typeManager == TypeManager.Manager)
@@ -48,7 +49,7 @@ namespace WebUI.ApiControllers.Manager
             {
                 workGroups = _context.Set<WorkGroup>().ToList();
             }
-
+            var cn = _context.Set<ContactName>().ToList();
             foreach (WorkGroup workGroup in workGroups)
             {
                 var result = _context.Set<ClientWorkGroup>()
@@ -63,6 +64,10 @@ namespace WebUI.ApiControllers.Manager
                                Id = z.Id,
                                Phone = z.Phone
                            }).ToList(),
+                      ContactName = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId) != null ? _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId).Name : "",
+                      Position = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId) != null ? _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId).Position : "",
+                      FocusProducts = _context.Set<ClientResume>().FirstOrDefault(c => c.ClientId == x.ClientId) != null ? _context.Set<ClientResume>().FirstOrDefault(c => c.ClientId == x.ClientId).FocusProducts : "",
+                      ResultFridays = resultFriday.FirstOrDefault(c => c.ClientIdd == x.ClientId) != null ? resultFriday.Where(c => c.ClientIdd == x.ClientId).ToList() : new List<ResultFriday>(),
                    })
                    .OrderByDescending(x => x.ClientId)
                    //.Take(50)
@@ -70,6 +75,54 @@ namespace WebUI.ApiControllers.Manager
                 reachOutcomess.AddRange(result);
             }
             return Ok(reachOutcomess);
+        }
+
+        [HttpGet]
+        [Route("AddFocusProduct")]
+        public void AddFocusProduct(string idClient, string strfocusProduct)
+        {
+            if((idClient != null || idClient != ""))
+            {
+                ClientResume clientResume = _context.Set<ClientResume>().FirstOrDefault(c => c.ClientId.ToString() == idClient);
+                if(clientResume != null)
+                {
+                    clientResume.FocusProducts = strfocusProduct;
+                }
+                else
+                {
+                    _context.Set<ClientResume>().Add(new ClientResume()
+                    {
+                        ClientId = Convert.ToInt32(idClient),
+                        Client = _context.Set<Client>().FirstOrDefault(c => c.Id == Convert.ToInt32(idClient)),
+                        FocusProducts = strfocusProduct
+                    });
+                }
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("AddResuldFriyDay")]
+        public void AddResuldFriyDay(string idClient, string strResuldFriyDay, string date)
+        {
+            if ((idClient != null || idClient != "") && (strResuldFriyDay != null))
+            {
+                ResultFriday resultFriday = _context.Set<ResultFriday>().Where(r => r.ClientIdd.ToString() == idClient).FirstOrDefault(r => r.DataFriday == date);
+                if(resultFriday != null)
+                {
+                    resultFriday.ResumeFriday = strResuldFriyDay;
+                }
+                else
+                {
+                    _context.Set<ResultFriday>().Add(new ResultFriday()
+                    {
+                        ClientIdd = Convert.ToInt32(idClient),
+                        DataFriday = date,
+                        ResumeFriday = strResuldFriyDay
+                    });
+                }
+                _context.SaveChanges();
+            }
         }
     }
 }

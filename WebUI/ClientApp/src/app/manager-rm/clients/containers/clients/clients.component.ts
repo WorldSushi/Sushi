@@ -24,6 +24,8 @@ import { WorkgroupsFacade } from '../../../../store/workgroups/facades/workgroup
 })
 export class ClientsComponent implements OnInit {
 
+  manager$: Observable<IUser> = this.userFacade.currentUser$;
+
   clients$: Observable<IClient[]> = this.clientsFacade.clients$.pipe(
     map(res => {
       let actualData = res.filter(item => item.group > 0);
@@ -34,7 +36,6 @@ export class ClientsComponent implements OnInit {
       return [...actualData, ...undefinedData];
     })
   );
-  manager$: Observable<IUser> = this.userFacade.currentUser$;
 
   getWeek(date: string) {
     this.weekPlanFacade.loadWeekPlan(1);

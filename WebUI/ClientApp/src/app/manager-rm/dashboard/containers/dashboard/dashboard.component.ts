@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   clientContacts$ = this.clientContactFacade.callsDate$.pipe(
     withLatestFrom(this.userFacade.currentUser$),
     map(([clientContacts, manager]) => {
-      return clientContacts.filter(item => item.managerId == manager.workgroup.escortManagerId || item.managerId == manager.workgroup.regionalManagerId)
+      return clientContacts.filter(item => item.managerId == manager.id)
     })
   )
 

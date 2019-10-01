@@ -9,6 +9,7 @@ using Data.DTO.Clients;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Entities.Users;
 using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,20 +35,45 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Get()
         {
             List<Call> calls = _context.Set<Call>().ToList();
-            var result = await _context.Set<ClientContact>() 
-                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
-                .Select(x => new ClientContactDto()
-                {
-                    Id = x.Id,
-                    ClientId = x.ClientId,
-                    ContactType = x.Type,
-                    Date = x.Date.ToString("dd.MM.yyyy"),
-                    ManagerType = x.ManagerType,
-                    ManagerId = x.ManagerId,
-                    Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+            var managerId = _accountInformationService.GetOperatorId();
+            User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
+            List<ClientContactDto> result = null; 
+
+            if (user is Data.Entities.Users.Admin)
+            {
+                result = await _context.Set<ClientContact>()
+                   .Select(x => new ClientContactDto()
+                   {
+                       Id = x.Id,
+                       ClientId = x.ClientId,
+                       ContactType = x.Type,
+                       Date = x.Date.ToString("dd.MM.yyyy"),
+                       ManagerType = x.ManagerType,
+                       ManagerId = x.ManagerId,
+                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                       //IsAccept = x.IsAccept
+                   }).ToListAsync();
+            }
+            else if (user is Data.Entities.Users.Manager)
+            {
+                WorkGroup workGroups = _context.Set<WorkGroup>()
+                .FirstOrDefault(x => x.RegionalManagerId == managerId
+                                          || x.EscortManagerId == managerId);
+                result = await _context.Set<ClientContact>()
+                   .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
+                   .Select(x => new ClientContactDto()
+                   {
+                       Id = x.Id,
+                       ClientId = x.ClientId,
+                       ContactType = x.Type,
+                       Date = x.Date.ToString("dd.MM.yyyy"),
+                       ManagerType = x.ManagerType,
+                       ManagerId = x.ManagerId,
+                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
                     //IsAccept = x.IsAccept
                 }).ToListAsync();
-                return Ok(result);
+            }
+            return Ok(result);
         }
 
         [HttpPost]

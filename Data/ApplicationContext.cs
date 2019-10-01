@@ -31,6 +31,8 @@ namespace Data
             modelBuilder.Entity<Client>();
             modelBuilder.Entity<ClientPhone>();
             modelBuilder.Entity<ClientRevenue>();
+            modelBuilder.Entity<ClientResume>();
+            modelBuilder.Entity<ResultFriday>();
 
             modelBuilder.Entity<Manager>();
             modelBuilder.Entity<Admin>();

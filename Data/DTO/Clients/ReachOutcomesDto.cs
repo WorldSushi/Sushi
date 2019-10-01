@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Data.Entities.Clients;
+using System.Collections.Generic;
 
 namespace Data.DTO.Clients
 {
@@ -6,8 +7,10 @@ namespace Data.DTO.Clients
     {
         public string ClientId { get; set; }
         public string NameClient { get; set; }
+        public string ContactName { get; set; }
+        public string Position { get; set; }
+        public string FocusProducts { get; set; }
+        public List<ResultFriday> ResultFridays { get; set; }
         public List<ClientPhoneDTO> Phones { get; set; }
-        public string Resume1 { get; set; }
-        public string Resume2 { get; set; }
     }
 }

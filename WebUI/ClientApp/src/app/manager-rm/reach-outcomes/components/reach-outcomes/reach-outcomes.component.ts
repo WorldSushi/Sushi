@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ReachOutcomes } from '../../Model/reach-outcomes.model';
+import { DialogBodyComponent } from '../../Dialog/dialog-body/dialog-body.component';
 
 @Component({
   selector: 'app-company-birthday',
@@ -13,7 +14,7 @@ export class ReachOutcomesComponent implements OnInit {
   reachOutcomess: ReachOutcomes[];
 
 
-  displayedColumns: string[] = ['title', 'phone1', 'resume1', 'resume2']
+  displayedColumns: string[] = ['title', 'phone1', 'contactName', 'focusProducts'];
 
   getReachOutcomes() {
     this.http.get<ReachOutcomes[]>('api/manager/ReachOutcomes/').subscribe((data: ReachOutcomes[]) => {
@@ -22,6 +23,18 @@ export class ReachOutcomesComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+  }
+
+  addFocusProduct(element, clientId) {
+    console.log(element);
+    this.http.get('api/manager/ReachOutcomes/AddFocusProduct?idClient=' + clientId + '&strfocusProduct=' + element.target.value).subscribe();
+  }
+
+  OpenDialogResult(idClient) {
+    const dialogRef = this.dialog.open(DialogBodyComponent, {
+      width: '1500px',
+      data: this.reachOutcomess.find(r => r.clientId == idClient),
+    })
   }
 
   constructor(public dialog: MatDialog,
