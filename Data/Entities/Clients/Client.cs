@@ -12,6 +12,7 @@ namespace Data.Entities.Clients
 
         public string LegalEntity { get; protected set; }
         public string IsCoverage { get; set; }
+        public bool IsAcctive { get; set; }
 
         public ClientGroup Group { get; protected set; }
 

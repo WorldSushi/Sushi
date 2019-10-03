@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using WebUI.Background.Report;
+using WebUI.Background.SyncRonService;
 
 namespace WebUI.Background
 {
@@ -20,12 +21,7 @@ namespace WebUI.Background
             Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(4, 30);
             Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(4, 40);
 
-
-            Schedule(() => new DebitoryReport(applicationContext)).ToRunEvery(1).Days().At(9, 34);
-            Schedule(() => new SalleReport(applicationContext)).ToRunEvery(1).Days().At(9, 35);
-            Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(9, 36);
-            Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(9, 37);
-            Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(9, 38);
+            //Schedule(() => new SyncClient(applicationContext)).ToRunNow().AndEvery(2).Hours();
         }
 
         private void CreateEmtypdf()

@@ -30,7 +30,13 @@ namespace Data.Services.Concrete
         //Создаю Calls
         //Связываю с помощью CallInfo
         public void SaveNewCalls()
-        {
+        { 
+            //_context.Set<CallLog>().RemoveRange(_context.Set<CallLog>());
+            //_context.Set<CallInfo>().RemoveRange(_context.Set<CallInfo>());
+            //_context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>());
+            //_context.Set<Call>().RemoveRange(_context.Set<Call>());
+            //_context.Set<MonthCallsInfo>().RemoveRange(_context.Set<MonthCallsInfo>());
+            //_context.SaveChanges();
             var monthCallsInfo = GetCurrentMonthCallsInfo();
 
             if(monthCallsInfo.Loading)

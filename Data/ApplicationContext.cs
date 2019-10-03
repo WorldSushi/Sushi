@@ -33,6 +33,7 @@ namespace Data
             modelBuilder.Entity<ClientRevenue>();
             modelBuilder.Entity<ClientResume>();
             modelBuilder.Entity<ClientResumeWeek>();
+            modelBuilder.Entity<ClientGR>();
             modelBuilder.Entity<ResultFriday>();
 
             modelBuilder.Entity<Manager>();
