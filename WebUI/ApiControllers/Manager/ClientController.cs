@@ -218,5 +218,57 @@ namespace WebUI.ApiControllers.Manager
                 _context.SaveChanges();
             }
         }
+
+        [HttpGet]
+        [Route("AddResume")]
+        public void AddResume(string idClient, string strResume)
+        {
+            if(idClient != null && idClient != "")
+            {
+                ClientResumeWeek clientResumeWeek = _context.Set<ClientResumeWeek>()
+                    .Where(c => c.ClientId.ToString() == idClient)
+                    .FirstOrDefault(c => (c.Date != null || c.Date != "") && (DateTime.Parse(c.Date).Year == DateTime.Now.Year && DateTime.Parse(c.Date).Month == DateTime.Now.Month));
+                if(clientResumeWeek != null)
+                {
+                    clientResumeWeek.Resume = strResume;
+                }
+                else
+                {
+                    _context.Set<ClientResumeWeek>().Add(new ClientResumeWeek()
+                    {
+                        Resume = strResume,
+                        Client = _context.Set<Client>().FirstOrDefault(c => c.Id.ToString() == idClient),
+                        ClientId = Convert.ToInt32(idClient),
+                        Date = DateTime.Now.ToString()
+                    });
+                }
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("Resume")]
+        public IActionResult GetResume(string idClient)
+        {
+            ClientResumeWeek clientResumeWeek = null;
+            if (idClient != null && idClient != "")
+            {
+                clientResumeWeek = _context.Set<ClientResumeWeek>()
+                    .FirstOrDefault(c => c.ClientId.ToString() == idClient && (DateTime.Parse(c.Date).Year == DateTime.Now.Year && DateTime.Parse(c.Date).Month == DateTime.Now.Month));
+            }
+            if(clientResumeWeek != null)
+            {
+                return Ok(new ClientResumeWeekDto()
+                {
+                    ClientId = clientResumeWeek.ClientId,
+                    Date = clientResumeWeek.Date,
+                    Resume = clientResumeWeek.Resume
+                });
+            }
+            else
+            {
+                return Ok(new ClientResumeWeekDto() { });
+            }
+        }
     }
 }

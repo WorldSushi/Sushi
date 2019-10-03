@@ -26,7 +26,6 @@ export class ReachOutcomesComponent implements OnInit {
   }
 
   addFocusProduct(element, clientId) {
-    console.log(element);
     this.http.get('api/manager/ReachOutcomes/AddFocusProduct?idClient=' + clientId + '&strfocusProduct=' + element.target.value).subscribe();
   }
 

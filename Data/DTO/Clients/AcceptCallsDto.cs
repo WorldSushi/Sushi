@@ -3,7 +3,7 @@
 namespace Data.DTO.Clients
 {
      public class AcceptCallsDto
-     {
+    {
         public int Id { get; set; }
         public int ClientId { get; set; }
         public int Durations { get; set; }

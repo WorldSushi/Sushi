@@ -53,7 +53,7 @@
     </div>
     <div class="dialog-section-body">
       <div class="planned">
-        <textarea matInput placeholder="Резюме"></textarea>
+        <textarea (focusout)="addResume($event)" matInput placeholder="Резюме"></textarea>
       </div>
     </div>
   </div>
@@ -88,7 +88,16 @@
         </tr>
       </tbody>
     </table>
-
+  </div>
+  <div class="dialog-Resume">
+    <div class="dialog-section-title">
+      Резюме за {{toMonthDate}}
+    </div>
+    <div class="dialog-section-body">
+      <div class="planned">
+        {{clientResumeWeeks.resume}}
+      </div>
+    </div>
   </div>
 
 

@@ -1,6 +1,8 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { IWeekPlan } from '../../shared/models/week-plan.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ClientResumeWeek } from '../../shared/models/client-resume-week.model';
 
 
 @Component({
@@ -11,6 +13,8 @@ import { IWeekPlan } from '../../shared/models/week-plan.model';
 export class WeekPlansDialogComponent implements OnInit {
 
   @Output() addFact: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
+
+  clientResumeWeeks: ClientResumeWeek;
 
   displayedColumns: string[] = ['Number', 'MSplanned', 'RMplanned', 'MSfact', 'RMfact'];
 
@@ -29,6 +33,8 @@ export class WeekPlansDialogComponent implements OnInit {
 
   firstdayFiveWeek: any;
   lastdayFiveWeek: any;
+
+  toMonthDate = new Date().toLocaleDateString().substring(3, new Date().toLocaleDateString().length);
 
   selectedMSWeek: IWeekPlan = {
     id: 0,
@@ -136,6 +142,18 @@ export class WeekPlansDialogComponent implements OnInit {
     this.addFact.emit(weekPlan);
   }
 
+  addResume(element) {
+    this.http.get('api/manager/Client/AddResume?idClient=' + this.data.id + '&strResume=' + element.target.value).subscribe();
+  }
+
+  getResume() {
+    this.http.get<ClientResumeWeek>('api/manager/Client/Resume?idClient=' + this.data.id).subscribe((data: ClientResumeWeek) =>
+    {
+      this.clientResumeWeeks = data;
+      this.cdr.detectChanges();
+    });
+  }
+
   save(){
     this.dialogRef.close(this.data.weekPlans);
   }
@@ -145,6 +163,7 @@ export class WeekPlansDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getResume();
     if(this.data.weekPlans.find(item => item.managerType == 10 && this.numberOfWeek == item.weekNumber))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == this.numberOfWeek)
     else
@@ -157,7 +176,10 @@ export class WeekPlansDialogComponent implements OnInit {
   }
 
   constructor(public dialogRef: MatDialogRef<WeekPlansDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {
   }
 
 }
