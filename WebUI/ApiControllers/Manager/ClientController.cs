@@ -260,7 +260,7 @@ namespace WebUI.ApiControllers.Manager
             {
                 return Ok(new ClientResumeWeekDto()
                 {
-                    ClientId = clientResumeWeek.ClientId,
+                    ClientId = clientResumeWeek.ClientId.ToString(),
                     Date = clientResumeWeek.Date,
                     Resume = clientResumeWeek.Resume
                 });
