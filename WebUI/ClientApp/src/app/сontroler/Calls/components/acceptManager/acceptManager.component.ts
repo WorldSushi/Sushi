@@ -29,7 +29,7 @@ export class AcceptManagerComponent implements OnInit {
   acceptManagers: AcceptManager[] = [];
 
 
-  displayedColumns: string[] = ['title', 'phone', 'duration', 'refAudio', 'controls', 'date']
+  displayedColumns: string[] = ['direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
   ngOnChanges() {
   }
@@ -54,7 +54,7 @@ export class AcceptManagerComponent implements OnInit {
 
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
-      this.cientAccept = data.filter(r => r.durations > 149 && r.contactType == 40);
+      this.cientAccept = data;
       this.sortManagerToCalls();
       this.cdr.detectChanges();
     });
@@ -72,8 +72,22 @@ export class AcceptManagerComponent implements OnInit {
       }
       this.acceptManagers.push(newItem);
     });
-    console.log(this.acceptManagers);
   }
+
+  hidenTable($event) {
+    if ($event.currentTarget.children[1].hidden) {
+      $event.currentTarget.children[1].hidden = false;
+    }
+    else {
+      $event.currentTarget.children[1].hidden = true;
+    }
+  }
+
+  setNoAccept($event, callId, clientId) {
+    let comentControler = $event.currentTarget.offsetParent.children[0].value;
+    this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+  }
+
 
   ngOnInit() {
     this.getManager();

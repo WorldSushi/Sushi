@@ -47,7 +47,7 @@ export class CallsDatesDialogComponent implements OnInit {
       return "rgba(76, 255, 0, 0.17)";
     }
     else if (el == 60) {
-      return "rgba(76, 255, 0)";
+      return "#FF0040";
     }
     return "";
   }

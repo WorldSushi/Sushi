@@ -133,7 +133,7 @@ namespace Data.Services.Concrete
                 : false).ToList();
 
 
-            var b = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "") && x.ClientName.Contains("Мир суши")).ToList();
+            var b = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "") && x.ClientName.Contains("Мир Суши")).ToList();
 
             var calls = new List<CallInfo>();
             var calls1 = new List<CallInfo>();
@@ -155,7 +155,8 @@ namespace Data.Services.Concrete
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
                         Duration = call.Duration,
                         Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
+                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                        Direction = call.Direction
                     },
                     CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
                                                            && x.SrcNumber == call.SrcNumber
@@ -175,7 +176,8 @@ namespace Data.Services.Concrete
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
                         Duration = call.Duration,
                         Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime)
+                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                        Direction = call.Direction
                     },
                     CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
                                                            && x.SrcNumber == call.SrcNumber
@@ -196,11 +198,12 @@ namespace Data.Services.Concrete
                             : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
                                 ? ManagerType.RegionalManager
                                 : ManagerType.Undefined,
+
                     });
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
-
-                if(!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
+                clientContact.Direction = call.Call.Direction;
+                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
                                             && x.ManagerId == clientContact.ManagerId
                                             && x.ClientId == clientContact.ClientId))
                     clientContacts.Add(clientContact);
@@ -222,7 +225,7 @@ namespace Data.Services.Concrete
                     });
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
-
+                clientContact.Direction = call.Call.Direction;
                 if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
                                              && x.ManagerId == clientContact.ManagerId
                                              && x.ClientId == clientContact.ClientId))

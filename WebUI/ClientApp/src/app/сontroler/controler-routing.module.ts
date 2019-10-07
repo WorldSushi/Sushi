@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ControlerComponent } from './controler.component';
-import { AcceptManagerComponent } from './clients/components/acceptManager/acceptManager.component';
+import { AcceptManagerComponent } from './Calls/components/acceptManager/acceptManager.component';
 
 const controlerRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'AcceptManager' },

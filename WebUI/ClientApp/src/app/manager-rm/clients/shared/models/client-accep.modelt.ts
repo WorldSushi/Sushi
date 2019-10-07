@@ -11,4 +11,5 @@ export interface ClientAccept {
   durations: number,
   titleClient: string,
   referenceAudioVoice: string,
+  direction: string
 }

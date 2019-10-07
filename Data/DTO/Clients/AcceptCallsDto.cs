@@ -13,6 +13,7 @@ namespace Data.DTO.Clients
         public string TitleClient { get; set; }
         public string ReferenceAudioVoice { get; set; }
         public string Phone { get; set; }
+        public string Direction { get; set; }
         public int ManagerId { get; set; }
         
     }

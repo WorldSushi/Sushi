@@ -14,6 +14,6 @@
 
         ManagerCall = 50,
 
-        AcceptCallControler = 60
+        NoAcceptCallControler = 60
     }
 }

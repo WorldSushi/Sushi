@@ -21,6 +21,7 @@ namespace Data
             modelBuilder.Entity<MonthCallsInfo>();
             modelBuilder.Entity<MonthCallsInfoAsterics>();
             modelBuilder.Entity<CallInfo>();
+            modelBuilder.Entity<CallsComment>();
 
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();

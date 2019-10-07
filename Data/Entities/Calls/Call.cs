@@ -18,5 +18,6 @@ namespace Data.Entities.Calls
         public int Duration { get; set; }
 
         public string Recording { get; set; }
+        public string Direction { get; set; }
     }
 }

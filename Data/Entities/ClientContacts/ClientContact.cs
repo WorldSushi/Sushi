@@ -20,6 +20,7 @@ namespace Data.Entities.ClientContacts
         public ClientContactType Type { get; set; }
 
         public ManagerType ManagerType { get; protected set; }
+        public string Direction { get; set; }
 
         //public bool IsAccept { get; protected set; }
 

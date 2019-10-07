@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ControlerComponent } from './controler.component';
 import { ControlerRoutingModule } from './controler-routing.module';
-import { AcceptManagerModule } from './clients/acceptManager.module';
+import { AcceptManagerModule } from './Calls/acceptManager.module';
 
 @NgModule({
   declarations: [

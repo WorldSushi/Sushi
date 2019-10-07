@@ -48,17 +48,18 @@ namespace WebUI.ApiControllers.Controler
                     ReferenceAudioVoice = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Recording : "",
                     TitleClient = x.Client.LegalEntity,
                     Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
+                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
                 }).ToListAsync();
             return Ok(result);
         }
 
         [HttpGet]
-        [Route("AcceptCall")]
-        public void AcceptCall(string id)
+        [Route("NoAcceptCall")]
+        public void AcceptCall(string comment, string callId, string clientId)
         {
-            ClientContact clientContact = _context.Set<ClientContact>().FirstOrDefault(c => c.Id.ToString() == id);
-            clientContact.Type = ClientContactType.AcceptCallControler;
-            _context.SaveChanges();
+            //ClientContact clientContact = _context.Set<ClientContact>().FirstOrDefault(c => c.Id.ToString() == id);
+            //clientContact.Type = ClientContactType.AcceptCallControler;
+            //_context.SaveChanges();
         }
     }
 }

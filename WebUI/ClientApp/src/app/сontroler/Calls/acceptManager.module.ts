@@ -9,7 +9,6 @@ import { DateExtensionsService } from 'src/app/shared/services/date-extensions.s
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 import { AcceptManagerComponent } from './components/acceptManager/acceptManager.component';
 import { AcceptComponent } from './containers/accept/accept.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
