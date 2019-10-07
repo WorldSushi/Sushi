@@ -8,9 +8,9 @@ namespace Data.Entities.Clients
 {
     public class Client : Entity
     {
-        public string Title { get; protected set; }
+        public string Title { get; set; }
 
-        public string LegalEntity { get; protected set; }
+        public string LegalEntity { get; set; }
         public string IsCoverage { get; set; }
         public bool IsAcctive { get; set; }
 
