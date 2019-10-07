@@ -37,7 +37,7 @@ namespace WebUI.ApiControllers.Manager
             List<Call> calls = _context.Set<Call>().ToList();
             var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
-            List<ClientContactDto> result = null; 
+            List<ClientContactDto> result = null;
 
             if (user is Data.Entities.Users.Admin)
             {
@@ -70,8 +70,8 @@ namespace WebUI.ApiControllers.Manager
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
                        Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
-                    //IsAccept = x.IsAccept
-                }).ToListAsync();
+                       //IsAccept = x.IsAccept
+                   }).ToListAsync();
             }
             return Ok(result);
         }

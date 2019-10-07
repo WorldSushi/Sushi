@@ -1,4 +1,5 @@
-﻿using Data.Enums;
+﻿using Data.DTO.Calls;
+using Data.Enums;
 using System.Collections.Generic;
 
 namespace Data.DTO.Clients
@@ -17,5 +18,6 @@ namespace Data.DTO.Clients
         public NomenclatureAnalysis NomenclatureAnalysis { get; set; }
         public bool HasWorkgroup { get; set; }
         public bool IsCoverage { get; set; }
+        public List<CallsCommentDto> CallsComments { get; set; }
     }
 }

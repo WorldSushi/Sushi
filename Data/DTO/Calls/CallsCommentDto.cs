@@ -1,13 +1,14 @@
-﻿using Base;
-using Data.Enums;
+﻿using Data.Enums;
 
-namespace Data.Entities.Calls
+namespace Data.DTO.Calls
 {
-    public class CallsComment : Entity
+    public class CallsCommentDto
     {
         public int ClientId { get; set; }
         public int ContactClientId { get; set; }
+        public int Durations { get; set; }
         public string Comment { get; set; }
+        public string Date { get; set; }
         public string ManagerComment { get; set; }
         public AcceptControlerCalss AcceptControlerCalss { get; set; }
     }

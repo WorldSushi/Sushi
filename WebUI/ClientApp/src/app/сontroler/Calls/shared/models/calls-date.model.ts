@@ -1,4 +1,5 @@
 import { TypeOfDateAction } from '../enums/typeOfDateAction';
+import { CallsComment } from './сalls-сomment.model';
 
 export interface ICallsDate {
     id: number,
@@ -7,6 +8,7 @@ export interface ICallsDate {
     date: any,
     managerType: number,
     managerId: number,
-  durations: number,
-  isAccept: boolean
+    durations: number,
+    isAccept: boolean,
+    callsComments: CallsComment
 }

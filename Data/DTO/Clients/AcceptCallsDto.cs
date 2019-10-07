@@ -1,4 +1,5 @@
-﻿using Data.Enums;
+﻿using Data.Entities.Calls;
+using Data.Enums;
 
 namespace Data.DTO.Clients
 {
@@ -15,6 +16,7 @@ namespace Data.DTO.Clients
         public string Phone { get; set; }
         public string Direction { get; set; }
         public int ManagerId { get; set; }
-        
+        public CallsComment CallsComments { get; set; }
+
     }
 }

@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
+using Data.DTO.Calls;
 using Data.DTO.Clients;
+using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.Users;
@@ -40,7 +42,10 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+            List<ClientContact> clientContacts = _context.Set<ClientContact>().ToList();
             List<ClientDto> clientsDto = new List<ClientDto>();
+            List<Call> calls = _context.Set<Call>().ToList();
             var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             _myCallsApiService.SaveNewCalls();
@@ -87,7 +92,18 @@ namespace WebUI.ApiControllers.Manager
                            Avg5Months = 20,
                            ClientId = x.Id
                        },
-                       IsCoverage = x.Client.IsCoverage != null || x.Client.IsCoverage != "" ? Convert.ToBoolean(x.Client.IsCoverage) : false
+                       IsCoverage = x.Client.IsCoverage != null || x.Client.IsCoverage != "" ? Convert.ToBoolean(x.Client.IsCoverage) : false,
+                       CallsComments = callsComments.Where(c => c.ClientId == x.ClientId && c.AcceptControlerCalss == AcceptControlerCalss.ControlerNoAccept)
+                       .Select(z => new CallsCommentDto()
+                       {
+                           AcceptControlerCalss = z.AcceptControlerCalss,
+                           ClientId = x.ClientId,
+                           Comment = z.Comment,
+                           ContactClientId = z.ContactClientId,
+                           Date = clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId) != null ? clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId).Date.ToString("dd.MM.yyyy hh:mm") : "",
+                           ManagerComment = z.ManagerComment,
+                           Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0
+                       }).ToList()
                    })
                    .OrderByDescending(x => x.NumberOfCalls)
                    //.Take(50)

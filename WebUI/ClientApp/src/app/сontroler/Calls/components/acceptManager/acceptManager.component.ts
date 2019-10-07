@@ -1,11 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef  } from '@angular/core';
-import { IClient } from '../../shared/models/client.model';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
-import { IRevenueAnalysis } from '../../shared/models/revenue-analysis';
-import { IWeekPlan } from '../../shared/models/week-plan.model';
 import { ICallsDate } from '../../shared/models/calls-date.model';
-import { ICallPlan } from '../../shared/models/call-plan.model';
-import { ITripPlan } from '../../shared/models/trip-plan.model';
 import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
 import { ninvoke } from 'q';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
@@ -29,7 +24,9 @@ export class AcceptManagerComponent implements OnInit {
   acceptManagers: AcceptManager[] = [];
 
 
-  displayedColumns: string[] = ['direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
+  displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
+
+
 
   ngOnChanges() {
   }
@@ -44,12 +41,6 @@ export class AcceptManagerComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-  }
-
-  AccepCallsControler(element: ICallsDate) {
-    this.acceptManagers.find(a => a.id == element.managerId).callsDate = this.acceptManagers.find(a => a.id == element.managerId).callsDate.filter(c => c.id != element.id);
-    this.cdr.detectChanges();
-    this.http.get('api/conroler/ClientAccept/AcceptCall?id=' + element.id).subscribe();
   }
 
   getcallsDater() {
@@ -72,6 +63,7 @@ export class AcceptManagerComponent implements OnInit {
       }
       this.acceptManagers.push(newItem);
     });
+    console.log(this.acceptManagers);
   }
 
   hidenTable($event) {
@@ -85,9 +77,35 @@ export class AcceptManagerComponent implements OnInit {
 
   setNoAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
-    this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+    if (comentControler != undefined || comentControler != "") {
+      this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+    }
   }
 
+  setAccept($event, callId, clientId) {
+    let comentControler = $event.currentTarget.offsetParent.children[0].value;
+    this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+    $event.currentTarget.offsetParent.children[0].value = "";
+    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+  }
+
+  setBagroundStatus(element) {
+    if (element.callsComments) {
+      if (element.callsComments.acceptControlerCalss == 2) {
+        return "#2EFE9A";
+      }
+      else if (element.callsComments.acceptControlerCalss == 1) {
+        return "#DF013A";
+      }
+      else {
+        return "#FAFAFA";
+      }
+    }
+    else {
+      return "#FAFAFA";
+    }
+  }
 
   ngOnInit() {
     this.getManager();
@@ -95,4 +113,3 @@ export class AcceptManagerComponent implements OnInit {
   }
 
 }
-//

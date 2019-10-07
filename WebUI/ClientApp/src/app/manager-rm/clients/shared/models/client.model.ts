@@ -6,6 +6,7 @@ import { INomenclatureAnalysis } from './nomenclature-analysis';
 import { IWeekPlan } from './week-plan.model';
 import { IManagerCallsResult } from './Manager-calls-result.model';
 import { ICallsDate } from './calls-date.model';
+import { CallsComment } from '../../../../сontroler/Calls/shared/models/сalls-сomment.model';
 
 export interface IClient {
   id: number,
@@ -25,5 +26,6 @@ export interface IClient {
   hasWorkgroup: boolean,
   phones: any[],
   contactName: string,
-  isCoverage: boolean 
+  isCoverage: boolean,
+  callsComments: CallsComment[]
 }

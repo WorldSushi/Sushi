@@ -3,7 +3,5 @@ export enum TypeOfDateAction {
     Call = 10,
     WhatsUp = 20,
     Letter = 30,
-  AcceptCalls = 40,
-  AcceptControlerCalls = 60
-
+    AcceptCalls = 40
 }

@@ -1,5 +1,5 @@
-import { ICallsDate } from './calls-date.model';
 import { TypeOfDateAction } from '../enums/typeOfDateAction';
+import { CallsComment } from '../../../../сontroler/Calls/shared/models/сalls-сomment.model';
 
 export interface ClientAccept {
   id: number,
@@ -11,5 +11,6 @@ export interface ClientAccept {
   durations: number,
   titleClient: string,
   referenceAudioVoice: string,
-  direction: string
+  direction: string,
+  callsComments: CallsComment[]
 }

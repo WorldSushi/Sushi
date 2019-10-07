@@ -77,11 +77,11 @@ export class ClientListComponent implements OnInit {
   dateCollection: string;
 
   displayedColumns: string[] = [
+    'status',
     'elect',
     'title', 
     'phone',
     'type',
-    'legalEntity',
     'numberOfCalls', 
     'numberOfShipments',
     'callPlan.collective', 
@@ -471,6 +471,20 @@ export class ClientListComponent implements OnInit {
     this.http.get('api/manager/Client/Coverage?isCoverage=' + element.isCoverage + "&idClient=" + element.id).subscribe();
   }
 
+  setBagroundStatus(element) {
+    if (element.callsComments.length != 0 ) {
+      if (element.callsComments.length != 0) {
+        return "#DF013A";
+      }
+      else {
+        return "#FAFAFA";
+      }
+    }
+    else {
+      return "#FAFAFA";
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const toMonth = new Date().getMonth();
     const toYear = new Date().getFullYear();
@@ -484,7 +498,7 @@ export class ClientListComponent implements OnInit {
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
     this.dataSource.paginator = this.paginator;
-    //console.log(this.manager);
+    console.log(this.clients);
     //console.log(this.workgroup);
   }
   

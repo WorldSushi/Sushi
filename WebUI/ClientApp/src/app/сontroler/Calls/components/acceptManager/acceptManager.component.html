@@ -10,49 +10,59 @@
       </p>
       <table id="ID{{acceptManager.id}}" mat-table [dataSource]="acceptManager.callsDate">
 
+        <ng-container matColumnDef="status">
+          <th colspan="1" mat-header-cell *matHeaderCellDef></th>
+          <td colspan="1" mat-cell *matCellDef="let element" [style.background]="setBagroundStatus(element)"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="statusCall">
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Статус</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.contactType == 40 ? "Подтверждён" : "Не подтвержден"}}</td>
+        </ng-container>
+
         <ng-container matColumnDef="direction">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Направление звонка</th>
-          <td colspan="1" mat-cell *matCellDef="let element" style="max-width: 300px">{{element.direction}} </td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Статусзвонка звонка</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.direction}} </td>
         </ng-container>
 
         <ng-container matColumnDef="answer">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Отвечен</th>
-          <td colspan="1" mat-cell *matCellDef="let element" style="max-width: 300px">{{element.durations == 0 ? "Нет" : "Да"}} </td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Отвечен</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.durations == 0 ? "Нет" : "Да"}} </td>
         </ng-container>
 
         <ng-container matColumnDef="title">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Название</th>
-          <td colspan="1" mat-cell *matCellDef="let element">{{element.titleClient}} </td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Название</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.titleClient}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Номер телефона клиента</th>
-          <td colspan="1" mat-cell *matCellDef="let element">{{element.phone}}</td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Номер телефона клиента</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.phone}}</td>
         </ng-container>
 
         <ng-container matColumnDef="duration">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Продолжительность</th>
-          <td colspan="1" mat-cell *matCellDef="let element" style="max-width: 300px">{{element.durations}} Сек</td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Продолжительность</th>
+          <td colspan="3" mat-cell *matCellDef="let element" style="max-width: 300px">{{element.durations}} Сек</td>
         </ng-container>
 
         <ng-container matColumnDef="date">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Дата начала звонка</th>
-          <td colspan="1" mat-cell *matCellDef="let element">{{element.date}}</td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Дата начала звонка</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.date}}</td>
         </ng-container>
 
         <ng-container matColumnDef="comentCon">
-          <th colspan="2" mat-header-cell *matHeaderCellDef>Коментарий контролера</th>
-          <td colspan="2" mat-cell *matCellDef="let element"><textarea  style="width:300px;height:60px;"></textarea><br /> <button (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button></td>
+          <th colspan="4" mat-header-cell *matHeaderCellDef>Коментарий контролера</th>
+          <td colspan="4" mat-cell *matCellDef="let element"><textarea style="width:300px;height:60px;">{{element.callsComments?.comment}}</textarea><br /> <button (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button> <button (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Ок</button></td>
         </ng-container>
 
         <ng-container matColumnDef="comentCli">
-          <th colspan="1" mat-header-cell *matHeaderCellDef>Коментарий менеджера</th>
-          <td  colspan="1" mat-cell *matCellDef="let element"></td>
+          <th colspan="3" mat-header-cell *matHeaderCellDef>Коментарий менеджера</th>
+          <td colspan="3" mat-cell *matCellDef="let element">{{element.callsComments?.managerComment}}</td>
         </ng-container>
 
         <ng-container matColumnDef="refAudio">
-          <th colspan="2" mat-header-cell *matHeaderCellDef>Ауди запись</th>
-          <td colspan="2" mat-cell *matCellDef="let element"><audio style="height:20px" controls preload="none" src="{{element.referenceAudioVoice}}"></audio></td>
+          <th colspan="4" mat-header-cell *matHeaderCellDef>Ауди запись</th>
+          <td colspan="4" mat-cell *matCellDef="let element"><audio style="height:20px" controls preload="none" src="{{element.referenceAudioVoice}}"></audio></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
