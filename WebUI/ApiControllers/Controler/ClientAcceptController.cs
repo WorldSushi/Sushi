@@ -63,7 +63,6 @@ namespace WebUI.ApiControllers.Controler
             {
                     callsComment.Comment = comment;
                     callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
-                
             }
             else
             {
@@ -82,7 +81,7 @@ namespace WebUI.ApiControllers.Controler
         [Route("DefaultCall")]
         public void DefaultCall(string comment, string callId, string clientId)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId);
             if (callsComment != null)
             {
                 callsComment.Comment = "";

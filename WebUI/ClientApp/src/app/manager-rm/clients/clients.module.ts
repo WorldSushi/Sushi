@@ -16,6 +16,7 @@ import { CallsDatesDialogComponent } from './dialogs/calls-dates-dialog/calls-da
 import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.component';
+import { CorrectionResponseComponent } from './dialogs/correction-response/correction-response.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.com
     NumberOfShipmentsTranslatePipe,
     ClientGroupTranslatePipe,
     CallsDatesDialogComponent,
-    ClientPhonesComponent
+    ClientPhonesComponent,
+    CorrectionResponseComponent
   ],
   entryComponents: [
     CreateClientDialogComponent,
@@ -40,7 +42,8 @@ import { ClientPhonesComponent } from './dialogs/client-phones/client-phones.com
     WeekPlansDialogComponent,
     CallsResultDialogComponent,
     CallsDatesDialogComponent,
-    ClientPhonesComponent
+    ClientPhonesComponent,
+    CorrectionResponseComponent
   ],
   exports: [
     ClientsComponent,

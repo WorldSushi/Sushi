@@ -286,5 +286,29 @@ namespace WebUI.ApiControllers.Manager
                 return Ok(new ClientResumeWeekDto() { });
             }
         }
+
+        [HttpGet]
+        [Route("AcceptManager")]
+        public void AcceptManager(string idClient)
+        {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient).ToList();
+            foreach(CallsComment callsComment in callsComments)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("Comment")]
+        public void SetComment(string idClient, string idContact, string comment)
+        {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == idContact).ToList();
+            foreach (CallsComment callsComment in callsComments)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id).Comment = comment;
+                _context.SaveChanges();
+            }
+        }
     }
 }

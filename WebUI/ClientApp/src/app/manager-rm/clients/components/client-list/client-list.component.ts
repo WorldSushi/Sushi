@@ -18,6 +18,7 @@ import { ninvoke } from 'q';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
 import { HttpClient } from '@angular/common/http';
+import { CorrectionResponseComponent } from '../../dialogs/correction-response/correction-response.component';
 
 @Component({
   selector: 'app-client-list',
@@ -295,6 +296,19 @@ export class ClientListComponent implements OnInit {
         location.reload();
       }
     })
+  }
+
+
+  OpenCorrectionResponse(idClient, title) {
+    if (this.clients.find(r => r.id == idClient).callsComments.length != 0) {
+      const dialogRef = this.dialog.open(CorrectionResponseComponent, {
+        width: '1500px',
+        data: {
+          title: title,
+          callsComments: this.clients.find(r => r.id == idClient).callsComments //? this.clients.find(r => r.clientId == idClient).callsComments : null,
+        }
+      })
+    }
   }
 
   getAvgAnalysis(value: INomenclatureAnalysis | IRevenueAnalysis){

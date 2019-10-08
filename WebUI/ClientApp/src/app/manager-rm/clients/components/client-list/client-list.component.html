@@ -580,14 +580,15 @@
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Новые или реанимируемые</span>
       <table mat-table [dataSource]="newOrResuscitating" [trackBy]="getTrackBy">
 
-        <ng-container matColumnDef="elect">
-          <th [attr.colspan]="1" mat-header-cell *matHeaderCellDef>Кр. Кли...</th>
-          <td [attr.colspan]="1" mat-cell *matCellDef="let element" style="color: #324A60;"> <input (click)="checkFluency(element)" *ngIf="!element.isCoverage" type="checkbox" />  <input (click)="checkFluency(element)" *ngIf="element.isCoverage" checked type="checkbox" /> </td>
-        </ng-container>
 
         <ng-container matColumnDef="status">
           <th colspan="1" mat-header-cell *matHeaderCellDef></th>
-          <td colspan="1" mat-cell *matCellDef="let element" [style.background]="setBagroundStatus(element)"></td>
+          <td colspan="1" mat-cell *matCellDef="let element" [style.background]="setBagroundStatus(element)" (click)="OpenCorrectionResponse(element.id, element.title)"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="elect">
+          <th [attr.colspan]="1" mat-header-cell *matHeaderCellDef>Кр. Кли...</th>
+          <td [attr.colspan]="1" mat-cell *matCellDef="let element" style="color: #324A60;"> <input (click)="checkFluency(element)" *ngIf="!element.isCoverage" type="checkbox" />  <input (click)="checkFluency(element)" *ngIf="element.isCoverage" checked type="checkbox" /> </td>
         </ng-container>
 
         <ng-container matColumnDef="title">
@@ -649,9 +650,9 @@
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">
             r:
-Пл
-ан
-          lD
+            Пл
+            ан
+            lD
           </th>
           r:
           Пл

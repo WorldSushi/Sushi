@@ -1,9 +1,11 @@
 import { acceptControlerCalss } from '../enums/accept-controler-calss';
 
 export interface CallsComment {
-    сlientId: number,
-    сontactClientId: number,
-    Comment: string,
+    clientId: number,
+    contactClientId: number,
+    comment: string,
     maanagerComment: string,
-    acceptControlerCalss: acceptControlerCalss
+    acceptControlerCalss: acceptControlerCalss,
+    durations: number,
+    date: string
 }
