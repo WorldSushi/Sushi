@@ -61,8 +61,8 @@ namespace WebUI.ApiControllers.Controler
             CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId);
             if(callsComment != null)
             {
-                    callsComment.Comment = comment;
-                    callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
+                callsComment.Comment = comment;
+                callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
             }
             else
             {
