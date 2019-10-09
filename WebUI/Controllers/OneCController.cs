@@ -17,19 +17,18 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
     public class OneCController : ControllerBase
     {
-        private readonly ApplicationContext _context;
-        private HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://mir-sushi-web.esit.info/buh5/ru_RU/odata/standard.odata/InformationRegister_CRM_Contragents?$format=json");
+        private ApplicationContext _context;
+        private HttpWebRequest request = null;
 
         public OneCController(ApplicationContext context)
         {
-            request.UserAgent = "World Sushi";
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-            request.Credentials = new NetworkCredential("chuprina.r.v@gmail.com", "123");
             _context = context;
         }
 
@@ -65,59 +64,81 @@ namespace WebUI.Controllers
             return responseOneC;
         }
 
+
+        //"CRM_Contragents"
         [HttpGet]
         [Route("api.OneC")]
         public ResponseOneCDto GetClientResumeWeek(string updatetable, string id)
         {
             ResponseOneCDto responseOneC = new ResponseOneCDto();
-            if(/*(updatetable != null && updatetable != "") &&*/ (id != null && id != ""))
+            try
             {
-                ReloadClients(id);
-                responseOneC.Description = "OK";
+                if ((updatetable != null && updatetable != "") && (id != null && id != ""))
+                {
+                    if (updatetable == "CRM_Contragents")
+                    {
+                        //Timer timer = new Timer(new TimerCallback(ReloadClients), id, 10000, Timeout.Infinite);
+                        ReloadClients(id);
+                    }
+                    responseOneC.Description = "OK";
+                }
+                else
+                {
+                    responseOneC.Description = "Parameters are not valid";
+                }
+                responseOneC.Status = "OK";
             }
-            else
+            catch (Exception e)
             {
-                responseOneC.Description = "Parameters are not valid";
+                responseOneC.Status = e.Message;
             }
-            responseOneC.Status = "OK";
             return responseOneC;
         }
 
         private async void ReloadClients(string id)
         {
-            Background.SyncRonService.Model.Contragent.Client client = GetConterAgents().FirstOrDefault(c => c.Contragent_ID == id);
+            await Task.Delay(10000);
+            Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
+            _context = new ApplicationContext();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
-            if (client != null)
+            try
             {
-                Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-                if (clientInfo != null)
+                if (client != null )
                 {
-                    client1.LegalEntity = client.Contragent_NameFull;
-                    client1.Title = client.Contragent;
-                    ReloadPhone(client.Phones, client1);
+                    if (clientInfo != null)
+                    {
+                        Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
+                        client1.LegalEntity = client.Contragent_NameFull;
+                        client1.Title = client.Contragent;
+                        ReloadPhone(client.Phones, client1);
+                    }
+                    else
+                    {
+                        CreateNewClient(client);
+                    }
                 }
                 else
                 {
-                    CreateNewClient(client);
+                    Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
+                    List<ClientPhone> clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId).ToList();
+                    if (clientInfo != null)
+                    {
+                        _context.Set<Data.Entities.OneCInfo.ClientInfo>().RemoveRange(_context.Set<Data.Entities.OneCInfo.ClientInfo>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
+                        _context.Set<Data.Entities.Clients.Client>().RemoveRange(_context.Set<Data.Entities.Clients.Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                        _context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
+                        //_context.Set<Data.Entities.Clients.ClientGR>().Remove(_context.Set<Data.Entities.Clients.ClientGR>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
+                        _context.SaveChanges();
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-                List<ClientPhone> clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId).ToList();
-                if (clientInfo != null)
-                {
-                     _context.Set<Data.Entities.OneCInfo.ClientInfo>().RemoveRange(_context.Set<Data.Entities.OneCInfo.ClientInfo>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
-                    _context.Set<Data.Entities.Clients.Client>().RemoveRange(_context.Set<Data.Entities.Clients.Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
-                    _context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
-                    _context.Set<Data.Entities.Clients.ClientGR>().Remove(_context.Set<Data.Entities.Clients.ClientGR>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
-                    _context.SaveChanges();
-                }
+                throw new Exception(e.Message);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        private async void CreateNewClient(Background.SyncRonService.Model.Contragent.Client client)
+        private  void CreateNewClient(Background.SyncRonService.Model.Contragent.Client client)
         {
             var userInfos = _context.Set<UserInfo>()
                   .Where(x => x.UserId != 1 && x.UserId != 11)
@@ -146,14 +167,14 @@ namespace WebUI.Controllers
                 client1.IsAcctive = true;
                 ClientInfo clientInfo = _context.Set<ClientInfo>()
                                             .Add(new ClientInfo(client1, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 _context.Set<ClientGR>().Add(new ClientGR()
                 {
                     Client = client1,
                     ClientId = client1.Id,
                     NameGr = client.GR_Contragent
                 });
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 if (client.Manager_ID != null && client.Manager_ID != "")
                 {
                     var managersGuidStr = client.Manager_ID.Split(',');
@@ -182,7 +203,7 @@ namespace WebUI.Controllers
                         });
                     }
                 }
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 if (client.Phones != null && client.Phones != "")
                 {
                     var e = client.Phones.Split(',');
@@ -192,97 +213,105 @@ namespace WebUI.Controllers
                         string newPhone = Regex.Replace(phone, @"[^0-9]", "");
                         if (clientPhones == null || clientPhones.FirstOrDefault(c => c.Phone != null && (c.Phone == newPhone || c.Phone == newPhone.Substring(1) || c.Phone == newPhone.Substring(2))) == null)
                         {
-
-                            ClientPhone clientPhone = null;
-                            if (newPhone.Length == 10)
+                            ClientPhone clientPhone = new ClientPhone()
                             {
-                                clientPhone = new ClientPhone()
-                                {
-                                    Client = client1,
-                                    Phone = newPhone,
-                                };
-                            }
-                            else if (newPhone.Length == 11)
-                            {
-                                newPhone = newPhone.Substring(1);
-                                clientPhone = new ClientPhone()
-                                {
-                                    Client = client1,
-                                    Phone = newPhone,
-                                };
-                            }
-                            else if (newPhone.Length == 12)
-                            {
-                                newPhone = newPhone.Substring(2);
-                                clientPhone = new ClientPhone()
-                                {
-                                    Client = client1,
-                                    Phone = newPhone,
-                                };
-                            }
-                            if (clientPhone != null)
-                                _context.Set<ClientPhone>().Add(clientPhone);
-                            await _context.SaveChangesAsync();
+                                Client = client1,
+                                Phone = newPhone,
+                            }; 
+                            //if (newPhone.Length == 10)
+                            //{
+                            //}
+                            //else if (newPhone.Length == 11)
+                            //{
+                            //    newPhone = newPhone.Substring(1);
+                            //    clientPhone = new ClientPhone()
+                            //    {
+                            //        Client = client1,
+                            //        Phone = newPhone,
+                            //    };
+                            //}
+                            //else if (newPhone.Length == 12)
+                            //{
+                            //    newPhone = newPhone.Substring(2);
+                            //    clientPhone = new ClientPhone()
+                            //    {
+                            //        Client = client1,
+                            //        Phone = newPhone,
+                            //    };
+                            //}
+                            _context.Set<ClientPhone>().Add(clientPhone);
+                            _context.SaveChanges();
                         }
                     }
                 }
             }
         }
 
-        private async void ReloadPhone(string phones, Client client)
+        private void ReloadPhone(string phones, Client client)
         {
             List<ClientPhone> clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == client.Id).ToList();
             if (phones != null && phones != "")
             {
                 var e = phones.Split(',');
+                foreach (ClientPhone clientPhone1 in clientPhones)
+                {
+                    string phone = e.FirstOrDefault(p => Regex.Replace(p, @"[^0-9]", "") == clientPhone1.Phone);
+                    if (phone == null)
+                    {
+                        _context.Set<Data.Entities.Clients.ClientPhone>().Remove(clientPhone1);
+                    }
+                }
                 foreach (var phone in e)
                 {
                     string newPhone = Regex.Replace(phone, @"[^0-9]", "");
                     ClientPhone clientPhone = clientPhones.FirstOrDefault(c => (c.ClientId == client.Id) && (c.Phone != null && (c.Phone == newPhone || c.Phone == newPhone.Substring(1) || c.Phone == newPhone.Substring(2))));
-                    if (clientPhones == null)
+
+                    if (clientPhone == null)
                     {
-                        if (newPhone.Length == 10)
+                        clientPhone = new ClientPhone()
                         {
-                            clientPhone = new ClientPhone()
-                            {
-                                Client = client,
-                                Phone = newPhone,
-                            };
-                        }
-                        else if (newPhone.Length == 11)
-                        {
-                            newPhone = newPhone.Substring(1);
-                            clientPhone = new ClientPhone()
-                            {
-                                Client = client,
-                                Phone = newPhone,
-                            };
-                        }
-                        else if (newPhone.Length == 12)
-                        {
-                            newPhone = newPhone.Substring(2);
-                            clientPhone = new ClientPhone()
-                            {
-                                Client = client,
-                                Phone = newPhone,
-                            };
-                        }
-                        if (clientPhone != null)
-                        {
-                            _context.Set<ClientPhone>().Add(clientPhone);
-                        }
+                            Client = client,
+                            Phone = newPhone,
+                        };
+                        //if (newPhone.Length == 10)
+                        //{
+                        //}
+                        //else if (newPhone.Length == 11)
+                        //{
+                        //    newPhone = newPhone.Substring(1);
+                        //    clientPhone = new ClientPhone()
+                        //    {
+                        //        Client = client,
+                        //        Phone = newPhone,
+                        //    };
+                        //}
+                        //else if (newPhone.Length == 12)
+                        //{
+                        //    newPhone = newPhone.Substring(2);
+                        //    clientPhone = new ClientPhone()
+                        //    {
+                        //        Client = client,
+                        //        Phone = newPhone,
+                        //    };
+                        //}
+                        _context.Set<ClientPhone>().Add(clientPhone);
                     }
-                    else
-                    {
-                        clientPhone.Phone = newPhone;
-                    }
+                    _context.SaveChanges();
                 }
-                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == client.Id));
+                _context.SaveChanges();
             }
         }
 
-        private List<Background.SyncRonService.Model.Contragent.Client> GetConterAgents()
+        private List<Background.SyncRonService.Model.Contragent.Client> GetConterAgents(string id)
         {
+            request =(HttpWebRequest)WebRequest.Create($"https://mir-sushi-web.esit.info/buh5/ru_RU/odata/standard.odata/InformationRegister_CRM_Contragents?$filter=substringof(\'{id}\',Contragent_ID)&$format=json");
+            request.UserAgent = "World Sushi";
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+            request.Credentials = new NetworkCredential("chuprina.r.v@gmail.com", "123");
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream receiveStream = response.GetResponseStream();
             StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);

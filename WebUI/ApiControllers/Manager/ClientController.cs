@@ -288,13 +288,13 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpGet]
-        [Route("AcceptManager")]
-        public void AcceptManager(string idClient)
+        [Route("Corect")]
+        public void AcceptManager(string idClient, string contactId)
         {
-            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient).ToList();
-            foreach(CallsComment callsComment in callsComments)
-            {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == contactId);
+            if(callsComment != null)
+            { 
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.ContactClientId.ToString() == contactId).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
                 _context.SaveChanges();
             }
         }

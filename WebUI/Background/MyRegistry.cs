@@ -20,8 +20,9 @@ namespace WebUI.Background
             Schedule(() => new Nomenclature(applicationContext)).ToRunEvery(1).Days().At(4, 20);
             Schedule(() => new OprosReport(applicationContext)).ToRunEvery(1).Days().At(4, 30);
             Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(4, 40);
+            Schedule(() => new OhvatReport(applicationContext)).ToRunEvery(1).Days().At(4, 50);
 
-            Schedule(() => new OhvatReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
+           // Schedule(() => new OhvatReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
         }
 
         private void CreateEmtypdf()

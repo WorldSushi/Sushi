@@ -8,19 +8,20 @@
       <th>Коментарий котролера</th>
       <th>Продолжительность</th>
       <th>Коментарий</th>
+      <th></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="tbodyId">
     <tr *ngFor="let elm of data.callsComments">
       <td>{{elm.date}}</td>
       <td>{{elm.comment}}</td>
       <td>{{elm.durations}}</td>
-      <td> <textarea (focusout)="comment(elm.clientId, elm.contactClientId, $event)" style="border:none;margin:1px;padding:10px;width:60%;height:50px" value="">{{elm.comment}}</textarea></td>
+      <td> <textarea (focusout)="comment(elm.clientId, elm.contactClientId, $event)" style="border:none;margin:1px;padding:10px;width:60%;height:50px" value="">{{elm.maanagerComment}}</textarea></td>
+      <td><button  class="btnAccept" (click)="corect(elm.clientId, elm.contactClientId, $event)">Испралено</button></td>
     </tr>
   </tbody>
 </table>
 
 <div class="dialog-actions">
-  <button color="primary" mat-raised-button (click)="send($event)">Отправить</button>
   <button mat-raised-button (click)="close()">Закрыть</button>
 </div>

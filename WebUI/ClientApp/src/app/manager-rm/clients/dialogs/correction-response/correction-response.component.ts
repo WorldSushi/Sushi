@@ -10,12 +10,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class CorrectionResponseComponent implements OnInit {
   
   close() {
-    this.dialogRef.close();
-  }
-
-
-  send($event) {
-    this.http.get('api/manager/Client/AcceptManager?idClient=' + this.data.callsComments[0].clientId).subscribe();
     location.reload();
     this.dialogRef.close();
   }
@@ -23,6 +17,11 @@ export class CorrectionResponseComponent implements OnInit {
   comment(idClient, idContact, $event) {
     let comment = $event.currentTarget.value;
     this.http.get('api/manager/Client/Comment?idClient=' + idClient + "&idContact=" + idContact + "&comment=" + comment).subscribe();
+  }
+
+  corect(idClient, idContact, $event) {
+    document.getElementById("tbodyId").removeChild($event.currentTarget.parentElement.parentElement);
+    this.http.get('api/manager/Client/Corect?idClient=' + idClient + "&contactId=" + idContact).subscribe();
   }
 
   constructor(public dialogRef: MatDialogRef<CorrectionResponseComponent>,

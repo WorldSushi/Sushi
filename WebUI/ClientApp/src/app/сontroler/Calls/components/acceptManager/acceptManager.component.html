@@ -52,7 +52,7 @@
 
         <ng-container matColumnDef="comentCon">
           <th colspan="4" mat-header-cell *matHeaderCellDef>Коментарий контролера</th>
-          <td colspan="4" mat-cell *matCellDef="let element"><textarea style="width:300px;height:60px;">{{element.callsComments?.comment}}</textarea><br /> <button (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button> <button (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Ок</button></td>
+          <td colspan="4" mat-cell *matCellDef="let element"><textarea style="width:300px;height:60px;">{{element.callsComments?.comment}}</textarea><br /> <button (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button> <button (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Испралено</button></td>
         </ng-container>
 
         <ng-container matColumnDef="comentCli">

@@ -25,6 +25,7 @@
     <a class="report" href="ReportManager?name=Salle">Отчёт Анализ продаж</a>
     <a class="report" href="ReportManager?name=Opros">Отчёт По опросу</a>
     <a class="report" href="ReportManager?name=Debitory">Отчёт По дебиторке</a>
+    <a class="report" href="ReportManager?name=Oxvat">Охват</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
       <option [ngValue]=-10>Все рабочие групы</option>
       <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>

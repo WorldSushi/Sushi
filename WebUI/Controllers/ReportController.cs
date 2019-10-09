@@ -42,12 +42,12 @@ namespace WebUI.Controllers
                 }
                 else if (name == "AllShahmat")
                 {
-                    stream = new FileStream("PDF/All/shahmat.xsml", FileMode.Open);
+                    stream = new FileStream("PDF/All/shahmat.xlsx", FileMode.Open);
                     MemoryStream memoryStream = new MemoryStream();
                     await memoryStream.CopyToAsync(stream);
                     memoryStream.Close();
                     stream.Close();
-                    return File(memoryStream.ToArray(), "application/xml", Path.GetFileName("PDF/All/shahmat.xsml"));
+                    return File(memoryStream.ToArray(), "application/xlsx", Path.GetFileName("PDF/All/shahmat.xlsx"));
                 }
             }
             catch
@@ -59,7 +59,7 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("ReportManager")]
-        public IActionResult GetReortForManager(string name)
+        public async Task<IActionResult> GetReortForManager(string name)
         {
             int idManager = 0;
             var manager = _accountService.CurrentUser();
@@ -85,6 +85,15 @@ namespace WebUI.Controllers
                 else if (name == "Nomll")
                 {
                     stream = new FileStream($"PDF/Manager/Nomkl{idManager}.pdf", FileMode.Open);
+                }
+                else if (name == "Oxvat")
+                {
+                    stream = new FileStream($"PDF/Manager/Oxvat{idManager}.xlsx", FileMode.Open);
+                    MemoryStream memoryStream = new MemoryStream();
+                    await memoryStream.CopyToAsync(stream);
+                    memoryStream.Close();
+                    stream.Close();
+                    return File(memoryStream.ToArray(), "application/xlsx", Path.GetFileName($"PDF/Manager/Oxvat{idManager}.xlsx"));
                 }
             }
             catch
