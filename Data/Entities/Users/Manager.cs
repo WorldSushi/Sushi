@@ -5,10 +5,10 @@ namespace Data.Entities.Users
 {
     public class Manager : User
     {
-        public string Phone { get; protected set; }
+        public string Phone { get; set; }
         public TypeManager? typeManager { get; set; }
 
-        protected Manager()
+        public Manager()
         {
 
         }
@@ -26,7 +26,7 @@ namespace Data.Entities.Users
             Login = command.Login;
             Password = command.Password;
             Phone = command.Phone;
-            typeManager = command.typeManager;
+            typeManager = command.TypeManager;
         }
     }
 }

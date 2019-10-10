@@ -37,7 +37,7 @@ export class AcceptManagerComponent implements OnInit {
 
   getManager() {
     this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
-      this.managers = data.filter(d => d.typeManager == "Менеджр");
+      this.managers = data.filter(d => d.typeManager == 2);
       this.cdr.detectChanges();
     });
 

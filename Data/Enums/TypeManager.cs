@@ -4,6 +4,7 @@
     {
         Manager = 2,
         Marketolog = 3,
-        Call_Checker = 4
+        Call_Checker = 4,
+        NotRole = 5
     }
 }

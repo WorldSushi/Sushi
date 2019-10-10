@@ -87,15 +87,14 @@ namespace WebUI.Background.SyncRonService
             //_context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>());
             //_context.Set<Data.Entities.Clients.ClientGR>().RemoveRange(_context.Set<Data.Entities.Clients.ClientGR>());
             //_context.SaveChanges();
-            //int i = 0;
-            //clients.RemoveRange(0, 780);
+            int i = 0;
+            clients.RemoveRange(0, 55);
             var userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>()
-                  .Where(x => x.UserId != 1 && x.UserId != 11)
                   .ToList();
             foreach (Model.Contragent.Client client in clients)
             {
-                //i++;
-                //File.WriteAllText("i.txt", i.ToString());
+                i++;
+                File.WriteAllText("i.txt", i.ToString());
                 try
                 {
                     ClientInfo clientInfo1 = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == client.Contragent_ID);
@@ -175,32 +174,11 @@ namespace WebUI.Background.SyncRonService
                             {
 
                                 ClientPhone clientPhone = null;
-                                if (newPhone.Length == 10)
+                                clientPhone = new ClientPhone()
                                 {
-                                    clientPhone = new ClientPhone()
-                                    {
-                                        Client = client1,
-                                        Phone = newPhone,
-                                    };
-                                }
-                                else if (newPhone.Length == 11)
-                                {
-                                    newPhone = newPhone.Substring(1);
-                                    clientPhone = new ClientPhone()
-                                    {
-                                        Client = client1,
-                                        Phone = newPhone,
-                                    };
-                                }
-                                else if (newPhone.Length == 12)
-                                {
-                                    newPhone = newPhone.Substring(2);
-                                    clientPhone = new ClientPhone()
-                                    {
-                                        Client = client1,
-                                        Phone = newPhone,
-                                    };
-                                }
+                                    Client = client1,
+                                    Phone = newPhone,
+                                };
                                 if (clientPhone != null)
                                     _context.Set<ClientPhone>().Add(clientPhone);
                                 await _context.SaveChangesAsync();

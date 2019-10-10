@@ -114,9 +114,9 @@ namespace Data.Services.Concrete
             //callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
 
             var managersPhone = _context.Set<Manager>()
-                .Select(x => new
+                .Select(x => new Manager()
                 {
-                    ManagerId = x.Id,
+                    Id = x.Id,
                     Phone = PhoneHelper.ConvertToPhone(x.Phone)
                 }).ToList();
 
@@ -133,7 +133,7 @@ namespace Data.Services.Concrete
                 : false).ToList();
 
 
-            var b = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "") && x.ClientName.Contains("Мир Суши")).ToList();
+            var b = callsLog.Where(x =>x.ClientName.Contains("Мир Суши")).ToList();
 
             var calls = new List<CallInfo>();
             var calls1 = new List<CallInfo>();
@@ -152,7 +152,7 @@ namespace Data.Services.Concrete
                         ClientId = clientPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
                         ManagerId = managersPhone
-                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
                         Duration = call.Duration,
                         Recording = call.Recording,
                         DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
@@ -173,7 +173,7 @@ namespace Data.Services.Concrete
                         ClientId = clientPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
                         ManagerId = managersPhone
-                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
                         Duration = call.Duration,
                         Recording = call.Recording,
                         DateTime = dt + TimeSpan.FromSeconds(call.StartTime),

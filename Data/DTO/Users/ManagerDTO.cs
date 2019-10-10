@@ -11,6 +11,6 @@ namespace Data.DTO.Users
         public string Phone { get; set; }
         public int? WorkgroupId { get; set; }
         public string WorkgroupTitle { get; set; }
-        public string TypeManager { get; set; }
+        public int TypeManager { get; set; }
     }
 }

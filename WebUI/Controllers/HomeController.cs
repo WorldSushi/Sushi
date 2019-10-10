@@ -502,7 +502,7 @@ namespace WebUI.Controllers
 
         public void MyCallsTest()
         {
-            _myCallsApiService.SaveNewCalls();
+            //_myCallsApiService.SaveNewCalls();
 
 
             /*var a = _context.Set<CallInfo>()
