@@ -30,15 +30,15 @@ namespace Data.Services.Concrete
         //Создаю Calls
         //Связываю с помощью CallInfo
         public void SaveNewCalls()
-        { 
+        {
             //_context.Set<CallLog>().RemoveRange(_context.Set<CallLog>());
             //_context.Set<CallInfo>().RemoveRange(_context.Set<CallInfo>());
             //_context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>());
             //_context.Set<Call>().RemoveRange(_context.Set<Call>());
             //_context.Set<MonthCallsInfo>().RemoveRange(_context.Set<MonthCallsInfo>());
             //_context.SaveChanges();
-            var monthCallsInfo = GetCurrentMonthCallsInfo();
 
+            var monthCallsInfo = GetCurrentMonthCallsInfo();
             if(monthCallsInfo.Loading)
                 return;
 
@@ -59,7 +59,7 @@ namespace Data.Services.Concrete
                 monthCallsInfo.ChangeOffset(
                     monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
 
-            callsLog.AddRange(response.Results.Select(x => new CallLog()
+            callsLog.AddRange(response.Results./*Where(c => c.Client_name == "АЛЛИГАТОР").*/Select(x => new CallLog()
             {
                 Answer_time = x.Answer_time,
                 Answered = x.Answered,
@@ -84,14 +84,13 @@ namespace Data.Services.Concrete
                     new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
                     new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
                     monthCallsInfo.Offset);
-
                 if (Convert.ToInt32(response.Results_next_offset) > 0)
                     monthCallsInfo.ChangeOffset(Convert.ToInt32(response.Results_next_offset));
                 else
                     monthCallsInfo.ChangeOffset(
                         monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
 
-                callsLog.AddRange(response.Results.Select(x => new CallLog()
+                callsLog.AddRange(response.Results./*Where(c => c.Client_name == "АЛЛИГАТОР").*/Select(x => new CallLog()
                 {
                     Answer_time = x.Answer_time,
                     Answered = x.Answered,
@@ -129,7 +128,7 @@ namespace Data.Services.Concrete
 
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
                 ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
-                  && clientPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
+                  && clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
                 : false).ToList();
 
 
@@ -203,10 +202,8 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
-                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
-                                            && x.ManagerId == clientContact.ManagerId
-                                            && x.ClientId == clientContact.ClientId))
-                    clientContacts.Add(clientContact);
+                clientContact.Call = call.Call;
+                clientContacts.Add(clientContact);
             }
 
             foreach (var call in calls1)
@@ -226,9 +223,6 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
-                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
-                                             && x.ManagerId == clientContact.ManagerId
-                                             && x.ClientId == clientContact.ClientId))
                     clientContacts.Add(clientContact);
             }
 

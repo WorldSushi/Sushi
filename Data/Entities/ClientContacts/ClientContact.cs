@@ -1,6 +1,7 @@
 ﻿using System;
 using Base;
 using Data.Commands.ClientContacts.ClientContact;
+using Data.Entities.Calls;
 using Data.Entities.Clients;
 using Data.Entities.Users;
 using Data.Enums;
@@ -9,6 +10,7 @@ namespace Data.Entities.ClientContacts
 {
     public class ClientContact : Entity
     {
+        public Call Call { get; set; }
         public int ClientId { get; protected set; }
         public Client Client { get; protected set; }
 

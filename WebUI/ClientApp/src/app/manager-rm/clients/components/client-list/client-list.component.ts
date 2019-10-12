@@ -82,9 +82,6 @@ export class ClientListComponent implements OnInit {
     'elect',
     'title', 
     'phone',
-    'type',
-    'numberOfCalls', 
-    'numberOfShipments',
     'callPlan.collective', 
     'callPlan.MS', 
     'callPlan.RM',
@@ -323,18 +320,40 @@ export class ClientListComponent implements OnInit {
 
   getCurrentMsPlan(weekPlans: IWeekPlan[]){
     const numberOfWeek = Math.ceil(new Date().getDate() / 7);
-
-    return weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber) 
+    let weekPlan = (weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
       ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
-      : { plan: '' };
+      : { plan: '' }).plan;
+    if (weekPlan.length > 150) {
+      weekPlan = weekPlan.substr(0, 150)
+      weekPlan += "...";
+    }
+    return weekPlan;
   }
 
   getCurrentRmPlan(weekPlans: IWeekPlan[]){
     const numberOfWeek = Math.ceil(new Date().getDate() / 7);
-
-    return weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+    let countChar = 0;
+    let weekPlan = (weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
       ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
-      : { plan: '' };
+      : { plan: '' }).plan;
+    if (weekPlan.length > 150) {
+      weekPlan = weekPlan.substr(0, 150)
+      weekPlan += "...";
+    }
+    //if (weekPlan.length > 40) {
+    //  for (let i = 0; i < weekPlan.length / 40; i++) {
+    //    for (let j = (i + 1) * 40; j < ((i + 1) * 40) + 40; j++) {
+    //      if (weekPlan[j] == " ") {
+    //        countChar++;
+    //        if (countChar == 11) {
+    //          countChar = 0;
+    //          weekPlan[j] == " "
+    //        }
+    //      }
+    //    }
+    //  }
+    //}
+    return weekPlan;
   }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
@@ -512,8 +531,6 @@ export class ClientListComponent implements OnInit {
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
     this.dataSource.paginator = this.paginator;
-    console.log(this.clients);
-    //console.log(this.workgroup);
   }
   
   constructor(public dialog: MatDialog,

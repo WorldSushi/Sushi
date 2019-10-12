@@ -92,7 +92,7 @@ namespace Data.Services.Concrete
 
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
                 ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
-                  && (clientPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber)) || x.ClientNumber == "143")
+                  && (clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber)) || x.ClientNumber == "143")
                 : false).ToList();
 
             var b = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
@@ -166,10 +166,8 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
-                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
-                                             && x.ManagerId == clientContact.ManagerId
-                                             && x.ClientId == clientContact.ClientId))
-                    clientContacts.Add(clientContact);
+                clientContact.Call = call.Call;
+                clientContacts.Add(clientContact);
             }
 
             foreach (var call in calls1)
@@ -189,10 +187,8 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
-                if (!clientContacts.Any(x => x.Date.Date == clientContact.Date.Date
-                                             && x.ManagerId == clientContact.ManagerId
-                                             && x.ClientId == clientContact.ClientId))
-                    clientContacts.Add(clientContact);
+                clientContact.Call = call.Call;
+                clientContacts.Add(clientContact);
             }
 
             monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));

@@ -5,7 +5,7 @@ namespace Data.Entities.Calls
 {
     public class MonthCallsInfo : Entity
     {
-        public int Offset { get; protected set; }
+        public int Offset { get; set; }
 
         public DateTime Date { get; protected set; }
 

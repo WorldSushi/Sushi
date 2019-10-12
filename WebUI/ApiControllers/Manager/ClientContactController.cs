@@ -50,7 +50,7 @@ namespace WebUI.ApiControllers.Manager
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
             }
@@ -69,9 +69,11 @@ namespace WebUI.ApiControllers.Manager
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
+                var b = _context.Set<ClientContact>().Where(c => c.ClientId == 793).ToList();
+                var s = result.Where(c => DateTime.Parse(c.Date).Day == 9 && c.ClientId == 793).ToList();
             }
             return Ok(result);
         }

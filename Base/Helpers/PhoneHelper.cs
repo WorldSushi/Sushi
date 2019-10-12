@@ -6,6 +6,10 @@ namespace Base.Helpers
     {
         public static string ConvertToPhone(string phone)
         {
+            if(phone == "79651249632")
+            {
+
+            }
             if (phone != null)
             {
                 string newPhone = Regex.Replace(phone, @"[^0-9$,]", "");
