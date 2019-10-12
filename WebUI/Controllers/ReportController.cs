@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using WebUI.Services.Abstract;
@@ -9,12 +11,9 @@ namespace WebUI.Controllers
     {
         private readonly IAccountInformationService _accountService;
 
-
         public ReportController(IAccountInformationService accountService)
         {
             _accountService = accountService;
-            //admin.
-            //_context.Set<Data.Entities.Users.Admin>
         }
 
         [HttpGet]
@@ -96,7 +95,7 @@ namespace WebUI.Controllers
                     return File(memoryStream.ToArray(), "application/xlsx", Path.GetFileName($"PDF/Manager/Oxvat{idManager}.xlsx"));
                 }
             }
-            catch
+            catch(Exception e)
             {
                 stream = new FileStream("PDF/Emty.pdf", FileMode.Open);
             }

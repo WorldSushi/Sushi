@@ -46,7 +46,8 @@ namespace WebUI.Background.Report
             string content = readStream.ReadToEnd();
             var responseAppS = JObject.Parse(content);
             List<OhvatModel> ohvatModels = JsonConvert.DeserializeObject<List<OhvatModel>>(responseAppS.
-                        SelectToken("value").ToString());
+                        SelectToken("value").ToString()).
+                        Where(s => DateTime.Parse(s.Period) >= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).ToList();
             Dictionary<string, List<OhvatModel>> ohvats = SortToManager(ohvatModels);
             CreateXsml(ohvats);
         }
