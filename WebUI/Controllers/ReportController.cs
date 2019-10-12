@@ -46,7 +46,7 @@ namespace WebUI.Controllers
                     await memoryStream.CopyToAsync(stream);
                     memoryStream.Close();
                     stream.Close();
-                    return File(memoryStream.ToArray(), "application/xlsx", Path.GetFileName("PDF/All/shahmat.xlsx"));
+                    return File(memoryStream.ToArray(), "application/xls", Path.GetFileName("PDF/All/shahmat.xlsx"));
                 }
             }
             catch
@@ -90,9 +90,7 @@ namespace WebUI.Controllers
                     stream = new FileStream($"PDF/Manager/Oxvat{idManager}.xlsx", FileMode.Open);
                     MemoryStream memoryStream = new MemoryStream();
                     await memoryStream.CopyToAsync(stream);
-                    memoryStream.Close();
-                    stream.Close();
-                    return File(memoryStream.ToArray(), "application/xlsx", Path.GetFileName($"PDF/Manager/Oxvat{idManager}.xlsx"));
+                    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 }
             }
             catch(Exception e)
@@ -101,6 +99,7 @@ namespace WebUI.Controllers
             }
             return new FileStreamResult(stream, "application/pdf");
         }
+
 
         [HttpGet]
         [Route("ReportClienr")]
