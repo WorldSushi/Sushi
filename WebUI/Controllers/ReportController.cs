@@ -42,11 +42,7 @@ namespace WebUI.Controllers
                 else if (name == "AllShahmat")
                 {
                     stream = new FileStream("PDF/All/shahmat.xlsx", FileMode.Open);
-                    MemoryStream memoryStream = new MemoryStream();
-                    await memoryStream.CopyToAsync(stream);
-                    memoryStream.Close();
-                    stream.Close();
-                    return File(memoryStream.ToArray(), "application/xls", Path.GetFileName("PDF/All/shahmat.xlsx"));
+                    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 }
             }
             catch
