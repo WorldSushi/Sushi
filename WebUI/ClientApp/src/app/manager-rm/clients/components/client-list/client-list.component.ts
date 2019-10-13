@@ -386,20 +386,20 @@ export class ClientListComponent implements OnInit {
       this.clients[i].managerCallsResults.regionalTotalContacts = 0;
 
       this.clients[i].managerCallsResults.escortCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
-        c.managerType == 10 && c.durations > 149
+        c.managerType == 10 && c.durations > 149 && c.contactType != 50
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
       this.clients[i].managerCallsResults.escortTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
-        c.managerType == 10 && c.durations > 149
+        c.managerType == 10 && c.durations > 149 && c.contactType != 50
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
 
       this.clients[i].managerCallsResults.regionalCalls = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
-        c.managerType == 20 && c.durations > 149
+        c.managerType == 20 && c.durations > 149 && c.contactType != 50
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
       this.clients[i].managerCallsResults.regionalTotalContacts = this.clients[i].clientContacts.length != 0 ? this.clients[i].clientContacts.filter(c =>
-        c.managerType == 20 && c.durations > 149
+        c.managerType == 20 && c.durations > 149 && c.contactType != 50
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year).length : 0;
     }
@@ -408,7 +408,7 @@ export class ClientListComponent implements OnInit {
 
   initDateArchiv() {
     if (this.clients.length != 0) {
-      if (this.clients.find(c => c.clientContacts.find(cc => cc.length != 0)).length != 0 && this.dateCollections.length == 0) {
+      if (this.clients.find(c => c.clientContacts.find(cc => cc.length != 0)) && this.clients.find(c => c.clientContacts.find(cc => cc.length != 0)).length != 0 && this.dateCollections.length == 0) {
         this.dateCollections = [];
         let firstDate = new Date();
         for (let i = 0; i < this.clients.length; i++) {

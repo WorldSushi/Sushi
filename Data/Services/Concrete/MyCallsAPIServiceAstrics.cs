@@ -102,6 +102,7 @@ namespace Data.Services.Concrete
             var calls = new List<CallInfo>();
             var calls1 = new List<CallInfo>();
             var clientContacts = new List<ClientContact>();
+            var managerContacts = new List<ManagerContact>();
 
             var workGroups = _context.Set<WorkGroup>().ToList();
 
@@ -139,8 +140,8 @@ namespace Data.Services.Concrete
                     {
                         Call = new Call()
                         {
-                            ClientId = clientPhone
-                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
+                            ClientId = managersPhone
+                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ManagerId,
                             ManagerId = managersPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
                             Duration = call.Duration,
@@ -178,7 +179,7 @@ namespace Data.Services.Concrete
 
             foreach (var call in calls1)
             {
-                var clientContact = new ClientContact(
+                var managerContact = new ManagerContact(
                     new ClientContactCreate()
                     {
                         ClientId = call.Call.ClientId,
@@ -190,11 +191,10 @@ namespace Data.Services.Concrete
                                 ? ManagerType.RegionalManager
                                 : ManagerType.Undefined
                     });
-
-                clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
-                clientContact.Direction = call.Call.Direction;
-                clientContact.Call = call.Call;
-                clientContacts.Add(clientContact);
+                managerContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+                managerContact.Direction = call.Call.Direction;
+                managerContact.Call = call.Call;
+                managerContacts.Add(managerContact);
             }
 
             monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
@@ -208,6 +208,8 @@ namespace Data.Services.Concrete
 
             _context.Set<ClientContact>()
                 .AddRange(clientContacts);
+            _context.Set<ManagerContact>()
+                .AddRange(managerContacts);
 
             monthCallsInfo.Loading = false;
 

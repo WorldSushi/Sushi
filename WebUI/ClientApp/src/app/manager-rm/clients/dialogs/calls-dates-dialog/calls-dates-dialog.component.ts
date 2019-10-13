@@ -126,7 +126,7 @@ daysInMonth (month, year) {
     public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
     private dateExtensionsService: DateExtensionsService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-
+    //console.log(data);
     }
 
   ngOnInit() {

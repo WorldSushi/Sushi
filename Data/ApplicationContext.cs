@@ -40,6 +40,7 @@ namespace Data
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();
             modelBuilder.Entity<ClientContact>();
+            modelBuilder.Entity<ManagerContact>();
             modelBuilder.Entity<WeekPlan>();
             modelBuilder.Entity<WorkGroup>();
 

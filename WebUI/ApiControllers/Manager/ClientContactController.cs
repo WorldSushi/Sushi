@@ -45,14 +45,26 @@ namespace WebUI.ApiControllers.Manager
                    .Select(x => new ClientContactDto()
                    {
                        Id = x.Id,
-                       ClientId = x.ClientId,
+                       ClientId = (int)x.ClientId,
                        ContactType = x.Type,
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id).Duration : 0,
+                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c =>  c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
+                result.AddRange(_context.Set<ManagerContact>()
+                   .Select(x => new ClientContactDto()
+                   {
+                       Id = x.Id,
+                       ClientId = (int)x.ManagerCId,
+                       ContactType = x.Type,
+                       Date = x.Date.ToString("dd.MM.yyyy"),
+                       ManagerType = x.ManagerType,
+                       ManagerId = x.ManagerId,
+                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
+                       //IsAccept = x.IsAccept
+                   }).ToList());
             }
             else if (user is Data.Entities.Users.Manager)
             {
@@ -64,16 +76,27 @@ namespace WebUI.ApiControllers.Manager
                    .Select(x => new ClientContactDto()
                    {
                        Id = x.Id,
-                       ClientId = x.ClientId,
+                       ClientId = (int)x.ClientId,
                        ContactType = x.Type,
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == x.Call.Id).Duration : 0,
+                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
-                var b = _context.Set<ClientContact>().Where(c => c.ClientId == 793).ToList();
-                var s = result.Where(c => DateTime.Parse(c.Date).Day == 9 && c.ClientId == 793).ToList();
+                result.AddRange(_context.Set<ManagerContact>()
+                  .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
+                  .Select(x => new ClientContactDto()
+                  {
+                      Id = x.Id,
+                      ClientId = (int)x.ManagerCId,
+                      ContactType = x.Type,
+                      Date = x.Date.ToString("dd.MM.yyyy"),
+                      ManagerType = x.ManagerType,
+                      ManagerId = x.ManagerId,
+                      Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
+                      //IsAccept = x.IsAccept
+                  }).ToList());
             }
             return Ok(result);
         }
@@ -120,7 +143,7 @@ namespace WebUI.ApiControllers.Manager
             var result = new ClientContactDto()
             {
                 Id = newClientContact.Entity.Id,
-                ClientId = newClientContact.Entity.ClientId,
+                ClientId = (int)newClientContact.Entity.ClientId,
                 ContactType = newClientContact.Entity.Type,
                 Date = newClientContact.Entity.Date.ToString("dd.MM.yyyy"),
                 ManagerType = newClientContact.Entity.ManagerType

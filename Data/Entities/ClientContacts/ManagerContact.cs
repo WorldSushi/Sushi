@@ -1,17 +1,17 @@
-﻿using System;
-using Base;
+﻿using Base;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.Entities.Calls;
-using Data.Entities.Clients;
 using Data.Entities.Users;
 using Data.Enums;
+using System;
 
 namespace Data.Entities.ClientContacts
 {
-    public class ClientContact : Entity
+    public class ManagerContact : Entity
     {
         public Call Call { get; set; }
-        public int ClientId { get; protected set; }
+        public int ManagerCId { get; protected set; }
+        public Manager ManagerC { get; protected set; }
         public int ManagerId { get; protected set; }
         public Manager Manager { get; protected set; }
 
@@ -24,14 +24,14 @@ namespace Data.Entities.ClientContacts
 
         //public bool IsAccept { get; protected set; }
 
-        protected ClientContact()
+        protected ManagerContact()
         {
 
         }
 
-        public ClientContact(ClientContactCreate command)
+        public ManagerContact(ClientContactCreate command)
         {
-            ClientId = command.ClientId;
+            ManagerCId = command.ClientId;
             Type = command.ContactType;
             ManagerId = command.ManagerId;
             ManagerType = command.ManagerType;

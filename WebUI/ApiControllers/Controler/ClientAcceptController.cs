@@ -34,19 +34,20 @@ namespace WebUI.ApiControllers.Controler
             List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
             List<Call> calls = _context.Set<Call>().ToList();
             List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
+            List<Client> clients = _context.Set<Client>().ToList();
             var result = await _context.Set<ClientContact>()
                 //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new AcceptCallsDto()
                 {
                     Id = x.Id,
-                    ClientId = x.ClientId,
+                    ClientId = (int)x.ClientId,
                     ContactType = x.Type,
                     Date = x.Date.ToString("dd.MM.yyyy hh:mm:ss"),
                     ManagerType = x.ManagerType,
                     ManagerId = x.ManagerId,
                     Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
                     ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Recording : "",
-                    TitleClient = x.Client.LegalEntity,
+                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
                     Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
                     Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
                     CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id)
