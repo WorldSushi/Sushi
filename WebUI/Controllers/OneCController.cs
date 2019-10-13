@@ -330,7 +330,6 @@ namespace WebUI.Controllers
         {
             List<CallInfo> callInfos = _context.Set<CallInfo>().ToList();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
-            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
 
             var managersPhone = _context.Set<Manager>()
                 .Select(x => new Manager()
@@ -340,7 +339,7 @@ namespace WebUI.Controllers
                 }).ToList();
 
             var clientPhone = _context.Set<ClientPhone>()
-                //.Where(c => c.ClientId)
+                .Where(c => c.ClientId == clientInfo.ClientId)
                 .Select(x => new
                 {
                     ClientId = x.ClientId,
