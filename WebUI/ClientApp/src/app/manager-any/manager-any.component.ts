@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-manager-any',
@@ -7,11 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManagerAnyComponent implements OnInit {
 
+  manager: any;
+
   logout(){
     window.location.href = "/Account/Logout"
   }
 
-  constructor() { }
+  getManager() {
+    this.http.get('api/Account/Name').subscribe((data: any) => {
+      this.manager = data;
+      this.cdr.detectChanges();
+    });
+  }
+
+  constructor(private http: HttpClient,
+    private cdr: ChangeDetectorRef) {
+    this.getManager(); }
 
   ngOnInit() {
   }

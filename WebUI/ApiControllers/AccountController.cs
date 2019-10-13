@@ -46,5 +46,25 @@ namespace WebUI.ApiControllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("Name")]
+        public IActionResult GetName()
+        {
+            var response = new
+            {
+                Id = _accountService.CurrentUser().Id,
+                Login = _accountService.CurrentUser().Login,
+                Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
+                    ? "Admin"
+                    : "Manager",
+                Workgroup = _accountService.CurrentUser() is Data.Entities.Users.Admin
+                    ? null
+                    : _context.Set<WorkGroup>()
+                        .FirstOrDefault(x => x.EscortManagerId == _accountService.GetOperatorId() || x.RegionalManagerId == _accountService.GetOperatorId())
+            };
+
+            return Ok(response);
+        }
     }
 }
