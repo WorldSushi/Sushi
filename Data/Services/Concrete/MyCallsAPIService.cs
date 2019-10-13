@@ -216,7 +216,6 @@ namespace Data.Services.Concrete
                                 : ManagerType.Undefined,
 
                     });
-
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
                 clientContact.Call = call.Call;
@@ -240,7 +239,7 @@ namespace Data.Services.Concrete
 
                 clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
                 clientContact.Direction = call.Call.Direction;
-                    clientContacts.Add(clientContact);
+                clientContacts.Add(clientContact);
             }
 
             _context.Set<CallLog>()

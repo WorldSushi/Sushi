@@ -1,11 +1,15 @@
-﻿using Data;
+﻿using Base.Helpers;
+using Data;
+using Data.Commands.ClientContacts.ClientContact;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
 using Data.DTO.Clients;
 using Data.DTO.OneC;
+using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
+using Data.Entities.Users;
 using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -77,7 +81,6 @@ namespace WebUI.Controllers
                 {
                     if (updatetable == "CRM_Contragents")
                     {
-                        //Timer timer = new Timer(new TimerCallback(ReloadClients), id, 10000, Timeout.Infinite);
                         ReloadClients(id);
                     }
                     responseOneC.Description = "OK";
@@ -116,6 +119,7 @@ namespace WebUI.Controllers
                     {
                         CreateNewClient(client);
                     }
+                    ReloadClientsCalls(id);
                 }
                 else
                 {
@@ -138,7 +142,7 @@ namespace WebUI.Controllers
             _context.SaveChanges();
         }
 
-        private  void CreateNewClient(Background.SyncRonService.Model.Contragent.Client client)
+        private void CreateNewClient(Background.SyncRonService.Model.Contragent.Client client)
         {
             var userInfos = _context.Set<UserInfo>()
                   .Where(x => x.UserId != 1 && x.UserId != 11)
@@ -320,6 +324,63 @@ namespace WebUI.Controllers
             List<Background.SyncRonService.Model.Contragent.Client> clients = JsonConvert.DeserializeObject<List<Background.SyncRonService.Model.Contragent.Client>>(responseAppS.
                         SelectToken("value").ToString());
             return clients;
+        }
+
+        private void ReloadClientsCalls(string id)
+        {
+            List<CallInfo> callInfos = _context.Set<CallInfo>().ToList();
+            ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
+            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
+
+            var managersPhone = _context.Set<Manager>()
+                .Select(x => new Manager()
+                {
+                    Id = x.Id,
+                    Phone = PhoneHelper.ConvertToPhone(x.Phone)
+                }).ToList();
+
+            var clientPhone = _context.Set<ClientPhone>()
+                //.Where(c => c.ClientId)
+                .Select(x => new
+                {
+                    ClientId = x.ClientId,
+                    Phone = x.Phone
+                }).ToList();
+
+            var a = callInfos.Where(x => (x.CallLog.SrcNumber != "" && x.CallLog.ClientNumber != "")
+                ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.CallLog.SrcNumber))
+                  && clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.CallLog.ClientNumber))
+                : false).ToList();
+            var dt = new DateTime(1970, 1, 1);
+            var clientContacts = new List<ClientContact>();
+            var workGroups = _context.Set<WorkGroup>().ToList();
+
+            foreach (var call in a)
+            {
+                if (_context.Set<ClientContact>().FirstOrDefault(c => c.Call.Id == call.CallId) == null)
+                {
+                    var clientContact = new ClientContact(
+                    new ClientContactCreate()
+                    {
+                        ClientId = call.Call.ClientId,
+                        ContactType = ClientContactType.NoAcceptCall,
+                        ManagerId = call.Call.ManagerId,
+                        ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == call.Call.ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : workGroups.FirstOrDefault(x => x.RegionalManagerId == call.Call.ManagerId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined,
+
+                    });
+                    clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+                    clientContact.Direction = call.Call.Direction;
+                    clientContact.Call = call.Call;
+                    clientContacts.Add(clientContact);
+                }
+            }
+            _context.Set<ClientContact>()
+                .AddRange(clientContacts);
+            _context.SaveChanges();
         }
 
         //private ResponseOneCDto EditPhone(string idContragent, string phone, string oldPhone)
