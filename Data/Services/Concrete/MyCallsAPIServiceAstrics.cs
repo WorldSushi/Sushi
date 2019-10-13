@@ -109,44 +109,50 @@ namespace Data.Services.Concrete
 
             foreach (var call in a)
             {
-                calls.Add(new CallInfo()
+                if (_context.Set<CallInfo>().FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
                 {
-                    Call = new Call()
+                    calls.Add(new CallInfo()
                     {
-                        ClientId = clientPhone
+                        Call = new Call()
+                        {
+                            ClientId = clientPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
-                        ManagerId = managersPhone
+                            ManagerId = managersPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
-                        Duration = call.Duration,
-                        Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
-                        Direction = call.Direction
-                    },
-                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                           && x.SrcNumber == call.SrcNumber
-                                                           && x.StartTime == call.StartTime)
-                });
+                            Duration = call.Duration,
+                            Recording = call.Recording,
+                            DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                            Direction = call.Direction
+                        },
+                        CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                               && x.SrcNumber == call.SrcNumber
+                                                               && x.StartTime == call.StartTime)
+                    });
+                }
             }
 
             foreach (var call in b)
             {
-                calls1.Add(new CallInfo()
+                if (_context.Set<CallInfo>().FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
                 {
-                    Call = new Call()
+                    calls1.Add(new CallInfo()
                     {
-                        ClientId = clientPhone
+                        Call = new Call()
+                        {
+                            ClientId = clientPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
-                        ManagerId = managersPhone
+                            ManagerId = managersPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
-                        Duration = call.Duration,
-                        Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
-                        Direction = call.Direction
-                    },
-                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                           && x.SrcNumber == call.SrcNumber
-                                                           && x.StartTime == call.StartTime)
-                });
+                            Duration = call.Duration,
+                            Recording = call.Recording,
+                            DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                            Direction = call.Direction
+                        },
+                        CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                               && x.SrcNumber == call.SrcNumber
+                                                               && x.StartTime == call.StartTime)
+                    });
+                }
             }
 
             foreach (var call in calls)

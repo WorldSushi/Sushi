@@ -110,8 +110,6 @@ namespace Data.Services.Concrete
                 }));
             }
 
-            //callsLog = callsLog.Where(x => x.Duration >= 150).ToList();
-
             var managersPhone = _context.Set<Manager>()
                 .Select(x => new Manager()
                 {
@@ -134,6 +132,11 @@ namespace Data.Services.Concrete
 
             var b = callsLog.Where(x =>x.ClientName.Contains("Мир Суши")).ToList();
 
+            b.AddRange(callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
+                ? managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
+                  && managersPhone.Select(z => z.Phone).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
+                : false).ToList());
+
             var calls = new List<CallInfo>();
             var calls1 = new List<CallInfo>();
             var clientContacts = new List<ClientContact>();
@@ -144,44 +147,58 @@ namespace Data.Services.Concrete
 
             foreach (var call in a)
             {
-                calls.Add(new CallInfo()
+                if (_context.Set<CallInfo>().FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
                 {
-                    Call = new Call()
+                    calls.Add(new CallInfo()
                     {
-                        ClientId = clientPhone
-                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
-                        ManagerId = managersPhone
-                            .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
-                        Duration = call.Duration,
-                        Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
-                        Direction = call.Direction
-                    },
-                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                           && x.SrcNumber == call.SrcNumber
-                                                           && x.StartTime == call.StartTime)
-                });
+                        Call = new Call()
+                        {
+                            ClientId = clientPhone
+                                .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
+                            ManagerId = managersPhone
+                                .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
+                            Duration = call.Duration,
+                            Recording = call.Recording,
+                            DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                            Direction = call.Direction
+                        },
+                        CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                               && x.SrcNumber == call.SrcNumber
+                                                               && x.StartTime == call.StartTime)
+                    });
+                }
+                else
+                {
+
+                }
             }
 
             foreach (var call in b)
             {
-                calls1.Add(new CallInfo()
+                if (_context.Set<CallInfo>().FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
                 {
-                    Call = new Call()
+                    calls1.Add(new CallInfo()
                     {
-                        ClientId = clientPhone
+                        Call = new Call()
+                        {
+                            ClientId = clientPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
-                        ManagerId = managersPhone
+                            ManagerId = managersPhone
                             .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
-                        Duration = call.Duration,
-                        Recording = call.Recording,
-                        DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
-                        Direction = call.Direction
-                    },
-                    CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                           && x.SrcNumber == call.SrcNumber
-                                                           && x.StartTime == call.StartTime)
-                });
+                            Duration = call.Duration,
+                            Recording = call.Recording,
+                            DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                            Direction = call.Direction
+                        },
+                        CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                               && x.SrcNumber == call.SrcNumber
+                                                               && x.StartTime == call.StartTime)
+                    });
+                }
+                else
+                {
+
+                }
             }
 
             foreach (var call in calls)
