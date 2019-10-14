@@ -8,7 +8,6 @@ using Data.Commands.ClientContacts.ClientContact;
 using Data.DTO.Clients;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
-using Data.Entities.Clients;
 using Data.Entities.Users;
 using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -53,18 +52,18 @@ namespace WebUI.ApiControllers.Manager
                        Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c =>  c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
-                result.AddRange(_context.Set<ManagerContact>()
-                   .Select(x => new ClientContactDto()
-                   {
-                       Id = x.Id,
-                       ClientId = (int)x.ManagerCId,
-                       ContactType = x.Type,
-                       Date = x.Date.ToString("dd.MM.yyyy"),
-                       ManagerType = x.ManagerType,
-                       ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
-                       //IsAccept = x.IsAccept
-                   }).ToList());
+                //result.AddRange(_context.Set<ManagerContact>()
+                //   .Select(x => new ClientContactDto()
+                //   {
+                //       Id = x.Id,
+                //       ClientId = (int)x.ManagerCId,
+                //       ContactType = x.Type,
+                //       Date = x.Date.ToString("dd.MM.yyyy"),
+                //       ManagerType = x.ManagerType,
+                //       ManagerId = x.ManagerId,
+                //       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
+                //       //IsAccept = x.IsAccept
+                //   }).ToList());
             }
             else if (user is Data.Entities.Users.Manager)
             {
@@ -84,19 +83,19 @@ namespace WebUI.ApiControllers.Manager
                        Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
-                result.AddRange(_context.Set<ManagerContact>()
-                  .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
-                  .Select(x => new ClientContactDto()
-                  {
-                      Id = x.Id,
-                      ClientId = (int)x.ManagerCId,
-                      ContactType = x.Type,
-                      Date = x.Date.ToString("dd.MM.yyyy"),
-                      ManagerType = x.ManagerType,
-                      ManagerId = x.ManagerId,
-                      Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
-                      //IsAccept = x.IsAccept
-                  }).ToList());
+                //result.AddRange(_context.Set<ManagerContact>()
+                //  .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
+                //  .Select(x => new ClientContactDto()
+                //  {
+                //      Id = x.Id,
+                //      ClientId = (int)x.ManagerCId,
+                //      ContactType = x.Type,
+                //      Date = x.Date.ToString("dd.MM.yyyy"),
+                //      ManagerType = x.ManagerType,
+                //      ManagerId = x.ManagerId,
+                //      Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
+                //      //IsAccept = x.IsAccept
+                //  }).ToList());
             }
             return Ok(result);
         }

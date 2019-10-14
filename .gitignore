@@ -263,3 +263,5 @@ __pycache__/
 Data/Migrations/*
 WebUI/Properties/*
 /WebUI/PDF
+/WebUI/phone.txt
+/WebUI/work.txt

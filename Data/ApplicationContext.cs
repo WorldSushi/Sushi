@@ -24,7 +24,8 @@ namespace Data
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWorld;User ID=u0720797_Roma;Password=Roma123");
-                optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWord;User ID=u0720797_SushiWord;Password=!QDYq91w");
+                optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWorld;User ID=u0720797_Roma;Password=Roma!!");
+               // optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_sushi_test;User ID=u0720797_sushi_test;Password=sushi_test1");
             }
         }
 

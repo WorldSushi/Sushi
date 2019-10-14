@@ -88,7 +88,7 @@ namespace WebUI.Background.SyncRonService
             //_context.Set<Data.Entities.Clients.ClientGR>().RemoveRange(_context.Set<Data.Entities.Clients.ClientGR>());
             //_context.SaveChanges();
             int i = 0;
-            clients.RemoveRange(0, 55);
+            //clients.RemoveRange(0, 800);
             var userInfos = _context.Set<Data.Entities.OneCInfo.UserInfo>()
                   .ToList();
             foreach (Model.Contragent.Client client in clients)
