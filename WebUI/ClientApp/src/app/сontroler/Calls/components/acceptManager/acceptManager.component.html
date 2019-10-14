@@ -2,6 +2,18 @@
   <mat-card-header>
     <mat-card-title class="card-title">Проверка звонков</mat-card-title>
   </mat-card-header>
+  <div class="filter clearfix">
+    <input (keyup)="applyFilter($event.target.value)" placeholder="Телефон или Название">
+    <select [(ngModel)]="direction" (ngModelChange)="changeDirection()">
+      <option [ngValue]=0>Все направленния</option>
+      <option [ngValue]=1>Исходящие</option>
+      <option [ngValue]=2>Входящие</option>
+    </select>
+    <button (click)="hiddenCalendar()">{{btnDate}}</button>
+    <div [hidden]="calendarHidden" class="calendar">
+      <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
+    </div>
+  </div>
   <div class="bodyAll">
     <div class="manager" *ngFor="let acceptManager of acceptManagers">
       <div *ngIf="acceptManager.callsDate.length != 0"  (dblclick)="hidenTable($event)">

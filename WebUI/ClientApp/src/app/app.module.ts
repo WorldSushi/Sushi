@@ -23,7 +23,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
     RootStoreModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },
@@ -31,4 +31,5 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

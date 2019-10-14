@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { $ } from 'protractor';
 import { AcceptManager } from '../../../../manager-rm/clients/shared/models/accept-manager.model';
 import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
+import { IgxCalendarComponent } from 'igniteui-angular';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-Accept-Manager',
@@ -18,6 +20,7 @@ import { ClientAccept } from '../../../../manager-rm/clients/shared/models/clien
 })
 export class AcceptManagerComponent implements OnInit {
 
+
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
 
@@ -26,35 +29,43 @@ export class AcceptManagerComponent implements OnInit {
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
-
+  calendarHidden: string = "hidden";
+  dateStart: Date = new Date();
+  dateEnd: Date = new Date();
+  btnDate: string = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
+  direction = 0;
+  txtNumber = "";
 
   ngOnChanges() {
   }
 
-  constructor(public dialog: MatDialog,
-    private http: HttpClient,
-    private cdr: ChangeDetectorRef) { }
-
-  getManager() {
-    this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
-      this.managers = data.filter(d => d.typeManager == 2);
-      this.cdr.detectChanges();
-    });
-
+  applyFilter(filterValue: string) {
+    this.txtNumber = filterValue;
+    this.sortCalls();
   }
 
-  getcallsDater() {
-    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
-      this.cientAccept = data;
-      this.sortManagerToCalls();
-      this.cdr.detectChanges();
-    });
-
+  changeDirection() {
+    this.sortCalls();
   }
 
-  sortManagerToCalls() {
+   verifyRange(dates: Date[]) {
+    if (dates && dates.length != 0) {
+      this.dateStart = dates[0];
+      this.dateEnd = dates[dates.length - 1];
+      this.btnDate = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
+      this.sortCalls();
+    }
+  }
+
+  sortCalls() {
+    this.acceptManagers = [];
+    let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
     this.managers.forEach((item) => {
-      let colleCallsDate = this.cientAccept.filter(c => c.managerId == item.id);
+      let colleCallsDate = this.cientAccept.filter(c => c.managerId == item.id
+        && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
+        && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
+        && (direction == "" || direction == c.direction)
+        && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1));
       let newItem: AcceptManager = {
         id: item.id,
         login: item.login,
@@ -64,6 +75,30 @@ export class AcceptManagerComponent implements OnInit {
       this.acceptManagers.push(newItem);
     });
     console.log(this.acceptManagers);
+  }
+
+  hiddenCalendar() {
+    if (this.calendarHidden == "hidden") {
+      this.calendarHidden = "";
+    }
+    else {
+      this.calendarHidden = "hidden";
+    }
+  }
+
+  getManager() {
+    this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
+      this.managers = data.filter(d => d.typeManager == 2);
+    });
+
+  }
+
+  getcallsDater() {
+    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
+      this.cientAccept = data;
+      this.sortCalls();
+      this.cdr.detectChanges();
+    });
   }
 
   hidenTable($event) {
@@ -112,4 +147,9 @@ export class AcceptManagerComponent implements OnInit {
     this.getcallsDater();
   }
 
+  constructor(public dialog: MatDialog,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef) {
+
+  }
 }
