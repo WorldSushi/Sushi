@@ -1,0 +1,52 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Общая статистика звонков</mat-card-title>
+  </mat-card-header>
+  <div class="filter clearfix">
+    <input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">
+    <select [(ngModel)]="manager" (ngModelChange)="changeManager(manager)">
+      <option [ngValue]=0>Все</option>
+      <option *ngFor="let elm of managers;" [ngValue]=elm.id>{{elm.login}}</option>
+    </select>
+    <button (click)="hiddenCalendar()">{{btnDate}}</button>
+    <div [hidden]="calendarHidden" class="calendar">
+      <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="max-width:50px !important"></th>
+        <th>Все</th>
+        <th>Входящие</th>
+        <th>Исходящие</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background-color:#fcfcfc; max-width:50px !important">Всего</td>
+        <td>{{getAllCall()}}</td>
+        <td>{{getAllIncoming()}}</td>
+        <td>{{getAllOutgoing()}}</td>
+      </tr>
+      <tr>
+        <td style="background-color:#fcfcfc; max-width:50px !important">Отвечено</td>
+        <td>{{getAllYes()}}</td>
+        <td>{{getAllYesIncoming()}}</td>
+        <td>{{getAllYesOutgoing()}}</td>
+      </tr>
+      <tr>
+        <td style="background-color:#fcfcfc; max-width:50px !important">Не отвечено</td>
+        <td>{{getAllNo()}}</td>
+        <td>{{getAllYNoIncoming()}}</td>
+        <td>{{getAllNoOutgoing()}}</td>
+      </tr>
+      <tr>
+        <td style="background-color:#fcfcfc; max-width:50px !important">Длительность</td>
+        <td>{{getAllCallDurations()}} Сек</td>
+        <td>{{getAllCallDurationsIncoming()}} Сек</td>
+        <td>{{getAllCallDurationsOutgoing()}} Сек</td>
+      </tr>
+    </tbody>
+  </table>
+</mat-card>

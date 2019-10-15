@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
 import { ControlerComponent } from './controler.component';
 import { ControlerRoutingModule } from './controler-routing.module';
 import { AcceptManagerModule } from './Calls/acceptManager.module';
+import { ReportCallComponent } from './report/component/report-call/report-call.component';
+import { ReportModule } from './report/report.module';
 
 @NgModule({
   declarations: [
-    ControlerComponent
+    ControlerComponent,
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,7 @@ import { AcceptManagerModule } from './Calls/acceptManager.module';
     ControlerRoutingModule,
     AcceptManagerModule,
     ReactiveFormsModule,
-    RouterModule
+    ReportModule
   ]
 })
 export class ControlerModule { }

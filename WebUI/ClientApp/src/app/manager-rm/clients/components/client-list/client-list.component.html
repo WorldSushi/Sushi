@@ -8,23 +8,11 @@
   </mat-card-header>
 
   <div class="filter clearfix">
-    <!--<select [(ngModel)]="selectedGroup" (change)="selectedGroupChange()">
-    <option [value]="-10">Все клиенты</option>
-    <option [value]="0">Неопределен</option>
-    <option [value]="10">Актуальные</option>
-    <option [value]="20">С редкой отгрузкой</option>
-    <option [value]="30">Новые или реанимируемые</option>
-    <option [value]="40">Рестораны</option>
-    <option [value]="50">Другие</option>
-  </select>-->
-    <!--<select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
-    <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
-  </select>-->
     <a class="report" href="ReportManager?name=Nomll">Отчёт Номенклатура</a>
     <a class="report" href="ReportManager?name=Salle">Отчёт Анализ продаж</a>
     <a class="report" href="ReportManager?name=Opros">Отчёт По опросу</a>
     <a class="report" href="ReportManager?name=Debitory">Отчёт По дебиторке</a>
-    <a class="report" href="ReportManager?name=Oxvat">Охват</a>
+    <a class="report" href="ReportManager?name=Oxvat">Светофор</a>
     <select [(ngModel)]="selectedGroup" (change)="selectedWorkGroupChange()">
       <option [ngValue]=-10>Все рабочие групы</option>
       <option *ngFor="let wg of workgroup; let i = index" [ngValue]=i>

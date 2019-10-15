@@ -1,16 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef  } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
-import { ICallsDate } from '../../shared/models/calls-date.model';
-import { weekPlanQueries } from 'src/app/store/clients/selectors/week-plan.selectors';
-import { ninvoke } from 'q';
+import { Component, OnInit, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef  } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
-import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
 import { HttpClient } from '@angular/common/http';
-import { $ } from 'protractor';
 import { AcceptManager } from '../../../../manager-rm/clients/shared/models/accept-manager.model';
 import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
-import { IgxCalendarComponent } from 'igniteui-angular';
-import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-Accept-Manager',
@@ -24,7 +17,7 @@ export class AcceptManagerComponent implements OnInit {
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
 
-  acceptManagers: AcceptManager[] = [];
+  @Input() acceptManagers: AcceptManager[] = [];
 
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
@@ -35,20 +28,36 @@ export class AcceptManagerComponent implements OnInit {
   btnDate: string = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
   direction = 0;
   txtNumber = "";
+  durationTxt: number = -1;
 
   ngOnChanges() {
   }
 
-  applyFilter(filterValue: string) {
+  applyFilterNumberOrname(filterValue: string) {
     this.txtNumber = filterValue;
     this.sortCalls();
+  }
+
+  applyFilterDuration(filterValue: string) {
+    let rep = /[-\.;":'a-zA-Zа-яА-Я]/;
+    let temValue = 0;
+    if (filterValue != "" && !rep.test(filterValue)) {
+      temValue = Number(filterValue);
+    }
+    else {
+      temValue = -1;
+    }
+    if (this.durationTxt != temValue) {
+      this.durationTxt = temValue;
+      this.sortCalls();
+    }
   }
 
   changeDirection() {
     this.sortCalls();
   }
 
-   verifyRange(dates: Date[]) {
+  verifyRange(dates: Date[]) {
     if (dates && dates.length != 0) {
       this.dateStart = dates[0];
       this.dateEnd = dates[dates.length - 1];
@@ -65,7 +74,8 @@ export class AcceptManagerComponent implements OnInit {
         && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
         && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
         && (direction == "" || direction == c.direction)
-        && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1));
+        && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1)
+        && (this.durationTxt == -1 || c.durations == this.durationTxt));
       let newItem: AcceptManager = {
         id: item.id,
         login: item.login,
@@ -74,7 +84,6 @@ export class AcceptManagerComponent implements OnInit {
       }
       this.acceptManagers.push(newItem);
     });
-    console.log(this.acceptManagers);
   }
 
   hiddenCalendar() {
@@ -90,14 +99,13 @@ export class AcceptManagerComponent implements OnInit {
     this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
       this.managers = data.filter(d => d.typeManager == 2);
     });
-
   }
 
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
       this.cientAccept = data;
       this.sortCalls();
-      this.cdr.detectChanges();
+      console.log(this.acceptManagers);
     });
   }
 
