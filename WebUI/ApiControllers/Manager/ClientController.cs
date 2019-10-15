@@ -45,7 +45,7 @@ namespace WebUI.ApiControllers.Manager
             List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
             List<ClientContact> clientContacts = _context.Set<ClientContact>().ToList();
             List<ClientDto> clientsDto = new List<ClientDto>();
-            List<Call> calls = _context.Set<Call>().ToList();
+            List<CallClient> calls = _context.Set<CallClient>().ToList();
             var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             _myCallsApiService.SaveNewCalls();

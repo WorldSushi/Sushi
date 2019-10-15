@@ -33,7 +33,8 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<Call> calls = _context.Set<Call>().ToList();
+            List<CallClient> callsClient = _context.Set<CallClient>().ToList();
+            List<CallManager> callsManagers = _context.Set<CallManager>().ToList();
             var managerId = _accountInformationService.GetOperatorId();
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             List<ClientContactDto> result = null;
@@ -49,21 +50,21 @@ namespace WebUI.ApiControllers.Manager
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c =>  c.Id == x.Call.Id).Duration : 0,
+                       Durations = callsClient.FirstOrDefault(c => c.Id == x.CallId) != null ? callsClient.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
-                //result.AddRange(_context.Set<ManagerContact>()
-                //   .Select(x => new ClientContactDto()
-                //   {
-                //       Id = x.Id,
-                //       ClientId = (int)x.ManagerCId,
-                //       ContactType = x.Type,
-                //       Date = x.Date.ToString("dd.MM.yyyy"),
-                //       ManagerType = x.ManagerType,
-                //       ManagerId = x.ManagerId,
-                //       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
-                //       //IsAccept = x.IsAccept
-                //   }).ToList());
+                result.AddRange(_context.Set<ContactManager>()
+                   .Select(x => new ClientContactDto()
+                   {
+                       Id = x.Id,
+                       ClientId = x.ManagerIdC,
+                       ContactType = x.Type,
+                       Date = x.Date.ToString("dd.MM.yyyy"),
+                       ManagerType = x.ManagerType,
+                       ManagerId = x.ManagerId,
+                       Durations = callsManagers.FirstOrDefault(c => c.Id == x.CallId) != null ? callsManagers.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
+                       //IsAccept = x.IsAccept
+                   }).ToList());
             }
             else if (user is Data.Entities.Users.Manager)
             {
@@ -80,24 +81,24 @@ namespace WebUI.ApiControllers.Manager
                        Date = x.Date.ToString("dd.MM.yyyy"),
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
-                       Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
+                       Durations = callsClient.FirstOrDefault(c => c.Id == x.CallId) != null ? callsClient.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
                        //IsAccept = x.IsAccept
                    }).ToListAsync();
-                //result.AddRange(_context.Set<ManagerContact>()
-                //  .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
-                //  .Select(x => new ClientContactDto()
-                //  {
-                //      Id = x.Id,
-                //      ClientId = (int)x.ManagerCId,
-                //      ContactType = x.Type,
-                //      Date = x.Date.ToString("dd.MM.yyyy"),
-                //      ManagerType = x.ManagerType,
-                //      ManagerId = x.ManagerId,
-                //      Durations = calls.FirstOrDefault(c => c.Id == x.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == x.Call.Id).Duration : 0,
-                //      //IsAccept = x.IsAccept
-                //  }).ToList());
+                result.AddRange(_context.Set<ContactManager>()
+                  .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
+                  .Select(x => new ClientContactDto()
+                  {
+                      Id = x.Id,
+                      ClientId = x.ManagerIdC,
+                      ContactType = x.Type,
+                      Date = x.Date.ToString("dd.MM.yyyy"),
+                      ManagerType = x.ManagerType,
+                      ManagerId = x.ManagerId,
+                      Durations = callsManagers.FirstOrDefault(c => c.Id == x.CallId) != null ? callsManagers.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
+                      //IsAccept = x.IsAccept
+                  }).ToList());
             }
-            return Ok(result);
+                return Ok(result);
         }
 
         [HttpPost]

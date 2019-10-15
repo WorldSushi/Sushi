@@ -1,20 +1,15 @@
 ﻿using Base;
 using Data.Commands.ClientContacts.ClientContact;
-using Data.Entities.Calls;
-using Data.Entities.Users;
 using Data.Enums;
 using System;
 
 namespace Data.Entities.ClientContacts
 {
-    public class ManagerContact : Entity
+    public class ContactManager : Entity
     {
-        public Call Call { get; set; }
-        public int ManagerCId { get; protected set; }
-        public Manager ManagerC { get; protected set; }
+        public int CallId { get; set; }
+        public int ManagerIdC { get; protected set; }
         public int ManagerId { get; protected set; }
-        public Manager Manager { get; protected set; }
-
         public DateTime Date { get; set; }
 
         public ClientContactType Type { get; set; }
@@ -22,16 +17,14 @@ namespace Data.Entities.ClientContacts
         public ManagerType ManagerType { get; protected set; }
         public string Direction { get; set; }
 
-        //public bool IsAccept { get; protected set; }
-
-        protected ManagerContact()
+        protected ContactManager()
         {
 
         }
 
-        public ManagerContact(ClientContactCreate command)
+        public ContactManager(ClientContactCreate command)
         {
-            ManagerCId = command.ClientId;
+            ManagerIdC = command.ClientId;
             Type = command.ContactType;
             ManagerId = command.ManagerId;
             ManagerType = command.ManagerType;

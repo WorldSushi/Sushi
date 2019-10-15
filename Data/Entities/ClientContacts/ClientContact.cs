@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base;
 using Data.Commands.ClientContacts.ClientContact;
 using Data.Entities.Calls;
@@ -10,6 +12,8 @@ namespace Data.Entities.ClientContacts
 {
     public class ClientContact : Entity
     {
+        [ForeignKey("Call")]
+        public int CallId { get; set; }
         public Call Call { get; set; }
         public int ClientId { get; protected set; }
         public int ManagerId { get; protected set; }

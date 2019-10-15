@@ -11,7 +11,7 @@ namespace Data
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-
+            
         }
 
         public ApplicationContext()
@@ -23,8 +23,9 @@ namespace Data
         {
             if (!optionsBuilder.IsConfigured)
             {
+                
                 //optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWorld;User ID=u0720797_Roma;Password=Roma123");
-                optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWorld;User ID=u0720797_Roma;Password=Roma!!");
+                optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_SushiWorld;User ID=u0720797_Roma;Password=Roma!!", b => b.MigrationsAssembly("Data"));
                // optionsBuilder.UseSqlServer("Data Source=31.31.196.202;Initial Catalog=u0720797_sushi_test;User ID=u0720797_sushi_test;Password=sushi_test1");
             }
         }
@@ -32,6 +33,8 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Call>();
+            modelBuilder.Entity<CallClient>();
+            modelBuilder.Entity<CallManager>();
             modelBuilder.Entity<CallLog>();
             modelBuilder.Entity<MonthCallsInfo>();
             modelBuilder.Entity<MonthCallsInfoAsterics>();
@@ -41,7 +44,7 @@ namespace Data
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();
             modelBuilder.Entity<ClientContact>();
-            modelBuilder.Entity<ManagerContact>();
+            modelBuilder.Entity<ContactManager>();
             modelBuilder.Entity<WeekPlan>();
             modelBuilder.Entity<WorkGroup>();
 

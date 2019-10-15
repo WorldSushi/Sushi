@@ -39,19 +39,19 @@ namespace WebUI.ApiControllers.Manager
                 {
                     ClientId = (int)x.Key,
                     EscortCalls = x.Count(z => z.ManagerType == ManagerType.EscortManager
-                                               && z.Type == ClientContactType.NoAcceptCall && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
+                                               && z.Type == ClientContactType.NoAcceptCall && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
                     EscortMails = x.Count(z => z.ManagerType == ManagerType.EscortManager
-                                               && z.Type == ClientContactType.Mail && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
+                                               && z.Type == ClientContactType.Mail && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
                     EscortWhatsUpMessages = x.Count(z => z.ManagerType == ManagerType.EscortManager
-                                                         && z.Type == ClientContactType.WhatsUp && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
-                    EscortTotalContacts = x.Count(z => z.ManagerType == ManagerType.EscortManager && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
+                                                         && z.Type == ClientContactType.WhatsUp && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
+                    EscortTotalContacts = x.Count(z => z.ManagerType == ManagerType.EscortManager && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
                     RegionalCalls = x.Count(z => z.ManagerType == ManagerType.RegionalManager
-                                                 && z.Type == ClientContactType.NoAcceptCall && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
+                                                 && z.Type == ClientContactType.NoAcceptCall && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
                     RegionalMails = x.Count(z => z.ManagerType == ManagerType.RegionalManager
-                                                 && z.Type == ClientContactType.Mail && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
+                                                 && z.Type == ClientContactType.Mail && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
                     RegionalWhatsUpMessages = x.Count(z => z.ManagerType == ManagerType.RegionalManager
-                                                           && z.Type == ClientContactType.WhatsUp && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150),
-                    RegionalTotalContacts = x.Count(z => z.ManagerType == ManagerType.RegionalManager && (calls.FirstOrDefault(c => c.Id == z.Call.Id) != null ? calls.FirstOrDefault(c => c.Id == z.Call.Id).Duration : 0) >= 150)
+                                                           && z.Type == ClientContactType.WhatsUp && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150),
+                    RegionalTotalContacts = x.Count(z => z.ManagerType == ManagerType.RegionalManager && (calls.FirstOrDefault(c => c.Id == z.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == z.CallId)).Duration : 0) >= 150)
                 }).ToListAsync();
 
                 return Ok(result);
