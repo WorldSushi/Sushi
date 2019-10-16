@@ -14,7 +14,7 @@ export class ReachOutcomesComponent implements OnInit {
   reachOutcomess: ReachOutcomes[];
 
 
-  displayedColumns: string[] = ['title', 'phone1', 'contactName', 'focusProducts'];
+  displayedColumns: string[] = ['title', 'phone1', 'contactName', 'weekPlanReg', 'weekPlanEsc', 'focusProducts'];
 
   getReachOutcomes() {
     this.http.get<ReachOutcomes[]>('api/manager/ReachOutcomes/').subscribe((data: ReachOutcomes[]) => {
@@ -23,6 +23,15 @@ export class ReachOutcomesComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+  }
+
+  getPlanDot(weekPlanStr) {
+    let weekPlan = weekPlanStr;
+    if (weekPlanStr.length > 75) {
+      weekPlan = weekPlan.substr(0, 75)
+      weekPlan += "...";
+    }
+    return weekPlan;
   }
 
   addFocusProduct(element, clientId) {

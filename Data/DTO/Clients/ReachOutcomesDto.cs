@@ -12,5 +12,7 @@ namespace Data.DTO.Clients
         public string FocusProducts { get; set; }
         public List<ResultFriday> ResultFridays { get; set; }
         public List<ClientPhoneDTO> Phones { get; set; }
+        public WeekPlanDto WeekPlanDtoReg { get; set; }
+        public WeekPlanDto WeekPlanDtoEsc { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+import { IWeekPlan } from '../../clients/shared/models/week-plan.model';
+
 export interface ReachOutcomes {
   clientId: string,
   nameClient: string,
@@ -6,4 +8,6 @@ export interface ReachOutcomes {
   position: string,
   focusProducts: string,
   resultFridays: any[]
+  weekPlansReg : IWeekPlan,
+  weekPlansEsc: IWeekPlan,
 }

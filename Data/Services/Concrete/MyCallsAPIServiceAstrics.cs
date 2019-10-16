@@ -144,9 +144,9 @@ namespace Data.Services.Concrete
                             Call = new CallManager()
                             {
                                 ManagerIdC = managersPhone
-                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).Id,
+                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ManagerId,
                                 ManagerId = managersPhone
-                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
+                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
                                 Duration = call.Duration,
                                 Recording = call.Recording,
                                 DateTime = dt + TimeSpan.FromSeconds(call.StartTime),

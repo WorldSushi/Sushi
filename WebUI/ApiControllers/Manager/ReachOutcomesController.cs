@@ -68,6 +68,28 @@ namespace WebUI.ApiControllers.Manager
                       Position = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId) != null ? _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.ClientId).Position : "",
                       FocusProducts = _context.Set<ClientResume>().FirstOrDefault(c => c.ClientId == x.ClientId) != null ? _context.Set<ClientResume>().FirstOrDefault(c => c.ClientId == x.ClientId).FocusProducts : "",
                       ResultFridays = resultFriday.FirstOrDefault(c => c.ClientIdd == x.ClientId) != null ? resultFriday.Where(c => c.ClientIdd == x.ClientId).ToList() : new List<ResultFriday>(),
+                      WeekPlanDtoReg = _context.Set<WeekPlan>()
+                        .Select(w=> new WeekPlanDto()
+                        {
+                            Id = w.Id,
+                            ClientId = w.ClientId,
+                            Plan = w.Plan,
+                            Fact = w.Fact,
+                            WeekNumber = w.WeekNumber,
+                            ManagerType = w.ManagerType,
+                            DateTime = w.Date.ToString("dd.MM.yyyy")
+                        }).FirstOrDefault(w => w.ClientId == x.ClientId && w.ManagerType == ManagerType.RegionalManager),
+                       WeekPlanDtoEsc = _context.Set<WeekPlan>()
+                        .Select(w => new WeekPlanDto()
+                        {
+                            Id = w.Id,
+                            ClientId = w.ClientId,
+                            Plan = w.Plan,
+                            Fact = w.Fact,
+                            WeekNumber = w.WeekNumber,
+                            ManagerType = w.ManagerType,
+                            DateTime = w.Date.ToString("dd.MM.yyyy")
+                        }).FirstOrDefault(w => w.ClientId == x.ClientId && w.ManagerType == ManagerType.EscortManager)
                    })
                    .OrderByDescending(x => x.ClientId)
                    //.Take(50)

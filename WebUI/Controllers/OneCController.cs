@@ -353,7 +353,7 @@ namespace WebUI.Controllers
                     Phone = x.Phone
                 }).ToList();
 
-            List<CallLog> callsLog = _context.Set<CallLog>().Where(c => c.ClientName.Contains("Наталья Якушина") && PhoneHelper.ConvertToPhone(c.ClientNumber) == "9057330379").ToList();
+            List<CallLog> callsLog = _context.Set<CallLog>().ToList();
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
                 ? managersPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
                   && clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
