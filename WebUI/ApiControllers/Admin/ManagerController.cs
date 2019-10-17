@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Data;
 using Data.Commands.Manager;
 using Data.DTO.Users;
 using Data.Entities.ClientContacts;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +34,8 @@ namespace WebUI.ApiControllers.Admin
                     Phone = x.Phone,
                     WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Id,
                     WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(z => z.EscortManagerId == x.Id || z.RegionalManagerId == x.Id).Title,
-                    TypeManager = x.typeManager == Data.Enums.TypeManager.Manager ? 2 : x.typeManager == Data.Enums.TypeManager.Marketolog ? 3 : x.typeManager == Data.Enums.TypeManager.Call_Checker ? 4 : 5
+                    TypeManager = x.typeManager == Data.Enums.TypeManager.Admin ? 1 : x.typeManager == Data.Enums.TypeManager.Manager ? 2 : x.typeManager == Data.Enums.TypeManager.Marketolog ? 3 : x.typeManager == Data.Enums.TypeManager.Call_Checker ? 4 : 5,
+                    ColorPen = x.ColorPen != null ? Convert.ToInt32(x.ColorPen):0
                 }).ToListAsync();
 
             return Ok(result);
@@ -54,7 +57,8 @@ namespace WebUI.ApiControllers.Admin
                 Phone = manager.Entity.Phone,
                 WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Id,
                 WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Entity.Id || x.RegionalManagerId == manager.Entity.Id)?.Title,
-                TypeManager = manager.Entity.typeManager == Data.Enums.TypeManager.Manager ? 2 : manager.Entity.typeManager == Data.Enums.TypeManager.Marketolog ? 3 : manager.Entity.typeManager == Data.Enums.TypeManager.Call_Checker ? 4 : 5
+                TypeManager = manager.Entity.typeManager == Data.Enums.TypeManager.Manager ? 2 : manager.Entity.typeManager == Data.Enums.TypeManager.Marketolog ? 3 : manager.Entity.typeManager == Data.Enums.TypeManager.Call_Checker ? 4 : 5,
+                ColorPen = manager.Entity.ColorPen != null ? Convert.ToInt32(manager.Entity.ColorPen) : 0
             };
 
             return Ok(result);
@@ -77,7 +81,8 @@ namespace WebUI.ApiControllers.Admin
                 Phone = manager.Phone,
                 Password = manager.Password,
                 WorkgroupId = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id).Id,
-                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id)?.Title
+                WorkgroupTitle = _context.Set<WorkGroup>().FirstOrDefault(x => x.EscortManagerId == manager.Id || x.RegionalManagerId == manager.Id)?.Title,
+                ColorPen = manager.ColorPen != null ? Convert.ToInt32(manager.ColorPen) : 0
             };
 
             return Ok(result);

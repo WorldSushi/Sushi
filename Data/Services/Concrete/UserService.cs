@@ -14,11 +14,11 @@ namespace Data.Services.Concrete
             _userRepository = userRepository;
         }
 
-        public void CreateAdmin()
+        public void CreateAdmin(string login, string password)
         {
             Admin admin = new Admin();
-            admin.Login = "admin";
-            admin.Password = "admin";
+            admin.Login = login;
+            admin.Password = password;
             _userRepository.Create(admin);
         }
 

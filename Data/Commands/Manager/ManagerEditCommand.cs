@@ -9,5 +9,6 @@ namespace Data.Commands.Manager
         public string Password { get; set; }
         public string Phone { get; set; }
         public TypeManager TypeManager { get; set; }
+        public int ColorPen { get; set; }
     }
 }

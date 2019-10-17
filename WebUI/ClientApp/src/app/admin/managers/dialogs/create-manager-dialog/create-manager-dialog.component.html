@@ -17,21 +17,45 @@
   </div>
   <div class="form-group">
     <label for="">Тип менеджера</label>
-    <select formControlName="typeManager">
-      <option [value]="2">
+    <select  [(ngModel)]="typeManager" formControlName="typeManager">
+      <option  [value]="1" (onSelectionChange)="getHidden(1)">
+        Администратор
+      </option>
+      <option [value]="2" (onSelectionChange)="getHidden(2)">
         Менеджр
       </option>
-      <option [value]="3">
+      <option [value]="3" (onSelectionChange)="getHidden(3)">
         Маркетолог
       </option>
-      <option [value]="4">
-        Проверяющий звонков
+      <option [value]="4" (onSelectionChange)="getHidden(4)">
+        Контролер
       </option>
+      <option [value]="5" (onSelectionChange)="getHidden(5)">
+        Роль не определена
+      </option>
+    </select>
+  </div>
+  <div class="form-group" *ngIf="typeManager == 1 || typeManager == 4">
+    <label for="">Цвет отметок</label>
+    <select [(ngModel)]="color" formControlName="colorPen">
+      <option [value]=1 style="background-color:black">Черный</option>
+      <option [value]=2 style="background-color:lightskyblue">Cветло-синий</option>
+      <option [value]=3 style="background-color:blue">Синий</option>
+      <option [value]=4 style="background-color:blueviolet">Cине-фиолетовый</option>
+      <option [value]=5 style="background-color:brown">Коричневый</option>
+      <option [value]=6 style="background-color:chocolate">Шоколадный</option>
+      <option [value]=7 style="background-color:coral">Коралловый</option>
+      <option [value]=8 style="background-color:darkblue">Темно-синий</option>
+      <option [value]=9 style="background-color:deeppink">Темно-розовый</option>
+      <option [value]=10 style="background-color:gold">Золотой</option>
+      <option [value]=11 style="background-color:green">Зеленый</option>
+      <option [value]=12 style="background-color:tomato">Томатный</option>
+      <option [value]=13 style="background-color:red">Красный</option>
     </select>
   </div>
 </form>
   
-  <div class="dialog-actions">
+  <div  class="dialog-actions">
     <button color="primary" mat-raised-button (click)="save()">Сохранить</button>
     <button mat-raised-button (click)="close()">Закрыть</button>
   </div>

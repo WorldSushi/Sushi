@@ -5,5 +5,6 @@ export interface IManager {
     phone: string,
     workgroupId: number,
     workgroupTitle: string,
-    typeManager: number
+  typeManager: number,
+  colorPen: number
 }

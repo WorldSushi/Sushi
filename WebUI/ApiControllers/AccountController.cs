@@ -24,7 +24,7 @@ namespace WebUI.ApiControllers
         {
             _accountService = accountService;
             _context = context;
-            Data.Entities.Users.Admin admin = new Data.Entities.Users.Admin();
+            //Data.Entities.Users.Admin admin = new Data.Entities.Users.Admin();
             //admin.
             //_context.Set<Data.Entities.Users.Admin>
         }
@@ -37,6 +37,8 @@ namespace WebUI.ApiControllers
                 Login = _accountService.CurrentUser().Login,
                 Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? "Admin"
+                    : ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Admin 
+                    || ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Call_Checker ? "Admin"
                     : "Manager",
                 Workgroup = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? null
@@ -57,6 +59,8 @@ namespace WebUI.ApiControllers
                 Login = _accountService.CurrentUser().Login,
                 Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? "Admin"
+                    : ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Admin
+                    || ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Call_Checker ? "Admin"
                     : "Manager",
                 Workgroup = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? null

@@ -18,6 +18,9 @@
   <div class="form-group">
     <label for="">Тип менеджера</label>
     <select [(ngModel)]="data.typeManager" [ngModelOptions]="{standalone: true}">
+      <option [value]="1">
+        Администратор
+      </option>
       <option [value]="2">
         Менеджр
       </option>
@@ -25,13 +28,31 @@
         Маркетолог
       </option>
       <option [value]="4">
-        Проверяющий звонков
+        Контролер
       </option>
       <option [value]="5">
         Ротльт не определена
       </option>
     </select>
   </div>
+  <div class="form-group" *ngIf="data.typeManager == 1 || data.typeManager == 4">
+  <label for="">Цвет отметок</label>
+  <select [(ngModel)]="data.colorPen" [ngModelOptions]="{standalone: true}">
+    <option [value]=1 style="background-color:black">Черный</option>
+    <option [value]=2 style="background-color:lightskyblue">Cветло-синий</option>
+    <option [value]=3 style="background-color:blue">Синий</option>
+    <option [value]=4 style="background-color:blueviolet">Cине-фиолетовый</option>
+    <option [value]=5 style="background-color:brown">Коричневый</option>
+    <option [value]=6 style="background-color:chocolate">Шоколадный</option>
+    <option [value]=7 style="background-color:coral">Коралловый</option>
+    <option [value]=8 style="background-color:darkblue">Темно-синий</option>
+    <option [value]=9 style="background-color:deeppink">Темно-розовый</option>
+    <option [value]=10 style="background-color:gold">Золотой</option>
+    <option [value]=11 style="background-color:green">Зеленый</option>
+    <option [value]=12 style="background-color:tomato">Томатный</option>
+    <option [value]=13 style="background-color:red">Красный</option>
+  </select>
+</div>
   </form>
   
   <div class="dialog-actions">

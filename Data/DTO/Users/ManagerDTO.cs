@@ -12,5 +12,6 @@ namespace Data.DTO.Users
         public int? WorkgroupId { get; set; }
         public string WorkgroupTitle { get; set; }
         public int TypeManager { get; set; }
+        public int ColorPen { get; set; }
     }
 }

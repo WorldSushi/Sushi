@@ -6,6 +6,6 @@ namespace Data.Services.Abstract
     public interface IUserService
     {
         IQueryable<User> GetAll();
-        void CreateAdmin();
+        void CreateAdmin(string login, string password);
     }
 }

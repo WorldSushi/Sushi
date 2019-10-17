@@ -28,11 +28,11 @@ namespace WebUI.Controllers
 
         public IActionResult Index()
         {
-            var user = _userService.GetAll().ToList();
-            if(user == null || user.Count == 0)
-            {
-                _userService.CreateAdmin();
-            }
+            //var user = _userService.GetAll().ToList();
+            //if(user == null || user.Count == 0)
+            //{
+            //    _userService.CreateAdmin("admin", "admin");
+            //}
             return View(); //Redirect("/Home/ImportFileClients");
         }
 
@@ -51,9 +51,13 @@ namespace WebUI.Controllers
                         return Redirect("/admin");
                     else if(user is Manager)
                     {
-                        if (((Manager)user).typeManager == TypeManager.Manager)
+                        if (((Manager)user).typeManager == TypeManager.Admin)
                         {
-                            return Redirect("/manager-rm");
+                            return Redirect("/admin");
+                        }
+                        else if (((Manager)user).typeManager == TypeManager.Marketolog)
+                        {
+                            return Redirect("/manager-any");
                         }
                         else if (((Manager)user).typeManager == TypeManager.Marketolog)
                         {
