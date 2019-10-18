@@ -35,6 +35,7 @@ namespace WebUI.ApiControllers.Controler
             List<Call> calls = _context.Set<Call>().ToList();
             List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
             List<Client> clients = _context.Set<Client>().ToList();
+            List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
             var result = await _context.Set<ClientContact>()
                 //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new AcceptCallsDto()
@@ -52,6 +53,22 @@ namespace WebUI.ApiControllers.Controler
                     Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
                     CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id)
                 }).ToListAsync();
+            result.AddRange(_context.Set<ContactManager>()
+                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
+                .Select(x => new AcceptCallsDto()
+                {
+                    Id = x.Id,
+                    ClientId = (int)x.ManagerIdC,
+                    ContactType = x.Type,
+                    Date = x.Date.ToString("dd.MM.yyyy hh:mm:ss"),
+                    ManagerType = x.ManagerType,
+                    ManagerId = x.ManagerId,
+                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
+                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
+                    TitleClient = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Login : "",
+                    Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
+                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
+                }).ToList());
             return Ok(result);
         }
 

@@ -134,20 +134,22 @@ export class AcceptManagerComponent implements OnInit {
   }
 
   setBagroundStatus(element) {
+    console.log(element.contactType);
+    if (element.contactType == 50) {
+      return "#E0F8EC";
+    }
     if (element.callsComments) {
-      if (element.callsComments.acceptControlerCalss == 2) {
-        return element.callsComments.colorPen;
-      }
-      else if (element.callsComments.acceptControlerCalss == 1) {
-        return "#DF013A";
-      }
-      else {
-        return "#FAFAFA";
-      }
+        if (element.callsComments.acceptControlerCalss == 2) {
+          return element.callsComments.colorPen;
+        }
+        else if (element.callsComments.acceptControlerCalss == 1) {
+          return "#DF013A";
+        }
+        else {
+          return "#FAFAFA";
+        }
     }
-    else {
-      return "#FAFAFA";
-    }
+
   }
 
   ngOnInit() {
