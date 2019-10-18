@@ -8,4 +8,5 @@ export interface CallsComment {
     acceptControlerCalss: acceptControlerCalss,
     durations: number,
     date: string
+    colorPen: string
 }

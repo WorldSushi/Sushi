@@ -136,7 +136,7 @@ export class AcceptManagerComponent implements OnInit {
   setBagroundStatus(element) {
     if (element.callsComments) {
       if (element.callsComments.acceptControlerCalss == 2) {
-        return "#2EFE9A";
+        return element.callsComments.colorPen;
       }
       else if (element.callsComments.acceptControlerCalss == 1) {
         return "#DF013A";

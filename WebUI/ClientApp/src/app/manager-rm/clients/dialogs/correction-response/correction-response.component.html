@@ -13,9 +13,9 @@
   </thead>
   <tbody id="tbodyId">
     <tr *ngFor="let elm of data.callsComments">
-      <td>{{elm.date}}</td>
-      <td>{{elm.comment}}</td>
-      <td>{{elm.durations}}</td>
+      <td [style.color]="elm.colorPen">{{elm.date}}</td>
+      <td [style.color]="elm.colorPen">{{elm.comment}}</td>
+      <td [style.color]="elm.colorPen">{{elm.durations}}</td>
       <td> <textarea (focusout)="comment(elm.clientId, elm.contactClientId, $event)" style="border:none;margin:1px;padding:10px;width:60%;height:50px" value="">{{elm.maanagerComment}}</textarea></td>
       <td><button  class="btnAccept" (click)="corect(elm.clientId, elm.contactClientId, $event)">Испралено</button></td>
     </tr>

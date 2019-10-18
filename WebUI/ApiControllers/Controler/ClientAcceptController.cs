@@ -59,11 +59,27 @@ namespace WebUI.ApiControllers.Controler
         [Route("NoAcceptCall")]
         public void NoAcceptCall(string comment, string callId, string clientId)
         {
+            string color = null;
+            if(_accountInformationService.CurrentUser() is Data.Entities.Users.Manager)
+            {
+                color = ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "1" ? "black" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "2" ? "lightskyblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "3" ? "blue" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "4" ? "blueviolet"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "5" ? "brown" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "6" ? "chocolate"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "7" ? "coral" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "8" ? "darkblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "9" ? "deeppink" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "10" ? "gold"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "11" ? "green" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "12" ? "tomato"
+                : "black";
+            }
+            else
+            {
+                color = "black";
+            }
             CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId);
             if(callsComment != null)
             {
                 callsComment.Comment = comment;
                 callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
+                callsComment.ColorPen = color;
             }
             else
             {
@@ -72,7 +88,8 @@ namespace WebUI.ApiControllers.Controler
                     AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept,
                     Comment = comment,
                     ClientId = Convert.ToInt32(clientId),
-                    ContactClientId  = Convert.ToInt32(callId)
+                    ContactClientId  = Convert.ToInt32(callId),
+                    ColorPen = color
                 });;
             }
             _context.SaveChanges();
@@ -96,7 +113,7 @@ namespace WebUI.ApiControllers.Controler
                     Comment = "",
                     ClientId = Convert.ToInt32(clientId),
                     ContactClientId = Convert.ToInt32(callId)
-                }); ;
+                });
             }
             _context.SaveChanges();
         }

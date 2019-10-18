@@ -102,7 +102,9 @@ namespace WebUI.ApiControllers.Manager
                            ContactClientId = z.ContactClientId,
                            Date = clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId) != null ? clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId).Date.ToString("dd.MM.yyyy hh:mm") : "",
                            ManagerComment = z.ManagerComment,
-                           Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0
+                           Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                           ColorPen = z.ColorPen
+
                        }).ToList()
                    })
                    .OrderByDescending(x => x.NumberOfCalls)

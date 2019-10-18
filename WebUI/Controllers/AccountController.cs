@@ -59,9 +59,9 @@ namespace WebUI.Controllers
                         {
                             return Redirect("/manager-any");
                         }
-                        else if (((Manager)user).typeManager == TypeManager.Marketolog)
+                        else if (((Manager)user).typeManager == TypeManager.Manager)
                         {
-                            return Redirect("/manager-any");
+                            return Redirect("/manager-rm");
                         }
                         else if (((Manager)user).typeManager == TypeManager.Call_Checker)
                         {
