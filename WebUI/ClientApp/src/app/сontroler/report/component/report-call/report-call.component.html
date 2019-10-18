@@ -4,49 +4,144 @@
   </mat-card-header>
   <div class="filter clearfix">
     <input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">
-    <select [(ngModel)]="manager" (ngModelChange)="changeManager(manager)">
-      <option [ngValue]=0>Все</option>
-      <option *ngFor="let elm of managers;" [ngValue]=elm.id>{{elm.login}}</option>
-    </select>
     <button (click)="hiddenCalendar()">{{btnDate}}</button>
     <div [hidden]="calendarHidden" class="calendar">
       <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
     </div>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th style="max-width:50px !important"></th>
-        <th>Все</th>
-        <th>Входящие</th>
-        <th>Исходящие</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="background-color:#fcfcfc; max-width:50px !important">Всего</td>
-        <td>{{getAllCall()}}</td>
-        <td>{{getAllIncoming()}}</td>
-        <td>{{getAllOutgoing()}}</td>
-      </tr>
-      <tr>
-        <td style="background-color:#fcfcfc; max-width:50px !important">Отвечено</td>
-        <td>{{getAllYes()}}</td>
-        <td>{{getAllYesIncoming()}}</td>
-        <td>{{getAllYesOutgoing()}}</td>
-      </tr>
-      <tr>
-        <td style="background-color:#fcfcfc; max-width:50px !important">Не отвечено</td>
-        <td>{{getAllNo()}}</td>
-        <td>{{getAllYNoIncoming()}}</td>
-        <td>{{getAllNoOutgoing()}}</td>
-      </tr>
-      <tr>
-        <td style="background-color:#fcfcfc; max-width:50px !important">Длительность</td>
-        <td>{{getAllCallDurations()}} Сек</td>
-        <td>{{getAllCallDurationsIncoming()}} Сек</td>
-        <td>{{getAllCallDurationsOutgoing()}} Сек</td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="workgroups-wrapper">
+    <div class="workgroup-item" *ngFor="let workgroup of statistickCallModel">
+      <div class="workgroup-title clearfix">
+        <span>
+          Регион: {{workgroup.title}}
+        </span>
+        <br />
+        <span>
+          МС ⟹ {{workgroup.escortManagerName}}
+        </span>
+        <table>
+          <thead>
+            <tr>
+              <th style="max-width:50px !important"></th>
+              <th>Сегодня</th>
+              <th>Неделя</th>
+              <th>Месяц</th>
+              <th>Всего</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="max-width:100px !important">Все звонки</td>
+              <td>{{getToDayAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">более 2,5 мин</td>
+              <td>{{getToDayMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Менее 2.5 мин, более 10 сек</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">мение 10 сек</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Звонки развития</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Звонки коллегам</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Исходящие</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Входящие</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Не отвечиные</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Длительность</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <span>
+          РМ ⟹ {{workgroup.regionalManagerName}}
+        </span>
+        <table>
+          <thead>
+            <tr>
+              <th style="max-width:50px !important"></th>
+              <th>Сегодня</th>
+              <th>Неделя</th>
+              <th>Месяц</th>
+              <th>Всего</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="max-width:100px !important">Все звонки</td>
+              <td>{{getToDayAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">более 2,5 мин</td>
+              <td>{{getToDayMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Менее 2.5 мин, более 10 сек</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">мение 10 сек</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Звонки развития</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Звонки коллегам</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Исходящие</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Входящие</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Не отвечиные</td>
+
+            </tr>
+            <tr>
+              <td style="max-width:100px !important">Длительность</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </mat-card>

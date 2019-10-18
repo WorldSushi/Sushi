@@ -22,7 +22,7 @@ table
   td
      padding-left: 15px !important
      padding-right: 5px !important
-     border: 1px solid #f7f7f7
+     border: 1px solid #6FACE7
      text-align: center
      white-space:nowrap
      overflow:hidden
@@ -30,9 +30,7 @@ table
   th 
      padding-left: 15px !important
      padding-right: 5px !important
-     background-color: #fcfcfc
-     border-bottom: 1px solid #f7f7f7
-     color: #b9b9b9
+     border: 1px solid #6FACE7
      font-weight: normal
      text-align: center
 
@@ -134,3 +132,40 @@ table
         position: absolute
         right: 10px
         z-index: 10
+
+.workgroups-wrapper
+    padding: 0px 10px
+    display: grid
+    grid-template-columns: 1fr 1fr
+    column-gap: 35px
+    .workgroup-item
+        background: rgba(208, 230, 252, 0.3)
+        border-radius: 20px
+        margin-bottom: 20px
+        .workgroup-title
+            padding: 20px 25px
+            font-size: 18px
+            color: #6FACE7
+            background: #daedfe
+            border-radius: 20px 20px 0px 0px
+            line-height: 1.5
+            span
+                display: inline-block
+                padding-top: 10px
+            .workgroup-actions
+                display: inline-block
+                float: right              
+                a
+                    border-radius: 99px
+                    background: #95CCFF
+                    color: #fff
+                    padding: 10px 40px
+                    display: inline-block
+                    font-size: 16px
+                .plans
+                    margin-right: 20px
+                .calls 
+                    background: #ffffff
+                    border: 2px solid #95CCFF
+                    color: #3EA1FF
+

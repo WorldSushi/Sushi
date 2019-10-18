@@ -3,6 +3,7 @@ import { ClientAccept } from '../../../../manager-rm/clients/shared/models/clien
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { IManager } from '../../../../admin/managers/shared/models/manager.model';
+import { IWorkgroup } from '../../../../admin/workgroups/shared/models/workgroup.model';
 
 @Component({
   selector: 'app-report-call',
@@ -14,6 +15,7 @@ export class ReportCallComponent implements OnInit {
 
   @Input() managers: IManager[] = [];
   @Input() clientAcceptFull: ClientAccept[] = [];
+  @Input() workgroup: IWorkgroup[] = [];
 
   calendarHidden: string = "hidden";
   dateStart: Date = new Date();
@@ -21,13 +23,42 @@ export class ReportCallComponent implements OnInit {
   btnDate: string = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
   durationTxt: number = -1;
   manager: number = 0;
+  statistickCallModel: any[] = [];
 
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
       this.clientAcceptFull = data;
       console.log(this.clientAcceptFull);
+      this.sortCall();
       this.cdr.detectChanges();
     });
+  }
+
+  getWorkGroup() {
+    this.http.get<IWorkgroup[]>('api/admin/WorkGroup').subscribe((data: IWorkgroup[]) => {
+      this.workgroup = data;
+      console.log(this.workgroup);
+      this.getcallsDater();
+      this.cdr.detectChanges();
+    });
+  }
+
+  sortCall() {
+    this.statistickCallModel = [];
+    this.workgroup.forEach((item: IWorkgroup) => {
+      let clientAccept = this.clientAcceptFull.filter(c => (c.managerId == item.escortManagerId || c.managerId == item.regionalManagerId) && item.clientIds.indexOf(c.clientId) != -1
+        && (this.durationTxt == -1 || this.durationTxt == c.durations));
+      this.statistickCallModel.push({
+        workgroupId: item.id,
+        title: item.title,
+        escortManagerId: item.escortManagerId,
+        escortManagerName: item.escortManagerName,
+        regionalManagerId: item.regionalManagerId,
+        regionalManagerName: item.regionalManagerName,
+        clientAccepts: clientAccept
+      });
+    });
+    console.log(this.statistickCallModel);
   }
 
   changeManager(manager) {
@@ -46,6 +77,7 @@ export class ReportCallComponent implements OnInit {
     if (this.durationTxt != temValue) {
       this.durationTxt = temValue;
     }
+    this.sortCall();
   }
 
   verifyRange(dates: Date[]) {
@@ -53,6 +85,7 @@ export class ReportCallComponent implements OnInit {
       this.dateStart = dates[0];
       this.dateEnd = dates[dates.length - 1];
       this.btnDate = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
+      this.sortCall();
     }
   }
 
@@ -65,115 +98,6 @@ export class ReportCallComponent implements OnInit {
     }
   }
 
-  getAllCall() {
-    return this.clientAcceptFull.filter(c => new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllIncoming() {
-    return this.clientAcceptFull.filter(c => c.direction == "Входящий" 
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllOutgoing() {
-    return this.clientAcceptFull.filter(c => c.direction == "Исходящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllYes() {
-    return this.clientAcceptFull.filter(c => c.durations != 0 
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllYesIncoming() {
-    return this.clientAcceptFull.filter(c => c.durations != 0 && c.direction == "Входящий" 
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllYesOutgoing() {
-    return this.clientAcceptFull.filter(c => c.durations != 0 && c.direction == "Исходящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllNo() {
-    return this.clientAcceptFull.filter(c => c.durations == 0
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllYNoIncoming() {
-    return this.clientAcceptFull.filter(c => c.durations == 0 && c.direction == "Входящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllNoOutgoing() {
-    return this.clientAcceptFull.filter(c => c.durations == 0 && c.direction == "Исходящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations)).length;
-  }
-
-  getAllCallDurationsOutgoing() {
-    let fullDuration = 0;
-    let clintCalls = this.clientAcceptFull.filter(c => c.direction == "Исходящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations));
-    clintCalls.forEach((item) => {
-      fullDuration += item.durations;
-    });
-    return fullDuration;
-  }
-
-  getAllCallDurationsIncoming() {
-    let fullDuration = 0;
-    let clintCalls = this.clientAcceptFull.filter(c => c.direction == "Входящий"
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations));
-    clintCalls.forEach((item) => {
-      fullDuration += item.durations;
-    });
-    return fullDuration;
-  }
-
-  getAllCallDurations() {
-    let fullDuration = 0;
-    let clintCalls = this.clientAcceptFull.filter(c => new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-      && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-      && (this.manager == 0 || this.manager == c.managerId)
-      && (this.durationTxt == -1 || this.durationTxt == c.durations));
-    clintCalls.forEach((item) => {
-      fullDuration += item.durations;
-    });
-    return fullDuration;
-  }
-
   getManager() {
     this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
       this.managers = data.filter(d => d.typeManager == 2);
@@ -181,11 +105,84 @@ export class ReportCallComponent implements OnInit {
     });
   }
 
+  getToDayAllCall(managerId, workgroupId) {
+    return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.date == new Date().toLocaleDateString()  && c.managerId == managerId).length;  
+  }
+
+  getWeekAllCall(managerId, workgroupId) {
+    let countWeekCall = 0;
+    let curr = new Date();
+    let first = (curr.getDate() - curr.getDay()) + 1;
+    let last = first + 6;
+    let firstday = new Date(curr.setDate(first));
+    let lastday = new Date(curr.setDate(last));
+    let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    }
+    return countWeekCall;
+  }
+
+  getMonthAllCall(managerId, workgroupId) {
+    let countMonthCall = 0;
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    }
+    return countMonthCall;
+  }
+
+  getAllAllCall(managerId, workgroupId) {
+    return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId).length;
+  }
+
+  //================================================================================================================
+
+  getToDayMore2and5Call(managerId, workgroupId) {
+    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.durations > 150).length;
+  }
+
+  getWeekMore2and5Call(managerId, workgroupId) {
+    let countWeekCall = 0;
+    let curr = new Date();
+    let first = (curr.getDate() - curr.getDay()) + 1;
+    let last = first + 6;
+    let firstday = new Date(curr.setDate(first));
+    let lastday = new Date(curr.setDate(last));
+    let clientAccept: ClientAccept[] = this.statistickCallModel
+      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.durations > 150);
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    }
+    return countWeekCall;
+  }
+
+  getMonthMore2and5Call(managerId, workgroupId) {
+    let countMonthCall = 0;
+    var curr = new Date();
+    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+    let clientAccept: ClientAccept[] = this.statistickCallModel
+      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.durations > 150);
+    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+      countMonthCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    }
+    return countMonthCall;
+  }
+
+  getAllMore2and5Call(managerId, workgroupId) {
+    return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.durations > 150).length;
+  }
+
   constructor(public dialog: MatDialog,
     private http: HttpClient,
     private cdr: ChangeDetectorRef) {
-    this.getcallsDater();
     this.getManager();
+    this.getWorkGroup();
   }
 
   ngOnInit() {

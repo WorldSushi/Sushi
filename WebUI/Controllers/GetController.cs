@@ -74,5 +74,16 @@ namespace WebUI.Controllers
             //    _context.SaveChanges();
             //}
         }
+
+        [HttpGet]
+        [Route("Clear")]
+        public void ClearManager(string name)
+        {
+            if (_context.Set<Manager>().FirstOrDefault(m => m.Login == name) != null)
+            {
+                _context.Set<Manager>().Remove(_context.Set<Manager>().FirstOrDefault(m => m.Login == name));
+                _context.SaveChanges();
+            }
+        }
     }
 }
