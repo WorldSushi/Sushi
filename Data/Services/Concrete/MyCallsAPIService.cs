@@ -221,7 +221,7 @@ namespace Data.Services.Concrete
             }
 
 
-            
+
 
 
             _context.Set<CallInfo>()
@@ -311,6 +311,11 @@ namespace Data.Services.Concrete
             {
 
             }
+
+            //var s1 = _context.Set<CallLog>().ToList();
+            //var s2 = _context.Set<ClientContact>().ToList();
+            //var s3 = _context.Set<ContactManager>().ToList();
+            //var s4 = _context.Set<CallInfo>().ToList();
         }
 
 

@@ -23,7 +23,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebUI.Controllers
@@ -107,6 +106,7 @@ namespace WebUI.Controllers
             await Task.Delay(10000);
             Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
             _context = new ApplicationContext();
+            List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
             try
             {
@@ -114,16 +114,28 @@ namespace WebUI.Controllers
                 {
                     if (clientInfo != null)
                     {
-                        Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-                        client1.LegalEntity = client.Contragent_NameFull;
-                        client1.Title = client.Contragent;
-                        ReloadPhone(client.Phones, client1);
+                        if (_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
+                        {
+                            _context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                        }
+                        if (_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId).Count() != 0)
+                        {
+                            _context.Set<ClientPhone>().RemoveRange(_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
+                        }
+                        _context.Set<ClientInfo>().Remove(clientInfo);
+                        _context.SaveChanges();
+                        clientContacts1 = _context.Set<ClientContact>().ToList();
+                        CreateNewClient(client);
+                        //client1.LegalEntity = client.Contragent_NameFull;
+                        //client1.Title = client.Contragent;
+                        //ReloadPhone(client.Phones, client1);
                     }
                     else
                     {
                         CreateNewClient(client);
                     }
                     ReloadClientsCalls(id);
+
                 }
                 else
                 {
@@ -134,7 +146,8 @@ namespace WebUI.Controllers
                         _context.Set<Data.Entities.OneCInfo.ClientInfo>().RemoveRange(_context.Set<Data.Entities.OneCInfo.ClientInfo>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
                         _context.Set<Data.Entities.Clients.Client>().RemoveRange(_context.Set<Data.Entities.Clients.Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
                         _context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
-                        //_context.Set<Data.Entities.Clients.ClientGR>().Remove(_context.Set<Data.Entities.Clients.ClientGR>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
+                        _context.Set<CallClient>().RemoveRange(_context.Set<CallClient>().Where(c => c.ClientId == clientInfo.ClientId));
+                        _context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>().Where(c => c.ClientId == clientInfo.ClientId));
                         _context.SaveChanges();
                     }
                 }
@@ -142,7 +155,6 @@ namespace WebUI.Controllers
             catch (Exception e)
             {
             }
-            _context.SaveChanges();
         }
 
         private void CreateNewClient(Background.SyncRonService.Model.Contragent.Client client)
@@ -172,16 +184,21 @@ namespace WebUI.Controllers
 
                                                        })).Entity;
                 client1.IsAcctive = true;
+                _context.Set<Client>().Add(client1);
+                _context.SaveChanges();
                 ClientInfo clientInfo = _context.Set<ClientInfo>()
-                                            .Add(new ClientInfo(client1, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
+                                            .Add(new ClientInfo(client1.Id, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
                 _context.SaveChanges();
-                _context.Set<ClientGR>().Add(new ClientGR()
+                if (_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
                 {
-                    Client = client1,
-                    ClientId = client1.Id,
-                    NameGr = client.GR_Contragent
-                });
-                _context.SaveChanges();
+                    _context.Set<ClientGR>().Add(new ClientGR()
+                    {
+                        Client = client1,
+                        ClientId = client1.Id,
+                        NameGr = client.GR_Contragent
+                    });
+                    _context.SaveChanges();
+                }
                 if (client.Manager_ID != null && client.Manager_ID != "")
                 {
                     var managersGuidStr = client.Manager_ID.Split(',');
@@ -196,18 +213,23 @@ namespace WebUI.Controllers
                         {
                         }
                     }
-                    var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
-                    if (userInfo != null)
+                    foreach (Guid guid in managersGuid)
                     {
-                        var workGroup = _context.Set<WorkGroup>()
-                            .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
-                                                 || x.EscortManagerId == userInfo.UserId);
-
-                        workGroup.BindClient(new BindClient()
+                        var userInfo = userInfos.FirstOrDefault(x => x.OneCId == guid);
+                        if (userInfo != null)
                         {
-                            ClientId = client1.Id,
-                            WorkgroupId = workGroup.Id
-                        });
+                            var workGroup = _context.Set<WorkGroup>()
+                                .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
+                                                     || x.EscortManagerId == userInfo.UserId);
+                            if (workGroup != null && workGroup.Clients.FirstOrDefault(c => c.ClientId == clientInfo.ClientId) == null)
+                            {
+                                workGroup.BindClient(new BindClient()
+                                {
+                                    ClientId = client1.Id,
+                                    WorkgroupId = workGroup.Id
+                                });
+                            }
+                        }
                     }
                 }
                 _context.SaveChanges();
@@ -331,11 +353,10 @@ namespace WebUI.Controllers
 
         private void ReloadClientsCalls(string id)
         {
-            _myCallsApiService = new MyCallsAPIService(_context);
-            _myCallsAPIServiceAstrics = new MyCallsAPIServiceAstrics(_context);
-            _myCallsApiService.SaveNewCalls();
-            _myCallsAPIServiceAstrics.SaveNewCalls();
-            List<CallInfo> callInfos = _context.Set<CallInfo>().ToList();
+            //_myCallsApiService = new MyCallsAPIService(_context);
+            //_myCallsAPIServiceAstrics = new MyCallsAPIServiceAstrics(_context);
+            //_myCallsApiService.SaveNewCalls();
+            //_myCallsAPIServiceAstrics.SaveNewCalls();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
 
             var managersPhone = _context.Set<Manager>()
@@ -352,73 +373,70 @@ namespace WebUI.Controllers
                     ClientId = x.ClientId,
                     Phone = x.Phone
                 }).ToList();
-
             List<CallLog> callsLog = _context.Set<CallLog>().ToList();
             var a = callsLog.Where(x => (x.SrcNumber != "" && x.ClientNumber != "")
                 ? managersPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
                   && clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
                 : false).ToList();
-
             var dt = new DateTime(1970, 1, 1);
             var clientContacts = new List<ClientContact>();
             var workGroups = _context.Set<WorkGroup>().ToList();
             var calls = new List<CallInfo>();
-
-
+            List<CallClient> callClients = _context.Set<CallClient>().ToList();
+            List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
             foreach (var call in a)
             {
                 try
                 {
+                    CallInfo callInfo = _context.Set<CallInfo>().FirstOrDefault(c => c.CallLogId == call.Id);
+                    if (callInfo == null)
+                    {
                         calls.Add(new CallInfo()
                         {
                             Call = new CallClient()
                             {
                                 ClientId = clientPhone
-                                .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
+                                    .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ClientId,
                                 ManagerId = managersPhone
-                                .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
+                                    .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).Id,
                                 Duration = call.Duration,
                                 Recording = call.Recording,
                                 DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
                                 Direction = call.Direction
                             },
-                            CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                                   && x.SrcNumber == call.SrcNumber
-                                                                   && x.StartTime == call.StartTime)
+                            CallLog = call
                         });
+                    }
                 }
                 catch (Exception e)
                 {
 
                 }
             }
-            List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
-            //_context.Entry(clientContacts1).Collection (c => c.);
+            _context.Set<CallInfo>()
+                .AddRange(calls);
+            _context.SaveChanges();
             foreach (var call in calls)
             {
-                CallInfo callInfo = callInfos.FirstOrDefault(c => c.CallLogId == call.CallLog.Id);
                 try
                 {
-                    if (clientContacts1.FirstOrDefault(c => c.CallId == callInfo.CallId) == null)
+                    var clientContact = new ClientContact(
+                    new ClientContactCreate()
                     {
-                        var clientContact = new ClientContact(
-                        new ClientContactCreate()
-                        {
-                            ClientId = ((CallClient)call.Call).ClientId,
-                            ContactType = ClientContactType.NoAcceptCall,
-                            ManagerId = ((CallClient)call.Call).ManagerId,
-                            ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == ((CallClient)call.Call).ManagerId) != null
-                                ? ManagerType.EscortManager
-                                : workGroups.FirstOrDefault(x => x.RegionalManagerId == ((CallClient)call.Call).ManagerId) != null
-                                    ? ManagerType.RegionalManager
-                                    : ManagerType.Undefined,
+                        ClientId = ((CallClient)call.Call).ClientId,
+                        ContactType = ClientContactType.NoAcceptCall,
+                        ManagerId = ((CallClient)call.Call).ManagerId,
+                        ManagerType = workGroups.FirstOrDefault(x => x.EscortManagerId == ((CallClient)call.Call).ManagerId) != null
+                            ? ManagerType.EscortManager
+                            : workGroups.FirstOrDefault(x => x.RegionalManagerId == ((CallClient)call.Call).ManagerId) != null
+                                ? ManagerType.RegionalManager
+                                : ManagerType.Undefined,
 
-                        });
-                        clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
-                        clientContact.Direction = ((CallClient)call.Call).Direction;
-                        clientContact.CallId = call.Call.Id;
-                        clientContacts.Add(clientContact);
-                    }
+                    });
+                    clientContact.Date = dt + TimeSpan.FromSeconds(call.CallLog.StartTime);
+                    clientContact.Direction = ((CallClient)call.Call).Direction;
+                    clientContact.CallId = call.Call.Id;
+                    clientContacts.Add(clientContact);
                 }
                 catch (Exception e)
                 {

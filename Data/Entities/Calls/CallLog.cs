@@ -19,5 +19,6 @@ namespace Data.Entities.Calls
         public string Answered { get; set; }
         public string DbCallId { get; set; }
         public int EndTime { get; set; }
+
     }
 }

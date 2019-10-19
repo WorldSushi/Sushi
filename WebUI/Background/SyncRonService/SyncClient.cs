@@ -122,7 +122,7 @@ namespace WebUI.Background.SyncRonService
                                                        })).Entity;
                         client1.IsAcctive = true;
                         clientInfo1 = _context.Set<ClientInfo>()
-                                            .Add(new ClientInfo(client1, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
+                                            .Add(new ClientInfo(client1.Id, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
                         await _context.SaveChangesAsync();
                         _context.Set<ClientGR>().Add(new ClientGR()
                         {

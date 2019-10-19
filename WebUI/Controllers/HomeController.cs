@@ -163,7 +163,7 @@ namespace WebUI.Controllers
                                                 }
                                             }
                                             var clientInfo = _context.Set<ClientInfo>()
-                                                .Add(new ClientInfo(client, Guid.Parse(GetData(Cells[10], sharedStringTable)), GetData(Cells[8], sharedStringTable)));
+                                                .Add(new ClientInfo(client.Id, Guid.Parse(GetData(Cells[10], sharedStringTable)), GetData(Cells[8], sharedStringTable)));
                                             _context.SaveChanges();
 
                                             if (GetData(Cells[11], sharedStringTable) != "")
@@ -323,7 +323,7 @@ namespace WebUI.Controllers
                     //    a.Add(rows[0]);
 
                     var clientInfo = _context.Set<ClientInfo>()
-                        .Add(new ClientInfo(client, Guid.Parse(rows[8]), rows[10]));
+                        .Add(new ClientInfo(client.Id, Guid.Parse(rows[8]), rows[10]));
 
                     _context.SaveChanges();
 
