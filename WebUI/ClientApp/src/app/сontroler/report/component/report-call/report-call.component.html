@@ -4,9 +4,8 @@
   </mat-card-header>
   <div class="filter clearfix">
     <input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">
-    <button (click)="hiddenCalendar()">{{btnDate}}</button>
+    <input type="date" placeholder="Choose a date" (change)="verifyRange($event)" [(ngModel)]="btnDate">
     <div [hidden]="calendarHidden" class="calendar">
-      <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
     </div>
   </div>
 
@@ -19,6 +18,12 @@
         <br />
         <span>
           МС ⟹ {{workgroup.escortManagerName}}
+        </span><br />
+        <span>
+          Начало работы: {{getStartWorkManager(workgroup.escortManagerId, workgroup.workgroupId)}}
+        </span><br />
+        <span>
+          Конец работы: {{getEndWorkManager(workgroup.escortManagerId, workgroup.workgroupId)}}
         </span>
         <table>
           <thead>
@@ -47,40 +52,70 @@
             </tr>
             <tr>
               <td style="max-width:100px !important">Менее 2.5 мин, более 10 сек</td>
-
+              <td>{{getToDaySmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekSmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthSmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllSmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">мение 10 сек</td>
-
+              <td>{{getToDaySmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Звонки развития</td>
-
+              <td>{{getToDayDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Звонки коллегам</td>
-
+              <td>{{getToDayToColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekToColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllToColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Исходящие</td>
-
+              <td>{{getToDayOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllToOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Входящие</td>
-
+              <td>{{getToDayInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
-              <td style="max-width:100px !important">Не отвечиные</td>
-
+              <td style="max-width:100px !important">Неотвечинные</td>
+              <td>{{getToDayUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Длительность</td>
-
+              <td>{{getToDayDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
             </tr>
           </tbody>
         </table>
         <span>
           РМ ⟹ {{workgroup.regionalManagerName}}
+        </span><br />
+        <span>
+          Начало работы: {{getStartWorkManager(workgroup.regionalManagerId, workgroup.workgroupId)}}
+        </span>
+        <span><br />
+          Конец работы: {{getEndWorkManager(workgroup.regionalManagerId, workgroup.workgroupId)}}
         </span>
         <table>
           <thead>
@@ -109,35 +144,59 @@
             </tr>
             <tr>
               <td style="max-width:100px !important">Менее 2.5 мин, более 10 сек</td>
-
+              <td>{{getToDaySmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekSmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthSmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllSmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">мение 10 сек</td>
-
+              <td>{{getToDaySmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Звонки развития</td>
-
+              <td>{{getToDayDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Звонки коллегам</td>
-
+              <td>{{getToDayToColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekToColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllToColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Исходящие</td>
-
+              <td>{{getToDayOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllToOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Входящие</td>
-
+              <td>{{getToDayInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
-              <td style="max-width:100px !important">Не отвечиные</td>
-
+              <td style="max-width:100px !important">Неотвечинные</td>
+              <td>{{getToDayUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
             <tr>
               <td style="max-width:100px !important">Длительность</td>
-
+              <td>{{getToDayDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getWeekDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getMonthDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+              <td>{{getAllDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
             </tr>
           </tbody>
         </table>

@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { ReportCallComponent } from './component/report-call/report-call.component';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { ReportCallComponent } from './component/report-call/report-call.compone
     FormsModule,
     HttpClientModule,
     IgxCalendarModule,
-    IgxDatePickerModule
+    IgxDatePickerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class ReportModule { }
