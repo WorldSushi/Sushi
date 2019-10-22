@@ -36,7 +36,7 @@ namespace WebUI.Background.SyncRonService
             request.UserAgent = "World Sushi";
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
             request.Credentials = new NetworkCredential("chuprina.r.v@gmail.com", "123");
-            Task.Run(() => WorkSyncClient());
+            //Task.Run(() => WorkSyncClient());
         }
 
         private void WorkSyncClient()
@@ -48,7 +48,7 @@ namespace WebUI.Background.SyncRonService
             var responseAppS = JObject.Parse(content);
             List<Model.Contragent.Client> clients = JsonConvert.DeserializeObject<List<Model.Contragent.Client>>(responseAppS.
                         SelectToken("value").ToString());
-            //CreateClient(clients);
+            CreateClient(clients);
             //CreateManager(clients);
             //CreateManager1(clients);
             //List<Data.Entities.Clients.Client> clientss = _context.Set<Data.Entities.Clients.Client>().ToList(); 
@@ -121,15 +121,20 @@ namespace WebUI.Background.SyncRonService
 
                                                        })).Entity;
                         client1.IsAcctive = true;
+                        _context.Set<Data.Entities.Clients.Client>().Add(client1);
+                        _context.SaveChanges();
                         clientInfo1 = _context.Set<ClientInfo>()
                                             .Add(new ClientInfo(client1.Id, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
                         await _context.SaveChangesAsync();
-                        _context.Set<ClientGR>().Add(new ClientGR()
+                        if (_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
                         {
-                            Client = client1,
-                            ClientId = client1.Id,
-                            NameGr = client.GR_Contragent
-                        });
+                            _context.Set<ClientGR>().Add(new ClientGR()
+                            {
+                                Client = client1,
+                                ClientId = client1.Id,
+                                NameGr = client.GR_Contragent
+                            });
+                        }
                         await _context.SaveChangesAsync();
                         if (client.Manager_ID != null && client.Manager_ID != "")
                         {
@@ -145,54 +150,57 @@ namespace WebUI.Background.SyncRonService
                                 {
                                 }
                             }
-
-                            var userInfo = userInfos.FirstOrDefault(x => managersGuid.Contains(x.OneCId));
-
-                            if (userInfo != null)
+                            foreach (Guid guid in managersGuid)
                             {
-                                var workGroup = _context.Set<WorkGroup>()
-                                    .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
-                                                         || x.EscortManagerId == userInfo.UserId);
-
-                                workGroup.BindClient(new BindClient()
+                                var userInfo = userInfos.FirstOrDefault(x => x.OneCId == guid);
+                                if (userInfo != null)
                                 {
-                                    ClientId = client1.Id,
-                                    WorkgroupId = workGroup.Id
-                                });
+                                    var workGroup = _context.Set<WorkGroup>()
+                                        .FirstOrDefault(x => x.RegionalManagerId == userInfo.UserId
+                                                             || x.EscortManagerId == userInfo.UserId);
+                                    if (workGroup != null && workGroup.Clients.FirstOrDefault(c => c.ClientId == clientInfo1.ClientId) == null)
+                                    {
+                                        workGroup.BindClient(new BindClient()
+                                        {
+                                            ClientId = client1.Id,
+                                            WorkgroupId = workGroup.Id
+                                        });
+                                    }
+                                }
                             }
+                            await _context.SaveChangesAsync();
                         }
-                        await _context.SaveChangesAsync();
-                    }
-                    if (client.Phones != null && client.Phones != "")
-                    {
-                        var e = client.Phones.Split(',');
-                        var clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo1.ClientId);
-                        foreach (var phone in e)
+                        if (client.Phones != null && client.Phones != "")
                         {
-                            string newPhone = Regex.Replace(phone, @"[^0-9]", "");
-                            if (clientPhones == null || clientPhones.FirstOrDefault(c => c.Phone != null && (c.Phone == newPhone || c.Phone == newPhone.Substring(1) || c.Phone == newPhone.Substring(2))) == null)
+                            var e = client.Phones.Split(',');
+                            var clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo1.ClientId);
+                            foreach (var phone in e)
                             {
-
-                                ClientPhone clientPhone = null;
-                                clientPhone = new ClientPhone()
+                                string newPhone = Regex.Replace(phone, @"[^0-9]", "");
+                                if (clientPhones == null || clientPhones.FirstOrDefault(c => c.Phone != null && (c.Phone == newPhone || c.Phone == newPhone.Substring(1) || c.Phone == newPhone.Substring(2))) == null)
                                 {
-                                    Client = client1,
-                                    Phone = newPhone,
-                                };
-                                if (clientPhone != null)
-                                    _context.Set<ClientPhone>().Add(clientPhone);
-                                await _context.SaveChangesAsync();
 
-                            }
-                            else
-                            {
+                                    ClientPhone clientPhone = null;
+                                    clientPhone = new ClientPhone()
+                                    {
+                                        Client = client1,
+                                        Phone = newPhone,
+                                    };
+                                    if (clientPhone != null)
+                                        _context.Set<ClientPhone>().Add(clientPhone);
+                                    await _context.SaveChangesAsync();
 
+                                }
+                                else
+                                {
+
+                                }
                             }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
 
+                        }
                     }
                 }
                 catch (Exception e)

@@ -6,11 +6,7 @@ namespace Base.Helpers
     {
         public static string ConvertToPhone(string phone)
         {
-            if(phone == "9057330379")
-            {
-
-            }
-            if (phone == "8-977-424-81-53")
+            if (phone == "+79684593535")
             {
 
             }

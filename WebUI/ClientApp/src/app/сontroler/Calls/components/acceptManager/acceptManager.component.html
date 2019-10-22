@@ -67,7 +67,7 @@
           <th colspan="14" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
           <td colspan="14" mat-cell *matCellDef="let element"><textarea *ngIf="element.contactType != 50" style="width:250px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
           <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button>
-          <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Испраленно</button>
+          <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Исправлено</button>
           </td>
         </ng-container>
 

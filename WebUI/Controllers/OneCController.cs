@@ -122,6 +122,14 @@ namespace WebUI.Controllers
                         {
                             _context.Set<ClientPhone>().RemoveRange(_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
                         }
+                        if (_context.Set<CallClient>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
+                        {
+                            _context.Set<CallClient>().Remove(_context.Set<CallClient>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                        }
+                        if (_context.Set<ClientContact>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
+                        {
+                            _context.Set<ClientContact>().Remove(_context.Set<ClientContact>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                        }
                         _context.Set<ClientInfo>().Remove(clientInfo);
                         _context.SaveChanges();
                         clientContacts1 = _context.Set<ClientContact>().ToList();

@@ -92,11 +92,11 @@ export class ReportCallComponent implements OnInit {
     this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
       this.managers = data.filter(d => d.typeManager == 2);
     });
-  }
+    }
 
 
   getToDayAllCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.date == new Date().toLocaleDateString()  && c.managerId == managerId).length;  
+    return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString()  && c.managerId == managerId).length;  
   }
 
   getWeekAllCall(managerId, workgroupId) {
@@ -133,7 +133,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayMore2and5Call(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.durations > 150).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.durations > 150).length;
   }
 
   getWeekMore2and5Call(managerId, workgroupId) {
@@ -172,7 +172,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDaySmaller2and5AndMore10SCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && (c.durations < 150 && c.durations > 10)).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && (c.durations < 150 && c.durations > 10)).length;
   }
 
   getWeekSmaller2and5AndMore10SCall(managerId, workgroupId) {
@@ -211,7 +211,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDaySmaller10SCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId &&  c.durations < 10).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId &&  c.durations < 10).length;
   }
 
   getWeekSmaller10SCall(managerId, workgroupId) {
@@ -250,7 +250,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayDevelopmentCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.contactType == 40).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.contactType == 40).length;
   }
 
   getWeekDevelopmentCall(managerId, workgroupId) {
@@ -289,7 +289,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayToColleaguesCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.contactType == 50).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.contactType == 50).length;
   }
 
   getWeekToColleaguesCall(managerId, workgroupId) {
@@ -328,7 +328,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayOutgoingCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.direction == "Исходящий").length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.direction == "Исходящий").length;
   }
 
   getWeekOutgoingCall(managerId, workgroupId) {
@@ -367,7 +367,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayInboxCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.direction == "Входящий").length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.direction == "Входящий").length;
   }
 
   getWeekInboxCall(managerId, workgroupId) {
@@ -406,7 +406,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDayUnansweredCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId && c.durations == 0).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.durations == 0).length;
   }
 
   getWeekUnansweredCall(managerId, workgroupId) {
@@ -445,7 +445,7 @@ export class ReportCallComponent implements OnInit {
   getToDayDurationsCall(managerId, workgroupId) {
     let durations = 0;
     let statistickCalls: any[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date == new Date().toLocaleDateString() && c.managerId == managerId);
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId);
     statistickCalls.forEach((itme) => {
       durations += itme.durations;
     })
