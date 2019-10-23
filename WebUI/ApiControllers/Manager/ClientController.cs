@@ -103,7 +103,8 @@ namespace WebUI.ApiControllers.Manager
                            Date = clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId) != null ? clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId).Date.ToString("dd.MM.yyyy hh:mm") : "",
                            ManagerComment = z.ManagerComment,
                            Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
-                           ColorPen = z.ColorPen
+                           ColorPen = z.ColorPen,
+                           Type = z.Type
 
                        }).ToList()
                    })
@@ -293,10 +294,22 @@ namespace WebUI.ApiControllers.Manager
         [Route("Corect")]
         public void AcceptManager(string idClient, string contactId)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == contactId);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == contactId && c.Type == "Звонок");
             if(callsComment != null)
             { 
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.ContactClientId.ToString() == contactId).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.ContactClientId.ToString() == contactId && c.Type == "Звонок").AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("CorectCliet")]
+        public void AcceptManagerClient(string idClient)
+        {
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "Клиент");
+            if (callsComment != null)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id  && c.Type == "Клиент").AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
                 _context.SaveChanges();
             }
         }
@@ -305,10 +318,22 @@ namespace WebUI.ApiControllers.Manager
         [Route("Comment")]
         public void SetComment(string idClient, string idContact, string comment)
         {
-            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == idContact).ToList();
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == idContact && c.Type == "Звонок").ToList();
             foreach (CallsComment callsComment in callsComments)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id).Comment = comment;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Звонок").Comment = comment;
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("CommentClient")]
+        public void SetCommentClient(string idClient, string comment)
+        {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.Type == "Клиент").ToList();
+            foreach (CallsComment callsComment in callsComments)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Клиент").Comment = comment;
                 _context.SaveChanges();
             }
         }

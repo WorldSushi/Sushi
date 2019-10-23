@@ -107,44 +107,24 @@ namespace WebUI.Background.Report
                 {
                     List<ClientPhone> clientPhones = _context.Set<ClientPhone>()
                         .Where(c => c.ClientId == client.Id).ToList();
-                    string nameColummn = GetCharOfTabel(1);
+                    string nameColummn = GetCharOfTabel(4);
                     InsertSharedStringItem(ohvatModel.Contragent, shareStringPart);
                     Cell cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
                     cell.CellValue = new CellValue(i.ToString());
                     cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
                     worksheetPart.Worksheet.Save();
                     i++;
-                    nameColummn = GetCharOfTabel(2);
-                    InsertSharedStringItem(ohvatModel.Contragent, shareStringPart);
+                    nameColummn = GetCharOfTabel(5);
+                    InsertSharedStringItem(ohvatModel.GR_Contragent, shareStringPart);
                     cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
                     cell.CellValue = new CellValue(i.ToString());
                     cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
                     worksheetPart.Worksheet.Save();
                     i++;
-                    if (clientPhones != null && clientPhones.Count != 0)
-                    {
-                        nameColummn = GetCharOfTabel(3);
-                        InsertSharedStringItem(clientPhones[0].Phone, shareStringPart);
-                        cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
-                        cell.CellValue = new CellValue(i.ToString());
-                        cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                        worksheetPart.Worksheet.Save();
-                        i++;
-                        if (clientPhones.Count > 1)
-                        {
-                            nameColummn = GetCharOfTabel(4);
-                            InsertSharedStringItem(clientPhones[1].Phone, shareStringPart);
-                            cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
-                            cell.CellValue = new CellValue(i.ToString());
-                            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                            worksheetPart.Worksheet.Save();
-                            i++;
-                        }
-                    }
                     string clietType = client.ClientType == ClientTypes.WithoutType ? "Без типа" : client.ClientType == ClientTypes.Small ? "Небольшой" : client.ClientType == ClientTypes.Middle1 ? "Средний 1" :
                          client.ClientType == ClientTypes.Middle2 ? "Средний 2" : client.ClientType == ClientTypes.Large1 ? "Крупный 1" : client.ClientType == ClientTypes.Large2 ? "Крупный 2" :
                           client.ClientType == ClientTypes.Large3 ? "Крупный 3" : client.ClientType == ClientTypes.VeryLarge ? "Очень крупный" : "";
-                    nameColummn = GetCharOfTabel(5);
+                    nameColummn = GetCharOfTabel(6);
                     InsertSharedStringItem(clietType, shareStringPart);
                     cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
                     cell.CellValue = new CellValue(i.ToString());
@@ -154,24 +134,13 @@ namespace WebUI.Background.Report
                     string numberOfShipments = client.NumberOfShipments == NumberOfShipments.WithoutType ? "Не указан" : client.NumberOfShipments == NumberOfShipments.OnePerMonth ? "1 раз в месяц" : client.NumberOfShipments == NumberOfShipments.OnePerTwoWeek ? "1 раз в 2 недели" :
                          client.NumberOfShipments == NumberOfShipments.ThreePerMonth ? "1 раз в неделю" : client.NumberOfShipments == NumberOfShipments.FivePerMonth ? "5 раз в месяц" : client.NumberOfShipments == NumberOfShipments.SixPerMonth ? "6 раз в месяц" :
                          client.NumberOfShipments == NumberOfShipments.TwoPerWeek ? "2 раза в неделю"  : "";
-                    nameColummn = GetCharOfTabel(6);
+                    nameColummn = GetCharOfTabel(7);
                     InsertSharedStringItem(clietType, shareStringPart);
                     cell = InsertCellInWorksheet(numberOfShipments, (uint)j + 9, worksheetPart, 4, 30);
                     cell.CellValue = new CellValue(i.ToString());
                     cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
                     worksheetPart.Worksheet.Save();
                     i++;
-                    string numberOfCalls = client.NumberOfCalls == NumberOfCalls.WithoutType ? "Не указан" : client.NumberOfCalls == NumberOfCalls.OnePerMonth ? "1 раз в месяц" : client.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? "1 раз в 2 недели" :
-                          client.NumberOfCalls == NumberOfCalls.ThreePerMonth ? "1 раз в неделю" : client.NumberOfCalls == NumberOfCalls.FivePerMonth ? "5 раз в месяц" : client.NumberOfCalls == NumberOfCalls.SixPerMonth ? "6 раз в месяц" :
-                          client.NumberOfCalls == NumberOfCalls.TwoPerWeek ? "2 раза в неделю" : "";
-                    nameColummn = GetCharOfTabel(7);
-                    InsertSharedStringItem(numberOfCalls, shareStringPart);
-                    cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, 4, 30);
-                    cell.CellValue = new CellValue(i.ToString());
-                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                    worksheetPart.Worksheet.Save();
-                    i++;
-
                     nameColummn = GetCharOfTabel(8);
                     InsertSharedStringItem(ohvatModel.KolNom, shareStringPart);
                     cell = InsertCellInWorksheet(nameColummn, (uint)j + 9, worksheetPart, (uint)GetIdStyles(Convert.ToDouble(ohvatModel.KolNom), Convert.ToDouble(ohvatModel.KolNomPred)), 30);
@@ -274,31 +243,48 @@ namespace WebUI.Background.Report
         {
             SharedStringTablePart shareStringPart = GetSharedStringTablePart(spreadsheetDocument.WorkbookPart);
             string nameColummn = GetCharOfTabel(1);
-            InsertSharedStringItem("Названия закрепленных Клиентов", shareStringPart);
+            InsertSharedStringItem("Выручка", shareStringPart);
             Cell cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
             worksheetPart.Worksheet.Save();
             i++;
-            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 6}");
+            nameColummn = GetCharOfTabel(1);
+            InsertSharedStringItem("факт", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, 7, worksheetPart, 2, 50);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 7}:{nameColummn + 8}");
             nameColummn = GetCharOfTabel(2);
-            InsertSharedStringItem("Юр. лица", shareStringPart);
+            InsertSharedStringItem("Валовый доход", shareStringPart);
             cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
             worksheetPart.Worksheet.Save();
             i++;
-            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{GetCharOfTabel(3) + 6}");
+            nameColummn = GetCharOfTabel(2);
+            InsertSharedStringItem("План", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, 7, worksheetPart, 2, 50);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 7}:{nameColummn + 8}");
             nameColummn = GetCharOfTabel(3);
-            InsertSharedStringItem("Телефон 1", shareStringPart);
-            cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
+            InsertSharedStringItem("Факт", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, 7, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
             worksheetPart.Worksheet.Save();
             i++;
-            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 7}:{nameColummn + 8}");
+
             nameColummn = GetCharOfTabel(4);
-            InsertSharedStringItem("Телефон 2", shareStringPart);
+            InsertSharedStringItem("Названия закрепленных Клиентов", shareStringPart);
             cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
@@ -306,6 +292,16 @@ namespace WebUI.Background.Report
             i++;
             MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
             nameColummn = GetCharOfTabel(5);
+            InsertSharedStringItem("Юр. лица", shareStringPart);
+            cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
+            cell.CellValue = new CellValue(i.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            worksheetPart.Worksheet.Save();
+            i++;
+
+
+            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
+            nameColummn = GetCharOfTabel(6);
             InsertSharedStringItem("Типы Клиентов", shareStringPart);
             cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
@@ -313,16 +309,8 @@ namespace WebUI.Background.Report
             worksheetPart.Worksheet.Save();
             i++;
             MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
-            nameColummn = GetCharOfTabel(6);
-            InsertSharedStringItem("Период-ть отгрузок", shareStringPart);
-            cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
-            cell.CellValue = new CellValue(i.ToString());
-            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-            worksheetPart.Worksheet.Save();
-            i++;
-            MergeTwoCells(worksheetPart.Worksheet, $"{nameColummn + 5}:{nameColummn + 8}");
             nameColummn = GetCharOfTabel(7);
-            InsertSharedStringItem("Требуемая период-ть звонков", shareStringPart);
+            InsertSharedStringItem("Период-ть отгрузок", shareStringPart);
             cell = InsertCellInWorksheet(nameColummn, 5, worksheetPart, 2, 50);
             cell.CellValue = new CellValue(i.ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);

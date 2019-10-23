@@ -20,7 +20,7 @@ import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
     ClientTypeTranslatePipe,
     NumberOfCallsTranslatePipe,
     NumberOfShipmentsTranslatePipe,
-    ClientGroupTranslatePipe,
+    ClientGroupTranslatePipe
   ],
   entryComponents: [
   ],
@@ -36,9 +36,6 @@ import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
     HttpClientModule,
     IgxCalendarModule,
     IgxDatePickerModule
-  ],
-  providers: [
-    DateExtensionsService
   ]
 })
 export class AcceptManagerModule { }

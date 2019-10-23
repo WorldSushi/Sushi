@@ -23,6 +23,7 @@ namespace WebUI.Background
             Schedule(() => new OhvatReport(applicationContext)).ToRunEvery(1).Days().At(4, 50);
 
             //Schedule(() => new SyncClient(applicationContext)).ToRunNow().AndEvery(2).Hours();
+            //Schedule(() => new OhvatReport(applicationContext)).ToRunNow().AndEvery(2).Hours();
         }
 
         private void CreateEmtypdf()

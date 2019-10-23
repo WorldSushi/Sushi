@@ -8,6 +8,7 @@ using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Enums;
+using EnumsNET;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Services.Abstract;
@@ -51,7 +52,7 @@ namespace WebUI.ApiControllers.Controler
                     TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
                     Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
                     Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
-                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id)
+                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок")
                 }).ToListAsync();
             result.AddRange(_context.Set<ContactManager>()
                 //.Where(x => DateHelper.IsCurrentMonth(x.Date))
@@ -73,6 +74,103 @@ namespace WebUI.ApiControllers.Controler
         }
 
         [HttpGet]
+        [Route("Clients")]
+        public async Task<IActionResult> GetClients()
+        {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+            var clientPhones = await _context.Set<ClientPhone>()
+                .ToListAsync();
+            var result = await _context.Set<Client>()
+                .Select(x => new 
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    LegalEntity = x.LegalEntity,
+                    Phones = clientPhones.Where(z => z.ClientId == x.Id).Select(z => new ClientPhoneDTO
+                    {
+                        Id = z.Id,
+                        Phone = z.Phone
+                    }).ToList(),
+                    ClientType = x.ClientType.AsString(EnumFormat.Description),
+                    NumberOfCalls = x.NumberOfCalls.AsString(EnumFormat.Description),
+                    Group = (int)x.Group,
+                    NumberOfShipments = x.NumberOfShipments.AsString(EnumFormat.Description),
+                    HasWorkgroup = _context.Set<ClientWorkGroup>().Any(z => z.ClientId == x.Id),
+                    ContactName = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.Id) != null ? _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == x.Id).Name : "",
+                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.Id && c.Type == "Клиент")
+                }).ToListAsync();
+
+            return Ok(result);
+        }
+
+
+
+        [HttpGet]
+        [Route("NoAcceptCallClient")]
+        public void NoAcceptCallClient(string comment, string clientId)
+        {
+            string color = null;
+            if (_accountInformationService.CurrentUser() is Data.Entities.Users.Manager)
+            {
+                color = ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "1" ? "black" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "2" ? "lightskyblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "3" ? "blue" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "4" ? "blueviolet"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "5" ? "brown" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "6" ? "chocolate"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "7" ? "coral" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "8" ? "darkblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "9" ? "deeppink" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "10" ? "gold"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "11" ? "green" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "12" ? "tomato"
+                : "black";
+            }
+            else
+            {
+                color = "black";
+            }
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "Клиент");
+            if (callsComment != null)
+            {
+                callsComment.Comment = comment;
+                callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
+                callsComment.ColorPen = color;
+            }
+            else
+            {
+                _context.Set<CallsComment>().Add(new CallsComment()
+                {
+                    AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept,
+                    Comment = comment,
+                    ClientId = Convert.ToInt32(clientId),
+                    ColorPen = color,
+                    Type = "Клиент"
+                }); ;
+            }
+            _context.SaveChanges();
+        }
+
+
+        [HttpGet]
+        [Route("DefaultCallClient")]
+        public void DefaultCallClient(string comment, string clientId)
+        {
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "Клиент");
+            if (callsComment != null)
+            {
+                callsComment.Comment = comment;
+                callsComment.AcceptControlerCalss = AcceptControlerCalss.Default;
+
+            }
+            else
+            {
+                _context.Set<CallsComment>().Add(new CallsComment()
+                {
+                    AcceptControlerCalss = AcceptControlerCalss.Default,
+                    Comment = comment,
+                    ClientId = Convert.ToInt32(clientId),
+                    Type = "Клиент"
+                });
+            }
+            _context.SaveChanges();
+        }
+
+        [HttpGet]
         [Route("NoAcceptCall")]
         public void NoAcceptCall(string comment, string callId, string clientId)
         {
@@ -91,7 +189,7 @@ namespace WebUI.ApiControllers.Controler
             {
                 color = "black";
             }
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId && c.Type == "Звонок");
             if(callsComment != null)
             {
                 callsComment.Comment = comment;
@@ -106,7 +204,8 @@ namespace WebUI.ApiControllers.Controler
                     Comment = comment,
                     ClientId = Convert.ToInt32(clientId),
                     ContactClientId  = Convert.ToInt32(callId),
-                    ColorPen = color
+                    ColorPen = color,
+                    Type = "Звонок"
                 });;
             }
             _context.SaveChanges();
@@ -116,20 +215,22 @@ namespace WebUI.ApiControllers.Controler
         [Route("DefaultCall")]
         public void DefaultCall(string comment, string callId, string clientId)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.ContactClientId.ToString() == callId && c.Type == "Звонок");
             if (callsComment != null)
             {
-                callsComment.Comment = "";
+                callsComment.Comment = comment;
                 callsComment.AcceptControlerCalss = AcceptControlerCalss.Default;
+               
             }
             else
             {
                 _context.Set<CallsComment>().Add(new CallsComment()
                 {
                     AcceptControlerCalss = AcceptControlerCalss.Default,
-                    Comment = "",
+                    Comment = comment,
                     ClientId = Convert.ToInt32(clientId),
-                    ContactClientId = Convert.ToInt32(callId)
+                    ContactClientId = Convert.ToInt32(callId),
+                    Type = "Звонок"
                 });
             }
             _context.SaveChanges();

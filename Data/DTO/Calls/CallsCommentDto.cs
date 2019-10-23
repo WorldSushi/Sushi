@@ -11,6 +11,7 @@ namespace Data.DTO.Calls
         public string Date { get; set; }
         public string ManagerComment { get; set; }
         public string ColorPen { get; set; }
+        public string Type { get; set; }
         public AcceptControlerCalss AcceptControlerCalss { get; set; }
     }
 }

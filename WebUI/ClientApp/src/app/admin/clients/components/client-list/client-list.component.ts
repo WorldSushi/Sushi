@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+  import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { IClient } from 'src/app/manager-rm/clients/shared/models/client.model';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
 import { MatDialog, MatPaginator, MatTableDataSource, Sort, MatSort } from '@angular/material';

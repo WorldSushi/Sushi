@@ -11,6 +11,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AdminGuard } from './shared/guards/admin.guard';
 import { DateExtensionsService } from './shared/services/date-extensions.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ClientTypeTranslatePipe } from './store/shared/pipes/client-type-translate-pipe';
+import { ClientGroupTranslatePipe } from './store/shared/pipes/client-group-translate.pipe';
+import { NumberOfShipmentsTranslatePipe } from './store/shared/pipes/number-of-shipments-pipe';
+import { NumberOfCallsTranslatePipe } from './store/shared/pipes/number-of-calls-pipe';
 
 @NgModule({
   declarations: [

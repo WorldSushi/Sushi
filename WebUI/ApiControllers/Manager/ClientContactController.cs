@@ -39,7 +39,7 @@ namespace WebUI.ApiControllers.Manager
             User user = _context.Set<User>().ToList().FirstOrDefault(m => m.Id == managerId);
             List<ClientContactDto> result = null;
 
-            if (user is Data.Entities.Users.Admin)
+            if (user is Data.Entities.Users.Admin || (((Data.Entities.Users.Manager)user).typeManager == TypeManager.Call_Checker || ((Data.Entities.Users.Manager)user).typeManager == TypeManager.Admin))
             {
                 result = await _context.Set<ClientContact>()
                    .Select(x => new ClientContactDto()
@@ -66,7 +66,7 @@ namespace WebUI.ApiControllers.Manager
                        //IsAccept = x.IsAccept
                    }).ToList());
             }
-            else if (user is Data.Entities.Users.Manager)
+            else if (user is Data.Entities.Users.Manager && (((Data.Entities.Users.Manager)user).typeManager == TypeManager.Manager || ((Data.Entities.Users.Manager)user).typeManager == TypeManager.Marketolog))
             {
                 WorkGroup workGroups = _context.Set<WorkGroup>()
                 .FirstOrDefault(x => x.RegionalManagerId == managerId
