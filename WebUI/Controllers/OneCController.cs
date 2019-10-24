@@ -103,14 +103,14 @@ namespace WebUI.Controllers
 
         private async void ReloadClients(string id)
         {
-            await Task.Delay(10000);
+            //await Task.Delay(10000);
             Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
-            _context = new ApplicationContext();
+            //_context = new ApplicationContext();
             List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
             try
             {
-                if (client != null )
+                if (client != null)
                 {
                     if (clientInfo != null)
                     {
@@ -118,17 +118,17 @@ namespace WebUI.Controllers
                         {
                             _context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
                         }
-                        if (_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId).Count() != 0)
+                        if (_context.Set<ClientPhone>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
                         {
                             _context.Set<ClientPhone>().RemoveRange(_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
                         }
-                        if (_context.Set<CallClient>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
+                        if (_context.Set<CallClient>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
                         {
-                            _context.Set<CallClient>().Remove(_context.Set<CallClient>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                            _context.Set<CallClient>().RemoveRange(_context.Set<CallClient>().Where(c => c.ClientId == clientInfo.ClientId));
                         }
-                        if (_context.Set<ClientContact>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
+                        if (_context.Set<ClientContact>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
                         {
-                            _context.Set<ClientContact>().Remove(_context.Set<ClientContact>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                            _context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
                         }
                         _context.Set<ClientInfo>().Remove(clientInfo);
                         _context.SaveChanges();
@@ -147,17 +147,29 @@ namespace WebUI.Controllers
                 }
                 else
                 {
-                    Client client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-                    List<ClientPhone> clientPhones = _context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId).ToList();
-                    if (clientInfo != null)
+                    if (_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
                     {
-                        _context.Set<Data.Entities.OneCInfo.ClientInfo>().RemoveRange(_context.Set<Data.Entities.OneCInfo.ClientInfo>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
-                        _context.Set<Data.Entities.Clients.Client>().RemoveRange(_context.Set<Data.Entities.Clients.Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
-                        _context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
-                        _context.Set<CallClient>().RemoveRange(_context.Set<CallClient>().Where(c => c.ClientId == clientInfo.ClientId));
-                        _context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>().Where(c => c.ClientId == clientInfo.ClientId));
-                        _context.SaveChanges();
+                        _context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
                     }
+                    if (_context.Set<ClientPhone>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
+                    {
+                        _context.Set<ClientPhone>().RemoveRange(_context.Set<ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
+                    }
+                    if (_context.Set<CallClient>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
+                    {
+                        _context.Set<CallClient>().RemoveRange(_context.Set<CallClient>().Where(c => c.ClientId == clientInfo.ClientId));
+                    }
+                    if (_context.Set<ClientContact>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
+                    {
+                        _context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
+                    }
+                    _context.Set<ClientInfo>().Remove(clientInfo);
+                    //_context.Set<Data.Entities.OneCInfo.ClientInfo>().RemoveRange(_context.Set<Data.Entities.OneCInfo.ClientInfo>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId));
+                    //_context.Set<Data.Entities.Clients.Client>().RemoveRange(_context.Set<Data.Entities.Clients.Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
+                    //_context.Set<Data.Entities.Clients.ClientPhone>().RemoveRange(_context.Set<Data.Entities.Clients.ClientPhone>().Where(c => c.ClientId == clientInfo.ClientId));
+                    //_context.Set<CallClient>().RemoveRange(_context.Set<CallClient>().Where(c => c.ClientId == clientInfo.ClientId));
+                    //_context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>().Where(c => c.ClientId == clientInfo.ClientId));
+                    _context.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -197,16 +209,22 @@ namespace WebUI.Controllers
                 ClientInfo clientInfo = _context.Set<ClientInfo>()
                                             .Add(new ClientInfo(client1.Id, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
                 _context.SaveChanges();
-                if (_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
+                if (client.GR_Contragent != "" && _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
                 {
                     _context.Set<ClientGR>().Add(new ClientGR()
                     {
-                        Client = client1,
-                        ClientId = client1.Id,
+                        Clients = new List<Data.Entities.Clients.Client>()
+                                {
+                                    client1
+                                },
                         NameGr = client.GR_Contragent
                     });
-                    _context.SaveChanges();
                 }
+                else if(client.GR_Contragent != "")
+                {
+                    //_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent).Clients.Add(client1);
+                }
+                _context.SaveChanges();
                 if (client.Manager_ID != null && client.Manager_ID != "")
                 {
                     var managersGuidStr = client.Manager_ID.Split(',');
@@ -361,10 +379,10 @@ namespace WebUI.Controllers
 
         private void ReloadClientsCalls(string id)
         {
-            //_myCallsApiService = new MyCallsAPIService(_context);
-            //_myCallsAPIServiceAstrics = new MyCallsAPIServiceAstrics(_context);
-            //_myCallsApiService.SaveNewCalls();
-            //_myCallsAPIServiceAstrics.SaveNewCalls();
+            _myCallsApiService = new MyCallsAPIService(_context);
+            _myCallsAPIServiceAstrics = new MyCallsAPIServiceAstrics(_context);
+            _myCallsApiService.SaveNewCalls();
+            _myCallsAPIServiceAstrics.SaveNewCalls();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
 
             var managersPhone = _context.Set<Manager>()

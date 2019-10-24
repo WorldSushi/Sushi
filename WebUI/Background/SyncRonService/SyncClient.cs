@@ -126,14 +126,20 @@ namespace WebUI.Background.SyncRonService
                         clientInfo1 = _context.Set<ClientInfo>()
                                             .Add(new ClientInfo(client1.Id, Guid.Parse(client.Contragent_ID), client.Phones)).Entity;
                         await _context.SaveChangesAsync();
-                        if (_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
+                        if (client.GR_Contragent != "" && _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent) == null)
                         {
                             _context.Set<ClientGR>().Add(new ClientGR()
                             {
-                                Client = client1,
-                                ClientId = client1.Id,
+                                Clients = new List<Data.Entities.Clients.Client>()
+                                {
+                                    client1
+                                },
                                 NameGr = client.GR_Contragent
                             });
+                        }
+                        else if (client.GR_Contragent != "")
+                        {
+                            _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent).Clients.Add(client1);
                         }
                         await _context.SaveChangesAsync();
                         if (client.Manager_ID != null && client.Manager_ID != "")

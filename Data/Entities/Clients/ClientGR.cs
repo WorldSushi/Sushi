@@ -1,11 +1,11 @@
 ﻿using Base;
+using System.Collections.Generic;
 
 namespace Data.Entities.Clients
 {
     public class ClientGR : Entity
     {
-        public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public ICollection<Client> Clients { get; set; }
         public string NameGr { get; set; }
     }
 }
