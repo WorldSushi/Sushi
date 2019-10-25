@@ -74,6 +74,33 @@ namespace WebUI.ApiControllers.Controler
         }
 
         [HttpGet]
+        [Route("WeekPlan")]
+        public IActionResult GetWeekPlan()
+        {
+            List<WeekPlan> weekPlans = _context.Set<WeekPlan>().ToList();
+            var clients = _context.Set<Client>()
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    LegalEntity = x.LegalEntity,
+                    WeeklyPlanSRegional = weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.RegionalManager).ToList(),
+                    WeeklyPlanSEscort = weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.EscortManager).ToList()
+                }).ToList();
+                //.Select(x => new WeekPlanDto()
+                //{
+                //    Id = x.Id,
+                //    ClientId = x.ClientId,
+                //    Plan = x.Plan,
+                //    Fact = x.Fact,
+                //    WeekNumber = x.WeekNumber,
+                //    ManagerType = x.ManagerType,
+                //    DateTime = x.Date.ToString("dd.MM.yyyy")
+                //}).ToList();
+                return Ok(clients);
+        }
+
+        [HttpGet]
         [Route("Clients")]
         public async Task<IActionResult> GetClients()
         {

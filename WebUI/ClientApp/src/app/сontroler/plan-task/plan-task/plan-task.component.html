@@ -1,0 +1,47 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Проверка План факта</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="clientsData">
+
+      <ng-container matColumnDef="status">
+        <th colspan="1" mat-header-cell *matHeaderCellDef></th>
+        <td colspan="1" mat-cell *matCellDef="let element" <!--[style.background]="setBagroundStatus(element)"-->></td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th colspan="4" mat-header-cell *matHeaderCellDef>Название</th>
+        <td colspan="4" mat-cell *matCellDef="let element" style="color: #324A60; max-width: 300px">{{element.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="legalEntity">
+        <th colspan="4" mat-header-cell *matHeaderCellDef>Юр. лицо</th>
+        <td colspan="4" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
+      </ng-container>
+
+      
+
+      <ng-container matColumnDef="comentCon">
+        <th colspan="14" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
+        <td colspan="14" mat-cell *matCellDef="let element">
+          <textarea style="width:350px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
+          <button (click)="setNoAccept($event, element.id)" class="btnAccept">Отклонить</button>
+          <button (click)="setAccept($event, element.id)" class="btnAccept">Исправлено</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comentCli">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>Комментарий менеджера</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.callsComments?.managerComment}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+
+
+

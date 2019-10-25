@@ -7,6 +7,6 @@ export interface IWorkgroupPlans {
     escortManagerPlans: IWeekPlan[]
     regionalManagerPlans: IWeekPlan[],
     selectedESWeek?: number,
-  selectedRMWeek?: number,
-  nameWorkGroup: string
+    selectedRMWeek?: number,
+    nameWorkGroup: string
 }

@@ -7,6 +7,7 @@ import { ControlerRoutingModule } from './controler-routing.module';
 import { AcceptManagerModule } from './Calls/acceptManager.module';
 import { ReportModule } from './report/report.module';
 import { ClientsModule } from '../сontroler/clients-accept/client-accept.module';
+import { PlanTaskModule } from './plan-task/plan-task.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ClientsModule } from '../сontroler/clients-accept/client-accept.module
     AcceptManagerModule,
     ReactiveFormsModule,
     ReportModule,
-    ClientsModule
+    ClientsModule,
+    PlanTaskModule
   ]
 })
 export class ControlerModule { }
