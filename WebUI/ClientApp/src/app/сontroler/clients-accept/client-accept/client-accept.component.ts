@@ -3,6 +3,7 @@ import { IManager } from '../../../admin/managers/shared/models/manager.model';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { IClient } from '../../../manager-rm/clients/shared/models/client.model';
+import { IWorkgroup } from '../../../admin/workgroups/shared/models/workgroup.model';
 
 @Component({
   selector: 'app-client-list',
@@ -12,21 +13,20 @@ import { IClient } from '../../../manager-rm/clients/shared/models/client.model'
 export class ClientAcceptComponent implements OnInit {
 
   @Input() managers: IManager[] = [];
-  @Input() cliets: IClient[] = [];
+  @Input() clietsFull: IClient[] = [];
+  @Input() workgroups: IWorkgroup[] = [];
 
   displayedColumns: string[] = ['status', 'title', 'clientType', 'phone', 'legalEntity', 'numberOfCalls', 'numberOfShipments', 'comentCon', 'comentCli']
+  workgroupId: number = 0;
+  cliets: IClient[] = [];
 
   getManager() {
-    this.http.get<IManager[]>('api/admin/Manager/').subscribe((data: IManager[]) => {
+    this.http.get<IManager[]>('api/admin/Manager').subscribe((data: IManager[]) => {
       this.managers = data.filter(d => d.typeManager == 2);
     });
   }
 
   setBagroundStatus(element) {
-    console.log(element.contactType);
-    if (element.contactType == 50) {
-      return "#E0F8EC";
-    }
     if (element.callsComments) {
       if (element.callsComments.acceptControlerCalss == 2) {
         return element.callsComments.colorPen;
@@ -58,8 +58,32 @@ export class ClientAcceptComponent implements OnInit {
 
   getClients() {
     this.http.get<IClient[]>('api/conroler/ClientAccept/Clients').subscribe((data: IClient[]) => {
-      this.cliets = data;
+      this.clietsFull = data;
+      this.getworkgroup();
     });
+  }
+
+  getworkgroup() {
+    this.http.get<IWorkgroup[]>('api/admin/WorkGroup').subscribe((data: IWorkgroup[]) => {
+      this.workgroups = data
+      this.sortClients();
+    });
+  }
+
+  sortClients() {
+    if (this.workgroupId != 0) {
+      let clientIds: number[] = this.workgroups.find(w => w.id == this.workgroupId).clientIds
+      this.cliets = this.clietsFull.filter(c => this.workgroupId == 0 || clientIds.indexOf(c.id) != -1);
+    }
+    else {
+      this.cliets = this.clietsFull;
+    }
+    console.log("sortClients");
+  }
+
+
+  selectedWorkGroupChange() {
+    this.sortClients();
   }
 
   constructor(public dialog: MatDialog,

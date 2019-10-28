@@ -2,6 +2,14 @@
   <mat-card-header>
     <mat-card-title class="card-title">Проверка Клиента</mat-card-title>
   </mat-card-header>
+  <div class="filter clearfix">
+    <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
+      <option [ngValue]=0>Все рабочие групы</option>
+      <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
+        {{wg.title}}
+      </option>
+    </select>
+  </div>
   <div>
     <mat-card-content>
 
@@ -46,8 +54,8 @@
           <th colspan="14" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
           <td colspan="14" mat-cell *matCellDef="let element">
             <textarea style="width:350px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
-            <button  (click)="setNoAccept($event, element.id)" class="btnAccept">Отклонить</button>
-            <button  (click)="setAccept($event, element.id)" class="btnAccept">Исправлено</button>
+            <button (click)="setNoAccept($event, element.id)" class="btnAccept">Отклонить</button>
+            <button (click)="setAccept($event, element.id)" class="btnAccept">Исправлено</button>
           </td>
         </ng-container>
 
