@@ -74,30 +74,24 @@ namespace WebUI.ApiControllers.Controler
         }
 
         [HttpGet]
-        [Route("WeekPlan")]
-        public IActionResult GetWeekPlan()
+        [Route("Client")]
+        public IActionResult GetClient()
         {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+            List<ClientWorkGroup> clientWorkGroups = _context.Set<ClientWorkGroup>().ToList();
             List<WeekPlan> weekPlans = _context.Set<WeekPlan>().ToList();
             var clients = _context.Set<Client>()
                 .Select(x => new
                 {
                     Id = x.Id,
+                    WorkGroupeId = clientWorkGroups.FirstOrDefault(c => c.ClientId == x.Id) != null ? clientWorkGroups.FirstOrDefault(c => c.ClientId == x.Id).WorkGroupId : 0,
                     Title = x.Title,
                     LegalEntity = x.LegalEntity,
-                    WeeklyPlanSRegional = weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.RegionalManager).ToList(),
-                    WeeklyPlanSEscort = weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.EscortManager).ToList()
+                    WeeklyPlanSRegional = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.RegionalManager).ToList(),
+                    WeeklyPlanSEscort = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.EscortManager).ToList()
+                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.Id && c.Type == "План")
                 }).ToList();
-                //.Select(x => new WeekPlanDto()
-                //{
-                //    Id = x.Id,
-                //    ClientId = x.ClientId,
-                //    Plan = x.Plan,
-                //    Fact = x.Fact,
-                //    WeekNumber = x.WeekNumber,
-                //    ManagerType = x.ManagerType,
-                //    DateTime = x.Date.ToString("dd.MM.yyyy")
-                //}).ToList();
-                return Ok(clients);
+            return Ok(clients);
         }
 
         [HttpGet]
@@ -130,7 +124,70 @@ namespace WebUI.ApiControllers.Controler
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("NoAcceptCallWeekPlan")]
+        public void NoAcceptCallWeekPlan(string comment, string clientId)
+        {
+            string color = null;
+            if (_accountInformationService.CurrentUser() is Data.Entities.Users.Manager)
+            {
+                color = ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "1" ? "black" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "2" ? "lightskyblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "3" ? "blue" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "4" ? "blueviolet"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "5" ? "brown" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "6" ? "chocolate"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "7" ? "coral" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "8" ? "darkblue"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "9" ? "deeppink" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "10" ? "gold"
+                : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "11" ? "green" : ((Data.Entities.Users.Manager)_accountInformationService.CurrentUser()).ColorPen == "12" ? "tomato"
+                : "black";
+            }
+            else
+            {
+                color = "black";
+            }
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План");
+            if (callsComment != null)
+            {
+                callsComment.Comment = comment;
+                callsComment.AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept;
+                callsComment.ColorPen = color;
+            }
+            else
+            {
+                _context.Set<CallsComment>().Add(new CallsComment()
+                {
+                    AcceptControlerCalss = AcceptControlerCalss.ControlerNoAccept,
+                    Comment = comment,
+                    ClientId = Convert.ToInt32(clientId),
+                    ColorPen = color,
+                    Type = "План"
+                }); ;
+            }
+            _context.SaveChanges();
+        }
 
+
+        [HttpGet]
+        [Route("DefaultCallWeekPlan")]
+        public void DefaultCallWeekPlan(string comment, string clientId)
+        {
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План");
+            if (callsComment != null)
+            {
+                callsComment.Comment = comment;
+                callsComment.AcceptControlerCalss = AcceptControlerCalss.Default;
+
+            }
+            else
+            {
+                _context.Set<CallsComment>().Add(new CallsComment()
+                {
+                    AcceptControlerCalss = AcceptControlerCalss.Default,
+                    Comment = comment,
+                    ClientId = Convert.ToInt32(clientId),
+                    Type = "План"
+                });
+            }
+            _context.SaveChanges();
+        }
 
         [HttpGet]
         [Route("NoAcceptCallClient")]

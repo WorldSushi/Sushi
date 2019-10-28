@@ -2,12 +2,29 @@
   <mat-card-header>
     <mat-card-title class="card-title">Проверка План факта</mat-card-title>
   </mat-card-header>
+  <div class="filter clearfix">
+    <select [(ngModel)]="numberWeek" (ngModelChange)="changeNumberWeek()">
+      <option [ngValue]=1>Первая неделя</option>
+      <option [ngValue]=2>Вторая неделя</option>
+      <option [ngValue]=3>Третяя неделя</option>
+      <option [ngValue]=4>Четвертая неделя</option>
+    </select>
+    <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+    </select>
+    <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
+      <option [ngValue]=0>Все рабочие групы</option>
+      <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
+        {{wg.title}}
+      </option>
+    </select>
+  </div>
   <mat-card-content>
     <table mat-table [dataSource]="clientsData">
 
       <ng-container matColumnDef="status">
         <th colspan="1" mat-header-cell *matHeaderCellDef></th>
-        <td colspan="1" mat-cell *matCellDef="let element" <!--[style.background]="setBagroundStatus(element)"-->></td>
+        <td colspan="1" mat-cell *matCellDef="let element" [style.background]="setBagroundStatus(element)"></td>
       </ng-container>
 
       <ng-container matColumnDef="title">
@@ -20,12 +37,30 @@
         <td colspan="4" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
       </ng-container>
 
-      
+      <ng-container matColumnDef="taskRM">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>Факт РМ</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.fact}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="taskMC">
+        <th colspan="4" mat-header-cell *matHeaderCellDef>Факт МС</th>
+        <td colspan="4" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.fact}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="planRM">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="planMC">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
+      </ng-container> 
 
       <ng-container matColumnDef="comentCon">
-        <th colspan="14" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
-        <td colspan="14" mat-cell *matCellDef="let element">
-          <textarea style="width:350px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
+        <th colspan="10" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
+        <td colspan="10" mat-cell *matCellDef="let element">
+          <textarea style="width:250px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
           <button (click)="setNoAccept($event, element.id)" class="btnAccept">Отклонить</button>
           <button (click)="setAccept($event, element.id)" class="btnAccept">Исправлено</button>
         </td>
