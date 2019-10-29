@@ -1,43 +1,75 @@
 <div class="dialog-title">
   <h3 mat-dialog-title>Замечания контролера<span>{{data.title}}</span></h3>
 </div>
-<table>
-  <thead>
-    <tr>
-      <th>Дата</th>
-      <th>Коментарий котролера</th>
-      <th>Продолжительность</th>
-      <th>Коментарий</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="tbodyId">
-    <tr *ngFor="let elm of callsAccept">
-      <td [style.color]="elm.colorPen">{{elm.date}}</td>
-      <td [style.color]="elm.colorPen">{{elm.comment}}</td>
-      <td [style.color]="elm.colorPen">{{elm.durations}}</td>
-      <td> <textarea (focusout)="comment(elm.clientId, elm.contactClientId, $event)" style="border:none;margin:1px;padding:10px;width:60%;height:50px" value="">{{elm.maanagerComment}}</textarea></td>
-      <td><button  class="btnAccept" (click)="corect(elm.clientId, elm.contactClientId, $event)">Испралено</button></td>
-    </tr>
-  </tbody>
-</table>
-<hr />
-<table>
-  <thead>
-    <tr>
-      <th>Коментарий котролера</th>
-      <th>Коментарий</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="tbodyId1">
-    <tr *ngFor="let elm of clientAccept">
-      <td [style.color]="elm.colorPen">{{elm.comment}}</td>
-      <td> <textarea (focusout)="comment1(elm.clientId, $event)" style="border:none;margin:1px;padding:10px;width:60%;height:50px" value="">{{elm.maanagerComment}}</textarea></td>
-      <td><button class="btnAccept" (click)="corect1(elm.clientId, $event)">Испралено</button></td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="callsAccept.length != 0">
+  <span>Контроль звонков</span>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="1"></th>
+        <th colspan="10">Дата</th>
+        <th colspan="10">Коментарий котролера</th>
+        <th colspan="3">Продолжительность</th>
+        <th colspan="10">Коментарий</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody id="tbodyId">
+      <tr *ngFor="let elm of callsAccept">
+        <td colspan="1" [style.background]="elm.colorPen"></td>
+        <td colspan="10">{{elm.date}}</td>
+        <td colspan="10">{{elm.comment}}</td>
+        <td colspan="3">{{elm.durations}}</td>
+        <td colspan="10"> <textarea (focusout)="comment(elm.clientId, elm.contactClientId, $event)" style="border:none;margin:1px;padding:10px;width:80%;height:60px" value="">{{elm.maanagerComment}}</textarea></td>
+        <td colspan="2"><button class="btnAccept" (click)="corect(elm.clientId, elm.contactClientId, $event)">Испралено</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr />
+</div>
+<div *ngIf="clientAccept.length != 0">
+  <span>Контроль Клиентов</span>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="1"></th>
+        <th colspan="10">Коментарий котролера</th>
+        <th colspan="10">Коментарий</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody id="tbodyId1">
+      <tr *ngFor="let elm of clientAccept">
+        <td colspan="1" [style.background]="elm.colorPen"></td>
+        <td colspan="10">{{elm.comment}}</td>
+        <td colspan="10"> <textarea (focusout)="comment1(elm.clientId, $event)" style="border:none;margin:1px;padding:10px;width:80%;height:60px" value="">{{elm.maanagerComment}}</textarea></td>
+        <td colspan="2"><button class="btnAccept" (click)="corect1(elm.clientId, $event)">Испралено</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr />
+</div>
+<div *ngIf="PlanAccept.length != 0">
+  <span>Контроль План Факта</span>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="1"></th>
+        <th colspan="10">Коментарий котролера</th>
+        <th colspan="10">Коментарий</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody id="tbodyId1">
+      <tr *ngFor="let elm of PlanAccept">
+        <td colspan="1" [style.background]="elm.colorPen"></td>
+        <td colspan="10">{{elm.comment}}</td>
+        <td colspan="10"> <textarea (focusout)="comment1(elm.clientId, $event)" style="border:none;margin:1px;padding:10px;width:80%;height:60px" value="">{{elm.maanagerComment}}</textarea></td>
+        <td colspan="2"><button class="btnAccept" (click)="corect2(elm.clientId, $event)">Испралено</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <div class="dialog-actions">
   <button mat-raised-button (click)="close()">Закрыть</button>

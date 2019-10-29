@@ -12,6 +12,7 @@ export class CorrectionResponseComponent implements OnInit {
 
   callsAccept: CallsComment[] = [];
   clientAccept: CallsComment[] = [];
+  PlanAccept: CallsComment[] = [];
 
   close() {
     location.reload();
@@ -38,11 +39,20 @@ export class CorrectionResponseComponent implements OnInit {
     this.http.get('api/manager/Client/CorectCliet?idClient=' + idClient).subscribe();
   }
 
+  corect2(idClient, $event) {
+    document.getElementById("tbodyId1").removeChild($event.currentTarget.parentElement.parentElement);
+    this.http.get('api/manager/Client/CorectPlan?idClient=' + idClient).subscribe();
+  }
+
   constructor(public dialogRef: MatDialogRef<CorrectionResponseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient) {
     this.callsAccept = data.callsComments.filter(c => c.type == 'Звонок');
+    //console.log(this.callsAccept);
     this.clientAccept = data.callsComments.filter(c => c.type == 'Клиент');
+    //console.log(this.clientAccept);
+    this.PlanAccept = data.callsComments.filter(c => c.type == 'План');
+    //console.log(this.PlanAccept);
   }
 
   ngOnInit() {

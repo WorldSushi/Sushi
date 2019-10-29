@@ -47,10 +47,10 @@ namespace Data.Services.Concrete
                     new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
                     new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
             }
-            catch
+            catch(Exception e)
             {
+                File.WriteAllText("123.txt", e.Message);
                 monthCallsInfo.Loading = false;
-
                 _context.SaveChanges();
             }
 
@@ -61,10 +61,10 @@ namespace Data.Services.Concrete
                 ClientName = "",
                 ClientNumber = x.Src,
                 DbCallId = x.Id,
-                Direction = "",
+                Direction = x.Src.Length >= 4 ? "1": "0",
                 Duration = Convert.ToInt32(x.Billsec),
                 EndTime = (Int32)(Convert.ToDateTime(x.End).Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
-                Recording = x.Filename,
+                Recording = $"http://95.181.199.172/1c/download/index.php?type=Records&view={x.Filename}",
                 UserAccount =  "",
                 StartTime = (Int32)(Convert.ToDateTime(x.Start).Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
                 SrcNumber = x.Dst,
@@ -110,8 +110,6 @@ namespace Data.Services.Concrete
 
             foreach (var call in a)
             {
-                if (_context.Set<CallInfo>().FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
-                {
                     calls.Add(new CallInfo()
                     {
                         Call = new CallClient()
@@ -129,37 +127,30 @@ namespace Data.Services.Concrete
                                                                && x.SrcNumber == call.SrcNumber
                                                                && x.StartTime == call.StartTime)
                     });
-                }
+                
             }
 
             foreach (var call in b)
             {
                 try
                 {
-                    if (callInfos.FirstOrDefault(c => c.CallLog.Recording == call.Recording) == null)
+                    calls1.Add(new CallInfo()
                     {
-                        calls1.Add(new CallInfo()
+                        Call = new CallManager()
                         {
-                            Call = new CallManager()
-                            {
-                                ManagerIdC = managersPhone
-                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ManagerId,
-                                ManagerId = managersPhone
-                        .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
-                                Duration = call.Duration,
-                                Recording = call.Recording,
-                                DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
-                                Direction = call.Direction
-                            },
-                            CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
-                                                                   && x.SrcNumber == call.SrcNumber
-                                                                   && x.StartTime == call.StartTime)
-                        });
-                    }
-                    else
-                    {
-
-                    }
+                            ManagerIdC = managersPhone
+                    .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.ClientNumber))).ManagerId,
+                            ManagerId = managersPhone
+                    .FirstOrDefault(x => x.Phone.Contains(PhoneHelper.ConvertToPhone(call.SrcNumber))).ManagerId,
+                            Duration = call.Duration,
+                            Recording = call.Recording,
+                            DateTime = dt + TimeSpan.FromSeconds(call.StartTime),
+                            Direction = call.Direction
+                        },
+                        CallLog = callsLog.FirstOrDefault(x => x.ClientNumber == call.ClientNumber
+                                                               && x.SrcNumber == call.SrcNumber
+                                                               && x.StartTime == call.StartTime)
+                    });
                 }
                 catch (Exception e)
                 {

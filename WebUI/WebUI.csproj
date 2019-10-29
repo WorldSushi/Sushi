@@ -35,16 +35,16 @@
   <ItemGroup>
     <None Include="wwwroot\3rdpartylicenses.txt" />
     <None Include="wwwroot\6.f6d4fab1fec71a686ad2.js" />
-    <None Include="wwwroot\7.ed56a120a34fdfe1621a.js" />
-    <None Include="wwwroot\8.41ec4dfa79a8f1387054.js" />
+    <None Include="wwwroot\7.ce04775349db3a8fd38d.js" />
+    <None Include="wwwroot\8.7f64e2a4d929f5f8d799.js" />
     <None Include="wwwroot\9.d84acd3dc7d8e1bcb603.js" />
     <None Include="wwwroot\common.a89bc12bb1a259a4fe2b.js" />
     <None Include="wwwroot\favicon.ico" />
     <None Include="wwwroot\index.html" />
-    <None Include="wwwroot\main.af38e08c2d1ae520fd42.js" />
+    <None Include="wwwroot\main.8b85367c82d43c8f51e7.js" />
     <None Include="wwwroot\polyfills-es5.f2d86d4910a60a141149.js" />
     <None Include="wwwroot\polyfills.0a1f7db38f338842d03b.js" />
-    <None Include="wwwroot\runtime.54f0f0a3564c98909ecb.js" />
+    <None Include="wwwroot\runtime.32128931049e697a7eee.js" />
     <None Include="wwwroot\styles.ef961c0b094e421f3676.css" />
   </ItemGroup>
 
