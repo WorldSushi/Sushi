@@ -510,7 +510,8 @@ export class ReportCallComponent implements OnInit {
   getStartWorkManager(managerId, workgroupId) {
     let startWork = "------";
     let statistickCall: any[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId
-      && this.btnDate == (c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]));
+      && this.btnDate == (c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0])
+      && (c.direction == "Исходящий" || (c.direction == "Входящий" && c.durations > 0)));
     if (statistickCall && statistickCall.length != 0) {
       let tmpData = new Date(statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[2] + '/' + statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[1] + '/' + statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[0] + " " + statistickCall[0].date.substring(statistickCall[0].date.indexOf(" ")));
       statistickCall.forEach((item) => {
@@ -527,7 +528,8 @@ export class ReportCallComponent implements OnInit {
     let endWork = "------";
     if (this.durationTxt == -1) {
       let statistickCall: any[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId
-        && this.btnDate == (c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]));
+        && this.btnDate == (c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '-' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0])
+        && (c.direction == "Исходящий" || (c.direction == "Входящий" && c.durations > 0)));
       if (statistickCall && statistickCall.length != 0) {
         let tmpData = new Date(statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[2] + '/' + statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[1] + '/' + statistickCall[0].date.substring(0, statistickCall[0].date.indexOf(" ")).split(".")[0] + " " + statistickCall[0].date.substring(statistickCall[0].date.indexOf(" ")));
         statistickCall.forEach((item) => {

@@ -145,7 +145,7 @@ namespace Data.Services.Concrete
 
             var workGroups = _context.Set<WorkGroup>().ToList();
 
-            var dt = new DateTime(1970, 1, 1);
+            var dt = new DateTime(1970, 1, 1).AddHours(3);
 
             List<CallInfo> callInfos = _context.Set<CallInfo>().ToList();
 
