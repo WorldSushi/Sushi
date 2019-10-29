@@ -103,9 +103,9 @@ namespace WebUI.Controllers
 
         private async void ReloadClients(string id)
         {
-            //await Task.Delay(10000);
+            await Task.Delay(10000);
             Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
-            //_context = new ApplicationContext();
+            _context = new ApplicationContext();
             List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
             ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == id);
             try
