@@ -25,6 +25,7 @@ export class CallsDatesDialogComponent implements OnInit {
   }
 
   setidZeroOnAccept(row, typeManager: string) {
+
     if (typeManager == "MScallType" && row.MScallType == 10) {
       row.EMclientContactId = 0;
     }
@@ -43,16 +44,14 @@ export class CallsDatesDialogComponent implements OnInit {
     else if (el== 40) {
       return "rgba(76, 255, 0, 0.17)";
     }
-    else if (el== 40) {
-      return "rgba(76, 255, 0, 0.17)";
-    }
     else if (el == 60) {
       return "#FF0040";
     }
     return "";
   }
 
-  save(){
+  save() {
+    console.log(this.clientContacts);
     this.dialogRef.close(this.clientContacts);
   }
 
@@ -106,7 +105,7 @@ getClientContacts(){
       MScallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 10).contactType : 0,
       RMcallType: this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20) ? this.data.clientContacts.find(element => element.date == item.date && element.managerType == 20).contactType : 0,
       Durations: this.data.clientContacts.find(element => element.date == item.date) ? this.data.clientContacts.find(element => element.date == item.date).durations : 0,
-      IsAccept: this.data.clientContacts.find(element => element.date == item.date) ? this.data.clientContacts.find(element => element.date == item.date).isAccept : false
+      Id: this.data.clientContacts.find(element => element.date == item.date) ? this.data.clientContacts.find(element => element.date == item.date).id : 0,
     }
   })
 
@@ -126,7 +125,7 @@ daysInMonth (month, year) {
     public dialogRef: MatDialogRef<CallsDatesDialogComponent>, 
     private dateExtensionsService: DateExtensionsService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    //console.log(data);
+    console.log(data);
     }
 
   ngOnInit() {

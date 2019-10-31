@@ -257,13 +257,14 @@ export class ClientListComponent implements OnInit {
   openCallsDates(client: IClient) {;
     let dialogRef = this.dialog.open(CallsDatesDialogComponent, {
       width: '938px',
+      height: '98%',
       data: {
         clientId: client.id,
         clientTitle: client.title,
         clientContacts: client.clientContacts.filter(item => item.durations >= 150)
       } 
     })
-
+    console.log(client.clientContacts.filter(item => item.durations >= 150));
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
@@ -273,7 +274,8 @@ export class ClientListComponent implements OnInit {
           RMcontacts.push({
             contactType: newContact.RMcallType,
             managerType: 20,
-            clientId: newContact.clientId
+            clientId: newContact.clientId,
+            id: newContact.Id
           }) 
 
         let EMcontacts = []
@@ -281,7 +283,8 @@ export class ClientListComponent implements OnInit {
           EMcontacts.push({
             contactType: newContact.MScallType,
             managerType: 10,
-            clientId: newContact.clientId
+            clientId: newContact.clientId,
+            id: newContact.Id
           }) 
 
         let newContacts = [...RMcontacts, ...EMcontacts]; 

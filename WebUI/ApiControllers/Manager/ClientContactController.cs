@@ -105,7 +105,8 @@ namespace WebUI.ApiControllers.Manager
         public async Task<IActionResult> Post([FromBody] ClientContactCreate command)
         {
             var clientContact = await _context.Set<ClientContact>()
-                .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
+                .FirstOrDefaultAsync(x => x.Id == command.Id
+                                          && x.ClientId == command.ClientId
                                           && x.ManagerType == command.ManagerType
                                           && x.Date.Date == DateTime.Now.Date.Date);
 
