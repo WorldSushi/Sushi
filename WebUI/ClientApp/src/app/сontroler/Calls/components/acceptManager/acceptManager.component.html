@@ -11,8 +11,20 @@
       <option [ngValue]=2>Входящие</option>
     </select>
     <button (click)="hiddenCalendar()">{{btnDate}}</button>
-    <div [hidden]="calendarHidden" class="calendar">
-      <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
+    <div [hidden]="calendarHidden" class="blockCalendar">
+      <div class="calendar" >
+        <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
+      </div>
+      <div class="sortbloc">
+        <button (click)="sortDateCall(1)" class="btnSort">За всё время</button><br />
+        <button (click)="sortDateCall(2)" class="btnSort">За Сегодня</button><br />
+        <button (click)="sortDateCall(3)" class="btnSort">За Вчера</button><br />
+        <button (click)="sortDateCall(4)" class="btnSort">За Последние 7 Дней</button><br />
+        <button (click)="sortDateCall(5)" class="btnSort">3а Последние 30 Дней</button><br />
+        <button (click)="sortDateCall(6)" class="btnSort">За Текущая неделя</button><br />
+        <button (click)="sortDateCall(7)" class="btnSort">За Текущая Месяц</button><br />
+        <button (click)="sortDateCall(8)" class="btnSort">За Текущий год</button><br />
+      </div>
     </div>
   </div>
   <div class="bodyAll">

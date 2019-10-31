@@ -4,6 +4,7 @@ import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { HttpClient } from '@angular/common/http';
 import { AcceptManager } from '../../../../manager-rm/clients/shared/models/accept-manager.model';
 import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
+import { Data } from '@angular/router';
 
 @Component({
   selector: 'app-Accept-Manager',
@@ -31,6 +32,53 @@ export class AcceptManagerComponent implements OnInit {
   durationTxt: number = -1;
 
   ngOnChanges() {
+  }
+
+  sortDateCall(numberSort: number) {
+    let date: Date[] = [];
+    if (numberSort == 1) {
+      date.push(new Date(2019, 7, 1));
+      date.push(new Date());
+      this.verifyRange(date)
+    }
+    else if (numberSort == 2) {
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 3) {
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-1, 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 4) {
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7, 0));
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 5) {
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 30, 0));
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 6) {
+      var curr = new Date; 
+      var first = curr.getDate() - curr.getDay()+1; 
+      var last = first + 6; 
+      var firstday = new Date(curr.setDate(first));
+      var lastday = new Date(curr.setDate(last));
+      date.push(new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate(), 0));
+      date.push(new Date(lastday.getFullYear(), lastday.getMonth(), lastday.getDate(), 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 7) {
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0));
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), 31, 0));
+      this.verifyRange(date)
+    }
+    else if (numberSort == 8) {
+      date.push(new Date(new Date().getFullYear(), 0, 1, 0));
+      date.push(new Date(new Date().getFullYear(), 11, 31, 0));
+      this.verifyRange(date)
+    }
   }
 
   applyFilterNumberOrname(filterValue: string) {
@@ -75,7 +123,7 @@ export class AcceptManagerComponent implements OnInit {
         && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
         && (direction == "" || direction == c.direction)
         && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1)
-        && (this.durationTxt == -1 || c.durations == this.durationTxt));
+        && (this.durationTxt == -1 || c.durations >= this.durationTxt));
       let newItem: AcceptManager = {
         id: item.id,
         login: item.login,

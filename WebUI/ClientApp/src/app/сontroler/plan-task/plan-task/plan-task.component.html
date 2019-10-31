@@ -38,6 +38,16 @@
         <td colspan="4" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="planRM">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="planMC">
+        <th colspan="7" mat-header-cell *matHeaderCellDef>План MC</th>
+        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSEscort?.plan}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="taskRM">
         <th colspan="7" mat-header-cell *matHeaderCellDef>Факт РМ</th>
         <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.fact}} </td>
@@ -45,18 +55,8 @@
 
       <ng-container matColumnDef="taskMC">
         <th colspan="4" mat-header-cell *matHeaderCellDef>Факт МС</th>
-        <td colspan="4" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.fact}} </td>
+        <td colspan="4" mat-cell *matCellDef="let element">{{element.weeklyPlanSEscort?.fact}} </td>
       </ng-container>
-
-      <ng-container matColumnDef="planRM">
-        <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
-        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="planMC">
-        <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
-        <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
-      </ng-container> 
 
       <ng-container matColumnDef="comentCon">
         <th colspan="10" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>

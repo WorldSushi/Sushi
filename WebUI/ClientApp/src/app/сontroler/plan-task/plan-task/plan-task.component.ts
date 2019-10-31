@@ -19,7 +19,7 @@ export class PlanTaskComponent implements OnInit {
   @Input() workgroups: IWorkgroup[] = [];
   @Input() clientsDataFull: IClientData[] = [];
 
-  displayedColumns: string[] = ['status', 'title', 'legalEntity', 'taskRM', 'taskMC', 'planRM', 'planMC', 'comentCon', 'comentCli']
+  displayedColumns: string[] = ['status', 'title', 'legalEntity', 'planRM', 'planMC', 'taskRM', 'taskMC', 'comentCon', 'comentCli']
   numberWeek: number = 1;
   numberMonthe: number = 9;
   numberYear: number = 2019;
