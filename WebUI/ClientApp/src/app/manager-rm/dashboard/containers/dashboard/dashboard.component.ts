@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   managerId$: Observable<IUser> = this.userFacade.currentUser$.pipe(
     withLatestFrom(this.userFacade.currentUser$),
     map(([manager]) => {
+      console.log(manager);
       return manager;
     })
   )

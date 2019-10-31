@@ -505,16 +505,14 @@ export class ClientListComponent implements OnInit {
   }
 
   setBagroundStatus(element) {
-    if (element.callsComments.length != 0 ) {
+    if (element.callsComments) 
+    {
       if (element.callsComments.length != 0) {
         return "#DF013A";
       }
       else {
         return "#FAFAFA";
       }
-    }
-    else {
-      return "#FAFAFA";
     }
   }
 

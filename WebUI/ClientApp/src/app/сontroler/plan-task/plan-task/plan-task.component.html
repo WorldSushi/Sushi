@@ -4,10 +4,11 @@
   </mat-card-header>
   <div class="filter clearfix">
     <select [(ngModel)]="numberWeek" (ngModelChange)="changeNumberWeek()">
-      <option [ngValue]=1>Первая неделя</option>
-      <option [ngValue]=2>Вторая неделя</option>
-      <option [ngValue]=3>Третяя неделя</option>
-      <option [ngValue]=4>Четвертая неделя</option>
+      <option [ngValue]=0>Первая неделя</option>
+      <option [ngValue]=1>Вторая неделя</option>
+      <option [ngValue]=2>Третья неделя</option>
+      <option [ngValue]=3>Четвертая неделя</option>
+      <option [ngValue]=4>Пятая неделя</option>
     </select>
     <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
       <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>

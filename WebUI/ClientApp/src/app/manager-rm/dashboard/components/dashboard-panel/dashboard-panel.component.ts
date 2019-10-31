@@ -16,14 +16,24 @@ export class DashboardPanelComponent implements OnInit {
 
   clientContactsToDayAmount: number = 0;
 
-  contactsStandard = 160;
+  countStandard = 20;
+  hoursStandard = 8;
+  balsOneStandard = 0.4;
+  programStandard = 140;
+  contactsStandard = this.countStandard * this.hoursStandard;
+  balStandard = this.contactsStandard * this.balsOneStandard
 
-  getEscortManagerCallContactsAmount(){
-    return this.clientContacts.filter(item => item.contactType == 10 && item.managerType == 10).length
+  getEscortManagerBals() {
+    return this.balsOneStandard * this.contactsStandard;
+  }
+
+  getEscortManagerCallContactsAmount() {
+    let s = this.setDevelopmentCallMonth();
+    return this.programStandard - this.setDevelopmentCallMonth();
   }
 
   getRegionalManagerCallContactsAmount(){
-    return this.clientContacts.filter(item => item.contactType == 10 && item.managerType == 20).length
+    return this.clientContacts.filter(item => item.contactType == 40 && item.managerType == 20).length
   }
 
   setToDayCall(): number {

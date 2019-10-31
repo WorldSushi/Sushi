@@ -48,7 +48,7 @@ namespace WebUI.Background.SyncRonService
             var responseAppS = JObject.Parse(content);
             List<Model.Contragent.Client> clients = JsonConvert.DeserializeObject<List<Model.Contragent.Client>>(responseAppS.
                         SelectToken("value").ToString());
-            CreateClient(clients);
+            //CreateClient(clients);
             //CreateManager(clients);
             //CreateManager1(clients);
             //List<Data.Entities.Clients.Client> clientss = _context.Set<Data.Entities.Clients.Client>().ToList(); 

@@ -97,28 +97,28 @@
               <th>расхождение</th>
               <th>в баллах</th>
             </tr>
-            <tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
               <th style="text-align: left" colspan="12">Менеджер Сопровождения</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{(getEscortManagerCallContactsAmount() / contactsStandard * 100).toFixed(1)}}%</td>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
+              <td>{{(balStandard / getEscortManagerBals()).toFixed(1)}}%</td>
               <td colspan="2">Звонки развития</td>
-              <td>20</td>
-              <td>8</td>
-              <td>0.4</td>
+              <td>{{countStandard}}</td>
+              <td>{{hoursStandard}}</td>
+              <td>{{balsOneStandard}}</td>
               <td>{{contactsStandard}}</td>
-              <td>64</td>
-              <td>0</td>
+              <td>{{balStandard}}</td>
+              <td>{{contactsStandard}}</td>
+              <td>{{programStandard}}</td>
               <td>{{getEscortManagerCallContactsAmount()}}</td>
-              <td>0</td>
-              <td>0</td>
+              <td>{{getEscortManagerBals()}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <th colspan="12">Региональный менеджер</th>
             </tr>
-            <tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td rowspan="3">{{(getRegionalManagerCallContactsAmount() / (contactsStandard + 16) * 100).toFixed(1)}}%</td>
               <td colspan="2">Встречи и командировки развития</td>
               <td>10</td>
@@ -131,7 +131,7 @@
               <td>-</td>
               <td rowspan="3">0</td>
             </tr>
-            <tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td rowspan="2">Звонки</td>
               <td>Свои смены</td>
               <td>8</td>
@@ -142,7 +142,7 @@
               <td rowspan="2">{{getRegionalManagerCallContactsAmount()}}</td>
               <td rowspan="2">0</td>
             </tr>
-            <tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td>Смены замещения</td>
               <td>2</td>
               <td>8</td>
