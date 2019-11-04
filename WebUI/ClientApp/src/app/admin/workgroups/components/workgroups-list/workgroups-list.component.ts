@@ -7,6 +7,7 @@ import { CreateWorkgroupDialogComponent } from '../../dialogs/create-workgroup-d
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 import { first } from 'rxjs/operators';
+import { PerformanceChartComponent } from '../../dialogs/performance-chart/performance-chart.component';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class WorkgroupsListComponent implements OnInit {
   @Output() workgroupChanged = new EventEmitter();
 
   contactsStandard = 160;
-  fullClientContacts: ICallsDate[];
+  fullClientContacts: ICallsDate[] = [];
   dateCollections: string[] = [];
   dateCollection: string;
   numberMonthe: number = 0;
@@ -60,6 +61,19 @@ export class WorkgroupsListComponent implements OnInit {
     });
   }
 
+
+
+  openPerformanceChart(workgroup: IWorkgroup) {
+    const dialogRef = this.dialog.open(PerformanceChartComponent, {
+      width: '90%',
+      data: {
+        workgroup: workgroup,
+        callEsc: this.fullClientContacts.filter(f => f.managerId == workgroup.escortManagerId),
+        callReg: this.fullClientContacts.filter(f => f.managerId == workgroup.regionalManagerId)
+      }
+    })
+  }
+
   openWorkgroupCreate(){
     const dialogRef = this.dialog.open(CreateWorkgroupDialogComponent, {
       width: '725px',
@@ -75,7 +89,7 @@ export class WorkgroupsListComponent implements OnInit {
 
   getAmountContactsToday(managerId: number){
     const today = new Date().toLocaleDateString();
-    
+
     return this.clientContacts.filter(item => item.date == today && item.managerId == managerId).length;
   }
 
@@ -111,11 +125,13 @@ export class WorkgroupsListComponent implements OnInit {
 
   sortClientForMonthAndYear(month: number, year: number) {
     this.clientContacts = [];
-    for (let i = 0; i < this.fullClientContacts.length; i++) {
-      let tmpDate = this.fullClientContacts[i].date.split(".");
-      if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == month
-        && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == year) {
-        this.clientContacts.push(this.fullClientContacts[i]);
+    if (this.fullClientContacts) {
+      for (let i = 0; i < this.fullClientContacts.length; i++) {
+        let tmpDate = this.fullClientContacts[i].date.split(".");
+        if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == month
+          && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == year) {
+          this.clientContacts.push(this.fullClientContacts[i]);
+        }
       }
     }
   }
@@ -129,34 +145,39 @@ export class WorkgroupsListComponent implements OnInit {
   }
 
   initDateArchiv() {
-    if (this.fullClientContacts.length != 0 && this.dateCollections.length == 0) {
-      this.dateCollections = [];
-      let firstDate = new Date();
-      for (let i = 0; i < this.fullClientContacts.length; i++) {
-        let tmpDate = this.fullClientContacts[i].date.split(".");
-        if (firstDate > new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0])) {
-          firstDate = new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]);
+    if (this.fullClientContacts && this.dateCollections) {
+      if (this.fullClientContacts.length != 0 && this.dateCollections.length == 0) {
+        this.dateCollections = [];
+        let firstDate = new Date();
+        for (let i = 0; i < this.fullClientContacts.length; i++) {
+          let tmpDate = this.fullClientContacts[i].date.split(".");
+          if (firstDate > new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0])) {
+            firstDate = new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]);
+          }
         }
-      }
-      for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
-        for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
-          let date = new Date(i + "/0" + (j + 1));
-          this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+        for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
+          for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
+            let date = new Date(i + "/0" + (j + 1));
+            this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+          }
         }
+        this.dateCollection = this.dateCollections[0];
       }
-      this.dateCollection = this.dateCollections[0];
     }
   }
 
   ngOnChanges(changes): void {
-    if (this.fullClientContacts == null || this.fullClientContacts.length == 0 || this.fullClientContacts.length == this.clientContacts.length) {
-      const toMonth = new Date().getMonth();
-      const toYear = new Date().getFullYear();
-      this.numberMonthe = toMonth;
-      this.numberYear = toYear;
-      this.fullClientContacts = this.clientContacts;
-      this.sortClientForMonthAndYear(toMonth, toYear)
-      this.initDateArchiv();
+    if (this.clientContacts) {
+      if (this.fullClientContacts.length == 0) {
+        const toMonth = new Date().getMonth();
+        const toYear = new Date().getFullYear();
+        this.numberMonthe = toMonth;
+        this.numberYear = toYear;
+        this.fullClientContacts = this.clientContacts;
+        this.sortClientForMonthAndYear(toMonth, toYear)
+        this.initDateArchiv();
+        console.log(this.fullClientContacts);
+      }
     }
   }
 

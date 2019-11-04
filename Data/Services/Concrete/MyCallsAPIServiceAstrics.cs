@@ -52,6 +52,7 @@ namespace Data.Services.Concrete
                 File.WriteAllText("123.txt", e.Message);
                 monthCallsInfo.Loading = false;
                 _context.SaveChanges();
+                return;
             }
 
             callsLog.AddRange(response.Results.Select(x => new CallLog()

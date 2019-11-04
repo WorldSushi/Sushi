@@ -38,6 +38,7 @@ namespace Data
             modelBuilder.Entity<MonthCallsInfoAsterics>();
             modelBuilder.Entity<CallInfo>();
             modelBuilder.Entity<CallsComment>();
+            modelBuilder.Entity<PerformanceChart>();
 
             modelBuilder.Entity<CallPlan>();
             modelBuilder.Entity<BusinessTripPlan>();

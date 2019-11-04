@@ -60,7 +60,9 @@ namespace WebUI.ApiControllers
                 Role = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? "Admin"
                     : ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Admin
-                    || ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Call_Checker ? "Admin"
+                    ? "Admin" 
+                    : ((Data.Entities.Users.Manager)_accountService.CurrentUser()).typeManager == Data.Enums.TypeManager.Call_Checker 
+                    ? "Controler"
                     : "Manager",
                 Workgroup = _accountService.CurrentUser() is Data.Entities.Users.Admin
                     ? null

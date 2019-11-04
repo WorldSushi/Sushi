@@ -26,7 +26,7 @@ export class AdminGuard implements CanActivate {
         return this.userService.getCurrentUser()
             .pipe(
                 map(res => {
-                    if(res.role == 'Admin')
+                  if (res.role == 'Admin' || res.role == 'Controler')
                         return true
                     else {
                         window.location.href = '/Account/Index';
