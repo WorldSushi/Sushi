@@ -235,5 +235,33 @@ namespace WebUI.ApiControllers.Admin
             }
             _context.SaveChanges();
         }
+
+        [HttpGet]
+        [Route("Edit/Balls_YourShifts")]
+        public void Balls_YourShifts(string managerId, string balls_YourShifts)
+        {
+            PerformanceChart performanceChart = _context.Set<PerformanceChart>().FirstOrDefault(p => p.ManagerId.ToString() == managerId);
+            if (performanceChart != null)
+            {
+                performanceChart.Balls_YourShifts = Convert.ToInt32(balls_YourShifts);
+            }
+            else
+            {
+                _context.Set<PerformanceChart>().Add(new PerformanceChart()
+                {
+                    ManagerId = Convert.ToInt32(managerId),
+                    Balls_DevelopmentCalls = 0,
+                    Balls_SubstitutionShifts = 0,
+                    Balls_YourShifts = Convert.ToInt32(balls_YourShifts),
+                    NumberPlan_DevelopmentCalls = 0,
+                    NumberPlan_SubstitutionShifts = 0,
+                    NumberPlan_YourShifts = 0,
+                    ShiftPlan_DevelopmentCalls = 0,
+                    ShiftPlan_SubstitutionShifts = 0,
+                    ShiftPlan_YourShifts = 0
+                });
+            }
+            _context.SaveChanges();
+        }
     }
 }
