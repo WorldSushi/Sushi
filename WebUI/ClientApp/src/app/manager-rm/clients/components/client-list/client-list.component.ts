@@ -51,6 +51,8 @@ export class ClientListComponent implements OnInit {
   selectedGroup: any = -10;
 
   //actualLength: number;
+  todayCalss: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
+
   actual: MatTableDataSource<IClient> = new MatTableDataSource(this.clients);
 
   //recordShipmentLength: number;
@@ -531,7 +533,11 @@ export class ClientListComponent implements OnInit {
     this.notDetermined.data = this.clients.filter(c => c.group == 0);
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
+    this.todayCalss.data = this.clients.filter(c => c.clientContacts && c.clientContacts.length != 0 && c.clientContacts
+      .find(cc => new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getDate() == new Date().getDate()
+        && cc.durations >= 150));
     this.dataSource.paginator = this.paginator;
+    console.log(this.todayCalss.data);
   }
   
   constructor(public dialog: MatDialog,

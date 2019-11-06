@@ -276,7 +276,7 @@ export class DashboardPanelComponent implements OnInit {
 
   setMore10to2_5CallDays(): number {
     return this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && (item.durations < 149 && item.durations > 10)).length;
+      .filter(item => item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId && (item.durations < 149 && item.durations > 10)).length;
   }
 
   setLes10SecCall(): number {
@@ -430,6 +430,7 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   setAllCall(): number {
+    console.log(this.clientContacts);
     return this.clientContacts.length;
   }
 

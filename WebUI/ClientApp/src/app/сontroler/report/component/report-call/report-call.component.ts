@@ -172,7 +172,7 @@ export class ReportCallComponent implements OnInit {
 
   getToDaySmaller2and5AndMore10SCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && (c.durations < 150 && c.durations > 10)).length;
+      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && (c.durations <= 150 && c.durations > 10)).length;
   }
 
   getWeekSmaller2and5AndMore10SCall(managerId, workgroupId) {
