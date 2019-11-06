@@ -103,50 +103,50 @@
           </thead>
           <tbody>
             <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
-              <td>{{(balStandard / getEscortManagerBals()).toFixed(1)}}%</td>
+              <td>{{fullPrecentEC}}%</td>
               <td colspan="2">Звонки развития</td>
-              <td>{{countStandard}}</td>
-              <td>{{hoursStandard}}</td>
-              <td>{{balsOneStandard}}</td>
-              <td>{{contactsStandard}}</td>
-              <td>{{balStandard}}</td>
-              <td>{{contactsStandard}}</td>
-              <td>{{programStandard}}</td>
-              <td>{{getEscortManagerCallContactsAmount()}}</td>
-              <td>{{getEscortManagerBals()}}</td>
+              <td>{{performanceChartMC.numberPlan_DevelopmentCalls}}</td>
+              <td>{{performanceChartMC.shiftPlan_DevelopmentCalls}}</td>
+              <td>{{performanceChartMC.balls_DevelopmentCalls}}</td>
+              <td>{{oneTasksEC}}</td>
+              <td>{{oneBallsEC}}</td>
+              <td>{{tasksEC}}</td>
+              <td>{{performanceChartMC.numberPlan_DevelopmentCalls*8}}</td>
+              <td>{{(performanceChartMC.numberPlan_DevelopmentCalls*8)-this.getToMonthkMesageEC()}}</td>
+              <td>{{ballsEC}}</td>
             </tr>
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <th colspan="12">Региональный менеджер</th>
             </tr>
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
-              <td rowspan="3">{{(getRegionalManagerCallContactsAmount() / (contactsStandard + 16) * 100).toFixed(1)}}%</td>
+              <td rowspan="3">{{fullPrecentRM}}%</td>
               <td colspan="2">Встречи и командировки развития</td>
-              <td>10</td>
+              <td>{{performanceChartRM.numberPlan_DevelopmentCalls}}</td>
+              <td>{{performanceChartRM.shiftPlan_DevelopmentCalls}}</td>
+              <td>{{performanceChartRM.balls_DevelopmentCalls}}</td>
               <td></td>
-              <td>8</td>
-              <td></td>
-              <td rowspan="3">80</td>
-              <td>0</td>
-              <td>-</td>
-              <td>-</td>
-              <td rowspan="3">0</td>
+              <td rowspan="3">{{ballsRM}} </td>
+              <td>{{performanceChartRM.numberPlan_DevelopmentCalls * performanceChartRM.balls_DevelopmentCalls}}</td>
+              <td>{{performanceChartRM.numberPlan_DevelopmentCalls*8}}</td>
+              <td>{{(performanceChartRM.numberPlan_DevelopmentCalls*8) - getToMonthkRegManager()}}</td>
+              <td rowspan="3">{{oneBallsRM}}</td>
             </tr>
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td rowspan="2">Звонки</td>
               <td>Свои смены</td>
-              <td>8</td>
-              <td>20</td>
-              <td rowspan="2">0.4</td>
-              <td>{{contactsStandard}}</td>
-              <td rowspan="2">0</td>
-              <td rowspan="2">{{getRegionalManagerCallContactsAmount()}}</td>
-              <td rowspan="2">0</td>
+              <td>{{performanceChartRM.numberPlan_YourShifts}}</td>
+              <td>{{performanceChartRM.shiftPlan_YourShifts}}</td>
+              <td rowspan="2">{{performanceChartRM.balls_YourShifts}}</td>
+              <td>{{oneTasksRM}}</td>
+              <td rowspan="2">{{tasksRM}}</td>
+              <td rowspan="2">{{performanceChartRM.numberPlan_YourShifts*8}}</td>
+              <td rowspan="2">{{(performanceChartRM.numberPlan_YourShifts*8) -  getToMonthkRegManager()}}</td>
             </tr>
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td>Смены замещения</td>
-              <td>2</td>
-              <td>8</td>
-              <td>16</td>
+              <td>{{performanceChartRM.numberPlan_SubstitutionShifts}}</td>
+              <td>{{performanceChartRM.shiftPlan_SubstitutionShifts}}</td>
+              <td>{{oneTasksRM1}}</td>
             </tr>
           </tbody>
         </table>

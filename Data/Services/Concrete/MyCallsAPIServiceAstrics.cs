@@ -64,10 +64,10 @@ namespace Data.Services.Concrete
                 DbCallId = x.Id,
                 Direction = x.Src.Length >= 4 ? "1": "0",
                 Duration = Convert.ToInt32(x.Billsec),
-                EndTime = (Int32)(Convert.ToDateTime(x.End).Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
-                Recording = $"http://95.181.199.172/1c/download/index.php?type=Records&view={x.Filename}",
+                EndTime = (Int32)(Convert.ToDateTime(x.End).Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+                Recording = $"http://95.181.199.172/admin/getRecordByID.php?uniqueId={x.Filename}",
                 UserAccount =  "",
-                StartTime = (Int32)(Convert.ToDateTime(x.Start).Date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+                StartTime = (Int32)(Convert.ToDateTime(x.Start).Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
                 SrcNumber = x.Dst,
                 UserId = "",
                 SrcId = "",
@@ -107,7 +107,7 @@ namespace Data.Services.Concrete
             List<CallInfo> callInfos = _context.Set<CallInfo>().ToList();
             var workGroups = _context.Set<WorkGroup>().ToList();
 
-            var dt = new DateTime(1970, 1, 1);
+            var dt = new DateTime(1970, 1, 1).AddHours(3);
 
             foreach (var call in a)
             {
@@ -159,7 +159,6 @@ namespace Data.Services.Concrete
                 }
             }
 
-            monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
             _context.Set<CallInfo>()
                 .AddRange(calls);
             _context.Set<CallInfo>()
@@ -222,6 +221,7 @@ namespace Data.Services.Concrete
                 .AddRange(clientContacts);
             _context.Set<ContactManager>()
                 .AddRange(managerContacts);
+            monthCallsInfo.ChangeOffset(Convert.ToInt32(response.LastId));
             monthCallsInfo.Loading = false;
             _context.SaveChanges();
 

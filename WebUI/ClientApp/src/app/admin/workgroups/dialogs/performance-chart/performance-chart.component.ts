@@ -32,9 +32,9 @@ export class PerformanceChartComponent implements OnInit {
   setFormatEC() {
     this.oneTasksEC = this.performanceChartMC.numberPlan_DevelopmentCalls * this.performanceChartMC.shiftPlan_DevelopmentCalls;
     this.oneBallsEC = this.performanceChartMC.balls_DevelopmentCalls * this.oneTasksEC;
-    let msgCount = this.data.callReg.filter(c => c.contactType == 20 || c.contactType == 30).length;
+    let msgCount = this.data.callEsc.filter(c => c.contactType == 20 || c.contactType == 30).length;
     if (msgCount != 0) {
-      let precent = (msgCount / this.data.callReg.length) * 100;
+      let precent = (msgCount / this.data.callEsc.length) * 100;
       let precent10 = this.data.callEsc.length / 0.10;
       if (precent <= precent10) {
         this.tasksEC = this.data.callEsc.length;
