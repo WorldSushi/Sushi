@@ -52,8 +52,8 @@ export class WorkgroupsCallsComponent implements OnInit {
             clientId: client.id,
             clientTitle: client.title,
             clientType: client.clientType,
-            clientActions: calls.filter(call => call.clientId == client.id),
-            nameWorkGroup: ""
+            clientActions: calls.filter(call => call.clientId == client.id && call.contactType != 50 && call.durations >= 150),
+            nameWorkGroup: "",
           }
         })
       }),
@@ -63,12 +63,6 @@ export class WorkgroupsCallsComponent implements OnInit {
 
         return workgroupsCalls.filter(workgroupCalls => currentWorkgroup.clientIds.some(clientId => clientId == workgroupCalls.clientId))
       })
-
     )
-  
-
-
-    
   }
-
 }

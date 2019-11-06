@@ -8,5 +8,7 @@ export interface ICallsDate {
     date: any,
     managerType: number,
     managerId: number,
-    durations: number
+  durations: number,
+  statusContact: number
+
 }

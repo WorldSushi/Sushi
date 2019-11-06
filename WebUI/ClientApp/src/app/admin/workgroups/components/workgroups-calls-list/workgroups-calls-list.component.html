@@ -39,7 +39,7 @@
             <p>PM</p>
           </td>
           <td *ngFor="let day of days">
-            <div *ngFor="let clientAction of getClientContactType(day, workgroupCalls.clientActions, workgroupCalls.clientId)" class="action-circle" [style.background]="getActionColor(clientAction.contactType)">
+            <div *ngFor="let clientAction of getClientContactType(day, workgroupCalls.clientActions, workgroupCalls.clientId)" class="action-circle" [style.background]="getActionColor(clientAction)">
             </div>
           </td>
           <td colspan="2">

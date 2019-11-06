@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { IPerformanceChart } from '../../shared/models/performance-chart.model';
 import { HttpClient } from '@angular/common/http';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-performance-chart',

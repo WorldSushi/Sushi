@@ -122,7 +122,8 @@ export class ClientsComponent implements OnInit {
         date: new Date(),
         clientId: clientId,
         managerId: 0,
-        durations: 0
+        durations: 0,
+        statusContact: 0
       })
     }
 

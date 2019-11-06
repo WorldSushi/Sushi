@@ -62,19 +62,29 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return clientActions.filter(item => item.managerType == managerType).length;
   }
 
-  getActionColor(contactType) {
-    if(contactType == 0)
-      return '#e5e5e5';
-    else if (contactType == 10)
-      return '#F7819F'
-    else if (contactType == 20)
-      return '#B0ECDD'
-    else if (contactType == 30)
-      return '#FDE488'
-    else if (contactType == 40)
-      return '#9CBFF3'
-    else if (contactType == 60)
-      return '#58FA82'
+  getActionColor(clientAction: ICallsDate) {
+    if (!clientAction.statusContact || clientAction.statusContact == 0) {
+      if (clientAction.contactType == 0)
+        return '#e5e5e5';
+      else if (clientAction.contactType == 10)
+        return '#F7819F'
+      else if (clientAction.contactType == 20)
+        return '#B0ECDD'
+      else if (clientAction.contactType == 30)
+        return '#FDE488'
+      else if (clientAction.contactType == 40)
+        return '#9CBFF3'
+      else if (clientAction.contactType == 60)
+        return '#58FA82'
+    }
+    else if (clientAction.statusContact == 1) {
+      debugger
+      return 'red'
+    }
+    else if (clientAction.statusContact == 2) {
+      debugger
+      return '#A9A9F5'
+    }
   }
 
   sortActionClient(day: number) {
@@ -134,7 +144,7 @@ export class WorkgroupsCallsListComponent implements OnInit {
 
   snitWorkGroupForClient() {
     for (let i = 0; i < this.fullworkgroupsCalls.length; i++) {
-      let workgroup = this.workgroups.find(w => w.clientIds.find(c => c == this.fullworkgroupsCalls[i].clientId) != null)
+      let workgroup = this.workgroups.find(w => w.clientIds && w.clientIds.find(c => c == this.fullworkgroupsCalls[i].clientId) != null)
       if (workgroup != null) {
         this.fullworkgroupsCalls[i].nameWorkGroup = workgroup.title;
       }

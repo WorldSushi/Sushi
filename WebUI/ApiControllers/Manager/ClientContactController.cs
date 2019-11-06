@@ -33,6 +33,7 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.Type == "Звонок").ToList();
             List<CallClient> callsClient = _context.Set<CallClient>().ToList();
             List<CallManager> callsManagers = _context.Set<CallManager>().ToList();
             var managerId = _accountInformationService.GetOperatorId();
@@ -51,7 +52,9 @@ namespace WebUI.ApiControllers.Manager
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
                        Durations = callsClient.FirstOrDefault(c => c.Id == x.CallId) != null ? callsClient.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
-                       //IsAccept = x.IsAccept
+                       StatusContact = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id) != null 
+                       ? Convert.ToInt32(callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id).AcceptControlerCalss) 
+                       : 0
                    }).ToListAsync();
                 result.AddRange(_context.Set<ContactManager>()
                    .Select(x => new ClientContactDto()
@@ -82,7 +85,9 @@ namespace WebUI.ApiControllers.Manager
                        ManagerType = x.ManagerType,
                        ManagerId = x.ManagerId,
                        Durations = callsClient.FirstOrDefault(c => c.Id == x.CallId) != null ? callsClient.FirstOrDefault(c => c.Id == x.CallId).Duration : 0,
-                       //IsAccept = x.IsAccept
+                       StatusContact = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id) != null
+                       ? Convert.ToInt32(callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id).AcceptControlerCalss)
+                       : 0
                    }).ToListAsync();
                 result.AddRange(_context.Set<ContactManager>()
                   .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)

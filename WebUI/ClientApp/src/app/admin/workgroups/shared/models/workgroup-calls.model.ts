@@ -6,5 +6,5 @@ export interface IWorkgroupCalls {
     clientTitle: string,
     clientType: number,
   clientActions: ICallsDate[],
-  nameWorkGroup: string
+  nameWorkGroup: string,
 }
