@@ -9,6 +9,7 @@ using Data.Constants;
 using Data.DTO.Clients;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
+using Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,7 @@ namespace WebUI.ApiControllers.Manager
                     NumberOfCalls = x.NumberOfCalls
                 })
                 .ToListAsync();
+
 
             var clientsIdWithCallPlan = await _context.Set<CallPlan>()
                 .Where(x => DateHelper.IsCurrentMonth(x.Date))
@@ -66,15 +68,25 @@ namespace WebUI.ApiControllers.Manager
                 await _context.SaveChangesAsync();
             }
 
+            var clients1 = await _context.Set<Client>()
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    TotalCalls = x.NumberOfCalls == NumberOfCalls.OnePerMonth ? 1 : x.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? 2 : x.NumberOfCalls == NumberOfCalls.ThreePerMonth ? 3
+                    : x.NumberOfCalls == NumberOfCalls.OnePerWeek ? 4 : x.NumberOfCalls == NumberOfCalls.FivePerMonth ? 5 : x.NumberOfCalls == NumberOfCalls.SixPerMonth ? 6
+                    : x.NumberOfCalls == NumberOfCalls.TwoPerWeek ? 8 : 0
+                })
+                .ToListAsync();
+
             var result = await _context.Set<CallPlan>()
                 .Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new CallPlanDto()
                 {
                     Id = x.Id,
                     ClientId = x.ClientId,
-                    TotalCalls = x.TotalCalls,
-                    EscortManagerCalls = x.EscortManagerCalls,
-                    RegionalManagerCalls = x.RegionalManagerCalls
+                    TotalCalls = clients1.First(c => c.Id == x.ClientId).TotalCalls,
+                    RegionalManagerCalls = clients1.First(c => c.Id == x.ClientId).TotalCalls - x.EscortManagerCalls,
+                    EscortManagerCalls = x.EscortManagerCalls
                 }).ToListAsync();
 
             return Ok(result);
