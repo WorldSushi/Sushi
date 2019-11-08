@@ -7,16 +7,16 @@ namespace Data.Entities.ClientContacts
 {
     public class CallPlan : Entity
     {
-        public int ClientId { get; protected set; }
-        public Client Client { get; protected set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
 
-        public int EscortManagerCalls { get; protected set; }
-        public int RegionalManagerCalls { get; protected set; }
-        public int TotalCalls { get; protected set; }
+        public int EscortManagerCalls { get; set; }
+        public int RegionalManagerCalls { get; set; }
+        public int TotalCalls { get; set; }
 
-        public DateTime Date { get; protected set; }
+        public DateTime Date { get; set; }
 
-        private CallPlan()
+        public CallPlan()
         {
 
         }

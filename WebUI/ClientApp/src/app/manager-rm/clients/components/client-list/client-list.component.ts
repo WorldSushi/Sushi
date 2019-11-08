@@ -18,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { CorrectionResponseComponent } from '../../dialogs/correction-response/correction-response.component';
 import { last } from 'rxjs/operators';
 import { debug } from 'util';
+import { IUser } from '../../../../shared/models/user.model';
 
 @Component({
   selector: 'app-client-list',
@@ -29,7 +30,7 @@ export class ClientListComponent implements OnInit {
 
   @Input() workgroup: IWorkgroup[];
   @Input() clients: any[];
-  @Input() manager: any;
+  @Input() manager: IUser;
 
   @Output() clientCreated: EventEmitter<IClient> = new EventEmitter<IClient>();
   @Output() clientUpdated: EventEmitter<IClient> = new EventEmitter<IClient>();
@@ -270,7 +271,7 @@ export class ClientListComponent implements OnInit {
       data: {
         clientId: client.id,
         clientTitle: client.title,
-        clientContacts: client.clientContacts.filter(item => item.durations >= 150)
+        clientContacts: client.clientContacts.filter(item => item.durations >= 150 || (item.contactType == 30 || item.contactType == 20))
       } 
     })
     console.log(client.clientContacts.filter(item => item.durations >= 150));
@@ -299,7 +300,13 @@ export class ClientListComponent implements OnInit {
         let newContacts = [...RMcontacts, ...EMcontacts]; 
 
         newContacts.forEach(item => {
-          item.managerId = this.manager.id;
+          debugger
+          if (item.managerType == 10) {
+            item.managerId = this.manager.workgroup.escortManagerId;
+          }
+          else if (item.managerType == 20) {
+            item.managerId = this.manager.workgroup.regionalManagerId;
+          }
           this.callsDateCreated.emit(item);
         });
         location.reload();
@@ -404,30 +411,25 @@ export class ClientListComponent implements OnInit {
         && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year);
 
 
-      this.clients[i].managerCallsResults.escortCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.durations > 149 && c.contactType != 50).length : 0;
       this.clients[i].managerCallsResults.escortTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
         c.managerType == 10 && c.durations > 149 && c.contactType != 50).length : 0;
-
-      this.clients[i].managerCallsResults.regionalCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.durations > 149 && c.contactType != 50).length : 0;
       this.clients[i].managerCallsResults.regionalTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
         c.managerType == 20 && c.durations > 149 && c.contactType != 50).length : 0;
 
       this.clients[i].managerCallsResults.regionalCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.durations > 149 && c.contactType == 10 || c.contactType == 40).length : 0;
+        c.managerType == 20 && c.contactType == 10 || c.contactType == 40).length : 0;
       this.clients[i].managerCallsResults.escortCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.durations > 149 && c.contactType == 10 || c.contactType == 40).length : 0;
+        c.managerType == 10 && c.contactType == 10 || c.contactType == 40).length : 0;
 
       this.clients[i].managerCallsResults.regionalMails = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.durations > 149 && c.contactType == 20).length : 0;
+        c.managerType == 20 && c.contactType == 20).length : 0;
       this.clients[i].managerCallsResults.escortMails = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.durations > 149 && c.contactType == 20).length : 0;
+        c.managerType == 10 && c.contactType == 20).length : 0;
 
       this.clients[i].managerCallsResults.regionalLetters = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.durations > 149 && c.contactType == 30).length : 0;
+        c.managerType == 20 && c.contactType == 30).length : 0;
       this.clients[i].managerCallsResults.escortLetters = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.durations > 149 && c.contactType == 30).length : 0;
+        c.managerType == 10 && c.contactType == 30).length : 0;
 
       if (this.clients[i].managerCallsResults.escortTotalContacts == 0) {
         this.clients[i].managerCallsResults.escortRes = '-';

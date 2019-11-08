@@ -89,6 +89,7 @@ namespace WebUI.ApiControllers.Manager
                        ? Convert.ToInt32(callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id).AcceptControlerCalss)
                        : 0
                    }).ToListAsync();
+                var s = result.FirstOrDefault(c => c.Id == 36635);
                 result.AddRange(_context.Set<ContactManager>()
                   .Where(x => x.ManagerId == workGroups.EscortManagerId || x.ManagerId == workGroups.RegionalManagerId)
                   .Select(x => new ClientContactDto()

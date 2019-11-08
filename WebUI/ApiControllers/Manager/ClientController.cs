@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
@@ -200,6 +201,33 @@ namespace WebUI.ApiControllers.Manager
                     });
                 }
 
+            }
+
+            await _context.SaveChangesAsync();
+
+            CallPlan callPlan = _context.Set<CallPlan>().FirstOrDefault(cp => cp.ClientId == client.Id && DateHelper.IsCurrentMonth(cp.Date));
+            if(callPlan != null)
+            {
+                callPlan.TotalCalls = client.NumberOfCalls == NumberOfCalls.OnePerMonth ? 1 : client.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? 2 : client.NumberOfCalls == NumberOfCalls.ThreePerMonth ? 3
+                    : client.NumberOfCalls == NumberOfCalls.OnePerWeek ? 4 : client.NumberOfCalls == NumberOfCalls.FivePerMonth ? 5 : client.NumberOfCalls == NumberOfCalls.SixPerMonth ? 6
+                    : client.NumberOfCalls == NumberOfCalls.TwoPerWeek ? 8 : 0;
+                callPlan.RegionalManagerCalls = callPlan.TotalCalls - callPlan.EscortManagerCalls;
+            }
+            else
+            {
+                _context.Set<CallPlan>().Add(new CallPlan()
+                {
+                    ClientId = client.Id,
+                    Client = client,
+                    Date = DateTime.Now.Date,
+                    EscortManagerCalls = 0,
+                    RegionalManagerCalls = client.NumberOfCalls == NumberOfCalls.OnePerMonth ? 1 : client.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? 2 : client.NumberOfCalls == NumberOfCalls.ThreePerMonth ? 3
+                    : client.NumberOfCalls == NumberOfCalls.OnePerWeek ? 4 : client.NumberOfCalls == NumberOfCalls.FivePerMonth ? 5 : client.NumberOfCalls == NumberOfCalls.SixPerMonth ? 6
+                    : client.NumberOfCalls == NumberOfCalls.TwoPerWeek ? 8 : 0,
+                    TotalCalls = client.NumberOfCalls == NumberOfCalls.OnePerMonth ? 1 : client.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? 2 : client.NumberOfCalls == NumberOfCalls.ThreePerMonth ? 3
+                    : client.NumberOfCalls == NumberOfCalls.OnePerWeek ? 4 : client.NumberOfCalls == NumberOfCalls.FivePerMonth ? 5 : client.NumberOfCalls == NumberOfCalls.SixPerMonth ? 6
+                    : client.NumberOfCalls == NumberOfCalls.TwoPerWeek ? 8 : 0
+                });
             }
 
             await _context.SaveChangesAsync();

@@ -29,44 +29,46 @@ namespace WebUI.ApiControllers.Manager
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var clients = await _context.Set<Client>()
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    NumberOfCalls = x.NumberOfCalls
-                })
-                .ToListAsync();
+            //var clients = await _context.Set<Client>()
+            //    .Select(x => new
+            //    {
+            //        Id = x.Id,
+            //        NumberOfCalls = x.NumberOfCalls
+            //    })
+            //    .ToListAsync();
 
 
-            var clientsIdWithCallPlan = await _context.Set<CallPlan>()
-                .Where(x => DateHelper.IsCurrentMonth(x.Date))
-                .Select(x => x.ClientId)
-                .ToListAsync();
+            //var clientsIdWithCallPlan = await _context.Set<CallPlan>()
+            //    .Where(x => DateHelper.IsCurrentMonth(x.Date))
+            //    .Select(x => x.ClientId)
+            //    .ToListAsync();
 
-            var clientsWithoutCallPlan = clients.Select(x => x.Id)
-                .Except(clientsIdWithCallPlan);
+            //var clientsWithoutCallPlan = clients.Select(x => x.Id)
+            //    .Except(clientsIdWithCallPlan);
 
-            if (clientsWithoutCallPlan.Any())
-            {
-                var callPlans = new List<CallPlan>();
+            //if (clientsWithoutCallPlan.Any())
+            //{
+            //    var callPlans = new List<CallPlan>();
 
-                foreach (var clientId in clientsWithoutCallPlan)
-                {
-                    var client = clients.FirstOrDefault(x => x.Id == clientId);
+            //    foreach (var clientId in clientsWithoutCallPlan)
+            //    {
+            //        var client = clients.FirstOrDefault(x => x.Id == clientId);
 
-                    callPlans.Add(new CallPlan(
-                        new CallPlanCreate()
-                        {
-                            ClientId = clientId,
-                            TotalCalls = NumberOfCallsToClient.CallsPerMonth(client.NumberOfCalls)
-                        }));
-                }
+            //        callPlans.Add(new CallPlan(
+            //            new CallPlanCreate()
+            //            {
+            //                ClientId = clientId,
+            //                TotalCalls = client.NumberOfCalls == NumberOfCalls.OnePerMonth ? 1 : client.NumberOfCalls == NumberOfCalls.OnePerTwoWeek ? 2 : client.NumberOfCalls == NumberOfCalls.ThreePerMonth ? 3
+            //        : client.NumberOfCalls == NumberOfCalls.OnePerWeek ? 4 : client.NumberOfCalls == NumberOfCalls.FivePerMonth ? 5 : client.NumberOfCalls == NumberOfCalls.SixPerMonth ? 6
+            //        : client.NumberOfCalls == NumberOfCalls.TwoPerWeek ? 8 : 0
+            //            }));
+            //    }
 
-                await _context.Set<CallPlan>()
-                    .AddRangeAsync(callPlans);
+            //    await _context.Set<CallPlan>()
+            //        .AddRangeAsync(callPlans);
 
-                await _context.SaveChangesAsync();
-            }
+            //    await _context.SaveChangesAsync();
+            //}
 
             var clients1 = await _context.Set<Client>()
                 .Select(x => new
@@ -109,8 +111,7 @@ namespace WebUI.ApiControllers.Manager
             public async Task<IActionResult> Put([FromBody] ChangeAmountEscortManagerCalls command)
             {
                 var callPlan = await _context.Set<CallPlan>()
-                    .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
-                                              && DateHelper.IsCurrentMonth(x.Date));
+                    .FirstOrDefaultAsync(x =>  DateHelper.IsCurrentMonth(x.Date) && x.ClientId == command.ClientId);
 
                 callPlan.ChangeEscortManagerCalls(command.EscortManagerCalls);
 
