@@ -4,6 +4,7 @@ import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.
 import { IWorkgroupCalls } from '../../shared/models/workgroup-calls.model';
 import { retry } from 'rxjs/operators';
 import { concat } from 'rxjs';
+import { ICallPlan } from '../../../../manager-rm/clients/shared/models/call-plan.model';
 
 
 @Component({
@@ -62,6 +63,23 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return clientActions.filter(item => item.managerType == managerType).length;
   }
 
+  getPrecentActions(managerType, clientActions, planCall: ICallPlan) {
+    let resPreccent = '-';
+    if (planCall) {
+      let callPlan = managerType == 30 ? planCall.totalCalls : managerType == 20 ? planCall.regionalManagerCalls : planCall.escortManagerCalls;
+      if (clientActions.filter(item => managerType == 30 || item.managerType == managerType).length == 0) {
+        resPreccent = '-';
+      }
+      else if ((clientActions.filter(item => managerType == 30 || item.managerType == managerType).length / callPlan) > 100) {
+        resPreccent = 100 + '%';
+      }
+      else {
+        resPreccent = ((clientActions.filter(item => managerType == 30 || item.managerType == managerType).length / callPlan) * 100).toFixed(2) + '%';
+      }
+    }
+    return resPreccent;
+  }
+
   getActionColor(clientAction: ICallsDate) {
     if (!clientAction.statusContact || clientAction.statusContact == 0) {
       if (clientAction.contactType == 0)
@@ -117,8 +135,8 @@ export class WorkgroupsCallsListComponent implements OnInit {
       if (this.workgroupsCalls[i].clientActions != null && this.workgroupsCalls[i].clientActions.length != 0) {
         for (let j = 0; j < this.workgroupsCalls[i].clientActions.length; j++) {
           let tmpDate = this.workgroupsCalls[i].clientActions[j].date.split(".");
-          if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == new Date().getMonth()
-            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == new Date().getFullYear()) {
+          if (new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getMonth() == month
+            && new Date(tmpDate[2] + '/' + tmpDate[1] + '/' + tmpDate[0]).getFullYear() == year) {
             workGruope.unshift(this.workgroupsCalls[i]);
             break;
           }

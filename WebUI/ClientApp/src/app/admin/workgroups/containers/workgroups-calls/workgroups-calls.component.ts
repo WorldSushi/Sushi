@@ -54,6 +54,7 @@ export class WorkgroupsCallsComponent implements OnInit {
             clientType: client.clientType,
             clientActions: calls.filter(call => call.clientId == client.id && call.contactType != 50 && call.durations >= 150),
             nameWorkGroup: "",
+            planCall: client.callPlan
           }
         })
       }),

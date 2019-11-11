@@ -12,7 +12,7 @@
           <th style="max-width: 100px" (click)="sortActionClientToName()">
             Название
           </th>
-          <th style="max-width: 200px" >
+          <th style="max-width: 200px">
             Рабочие группы
           </th>
           <th></th>
@@ -27,6 +27,15 @@
           </th>
           <th colspan="2">
             Всего
+          </th>
+          <th colspan="2">
+            МС %
+          </th>
+          <th colspan="2">
+            РМ %
+          </th>
+          <th colspan="2">
+            Всего %
           </th>
         </tr>
       </thead>
@@ -50,6 +59,15 @@
           </td>
           <td colspan="2">
             {{workgroupCalls.clientActions.length}}
+          </td>
+          <td colspan="2">
+            {{getPrecentActions(10, workgroupCalls.clientActions, workgroupCalls.planCall)}}
+          </td>
+          <td colspan="2">
+            {{getPrecentActions(20, workgroupCalls.clientActions, workgroupCalls.planCall)}}
+          </td>
+          <td colspan="2">
+            {{getPrecentActions(30, workgroupCalls.clientActions, workgroupCalls.planCall)}}
           </td>
         </tr>
       </tbody>
