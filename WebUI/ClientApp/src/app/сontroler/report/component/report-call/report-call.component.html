@@ -3,10 +3,20 @@
     <mat-card-title class="card-title">Общая статистика звонков</mat-card-title>
   </mat-card-header>
   <div class="filter clearfix">
-    <input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">
+    <!--<input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">-->
     <input type="date" placeholder="Choose a date" (change)="verifyRange($event)" [(ngModel)]="btnDate">
-    <div [hidden]="calendarHidden" class="calendar">
-    </div>
+    <!--<div [hidden]="calendarHidden" class="calendar">
+  </div>-->
+    <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+    </select>
+    <select [(ngModel)]="numberWeek">
+      <option [ngValue]=1>Первая неделя</option>
+      <option [ngValue]=2>Вторая неделя</option>
+      <option [ngValue]=3>Третья неделя</option>
+      <option [ngValue]=4>Четвертая неделя</option>
+      <option [ngValue]=5>Пятая неделя</option>
+    </select>
   </div>
 
   <div class="workgroups-wrapper">
@@ -30,9 +40,9 @@
         <thead>
           <tr>
             <th style="max-width:50px !important"></th>
-            <th>Сегодня</th>
-            <th>Неделя</th>
-            <th>Месяц</th>
+            <th>{{btnDate}}</th>
+            <th>{{getPeriudWeek()}}</th>
+            <th>{{dateCollection}}</th>
             <th>Всего</th>
           </tr>
         </thead>
@@ -124,9 +134,9 @@
         <thead>
           <tr>
             <th style="max-width:50px !important"></th>
-            <th>Сегодня</th>
-            <th>Неделя</th>
-            <th>Месяц</th>
+            <th>{{btnDate}}</th>
+            <th>{{getPeriudWeek()}}</th>
+            <th>{{dateCollection}}</th>
             <th>Всего</th>
           </tr>
         </thead>

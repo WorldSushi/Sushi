@@ -71,6 +71,7 @@ export class PlanTaskComponent implements OnInit {
       })
     }
   }
+
   setSortWeeplan() {
     this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
     this.clientsData.forEach((item: IClientData) => {

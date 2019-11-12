@@ -70,6 +70,7 @@ namespace WebUI.ApiControllers.Controler
                     Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
                     Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
                 }).ToList());
+            result = result.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
             return Ok(result);
         }
 
