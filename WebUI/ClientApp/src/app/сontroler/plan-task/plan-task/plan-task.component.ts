@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { IClient } from '../../../manager-any/clients/shared/models/client.model';
 import { IClientData } from '../Model/client-data.model';
+import { ClientAccept } from '../../../manager-rm/clients/shared/models/client-accep.modelt';
+import { filter } from 'minimatch';
 
 @Component({
   selector: 'app-plan-task',
@@ -18,11 +20,12 @@ export class PlanTaskComponent implements OnInit {
   @Input() weekPlans: IWeekPlan[];
   @Input() workgroups: IWorkgroup[] = [];
   @Input() clientsDataFull: IClientData[] = [];
+  @Input() cientAccept: ClientAccept[] = [];
 
-  displayedColumns: string[] = ['status', 'title', 'legalEntity', 'planRM', 'planMC', 'taskRM', 'taskMC', 'comentCon', 'comentCli']
-  numberWeek: number = 1;
-  numberMonthe: number = 9;
-  numberYear: number = 2019;
+  displayedColumns: string[] = ['status', 'title', 'legalEntity', 'countCall', 'planRM', 'planMC', 'taskRM', 'taskMC', 'comentCon', 'comentCli']
+  numberWeek: number = 0;
+  numberMonthe: number = new Date().getMonth();
+  numberYear: number = new Date().getFullYear();
   month: string = new Date().toDateString();
   dateCollections: string[] = [];
   dateCollection: string;
@@ -49,6 +52,13 @@ export class PlanTaskComponent implements OnInit {
     this.http.get<IWeekPlan[]>('api/manager/WeekPlan').subscribe((data: IWeekPlan[]) => {
       this.weekPlans = data
       console.log(this.weekPlans);
+      this.getcallsDater();
+    });
+  }
+
+  getcallsDater() {
+    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
+      this.cientAccept = data;
       this.setSortWeeplan();
     });
   }
@@ -62,8 +72,20 @@ export class PlanTaskComponent implements OnInit {
       item.weeklyPlanSEscort = this.weekPlans.find(w => w.managerType == 10 && w.clientId == item.id && w.weekNumber == this.numberWeek
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
-      this.initDateArchiv();
+      item.clientAccept = [];
+        let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * (this.numberWeek + 1));
+        let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
+        dateFirst = new Date(firstDayWeek);
+        //console.log(this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[2] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[1] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[0]);
+        item.clientAccept = this.cientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
+          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= new Date(dateFirst.setDate(dateFirst.getDate() + 6)).getDate()
+          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
+          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
+        //for (var i = dateFirst.getDate(); i <= dateFirst.getDate() + 6; i++) {
+        //  let currDate = new Date(this.numberYear, this.numberMonthe, i);
+        //}
     });
+    this.initDateArchiv();
     console.log(this.clientsData);
   }
 

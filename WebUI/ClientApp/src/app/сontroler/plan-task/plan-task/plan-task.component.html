@@ -38,6 +38,11 @@
         <td colspan="4" mat-cell *matCellDef="let element">{{element.legalEntity}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="countCall">
+        <th colspan="2" mat-header-cell *matHeaderCellDef>Звонки</th>
+        <td colspan="2" mat-cell *matCellDef="let element">{{element.clientAccept.length}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="planRM">
         <th colspan="7" mat-header-cell *matHeaderCellDef>План РМ</th>
         <td colspan="7" mat-cell *matCellDef="let element">{{element.weeklyPlanSRegional?.plan}} </td>
