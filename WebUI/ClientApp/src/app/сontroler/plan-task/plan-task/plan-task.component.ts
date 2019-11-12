@@ -8,6 +8,7 @@ import { IClient } from '../../../manager-any/clients/shared/models/client.model
 import { IClientData } from '../Model/client-data.model';
 import { ClientAccept } from '../../../manager-rm/clients/shared/models/client-accep.modelt';
 import { filter } from 'minimatch';
+import { AcceptManagerDialogComponent } from '../dialog/accept-manager-dialog/accept-manager-dialog.component';
 
 @Component({
   selector: 'app-plan-task',
@@ -63,6 +64,13 @@ export class PlanTaskComponent implements OnInit {
     });
   }
 
+  goToCall(clientAccept: ClientAccept[]) {
+    if (clientAccept) {
+      const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
+        data: clientAccept
+      })
+    }
+  }
   setSortWeeplan() {
     this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
     this.clientsData.forEach((item: IClientData) => {

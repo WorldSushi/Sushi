@@ -6,9 +6,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
 import { DateExtensionsService } from '../../shared/services/date-extensions.service';
+import { AcceptManagerDialogComponent } from './dialog/accept-manager-dialog/accept-manager-dialog.component';
 
 @NgModule({
-  declarations: [PlanTaskComponent],
+  declarations: [PlanTaskComponent, AcceptManagerDialogComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -20,6 +21,9 @@ import { DateExtensionsService } from '../../shared/services/date-extensions.ser
   ],
   providers: [
     DateExtensionsService
-  ]
+  ],
+  entryComponents: [
+    AcceptManagerDialogComponent
+  ],
 })
 export class PlanTaskModule { }

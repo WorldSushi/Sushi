@@ -35,6 +35,7 @@
     <Folder Include="ApiControllers\Markitolog\" />
     <Folder Include="ClientApp\dist\SushiWorldApp\" />
     <Folder Include="ClientApp\src\app\manager-rm\reach-outcomes\Dialog\" />
+    <Folder Include="ClientApp\src\app\сontroler\plan-task\dialog\" />
   </ItemGroup>
 
   <ItemGroup>
