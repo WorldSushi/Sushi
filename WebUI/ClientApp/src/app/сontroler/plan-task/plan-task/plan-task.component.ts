@@ -85,8 +85,9 @@ export class PlanTaskComponent implements OnInit {
         let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * (this.numberWeek + 1));
         let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
         dateFirst = new Date(firstDayWeek);
-        //console.log(this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[2] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[1] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[0]);
-        item.clientAccept = this.cientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
+      //console.log(this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[2] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[1] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[0]);
+      item.clientAccept = this.cientAccept.filter(c => item.id == c.clientId
+          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
           && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= new Date(dateFirst.setDate(dateFirst.getDate() + 6)).getDate()
           && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
           && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
