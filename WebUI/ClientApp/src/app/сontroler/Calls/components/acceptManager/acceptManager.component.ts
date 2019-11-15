@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef  } from '@angular/core';
-import { MatDialog } from '@angular/material';
 import { IManager } from 'src/app/admin/managers/shared/models/manager.model';
 import { HttpClient } from '@angular/common/http';
 import { AcceptManager } from '../../../../manager-rm/clients/shared/models/accept-manager.model';
 import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
 import { Data } from '@angular/router';
+import { Component, ViewChild, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatDialog, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-Accept-Manager',
@@ -18,18 +18,23 @@ export class AcceptManagerComponent implements OnInit {
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
 
-  @Input() acceptManagers: AcceptManager[] = [];
+  //@Input() acceptManagers: AcceptManager[] = [];
 
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
   calendarHidden: string = "hidden";
-  dateStart: Date = new Date();
+  dateStart: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   dateEnd: Date = new Date();
   btnDate: string = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
   direction = 0;
   txtNumber = "";
   durationTxt: number = -1;
+
+  dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept);
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   ngOnChanges() {
   }
@@ -88,7 +93,7 @@ export class AcceptManagerComponent implements OnInit {
 
   applyFilterDuration(filterValue: string) {
     let rep = /[-\.;":'a-zA-Zа-яА-Я]/;
-    let temValue = 0;
+    let temValue = -1;
     if (filterValue != "" && !rep.test(filterValue)) {
       temValue = Number(filterValue);
     }
@@ -115,22 +120,30 @@ export class AcceptManagerComponent implements OnInit {
   }
 
   sortCalls() {
-    this.acceptManagers = [];
+    //this.acceptManagers = [];
     let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
-    this.managers.forEach((item) => {
-      let colleCallsDate = this.cientAccept.filter(c => c.managerId == item.id
-        && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-        && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-        && (direction == "" || direction == c.direction)
-        && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1)
-        && (this.durationTxt == -1 || c.durations >= this.durationTxt));
-      let newItem: AcceptManager = {
-        id: item.id,
-        login: item.login,
-        phone: item.phone,
-        callsDate: colleCallsDate
-      }
-      this.acceptManagers.push(newItem);
+    //this.managers.forEach((item) => {
+    //  let colleCallsDate = this.cientAccept.filter(c => c.managerId == item.id
+    //    && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
+    //    && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
+    //    && (direction == "" || direction == c.direction)
+    //    && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1)
+    //    && (this.durationTxt == -1 || c.durations >= this.durationTxt));
+    //  let newItem: AcceptManager = {
+    //    id: item.id,
+    //    login: item.login,
+    //    phone: item.phone,
+    //    callsDate: colleCallsDate
+    //  }
+    //  this.acceptManagers.push(newItem);
+    //});
+
+    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart=' + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber=' + this.txtNumber + '&durationTxt=' + this.durationTxt).subscribe((data: ClientAccept[]) => {
+      this.cientAccept = data;
+      this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.cdr.detectChanges();
     });
   }
 
@@ -150,11 +163,12 @@ export class AcceptManagerComponent implements OnInit {
   }
 
   getcallsDater() {
-    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
-      this.cientAccept = data;
-      this.sortCalls();
-      console.log(this.acceptManagers);
-    });
+    //this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
+    //  this.cientAccept = data;
+    //  this.sortCalls();
+    //});
+
+    this.sortCalls();
   }
 
   hidenTable($event) {

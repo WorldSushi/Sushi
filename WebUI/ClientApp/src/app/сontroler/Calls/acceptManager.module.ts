@@ -5,13 +5,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientTypeTranslatePipe } from 'src/app/store/shared/pipes/client-type-translate-pipe';
 import { NumberOfCallsTranslatePipe } from 'src/app/store/shared/pipes/number-of-calls-pipe';
 import { NumberOfShipmentsTranslatePipe } from 'src/app/store/shared/pipes/number-of-shipments-pipe';
-import { DateExtensionsService } from 'src/app/shared/services/date-extensions.service';
 import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-group-translate.pipe';
 import { AcceptManagerComponent } from './components/acceptManager/acceptManager.component';
 import { AcceptComponent } from './containers/accept/accept.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -26,6 +26,9 @@ import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
   ],
   exports: [
     AcceptComponent,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,10 @@ import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
     FormsModule,
     HttpClientModule,
     IgxCalendarModule,
-    IgxDatePickerModule
+    IgxDatePickerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ]
 })
 export class AcceptManagerModule { }
