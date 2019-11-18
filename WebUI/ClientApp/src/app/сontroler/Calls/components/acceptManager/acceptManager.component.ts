@@ -18,8 +18,6 @@ export class AcceptManagerComponent implements OnInit {
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
 
-  //@Input() acceptManagers: AcceptManager[] = [];
-
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
@@ -30,6 +28,7 @@ export class AcceptManagerComponent implements OnInit {
   direction = 0;
   txtNumber = "";
   durationTxt: number = -1;
+  selectedManager: number = 0;
 
   dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -110,6 +109,10 @@ export class AcceptManagerComponent implements OnInit {
     this.sortCalls();
   }
 
+  changeManager() {
+    this.sortCalls();
+  }
+
   verifyRange(dates: Date[]) {
     if (dates && dates.length != 0) {
       this.dateStart = dates[0];
@@ -138,7 +141,9 @@ export class AcceptManagerComponent implements OnInit {
     //  this.acceptManagers.push(newItem);
     //});
 
-    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart=' + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber=' + this.txtNumber + '&durationTxt=' + this.durationTxt).subscribe((data: ClientAccept[]) => {
+      this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart='
+          + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
+          + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
       this.cientAccept = data;
       this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
       this.dataSource.paginator = this.paginator;

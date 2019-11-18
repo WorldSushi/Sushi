@@ -76,7 +76,7 @@ namespace WebUI.ApiControllers.Controler
 
         [HttpGet]
         [Route("AcceptManager")]
-        public IActionResult GetAcceptManager(string dateStart, string dateEnd, string direction, string txtNumber, string durationTxt)
+        public IActionResult GetAcceptManager(string dateStart, string dateEnd, string direction, string txtNumber, string durationTxt, string managerId)
         {
             List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
             List<Call> calls = _context.Set<Call>().ToList();
@@ -124,7 +124,8 @@ namespace WebUI.ApiControllers.Controler
                     .Where(c => (Convert.ToDateTime(c.Date).Date >= dateStartTime.Date && Convert.ToDateTime(c.Date).Date <= dateEndTime.Date)
                 && ((direction == null || direction == "") || direction == c.Direction)
                 && (txtNumber == null || txtNumber == "" || c.Phone.IndexOf(txtNumber) != -1 || c.TitleClient.IndexOf(txtNumber) != -1)
-                && (Convert.ToInt32(durationTxt) == -1 || Convert.ToInt32(durationTxt) <= c.Durations))
+                && (Convert.ToInt32(durationTxt) == -1 || Convert.ToInt32(durationTxt) <= c.Durations)
+                && (Convert.ToInt32(managerId) == 0 || Convert.ToInt32(managerId) == c.ManagerId))
                     .ToList();
                 colleCallsDate = colleCallsDate.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
                 //acceptManager.Add(
