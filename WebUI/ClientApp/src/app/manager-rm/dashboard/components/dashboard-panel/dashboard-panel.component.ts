@@ -4,6 +4,7 @@ import { IManager } from '../../../../admin/managers/shared/models/manager.model
 import { IUser } from '../../../../shared/models/user.model';
 import { IPerformanceChart } from '../../../../admin/workgroups/shared/models/performance-chart.model';
 import { HttpClient } from '@angular/common/http';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -44,59 +45,73 @@ export class DashboardPanelComponent implements OnInit {
   discrepancyRM = 0;
   fullPrecentRM = 0;
 
-  setFormatEC() {
-    this.oneTasksEC = this.performanceChartMC.numberPlan_DevelopmentCalls * this.performanceChartMC.shiftPlan_DevelopmentCalls;
-    this.oneBallsEC = this.performanceChartMC.balls_DevelopmentCalls * this.oneTasksEC;
-    let msgCount = this.getToMonthkMesageEC();
-    if (msgCount != 0) {
-      let precent = (msgCount / this.getToMonthkECManager()) * 100;
-      let precent10 = this.getToMonthkECManager() / 0.10;
-      if (precent <= precent10) {
-        this.tasksEC = this.getToMonthkECManager();
-      }
-      else {
-        this.tasksEC = precent;
-      }
+    setFormatEC() {
+        debugger
+        if (!this.performanceChartMC.numberPlan_DevelopmentCalls) {
+            this.performanceChartMC.numberPlan_DevelopmentCalls = 0;
+        }
+        this.oneTasksEC = this.performanceChartMC.numberPlan_DevelopmentCalls * this.performanceChartMC.shiftPlan_DevelopmentCalls;
+        this.oneBallsEC = this.performanceChartMC.balls_DevelopmentCalls * this.oneTasksEC;
+        let msgCount = this.getToMonthkMesageEC();
+        if (msgCount != 0) {
+            let precent = 0;
+            if (this.getToMonthkECManager() > 0) {
+                precent = (msgCount / this.getToMonthkECManager()) * 100;
+            }
+            let precent10 = this.getToMonthkECManager() / 0.10;
+            if (precent <= precent10) {
+                this.tasksEC = this.getToMonthkECManager();
+            }
+            else {
+                this.tasksEC = precent;
+            }
+        }
+        else {
+            this.tasksEC = this.getToMonthkECManager();
+        }
+        this.ballsEC = this.tasksEC * this.performanceChartMC.balls_DevelopmentCalls;
+        if (this.ballsEC != 0) {
+            this.fullPrecentEC = this.ballsEC / this.oneBallsEC;
+        }
+        else {
+            this.fullPrecentEC = 0;
+        }
     }
-    else {
-      this.tasksEC = this.getToMonthkECManager();
-    }
-    this.ballsEC = this.tasksEC * this.performanceChartMC.balls_DevelopmentCalls;
-    if (this.ballsEC != 0) {
-      this.fullPrecentEC = this.ballsEC / this.oneBallsEC;
-    }
-    else {
-      this.fullPrecentEC = 0;
-    }
-  }
 
 
-  setFormatRM() {
-    this.oneTasksRM = this.performanceChartRM.numberPlan_YourShifts * this.performanceChartRM.shiftPlan_YourShifts;
-    this.oneTasksRM1 = this.performanceChartRM.numberPlan_SubstitutionShifts * this.performanceChartRM.shiftPlan_SubstitutionShifts;
-    this.ballsRM = this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls + this.performanceChartRM.balls_YourShifts * (this.oneTasksRM + this.oneTasksRM1);
-    let msgCount = this.getToMonthkMesageReg();
-    if (msgCount != 0) {
-      let precent = (msgCount / this.getToMonthkRegManager()) * 100;
-      let precent10 = this.getToMonthkRegManager() / 0.10;
-      if (precent <= precent10) {
-        this.tasksRM = this.getToMonthkRegManager();
-      }
-      else {
-        this.tasksRM = precent;
-      }
+    setFormatRM() {
+        debugger
+        if (!this.performanceChartRM.numberPlan_DevelopmentCalls) {
+            this.performanceChartRM.numberPlan_DevelopmentCalls = 0;
+        }
+        this.oneTasksRM = this.performanceChartRM.numberPlan_YourShifts * this.performanceChartRM.shiftPlan_YourShifts;
+        this.oneTasksRM1 = this.performanceChartRM.numberPlan_SubstitutionShifts * this.performanceChartRM.shiftPlan_SubstitutionShifts;
+        this.ballsRM = this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls + this.performanceChartRM.balls_YourShifts * (this.oneTasksRM + this.oneTasksRM1);
+        let msgCount = this.getToMonthkMesageReg();
+        if (msgCount != 0) {
+            let precent = 0;
+            if (this.getToMonthkRegManager() > 0) {
+                precent = (msgCount / this.getToMonthkRegManager()) * 100;
+            }
+            let precent10 = this.getToMonthkRegManager() / 0.10;
+            if (precent <= precent10) {
+                this.tasksRM = this.getToMonthkRegManager();
+            }
+            else {
+                this.tasksRM = precent;
+            }
+        }
+        else {
+            this.tasksRM = this.getToMonthkRegManager();
+        }
+        this.oneBallsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_DevelopmentCalls * this.tasksRM);
+        if (this.ballsRM != 0) {
+            this.fullPrecentRM = this.ballsRM / this.oneBallsRM;
+        }
+        else {
+            this.fullPrecentRM = 0;
+        }
     }
-    else {
-      this.tasksRM = this.getToMonthkRegManager();
-    }
-    this.oneBallsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_DevelopmentCalls * this.tasksRM);
-    if (this.fullPrecentRM != 0) {
-      this.fullPrecentRM = this.fullPrecentRM / this.ballsRM;
-    }
-    else {
-      this.fullPrecentRM = 0;
-    }
-  }
 
   getPerformanceChartMC() {
     this.http.get<IPerformanceChart>('api/admin/PerformanceChart?managerId=' + this.Managerid.workgroup.escortManagerId).subscribe((data: IPerformanceChart) => {
@@ -117,8 +132,8 @@ export class DashboardPanelComponent implements OnInit {
   getToMonthkECManager(): number {
     var curr = new Date();
     var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.regionalManagerId && item.contactType == 40);
+      var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+      let clientContactsSort = this.clientContacts.filter(item => item.managerId == this.Managerid.workgroup.escortManagerId && item.contactType == 40);
     let countMonthCall = 0;
     for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
       countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString()).length;;
@@ -349,7 +364,6 @@ export class DashboardPanelComponent implements OnInit {
   setDevelopmentCallDays(): number {
     let s = this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
       .filter(item => item.contactType != 30 && item.contactType != 20 && (item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && (item.contactType == 40 || item.contactType == 60)));
-    console.log(s);
     return s.length;
   }
 
@@ -430,7 +444,6 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   setAllCall(): number {
-    console.log(this.clientContacts);
     return this.clientContacts.length;
   }
 
