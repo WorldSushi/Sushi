@@ -407,7 +407,7 @@ export class DashboardPanelComponent implements OnInit {
 
 
   setManagerCall(): number {
-    return this.clientContacts.filter(item => item.contactType != 30 && item.contactType != 20 && (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId))
+    return this.clientContacts.filter(item => (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId))
       .filter(item => item.contactType == 50).length;
   }
 
@@ -415,7 +415,7 @@ export class DashboardPanelComponent implements OnInit {
     var curr = new Date();
     var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
     var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientContactsSort = this.clientContacts.filter(item => item.contactType != 30 && item.contactType != 20 && (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId));
+    let clientContactsSort = this.clientContacts.filter(item => (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId));
     let countMonthCall = 0;
     for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
       countMonthCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 50).length;;
@@ -429,7 +429,7 @@ export class DashboardPanelComponent implements OnInit {
     var last = first + 6;
     var firstday = new Date(curr.setDate(first));
     var lastday = new Date(curr.setDate(last));
-    let clientContactsSort = this.clientContacts.filter(item => item.contactType != 30 && item.contactType != 20 && (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId));
+    let clientContactsSort = this.clientContacts.filter(item => (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId));
     let countWeekCall = 0;
     for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
       countWeekCall += clientContactsSort.filter(item => item.date == i.toLocaleDateString() && item.contactType == 50).length;;
@@ -439,7 +439,7 @@ export class DashboardPanelComponent implements OnInit {
 
   setManagerCallDays(): number {
     let s = this.clientContacts.filter(item => item.date == new Date().toLocaleDateString())
-      .filter(item => item.contactType != 30 && item.contactType != 20 && (item.managerId == (this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && item.contactType == 50));
+      .filter(item => (item.managerId == this.Managerid.workgroup.escortManagerId || item.managerId == this.Managerid.workgroup.regionalManagerId) && item.contactType == 50);
     return s.length;
   }
 
