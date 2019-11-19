@@ -343,6 +343,18 @@ namespace WebUI.ApiControllers.Manager
         }
 
         [HttpGet]
+        [Route("CorectPlan")]
+        public void AcceptManagerPlan(string idClient)
+        {
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План");
+            if (callsComment != null)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "План").AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
         [Route("Comment")]
         public void SetComment(string idClient, string idContact, string comment)
         {
