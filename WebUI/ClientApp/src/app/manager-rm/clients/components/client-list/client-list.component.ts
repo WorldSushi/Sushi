@@ -569,7 +569,7 @@ export class ClientListComponent implements OnInit {
     const toMonth = new Date().getMonth();
     const toYear = new Date().getFullYear();
     this.sorDataClients(toYear, toMonth);
-    this.initDateArchiv();
+      this.initDateArchiv();
     this.actual.data = this.clients.filter(c => c.group == 10);
     this.recordShipment.data = this.clients.filter(c => c.group == 20);
     this.restaurants.data = this.clients.filter(c => c.group == 40);

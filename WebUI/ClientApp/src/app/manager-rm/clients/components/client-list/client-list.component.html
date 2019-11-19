@@ -23,7 +23,7 @@
   </div>
   <div [hidden]="hidenDivFull">
 
-    <mat-card-content style="background-color:#f7f7f7">
+    <mat-card-content style="background-color:#f7f7f7" *ngIf="todayCalss.data.length">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Клиенты с сегодняшними звонками больше 2.5 минут </span>
       <table mat-table [dataSource]="todayCalss" [trackBy]="getTrackBy">
@@ -253,7 +253,7 @@
 
     </mat-card-content>
 
-    <mat-card-content style="background-color:#f7f7f7">
+    <mat-card-content style="background-color:#f7f7f7" *ngIf="actual.data.length">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Актуальные</span>
       <table mat-table [dataSource]="actual" [trackBy]="getTrackBy">
@@ -483,7 +483,7 @@
 
     </mat-card-content>
 
-    <mat-card-content style="background-color:#f7f7f7">
+    <mat-card-content style="background-color:#f7f7f7" *ngIf="recordShipment.data.length">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">С редкой отгрузкой</span>
       <table mat-table [dataSource]="recordShipment" [trackBy]="getTrackBy">
@@ -713,7 +713,7 @@
 
     </mat-card-content>
 
-    <mat-card-content tyle="background-color:#f7f7f7">
+    <mat-card-content tyle="background-color:#f7f7f7" *ngIf="restaurants.data.length">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Рестораны</span>
       <table mat-table [dataSource]="restaurants" [trackBy]="getTrackBy">
@@ -945,7 +945,7 @@
       
     </mat-card-content>
     
-        <mat-card-content style="background-color:#f7f7f7">
+        <mat-card-content style="background-color:#f7f7f7" *ngIf="newOrResuscitating.data.length">
 
           <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Новые или реанимируемые</span>
           <table mat-table [dataSource]="newOrResuscitating" [trackBy]="getTrackBy">
@@ -1176,7 +1176,7 @@
 
         </mat-card-content>
         
-        <mat-card-content style="background-color:#f7f7f7">
+        <mat-card-content style="background-color:#f7f7f7" *ngIf="notDetermined.data.length">
 
           <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Другие</span>
           <table mat-table [dataSource]="notDetermined" [trackBy]="getTrackBy">
@@ -1408,7 +1408,7 @@
      </mat-card-content>
 
        
-    <mat-card-content style="background-color:#f7f7f7">
+    <mat-card-content style="background-color:#f7f7f7" *ngIf="other.data.length">
 
       <span style="font-family:Roboto,Helvetica Neue,sans-serif;font-size:14pt;margin:15px;">Другие</span>
       <table mat-table [dataSource]="other" [trackBy]="getTrackBy">
