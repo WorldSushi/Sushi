@@ -29,12 +29,14 @@ export class ReportCallComponent implements OnInit {
   dateCollections: string[] = [];
   dateCollection: string;
 
+    todayLoad: boolean = false;
+    toWeekLoad: boolean = false;
+    toMontheLoad: boolean = false;
 
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe(async (data: ClientAccept[]) => {
       this.clientAcceptFull = data;
-      this.initDateArchiv();
-      this.sortCall();
+        this.sortCall();
     });
   }
 
@@ -47,25 +49,32 @@ export class ReportCallComponent implements OnInit {
 
   sortCall() {
     this.statistickCallModel = [];
-    this.workgroup.forEach((item: IWorkgroup) => {
-      let clientAccept = this.clientAcceptFull.filter(c => (c.managerId == item.escortManagerId || c.managerId == item.regionalManagerId) 
-        && (this.durationTxt == -1 || this.durationTxt == c.durations));
-      this.statistickCallModel.push({
-        workgroupId: item.id,
-        title: item.title,
-        escortManagerId: item.escortManagerId,
-        escortManagerName: item.escortManagerName,
-        regionalManagerId: item.regionalManagerId,
-        regionalManagerName: item.regionalManagerName,
-        clientAccepts: clientAccept
+      this.http.get<any[]>('api/conroler/ClientAccept/StatistickCall').subscribe(async (data: any[]) => {
+          this.statistickCallModel = data;
+          this.todayLoad = true;
+          this.toWeekLoad = true;
+          this.toMontheLoad = true;
+          window.setTimeout(() => {
+              this.todayLoad = false;
+              this.toWeekLoad = false;
+              this.toMontheLoad = false;
+          }, 700);
+          this.cdr.detectChanges();
+          this.initDateArchiv();
       });
-    });
     console.log(this.statistickCallModel);
   }
 
   changeManager(manager) {
      
   }
+
+    weekChnege() {
+        this.toWeekLoad = true;
+        window.setTimeout(() => {
+            this.toWeekLoad = false;
+        }, 700);
+    }
 
   applyFilterDuration(filterValue: string) {
     let rep = /[-\.;":'a-zA-Zа-яА-Я]/;
@@ -83,7 +92,11 @@ export class ReportCallComponent implements OnInit {
   }
 
   verifyRange($event) {
-    this.btnDate = $event.currentTarget.value;
+      this.btnDate = $event.currentTarget.value;
+      this.todayLoad = true;
+      window.setTimeout(() => {
+          this.todayLoad = false;
+      }, 700);
   }
 
   hiddenCalendar() {
@@ -119,7 +132,12 @@ export class ReportCallComponent implements OnInit {
     let partDate = dateSelect.split('.');
     let date = new Date(partDate[1] + "/" + partDate[0]);
     this.numberMonthe = date.getMonth();
-    this.numberYear = date.getFullYear();
+      this.numberYear = date.getFullYear();
+      this.toMontheLoad = true;
+      window.setTimeout(() => {
+          this.toMontheLoad = false;
+      }, 700);
+  
     //this.setSortWeeplan();
   }
 
@@ -138,35 +156,60 @@ export class ReportCallComponent implements OnInit {
     return firstday.toLocaleDateString() + ' - ' + lastday.toLocaleDateString() 
   }
 
-
-  getToDayAllCall(managerId, workgroupId) {
-      return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId).length;  
-  }
-
-  getWeekAllCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-      let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getToDayAllCall(managerId, workgroupId) {
+        let toDayCall;
+        var s = managerId + "," + workgroupId;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "all", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId+"all");
+        }
+        return toDayCall
     }
-    return countWeekCall;
-  }
 
-  getMonthAllCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-      let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 &&c.managerId == managerId);
-      countMonthCall = clientAccept.filter(c =>  new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+    getWeekAllCall(managerId, workgroupId) {
+        let toWeekCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekAllCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekAllCall");
+        }
+        return toWeekCall;
+    }
 
-    return countMonthCall;
-  }
+    getMonthAllCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId);
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthAllCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthAllCall");
+        }
+        return toMontheCall;
+    }
 
   getAllAllCall(managerId, workgroupId) {
     return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId).length;
@@ -174,36 +217,63 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayMore2and5Call(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.durations > 150).length;
+    getToDayMore2and5Call(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date().toLocaleDateString() && c.managerId == managerId && c.durations > 150).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "More2and5Call", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId +"More2and5Call");
+        }
+        return toDayCall
   }
 
-  getWeekMore2and5Call(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date();
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations > 150);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getWeekMore2and5Call(managerId, workgroupId) {
+        let toWeekCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date();
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations > 150);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekMore2and5Call", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekMore2and5Call");
+        }
+        return toWeekCall;
     }
-    return countWeekCall;
-  }
 
-  getMonthMore2and5Call(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.durations > 150);
-      countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.contactType != 30 && c.contactType != 20
-          && c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
+    getMonthMore2and5Call(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.durations > 150);
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.contactType != 30 && c.contactType != 20
+                && c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthMore2and5Call", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthMore2and5Call");
+        }
+        return toMontheCall;
   }
 
   getAllMore2and5Call(managerId, workgroupId) {
@@ -212,38 +282,63 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDaySmaller2and5AndMore10SCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
-            && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && (c.durations <= 150 && c.durations > 10)).length;
+    getToDaySmaller2and5AndMore10SCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
+                    && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && (c.durations <= 150 && c.durations > 10)).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "Smaller2and5AndMore10SCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "Smaller2and5AndMore10SCall");
+        }
+        return toDayCall
   }
 
-  getWeekSmaller2and5AndMore10SCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && (c.durations < 150 && c.durations > 10));
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getWeekSmaller2and5AndMore10SCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && (c.durations < 150 && c.durations > 10));
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekSmaller2and5AndMore10SCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekSmaller2and5AndMore10SCall");
+        }
+        return toWeekCall;
+  }
+
+    getMonthSmaller2and5AndMore10SCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && (c.durations < 150 && c.durations > 10));
+            countMonthCall = clientAccept.filter(c => c.contactType != 30 && c.contactType != 20
+                && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthSmaller2and5AndMore10SCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthSmaller2and5AndMore10SCall");
+        }
+        return toMontheCall;
     }
-    return countWeekCall;
-  }
-
-  getMonthSmaller2and5AndMore10SCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && (c.durations < 150 && c.durations > 10));
-      countMonthCall = clientAccept.filter(c => c.contactType != 30 && c.contactType != 20
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
-  }
 
   getAllSmaller2and5AndMore10SCall(managerId, workgroupId) {
       return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && (c.durations < 150 && c.durations > 10)).length;
@@ -251,35 +346,60 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDaySmaller10SCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId &&  c.durations < 10).length;
+    getToDaySmaller10SCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.durations < 10).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "Smaller10SCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "Smaller10SCall");
+        }
+        return toDayCall
   }
 
-  getWeekSmaller10SCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date();
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations < 10);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
-    }
-    return countWeekCall;
+    getWeekSmaller10SCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date();
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations < 10);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekSmaller10SCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekSmaller10SCall");
+        }
+        return toWeekCall;
   }
 
-  getMonthSmaller10SCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations < 10);
-      countMonthCall = clientAccept.filter(c =>  new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
+    getMonthSmaller10SCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations < 10);
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthSmaller10SCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthSmaller10SCall");
+        }
+        return toMontheCall;
   }
 
   getAllSmaller10SCall(managerId, workgroupId) {
@@ -288,39 +408,61 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayDevelopmentCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
-            && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.contactType == 40).length;
+    getToDayDevelopmentCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
+                    && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.contactType == 40).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "DevelopmentCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "DevelopmentCall");
+        }
+        return toDayCall
   }
 
-  getWeekDevelopmentCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 40);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
-    }
-    return countWeekCall;
+    getWeekDevelopmentCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 40);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekDevelopmentCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekDevelopmentCall");
+        }
+        return toWeekCall;
   }
 
-  getMonthDevelopmentCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 40);
-      countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    //for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-    //  countMonthCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
-    //}
-    return countMonthCall;
+    getMonthDevelopmentCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 40);
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthDevelopmentCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthDevelopmentCall");
+        }
+        return toMontheCall;
   }
 
   getAllDevelopmentCall(managerId, workgroupId) {
@@ -329,39 +471,64 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayToColleaguesCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
-            && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.contactType == 50).length;
+    getToDayToColleaguesCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
+                    && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.contactType == 50).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "ToColleaguesCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "ToColleaguesCall");
+        }
+        return toDayCall
   }
 
-  getWeekToColleaguesCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 50);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getWeekToColleaguesCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 50);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekToColleaguesCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekToColleaguesCall");
+        }
+        return toWeekCall;
     }
-    return countWeekCall;
-  }
 
-  getMonthColleaguesCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 50);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countMonthCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getMonthColleaguesCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 50);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countMonthCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthColleaguesCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthColleaguesCall");
+        }
+        return toMontheCall;
     }
-    return countMonthCall;
-  }
 
   getAllToColleaguesCall(managerId, workgroupId) {
       return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.contactType == 50).length;
@@ -369,37 +536,62 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayOutgoingCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
-            && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.direction == "Исходящий").length;
+    getToDayOutgoingCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20
+                    && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.direction == "Исходящий").length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "ToColleaguesCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "ToColleaguesCall");
+        }
+        return toDayCall
   }
 
-  getWeekOutgoingCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Исходящий");
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+    getWeekOutgoingCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Исходящий");
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekOutgoingCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekOutgoingCall");
+        }
+        return toWeekCall;
+  }
+
+    getMonthOutgoingCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Исходящий");
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthOutgoingCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthOutgoingCall");
+        }
+        return toMontheCall;
     }
-    return countWeekCall;
-  }
-
-  getMonthOutgoingCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Исходящий");
-    countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
-  }
 
   getAllToOutgoingCall(managerId, workgroupId) {
       return this.statistickCallModel.find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Исходящий").length;
@@ -407,35 +599,60 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayInboxCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.direction == "Входящий").length;
+    getToDayInboxCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.direction == "Входящий").length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "ToColleaguesCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "ToColleaguesCall");
+        }
+        return toDayCall
   }
 
-  getWeekInboxCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.direction == "Входящий");
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
-    }
-    return countWeekCall;
+    getWeekInboxCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId && c.direction == "Входящий");
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekInboxCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekInboxCall");
+        }
+        return toWeekCall;
   }
 
-  getMonthInboxCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Входящий");
-    countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
+    getMonthInboxCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.direction == "Входящий");
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthInboxCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthInboxCall");
+        }
+        return toMontheCall;
   }
 
   getAllInboxCall(managerId, workgroupId) {
@@ -444,35 +661,60 @@ export class ReportCallComponent implements OnInit {
 
   //================================================================================================================
 
-  getToDayUnansweredCall(managerId, workgroupId) {
-    return this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-        .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.durations == 0).length;
+    getToDayUnansweredCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            toDayCall = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId && c.durations == 0).length;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "ToColleaguesCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "ToColleaguesCall");
+        }
+        return toDayCall
   }
 
-  getWeekUnansweredCall(managerId, workgroupId) {
-    let countWeekCall = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations == 0);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
-    }
-    return countWeekCall;
+    getWeekUnansweredCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let countWeekCall = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations == 0);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                countWeekCall += clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString()).length;
+            }
+            toWeekCall = countWeekCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekUnansweredCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekUnansweredCall");
+        }
+        return toWeekCall;
   }
 
-  getMonthUnansweredCall(managerId, workgroupId) {
-    let countMonthCall = 0;
-    var curr = new Date();
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-        .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations == 0);
-    countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
-    return countMonthCall;
+    getMonthUnansweredCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
+            let countMonthCall = 0;
+            var curr = new Date();
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.contactType != 30 && c.contactType != 20 && c.managerId == managerId && c.durations == 0);
+            countMonthCall = clientAccept.filter(c => new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == this.numberMonthe).length;
+            toMontheCall = countMonthCall;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthUnansweredCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthUnansweredCall");
+        }
+        return toMontheCall;
   }
 
   getAllUnansweredCall(managerId, workgroupId) {
@@ -480,57 +722,82 @@ export class ReportCallComponent implements OnInit {
   }
   //================================================================================================================
 
-  getToDayDurationsCall(managerId, workgroupId) {
-    let durations = 0;
-    let statistickCalls: any[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
-      .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId);
-    statistickCalls.forEach((itme) => {
-      durations += itme.durations;
-    })
-    let date = new Date(null);
-    date.setSeconds(durations);
-    var result = date.toISOString().substr(11, 8);
-    return result;
+    getToDayDurationsCall(managerId, workgroupId) {
+        let toDayCall;
+        if (this.todayLoad) {
+            let durations = 0;
+            let statistickCalls: any[] = this.statistickCallModel.find(s => s.workgroupId == workgroupId)
+                .clientAccepts.filter(c => c.date.substring(0, c.date.indexOf(" ")) == new Date(this.btnDate).toLocaleDateString() && c.managerId == managerId);
+            statistickCalls.forEach((itme) => {
+                durations += itme.durations;
+            })
+            let date = new Date(null);
+            date.setSeconds(durations);
+            toDayCall = date.toISOString().substr(11, 8);
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "DayDurationsCall", toDayCall.toString());
+        }
+        else {
+            toDayCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "DayDurationsCall");
+        }
+        return toDayCall
+    }
+
+    getWeekDurationsCall(managerId, workgroupId) {
+        let toWeekCall;
+        if (this.toWeekLoad) {
+            let durations = 0;
+            let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
+            let first = (curr.getDate() - curr.getDay()) + 1;
+            let last = first + 6;
+            let firstday = new Date(curr.setDate(first));
+            let lastday = new Date(curr.setDate(last));
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                let statistickCalls: any[] = clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString());
+                statistickCalls.forEach((itme) => {
+                    durations += itme.durations;
+                })
+            }
+            let date = new Date(null);
+            date.setSeconds(durations);
+            var result = date.toISOString().substr(11, 8);
+            toWeekCall = result;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getWeekDurationsCall", toWeekCall.toString());
+        }
+        else {
+            toWeekCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getWeekDurationsCall");
+        }
+        return toWeekCall;
   }
 
-  getWeekDurationsCall(managerId, workgroupId) {
-    let durations = 0;
-    let curr = new Date(this.numberYear, this.numberMonthe, 7 * this.numberWeek);
-    let first = (curr.getDate() - curr.getDay()) + 1;
-    let last = first + 6;
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      let statistickCalls: any[] = clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString());
-      statistickCalls.forEach((itme) => {
-        durations += itme.durations;
-      })
-    }
-    let date = new Date(null);
-    date.setSeconds(durations);
-    var result = date.toISOString().substr(11, 8);
-    return result;
-  }
+    getMonthDurationsCall(managerId, workgroupId) {
+        let toMontheCall;
+        var s = managerId + "," + workgroupId;
+        if (this.toMontheLoad) {
 
-  getMonthDurationsCall(managerId, workgroupId) {
-    let durations = 0;
-    var curr = new Date(this.numberYear, this.numberMonthe);
-    var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
-    var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
-    let clientAccept: ClientAccept[] = this.statistickCallModel
-      .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
-    for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
-      let statistickCalls: any[] = clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString());
-      statistickCalls.forEach((itme) => {
-        durations += itme.durations;
-      })
-    }
-    let date = new Date(null);
-    date.setSeconds(durations);
-    var result = date.toISOString().substr(11, 8);
-    return result;
+            let durations = 0;
+            var curr = new Date(this.numberYear, this.numberMonthe);
+            var firstday = new Date(curr.getFullYear(), curr.getMonth(), 1);
+            var lastday = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+            let clientAccept: ClientAccept[] = this.statistickCallModel
+                .find(s => s.workgroupId == workgroupId).clientAccepts.filter(c => c.managerId == managerId);
+            for (let i = firstday; i <= lastday; i.setDate(i.getDate() + 1)) {
+                let statistickCalls: any[] = clientAccept.filter(item => item.date.substring(0, item.date.indexOf(" ")) == i.toLocaleDateString());
+                statistickCalls.forEach((itme) => {
+                    durations += itme.durations;
+                })
+            }
+            let date = new Date(null);
+            date.setSeconds(durations);
+            var result = date.toISOString().substr(11, 8);
+            toMontheCall = result;
+            window.sessionStorage.setItem(managerId + "," + workgroupId + "getMonthDurationsCall", toMontheCall.toString());
+        }
+        else {
+            toMontheCall = window.sessionStorage.getItem(managerId + "," + workgroupId + "getMonthDurationsCall");
+        }
+        return toMontheCall;
   }
 
   getAllDurationsCall(managerId, workgroupId) {
@@ -540,7 +807,7 @@ export class ReportCallComponent implements OnInit {
       durations += itme.durations;
     })
     let date = new Date(null);
-    date.setSeconds(durations);
+      date.setSeconds(durations);
     var result = date.toISOString().substr(11, 8);
     return result;
   }
@@ -581,8 +848,9 @@ export class ReportCallComponent implements OnInit {
     return endWork;
   }
 
-  constructor(public dialog: MatDialog,
-    private http: HttpClient) {
+    constructor(private cdr: ChangeDetectorRef,
+                public dialog: MatDialog,
+                private http: HttpClient) {
     this.getManager();
     this.getWorkGroup();
   }

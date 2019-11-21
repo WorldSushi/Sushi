@@ -32,46 +32,7 @@ namespace WebUI.ApiControllers.Controler
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
-            List<Call> calls = _context.Set<Call>().ToList();
-            List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
-            List<Client> clients = _context.Set<Client>().ToList();
-            List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
-            var result = await _context.Set<ClientContact>()
-                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
-                .Select(x => new AcceptCallsDto()
-                {
-                    Id = x.Id,
-                    ClientId = (int)x.ClientId,
-                    ContactType = x.Type,
-                    Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
-                    ManagerType = x.ManagerType,
-                    ManagerId = x.ManagerId,
-                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
-                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
-                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
-                    Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
-                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
-                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок")
-                }).ToListAsync();
-            result.AddRange(_context.Set<ContactManager>()
-                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
-                .Select(x => new AcceptCallsDto()
-                {
-                    Id = x.Id,
-                    ClientId = (int)x.ManagerIdC,
-                    ContactType = x.Type,
-                    Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
-                    ManagerType = x.ManagerType,
-                    ManagerId = x.ManagerId,
-                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
-                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
-                    TitleClient = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Login : "",
-                    Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
-                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
-                }).ToList());
-            result = result.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
-            return Ok(result);
+            return Ok(GetAcceptCalls());
         }
 
         [HttpGet]
@@ -87,39 +48,7 @@ namespace WebUI.ApiControllers.Controler
             List<Data.Entities.Users.Manager> managers = _context
                 .Set<Data.Entities.Users.Manager>().Where(m => m.typeManager == TypeManager.Manager).ToList();
             List<object> acceptManager = new List<object>();
-            List<AcceptCallsDto> colleCallsDate = _context.Set<ClientContact>()
-                .Select(x => new AcceptCallsDto()
-                {
-                    Id = x.Id,
-                    ClientId = (int)x.ClientId,
-                    ContactType = x.Type,
-                    Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
-                    ManagerType = x.ManagerType,
-                    ManagerId = x.ManagerId,
-                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
-                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
-                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
-                    Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
-                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
-                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок")
-                }).ToList();
-            colleCallsDate.AddRange(_context.Set<ContactManager>()
-            .Select(x => new AcceptCallsDto()
-            {
-                Id = x.Id,
-                ClientId = (int)x.ManagerIdC,
-                ContactType = x.Type,
-                Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
-                ManagerType = x.ManagerType,
-                ManagerId = x.ManagerId,
-                Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
-                ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
-                TitleClient = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Login : "",
-                Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
-                Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
-            }).ToList());
-            //foreach (Data.Entities.Users.Manager manager in managers)
-            //{
+            List<AcceptCallsDto> colleCallsDate = GetAcceptCalls();
                colleCallsDate = colleCallsDate
                     .Where(c => (Convert.ToDateTime(c.Date).Date >= dateStartTime.Date && Convert.ToDateTime(c.Date).Date <= dateEndTime.Date)
                 && ((direction == null || direction == "") || direction == c.Direction)
@@ -128,17 +57,39 @@ namespace WebUI.ApiControllers.Controler
                 && (Convert.ToInt32(managerId) == 0 || Convert.ToInt32(managerId) == c.ManagerId))
                     .ToList();
                 colleCallsDate = colleCallsDate.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
-                //acceptManager.Add(
-                //    new
-                //    {
-                //        Id = manager.Id,
-                //        Login = manager.Login,
-                //        Phone = manager.Phone,
-                //        CallsDate = colleCallsDate
-                //    });
-            //}
             return Ok(colleCallsDate);
         }
+
+        [HttpGet]
+        [Route("StatistickCall")]
+        public IActionResult GetStatistickCall()
+        {
+            List<object> StatistickCalls = new List<object>();
+            List<WorkGroup> workGroups = _context.Set<WorkGroup>().ToList();
+            List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
+            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+            List<Call> calls = _context.Set<Call>().ToList();
+            List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
+            List<Client> clients = _context.Set<Client>().ToList();
+            List<AcceptCallsDto> clientContacts = GetAcceptCalls();
+            foreach (WorkGroup workGroup in workGroups)
+            {
+                List<AcceptCallsDto> clientContacts1 = clientContacts
+                    .Where(c => c.ManagerId == workGroup.RegionalManagerId || c.ManagerId == workGroup.EscortManagerId).ToList();
+                StatistickCalls.Add(new
+                {
+                    WorkgroupId = workGroup.Id,
+                    Title = workGroup.Title,
+                    EscortManagerId = workGroup.EscortManagerId,
+                    EscortManagerName = managers.First(m => m.Id == workGroup.EscortManagerId).Login,
+                    RegionalManagerId = workGroup.RegionalManagerId,
+                    RegionalManagerName = managers.First(m => m.Id == workGroup.RegionalManagerId).Login,
+                    ClientAccepts = clientContacts1
+                });
+            }
+            return Ok(StatistickCalls);
+        }
+
 
         [HttpGet]
         [Route("Client")]
@@ -385,6 +336,50 @@ namespace WebUI.ApiControllers.Controler
                 });
             }
             _context.SaveChanges();
+        }
+
+        private List<AcceptCallsDto> GetAcceptCalls()
+        {
+            List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+            List<Call> calls = _context.Set<Call>().ToList();
+            List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
+            List<Client> clients = _context.Set<Client>().ToList();
+            List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
+            var result = _context.Set<ClientContact>()
+                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
+                .Select(x => new AcceptCallsDto()
+                {
+                    Id = x.Id,
+                    ClientId = (int)x.ClientId,
+                    ContactType = x.Type,
+                    Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
+                    ManagerType = x.ManagerType,
+                    ManagerId = x.ManagerId,
+                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
+                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
+                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
+                    Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
+                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
+                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок")
+                }).ToList();
+            result.AddRange(_context.Set<ContactManager>()
+                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
+                .Select(x => new AcceptCallsDto()
+                {
+                    Id = x.Id,
+                    ClientId = (int)x.ManagerIdC,
+                    ContactType = x.Type,
+                    Date = x.Date.ToString("dd.MM.yyyy HH:mm:ss"),
+                    ManagerType = x.ManagerType,
+                    ManagerId = x.ManagerId,
+                    Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
+                    ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
+                    TitleClient = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Login : "",
+                    Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
+                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
+                }).ToList());
+            result = result.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
+            return result;
         }
     }
 }
