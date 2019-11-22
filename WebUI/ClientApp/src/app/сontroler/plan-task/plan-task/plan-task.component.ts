@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IWorkgroupPlans } from '../../../admin/workgroups/shared/models/workgroup-plans.model';
 import { IWorkgroup } from '../../../admin/workgroups/shared/models/workgroup.model';
 import { IWeekPlan } from '../../../manager-rm/clients/shared/models/week-plan.model';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { IClient } from '../../../manager-any/clients/shared/models/client.model';
 import { IClientData } from '../Model/client-data.model';
 import { ClientAccept } from '../../../manager-rm/clients/shared/models/client-accep.modelt';
@@ -31,9 +31,15 @@ export class PlanTaskComponent implements OnInit {
   dateCollections: string[] = [];
   dateCollection: string;
   workgroupId: number = 0;
-  clientsData: IClientData[] = [];
+    clientsData: IClientData[] = [];
+    hiddenloader = "hidden";
 
-  getClients() {
+    dataSource = new MatTableDataSource<IClientData>(this.clientsData);
+    @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: false }) sort: MatSort;
+
+    getClients() {
+        this.hiddenloader = "";
     this.http.get<IClientData[]>('api/conroler/ClientAccept/Client').subscribe((data: IClientData[]) => {
       this.clientsDataFull = data
       console.log(this.clientsData);
@@ -72,7 +78,8 @@ export class PlanTaskComponent implements OnInit {
     }
   }
 
-  setSortWeeplan() {
+    setSortWeeplan() {
+    this.hiddenloader = "";
     this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
     this.clientsData.forEach((item: IClientData) => {
       item.weeklyPlanSRegional = this.weekPlans.find(w => w.managerType == 20 && w.clientId == item.id && w.weekNumber == this.numberWeek
@@ -95,7 +102,11 @@ export class PlanTaskComponent implements OnInit {
         //  let currDate = new Date(this.numberYear, this.numberMonthe, i);
         //}
     });
-    this.initDateArchiv();
+        this.dataSource = new MatTableDataSource<IClientData>(this.clientsData)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      this.initDateArchiv();
+      this.hiddenloader = "hidden";
     console.log(this.clientsData);
   }
 
