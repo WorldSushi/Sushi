@@ -13,7 +13,8 @@
   <div>
     <mat-card-content>
 
-      <table mat-table [dataSource]="cliets">
+      <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons></mat-paginator>
+      <table mat-table [dataSource]="dataSource" MatSort>
 
         <ng-container matColumnDef="status">
           <th colspan="1" mat-header-cell *matHeaderCellDef></th>
