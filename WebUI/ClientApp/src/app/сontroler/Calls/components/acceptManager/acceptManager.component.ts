@@ -29,6 +29,7 @@ export class AcceptManagerComponent implements OnInit {
   txtNumber = "";
   durationTxt: number = -1;
   selectedManager: number = 0;
+  hiddenloader = "hidden";
 
   dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -122,35 +123,20 @@ export class AcceptManagerComponent implements OnInit {
     }
   }
 
-  sortCalls() {
-    //this.acceptManagers = [];
-    let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
-    //this.managers.forEach((item) => {
-    //  let colleCallsDate = this.cientAccept.filter(c => c.managerId == item.id
-    //    && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) >= this.dateStart
-    //    && new Date(c.date.substring(0, c.date.indexOf(" ")).split(".")[2] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[1] + '/' + c.date.substring(0, c.date.indexOf(" ")).split(".")[0]) <= this.dateEnd
-    //    && (direction == "" || direction == c.direction)
-    //    && (this.txtNumber == "" || c.phone.indexOf(this.txtNumber) != -1 || c.titleClient.indexOf(this.txtNumber) != -1)
-    //    && (this.durationTxt == -1 || c.durations >= this.durationTxt));
-    //  let newItem: AcceptManager = {
-    //    id: item.id,
-    //    login: item.login,
-    //    phone: item.phone,
-    //    callsDate: colleCallsDate
-    //  }
-    //  this.acceptManagers.push(newItem);
-    //});
-
-      this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart='
-          + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
-          + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
-      this.cientAccept = data;
-      this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.cdr.detectChanges();
-    });
-  }
+    sortCalls() {
+        this.hiddenloader = "";
+        let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
+        this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart='
+            + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
+            + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
+                this.cientAccept = data;
+                this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+                this.cdr.detectChanges();
+                this.hiddenloader = "hidden";
+            });
+    }
 
   hiddenCalendar() {
     if (this.calendarHidden == "hidden") {

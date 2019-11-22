@@ -32,6 +32,7 @@ export class ReportCallComponent implements OnInit {
     todayLoad: boolean = false;
     toWeekLoad: boolean = false;
     toMontheLoad: boolean = false;
+    hiddenloader = "hidden";
 
   getcallsDater() {
     this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe(async (data: ClientAccept[]) => {
@@ -40,12 +41,13 @@ export class ReportCallComponent implements OnInit {
     });
   }
 
-  getWorkGroup() {
-    this.http.get<IWorkgroup[]>('api/admin/WorkGroup').subscribe((data: IWorkgroup[]) => {
-      this.workgroup = data;
-      this.getcallsDater();
-    });
-  }
+    getWorkGroup() {
+        this.hiddenloader = "";
+        this.http.get<IWorkgroup[]>('api/admin/WorkGroup').subscribe((data: IWorkgroup[]) => {
+            this.workgroup = data;
+            this.getcallsDater();
+        });
+    }
 
   sortCall() {
     this.statistickCallModel = [];
@@ -61,6 +63,7 @@ export class ReportCallComponent implements OnInit {
           }, 700);
           this.cdr.detectChanges();
           this.initDateArchiv();
+          this.hiddenloader = "hidden";
       });
     console.log(this.statistickCallModel);
   }
