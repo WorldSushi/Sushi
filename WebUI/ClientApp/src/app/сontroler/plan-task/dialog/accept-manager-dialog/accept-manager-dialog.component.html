@@ -14,17 +14,17 @@
 
     <ng-container matColumnDef="statusCall">
       <th colspan="4" mat-header-cell *matHeaderCellDef>Статус</th>
-      <td colspan="4" mat-cell *matCellDef="let element"><span *ngIf="element.contactType != 50"> {{element.contactType == 40 ? "Подтверждён" : "Не подтвержден"}}</span></td>
+      <td colspan="4" mat-cell *matCellDef="let element"><span *ngIf="element.contactType != 50"> {{element.contactType == 40 ? "✓" : "🗙"}}</span></td>
     </ng-container>
 
     <ng-container matColumnDef="direction">
       <th colspan="4" mat-header-cell *matHeaderCellDef>Статус звонка</th>
-      <td colspan="4" mat-cell *matCellDef="let element">{{element.direction}} </td>
+      <td colspan="4" mat-cell *matCellDef="let element">{{element.direction == "Входящий" ? "📱←" : element.direction == "Исходящий" ? "📱→" : element.direction}} </td>
     </ng-container>
 
     <ng-container matColumnDef="answer">
       <th colspan="4" mat-header-cell *matHeaderCellDef>Отвечен</th>
-      <td colspan="4" mat-cell *matCellDef="let element">{{element.durations == 0 ? "Нет" : "Да"}} </td>
+      <td colspan="4" mat-cell *matCellDef="let element">{{element.durations == 0 ? "🗙" : "✓"}} </td>
     </ng-container>
 
     <ng-container matColumnDef="title">

@@ -64,16 +64,16 @@ export class PlanTaskComponent implements OnInit {
   }
 
   getcallsDater() {
-    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
-      this.cientAccept = data;
+      this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
+          this.cientAccept = data.filter(c => c.durations >= 150);
       this.setSortWeeplan();
     });
   }
 
   goToCall(clientAccept: ClientAccept[]) {
     if (clientAccept) {
-      const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
-        data: clientAccept
+        const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
+            data: clientAccept
       })
     }
   }
