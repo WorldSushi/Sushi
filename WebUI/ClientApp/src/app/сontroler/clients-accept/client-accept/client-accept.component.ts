@@ -18,7 +18,8 @@ export class ClientAcceptComponent implements OnInit {
 
   displayedColumns: string[] = ['status', 'title', 'clientType', 'phone', 'legalEntity', 'numberOfCalls', 'numberOfShipments', 'comentCon', 'comentCli']
   workgroupId: number = 0;
-  cliets: IClient[] = [];
+    cliets: IClient[] = [];
+    hiddenloader = "hidden";
 
 
   dataSource = new MatTableDataSource<IClient>(this.cliets);
@@ -61,7 +62,8 @@ export class ClientAcceptComponent implements OnInit {
     $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
   }
 
-  getClients() {
+    getClients() {
+        this.hiddenloader = "";
     this.http.get<IClient[]>('api/conroler/ClientAccept/Clients').subscribe((data: IClient[]) => {
         this.clietsFull = data;
       this.getworkgroup();
@@ -87,6 +89,7 @@ export class ClientAcceptComponent implements OnInit {
       this.dataSource = new MatTableDataSource<IClient>(this.cliets)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.hiddenloader = "hidden"
     console.log("sortClients");
   }
 
