@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
+import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
+import { CallsComment } from '../../../Calls/shared/models/сalls-сomment.model';
+import { acceptControlerCalss } from '../../../Calls/shared/enums/accept-controler-calss';
 
 @Component({
   selector: 'app-accept-manager-dialog',
@@ -9,30 +12,48 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AcceptManagerDialogComponent implements OnInit {
 
+   // callComments: CallsComment[] = [];
+
   displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
 
   close() {
-    this.dialogRef.close();
+      this.dialogRef.close(this.data);
   }
 
   setNoAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
-    if (comentControler != undefined || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-    }
+        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+        if (this.data.find(c => c.id == callId && c.clientId == clientId).callsComments) {
+            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.ControlerNoAccept;
+            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = comentControler;
+        }
+        else {
+            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments = [];
+            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.ControlerNoAccept;
+            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = comentControler;
+        }
+    
   }
 
   setAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
     $event.currentTarget.offsetParent.children[0].value = "";
-    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+      if (this.data.find(c => c.id == callId && c.clientId == clientId).callsComments) {
+          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
+          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = "";
+      }
+      else {
+          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments = [];
+          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
+          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = "";
+      }
   }
 
   setBagroundStatus(element) {
-    console.log(element.contactType);
     if (element.contactType == 50) {
       return "#E0F8EC";
     }
@@ -47,11 +68,10 @@ export class AcceptManagerDialogComponent implements OnInit {
         return "#FAFAFA";
       }
     }
-
   }
 
   constructor(public dialogRef: MatDialogRef<AcceptManagerDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+      @Inject(MAT_DIALOG_DATA) public data: ClientAccept[],
     private http: HttpClient) {
     console.log(data);
   }

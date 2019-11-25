@@ -74,7 +74,16 @@ export class PlanTaskComponent implements OnInit {
     if (clientAccept) {
         const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
             data: clientAccept
-      })
+        })
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                let cientAccept: ClientAccept[] = res;
+                for (let i = 0; i < cientAccept.length; i++) {
+                    console.log(cientAccept);
+                   this.cientAccept.find(c => c.id == cientAccept[i].id).callsComments = cientAccept[i].callsComments;
+                }
+            }
+        });
     }
   }
 

@@ -47,7 +47,6 @@
     <None Include="wwwroot\9.f7106ec0ab4dcdfd6cf2.js" />
     <None Include="wwwroot\assets\logo.jpg" />
     <None Include="wwwroot\common.a89bc12bb1a259a4fe2b.js" />
-    <None Include="wwwroot\Icon\logo.jpg" />
     <None Include="wwwroot\index.html" />
     <None Include="wwwroot\main.f0778333e24bf1517bbd.js" />
     <None Include="wwwroot\polyfills-es5.f2d86d4910a60a141149.js" />
