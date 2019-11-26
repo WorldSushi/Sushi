@@ -180,7 +180,12 @@ export class ClientListComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res){
+        if (res) {
+            console.log(res);
+            let countCallPlan: number = res.numberOfCalls == "10" ? 1 : res.numberOfCalls == "20" ? 2 : res.numberOfCalls == "30" ? 3 : res.numberOfCalls == "40" ? 4 : res.numberOfCalls == "50" ? 5
+                : res.numberOfCalls == "60" ? 5 : res.numberOfCalls == "90" ? 8 : 0;
+            this.clients.find(c => c.id == res.id).callPlan.totalCalls = countCallPlan;
+            this.clients.find(c => c.id == res.id).callPlan.regionalManagerCalls = this.clients.find(c => c.id == res.id).callPlan.totalCalls - this.clients.find(c => c.id == res.id).callPlan.escortManagerCalls;
         this.updateClient(res);
       }
     })
@@ -288,7 +293,7 @@ export class ClientListComponent implements OnInit {
           }) 
 
         let EMcontacts = []
-        if (newContact.EMclientContactId == 0 && newContact.MScallType != 0)
+          if (newContact.EMclientContactId == 0 && newContact.MScallType != 0 && newContact)
           EMcontacts.push({
             contactType: newContact.MScallType,
             managerType: 10,
@@ -299,16 +304,20 @@ export class ClientListComponent implements OnInit {
         let newContacts = [...RMcontacts, ...EMcontacts]; 
 
         newContacts.forEach(item => {
-          debugger
-          if (item.managerType == 10) {
-            item.managerId = this.manager.workgroup.escortManagerId;
-          }
-          else if (item.managerType == 20) {
-            item.managerId = this.manager.workgroup.regionalManagerId;
-          }
-          this.callsDateCreated.emit(item);
+            debugger
+            if (item.id != 0 || (item.id == 0 && (item.contactType != 40 && item.contactType != 10))) {
+                if (item.managerType == 10) {
+                    item.managerId = this.manager.workgroup.escortManagerId;
+                }
+                else if (item.managerType == 20) {
+                    item.managerId = this.manager.workgroup.regionalManagerId;
+                }
+                if (this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id)) {
+                    this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
+                }
+                this.callsDateCreated.emit(item);
+            }
         });
-        location.reload();
       }
     })
   }
@@ -433,7 +442,7 @@ export class ClientListComponent implements OnInit {
       if (this.clients[i].managerCallsResults.escortTotalContacts == 0) {
         this.clients[i].managerCallsResults.escortRes = '-';
       }
-      else if ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) > 100) {
+      else if ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100 > 100) {
         this.clients[i].managerCallsResults.escortRes = 100+'%';
       }
       else {
@@ -443,7 +452,7 @@ export class ClientListComponent implements OnInit {
       if (this.clients[i].managerCallsResults.regionalTotalContacts == 0) {
         this.clients[i].managerCallsResults.regionalRes = '-';
       }
-      else if (this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls > 100) {
+      else if ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100 > 100) {
         this.clients[i].managerCallsResults.regionalRes = 100+'%';
       }
       else {
@@ -566,12 +575,13 @@ export class ClientListComponent implements OnInit {
 
     checkCallForColor(element: IClient) {
         let color = "";
-        if (element.id == 4755) {
-            debugger
-            let s = 1;
-        }
         if (this.todayCalss.filter(td => td.id == element.id).length != 0) {
-            color = "#e9e2f8";
+            if (this.todayCalss.find(td => td.id == element.id).clientContacts.filter(c => c.contactType == 40).length != 0) {
+                color = "#e0fee0";
+            }
+            else {
+                color = "#e9e2f8";
+            }
         }
         return color;
     }

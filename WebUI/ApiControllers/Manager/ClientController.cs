@@ -163,6 +163,7 @@ namespace WebUI.ApiControllers.Manager
                     Id = z.Id,
                     Phone = z.Phone
                 }).ToList(),
+                
             };
 
             return Ok(result);

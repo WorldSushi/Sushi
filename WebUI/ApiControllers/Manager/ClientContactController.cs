@@ -116,12 +116,12 @@ namespace WebUI.ApiControllers.Manager
                                           && x.ManagerType == command.ManagerType
                                           && x.Date.Date == DateTime.Now.Date.Date);
 
-            if (clientContact != null)
-            {
-                clientContact.Type = command.ContactType;
-                await _context.SaveChangesAsync();
-                return Ok(null);
-            }
+            //if (clientContact != null)
+            //{
+            //    clientContact.Type = command.ContactType;
+            //    await _context.SaveChangesAsync();
+            //    return Ok(null);
+            //}
 
             /*command.ManagerId = _context.Set<ManagerForClient>()
                 .FirstOrDefault(x => x.ClientId == command.ClientId && x.Type == command.ManagerType)
@@ -141,19 +141,27 @@ namespace WebUI.ApiControllers.Manager
                 command.ManagerId = (int) workGroup.RegionalManagerId;
             else
                 return BadRequest("Не указана роль менеджера");
-
-            var newClientContact = await _context.Set<ClientContact>()
-                .AddAsync(new ClientContact(command));
+            ClientContact newClientContact = null;
+            if(clientContact != null)
+            {
+                clientContact.Type = command.ContactType;
+                newClientContact = clientContact;
+            }
+            else
+            {
+                newClientContact = _context.Set<ClientContact>()
+                .Add(new ClientContact(command)).Entity;
+            }
 
             await _context.SaveChangesAsync();
 
             var result = new ClientContactDto()
             {
-                Id = newClientContact.Entity.Id,
-                ClientId = (int)newClientContact.Entity.ClientId,
-                ContactType = newClientContact.Entity.Type,
-                Date = newClientContact.Entity.Date.ToString("dd.MM.yyyy"),
-                ManagerType = newClientContact.Entity.ManagerType
+                Id = newClientContact.Id,
+                ClientId = (int)newClientContact.ClientId,
+                ContactType = newClientContact.Type,
+                Date = newClientContact.Date.ToString("dd.MM.yyyy"),
+                ManagerType = newClientContact.ManagerType
             };
 
             return Ok(result);
