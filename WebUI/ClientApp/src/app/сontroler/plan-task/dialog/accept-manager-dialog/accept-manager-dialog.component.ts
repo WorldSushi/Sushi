@@ -25,15 +25,9 @@ export class AcceptManagerDialogComponent implements OnInit {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
       this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
         $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-        if (this.data.find(c => c.id == callId && c.clientId == clientId).callsComments) {
             this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.ControlerNoAccept;
             this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = comentControler;
-        }
-        else {
-            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments = [];
-            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.ControlerNoAccept;
-            this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = comentControler;
-        }
+        
     
   }
 
@@ -42,15 +36,9 @@ export class AcceptManagerDialogComponent implements OnInit {
     this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
     $event.currentTarget.offsetParent.children[0].value = "";
       $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-      if (this.data.find(c => c.id == callId && c.clientId == clientId).callsComments) {
           this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
           this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = "";
-      }
-      else {
-          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments = [];
-          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
-          this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = "";
-      }
+      
   }
 
   setBagroundStatus(element) {

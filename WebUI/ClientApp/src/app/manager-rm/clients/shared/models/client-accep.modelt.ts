@@ -13,5 +13,5 @@ export interface ClientAccept {
   referenceAudioVoice: string,
   direction: string,
   phone: string,
-  callsComments: CallsComment[]
+  callsComments: CallsComment
 }
