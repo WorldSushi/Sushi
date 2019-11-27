@@ -16,7 +16,7 @@
     <input (keyup)="applyFilterNumberOrname($event.target.value)" placeholder="Телефон или Название">
     <input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">
     <select [(ngModel)]="direction" (ngModelChange)="changeDirection()">
-      <option [ngValue]=0>Все направленния</option>
+      <option [ngValue]=0>Все направления</option>
       <option [ngValue]=1>Исходящие</option>
       <option [ngValue]=2>Входящие</option>
     </select>
@@ -35,8 +35,8 @@
         <button (click)="sortDateCall(3)" class="btnSort">За Вчера</button><br />
         <button (click)="sortDateCall(4)" class="btnSort">За Последние 7 Дней</button><br />
         <button (click)="sortDateCall(5)" class="btnSort">3а Последние 30 Дней</button><br />
-        <button (click)="sortDateCall(6)" class="btnSort">За Текущая неделя</button><br />
-        <button (click)="sortDateCall(7)" class="btnSort">За Текущая Месяц</button><br />
+        <button (click)="sortDateCall(6)" class="btnSort">За Текущюю неделю</button><br />
+        <button (click)="sortDateCall(7)" class="btnSort">За Текущий Месяц</button><br />
         <button (click)="sortDateCall(8)" class="btnSort">За Текущий год</button><br />
       </div>
     </div>
@@ -90,9 +90,9 @@
       <ng-container matColumnDef="comentCon">
         <th colspan="14" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
         <td colspan="14" mat-cell *matCellDef="let element">
-          <textarea *ngIf="element.contactType != 50" style="width:250px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
+          <textarea *ngIf="element.contactType != 50" style="max-width:300px;height:60px;margin:0px;width:200px;">{{element.callsComments?.comment}}</textarea><br />
           <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button>
-          <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Исправлено</button>
+          <button  *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Исправлено</button>
         </td>
       </ng-container>
 

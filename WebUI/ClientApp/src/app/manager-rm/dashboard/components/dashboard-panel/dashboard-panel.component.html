@@ -16,42 +16,42 @@
         </thead>
         <tbody>
           <tr>
-            <td style="background-color:#fcfcfc; max-width:50px !important">Все звонки</td>
+            <td style="background-color:#f1f8ff; border-color:#c9dcff; max-width:50px !important">Все звонки</td>
             <td>{{setToDayCall()}}</td>
             <td>{{setToWeekCall()}}</td>
             <td>{{setToMonthkCall()}}</td>
             <td>{{setAllCall()}}</td>
           </tr>
           <tr>
-            <td style="background-color:#fcfcfc; max-width:50px !important">Более 2,5 мин</td>
+            <td style="background-color:#f1f8ff;border-color:#c9dcff; max-width:50px !important">Более 2,5 мин</td>
             <td>{{setMoreTwoFiveCallDays()}}</td>
             <td>{{setMoreTwoFiveCallWeek()}}</td>
             <td>{{setMoreTwoFiveCallMonth()}}</td>
             <td>{{setMoreTwoFiveCall()}}</td>
           </tr>
           <tr>
-            <td style="background-color:#fcfcfc; max-width:50px !important">Менее 2.5 мин, более 10 сек</td>
+            <td style="background-color:#f1f8ff; border-color:#c9dcff;max-width:50px !important">Менее 2.5 мин, более 10 сек</td>
             <td>{{setMore10to2_5CallDays()}}</td>
             <td>{{setMore10to2_5CallWeek()}}</td>
             <td>{{setMore10to2_5CallMonth()}}</td>
             <td>{{setMore10to2_5Call()}}</td>
           </tr>
           <tr>
-            <td style="background-color:#fcfcfc; max-width:50px !important">Менее 10 сек</td>
+            <td style="background-color:#f1f8ff;border-color:#c9dcff; max-width:50px !important">Менее 10 сек</td>
             <td>{{setLes10SecCallDays()}}</td>
             <td>{{setLes10SecCallWeek()}}</td>
             <td>{{setLes10SecCallMonth()}}</td>
             <td>{{setLes10SecCall()}}</td>
           </tr>
           <tr>
-            <td style="background-color:#fcfcfc;max-width:50px !important">Звонки развития</td>
+            <td style="background-color:#f1f8ff;border-color:#c9dcff;max-width:50px !important">Звонки развития</td>
             <td>{{setDevelopmentCallDays()}}</td>
             <td>{{setDevelopmentCallWeek()}}</td>
             <td>{{setDevelopmentCallMonth()}}</td>
             <td>{{setDevelopmentCall()}}</td>
           </tr>
           <tr>
-            <td style="background-color:#fcfcfc; max-width:50px !important">Звонки коллегам</td>
+            <td style="background-color:#f1f8ff;border-color:#c9dcff; max-width:50px !important">Звонки коллегам</td>
             <td>{{setManagerCallDays()}}</td>
             <td>{{setmanagerCallWeek()}}</td>
             <td>{{setManagertCallMonth()}}</td>
@@ -68,7 +68,6 @@
       </table>
   </mat-card>
 </div>
-  <hr style="opacity: 0.2">
 
   <div class="manager-effiency">
     <mat-card class="mat-elevation-z1">
@@ -78,6 +77,12 @@
       <mat-card-content>
         <table>
           <thead>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
+              <th colspan="12">Региональный менеджер</th>
+            </tr>
+            <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
+              <th style="text-align: left" colspan="12">Менеджер Сопровождения</th>
+            </tr>
             <tr>
               <th></th>
               <th colspan="2">Типы контактов</th>
@@ -97,9 +102,6 @@
               <th>расхождение</th>
               <th>в баллах</th>
             </tr>
-            <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
-              <th style="text-align: left" colspan="12">Менеджер Сопровождения</th>
-            </tr>
           </thead>
           <tbody>
             <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
@@ -115,9 +117,7 @@
               <td>{{(performanceChartMC.numberPlan_DevelopmentCalls*8)-this.getToMonthkMesageEC()}}</td>
               <td>{{ballsEC}}</td>
             </tr>
-            <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
-              <th colspan="12">Региональный менеджер</th>
-            </tr>
+            
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td rowspan="3">{{fullPrecentRM.toFixed()}}%</td>
               <td colspan="2">Встречи и командировки развития</td>

@@ -39,7 +39,8 @@ export class AcceptManagerComponent implements OnInit {
   ngOnChanges() {
   }
 
-  sortDateCall(numberSort: number) {
+    sortDateCall(numberSort: number) {
+        this.calendarHidden = "hidden"
     let date: Date[] = [];
     if (numberSort == 1) {
       date.push(new Date(2019, 7, 1));
