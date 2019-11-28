@@ -22,12 +22,12 @@
 
     <ng-container matColumnDef="direction">
       <th colspan="4" mat-header-cell *matHeaderCellDef>Статус звонка</th>
-      <td colspan="4" mat-cell *matCellDef="let element">{{element.direction == "Входящий" ? "📱←" : element.direction == "Исходящий" ? "📱→" : element.direction}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="answer">
-      <th colspan="4" mat-header-cell *matHeaderCellDef>Отвечен</th>
-      <td colspan="4" mat-cell *matCellDef="let element">{{element.durations == 0 ? "🗙" : "✓"}} </td>
+      <td colspan="4" mat-cell *matCellDef="let element">
+        <img src="Icon/yesIncoming.png" height="30" width="30" *ngIf="element.direction == 'Исходящий' && element.durations != 0" />
+        <img src="Icon/yesOutgoing.png" height="30" width="30" *ngIf="element.direction == 'Входящий' && element.durations != 0" />
+        <img src="Icon/noOutgoing.png" height="30" width="30" *ngIf="element.direction == 'Входящий' && element.durations == 0" />
+        <img src="Icon/noIncoming.png" height="30" width="30" *ngIf="element.direction == 'Исходящий' && element.durations == 0" />
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="title">

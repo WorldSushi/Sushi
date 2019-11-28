@@ -14,7 +14,7 @@ export class AcceptManagerDialogComponent implements OnInit {
 
    // callComments: CallsComment[] = [];
 
-  displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
+  displayedColumns: string[] = ['status', 'statusCall', 'direction', 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
 
   close() {

@@ -19,7 +19,7 @@ export class AcceptManagerComponent implements OnInit {
   @Input() cientAccept: ClientAccept[] = [];
 
 
-  displayedColumns: string[] = ['status', 'statusCall', 'direction', "answer", 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
+  displayedColumns: string[] = ['status', 'statusCall', 'direction', 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
   calendarHidden: string = "hidden";
   dateStart: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
