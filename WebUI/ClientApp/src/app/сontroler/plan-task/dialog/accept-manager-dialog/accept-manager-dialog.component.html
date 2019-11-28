@@ -14,7 +14,10 @@
 
     <ng-container matColumnDef="statusCall">
       <th colspan="4" mat-header-cell *matHeaderCellDef>Статус</th>
-      <td colspan="4" mat-cell *matCellDef="let element"><span *ngIf="element.contactType != 50"> {{element.contactType == 40 ? "✓" : "🗙"}}</span></td>
+      <td colspan="4" mat-cell *matCellDef="let element">
+        <div class="action-circle" [style.background]="getActionColor(element)">
+        </div>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="direction">

@@ -54,7 +54,10 @@
 
       <ng-container matColumnDef="statusCall">
         <th colspan="4" mat-header-cell *matHeaderCellDef>Статус</th>
-        <td colspan="4" mat-cell *matCellDef="let element"><span *ngIf="element.contactType != 50"> {{element.contactType == 40 ? "✓" : "🗙"}}</span></td>
+        <td colspan="4" mat-cell *matCellDef="let element">
+          <div class="action-circle" [style.background]="getActionColor(element)">
+          </div>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="direction">
@@ -92,7 +95,7 @@
         <td colspan="14" mat-cell *matCellDef="let element">
           <textarea *ngIf="element.contactType != 50" style="max-width:300px;height:60px;margin:0px;width:200px;">{{element.callsComments?.comment}}</textarea><br />
           <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId)" class="btnAccept">Отклонить</button>
-          <button  *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Исправлено</button>
+          <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)" class="btnAccept">Исправлено</button>
         </td>
       </ng-container>
 

@@ -357,10 +357,13 @@ namespace WebUI.ApiControllers.Controler
                     ManagerId = x.ManagerId,
                     Durations = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Duration : 0,
                     ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallClient)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
-                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).LegalEntity : "",
+                    TitleClient = clients.FirstOrDefault(c => c.Id == x.ClientId) != null ? clients.FirstOrDefault(c => c.Id == x.ClientId).Title : "",
                     Phone = clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? clientPhones.FirstOrDefault(c => c.ClientId == x.ClientId).Phone : "",
                     Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно",
-                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок")
+                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id && c.Type == "Звонок"),
+                    StatusContact = callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id) != null
+                       ? Convert.ToInt32(callsComments.FirstOrDefault(c => c.ClientId == x.ClientId && c.ContactClientId == x.Id).AcceptControlerCalss)
+                       : 0
                 }).ToList();
             result.AddRange(_context.Set<ContactManager>()
                 //.Where(x => DateHelper.IsCurrentMonth(x.Date))

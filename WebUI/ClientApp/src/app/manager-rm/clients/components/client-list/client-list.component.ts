@@ -446,7 +446,7 @@ export class ClientListComponent implements OnInit {
         this.clients[i].managerCallsResults.escortRes = 100+'%';
       }
       else {
-        this.clients[i].managerCallsResults.escortRes = ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100).toFixed(2) + '%';
+        this.clients[i].managerCallsResults.escortRes = ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100).toFixed(0) + '%';
       }
 
       if (this.clients[i].managerCallsResults.regionalTotalContacts == 0) {
@@ -456,7 +456,7 @@ export class ClientListComponent implements OnInit {
         this.clients[i].managerCallsResults.regionalRes = 100+'%';
       }
       else {
-        this.clients[i].managerCallsResults.regionalRes = ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100).toFixed(2) + '%';
+        this.clients[i].managerCallsResults.regionalRes = ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100).toFixed(0) + '%';
       }
 
     }

@@ -16,6 +16,7 @@ namespace Data.DTO.Clients
         public string Phone { get; set; }
         public string Direction { get; set; }
         public int ManagerId { get; set; }
+        public int StatusContact { get; set; }
         public CallsComment CallsComments { get; set; }
 
     }

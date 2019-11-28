@@ -37,7 +37,30 @@ export class AcceptManagerComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   ngOnChanges() {
-  }
+    }
+
+    getActionColor(clientAction) {
+        if (!clientAction.statusContact || clientAction.statusContact == 0) {
+            if (clientAction.contactType == 0)
+                return '#e5e5e5';
+            else if (clientAction.contactType == 10)
+                return '#FF1493'
+            else if (clientAction.contactType == 20)
+                return '#B0ECDD'
+            else if (clientAction.contactType == 30)
+                return '#FDE488'
+            else if (clientAction.contactType == 40)
+                return '#00FF7F'
+            else if (clientAction.contactType == 60)
+                return '#58FA82'
+        }
+        else if (clientAction.statusContact == 1) {
+            return 'red'
+        }
+        else if (clientAction.statusContact == 2) {
+            return '#A9A9F5'
+        }
+    }
 
     sortDateCall(numberSort: number) {
         this.calendarHidden = "hidden"
@@ -174,17 +197,33 @@ export class AcceptManagerComponent implements OnInit {
 
   setNoAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
-    if (comentControler != undefined || comentControler != "") {
+    if (comentControler || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+        debugger
+        this.cientAccept.find(c => c.id == callId).statusContact == 1;
+        $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
     }
   }
 
   setAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-    $event.currentTarget.offsetParent.children[0].value = "";
-    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+      let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
+      cientAcceptOne.statusContact == 0;
+      if (cientAcceptOne.contactType == 0)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#e5e5e5';
+      else if (cientAcceptOne.contactType == 10)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FF1493'
+      else if (cientAcceptOne.contactType == 20)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#B0ECDD'
+      else if (cientAcceptOne.contactType == 30)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FDE488'
+      else if (cientAcceptOne.contactType == 40)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#00FF7F'
+      else if (cientAcceptOne.contactType == 60)
+          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#58FA82'
   }
 
   setBagroundStatus(element) {

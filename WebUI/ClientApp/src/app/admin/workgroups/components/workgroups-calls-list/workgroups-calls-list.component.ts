@@ -80,27 +80,25 @@ export class WorkgroupsCallsListComponent implements OnInit {
     return resPreccent;
   }
 
-  getActionColor(clientAction: ICallsDate) {
+    getActionColor(clientAction: ICallsDate) {
     if (!clientAction.statusContact || clientAction.statusContact == 0) {
       if (clientAction.contactType == 0)
         return '#e5e5e5';
       else if (clientAction.contactType == 10)
-        return '#F7819F'
+          return '#FF1493'
       else if (clientAction.contactType == 20)
         return '#B0ECDD'
       else if (clientAction.contactType == 30)
         return '#FDE488'
       else if (clientAction.contactType == 40)
-        return '#9CBFF3'
+          return '#00FF7F'
       else if (clientAction.contactType == 60)
         return '#58FA82'
     }
     else if (clientAction.statusContact == 1) {
-      debugger
       return 'red'
     }
     else if (clientAction.statusContact == 2) {
-      debugger
       return '#A9A9F5'
     }
   }
