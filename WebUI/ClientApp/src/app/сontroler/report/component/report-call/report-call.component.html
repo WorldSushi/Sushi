@@ -13,10 +13,7 @@
     </div>
   </mat-card-header>
   <div class="filter clearfix">
-    <!--<input (keyup)="applyFilterDuration($event.target.value)" placeholder="Продолжительность">-->
     <input type="date" placeholder="Choose a date" (change)="verifyRange($event)" [(ngModel)]="btnDate">
-    <!--<div [hidden]="calendarHidden" class="calendar">
-  </div>-->
     <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
       <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
     </select>
@@ -27,6 +24,22 @@
       <option [ngValue]=4>Четвертая неделя</option>
       <option [ngValue]=5>Пятая неделя</option>
     </select>
+    <button (click)="hiddenCalendar()">{{btnDate1}}</button>
+    <div [hidden]="calendarHidden" class="blockCalendar">
+      <div class="calendar">
+        <igx-calendar (onSelection)="verifyRange1($event)" selection="range"></igx-calendar>
+      </div>
+      <div class="sortbloc">
+        <button (click)="sortDateCall(1)" class="btnSort">За всё время</button><br />
+        <button (click)="sortDateCall(2)" class="btnSort">За Сегодня</button><br />
+        <button (click)="sortDateCall(3)" class="btnSort">За Вчера</button><br />
+        <button (click)="sortDateCall(4)" class="btnSort">За Последние 7 Дней</button><br />
+        <button (click)="sortDateCall(5)" class="btnSort">3а Последние 30 Дней</button><br />
+        <button (click)="sortDateCall(6)" class="btnSort">За Текущюю неделю</button><br />
+        <button (click)="sortDateCall(7)" class="btnSort">За Текущий Месяц</button><br />
+        <button (click)="sortDateCall(8)" class="btnSort">За Текущий год</button><br />
+      </div>
+    </div>
   </div>
 
   <div class="workgroups-wrapper">
@@ -53,12 +66,14 @@
             <th style="border-color:white;background:#62b4ff;color:white">День</th>
             <th style="border-color:white;background:#62b4ff;color:white">Неделя</th>
             <th style="border-color:white;background:#62b4ff;color:white;">Месяц</th>
+            <th style="border-color:white;background:#62b4ff;color:white;">Период</th>
           </tr>
           <tr>
             <th style="max-width:50px"></th>
             <th>{{btnDate}}</th>
             <th>{{getPeriudWeek()}}</th>
             <th>{{dateCollection}}</th>
+            <th>--------</th>
           </tr>
         </thead>
         <tbody>
@@ -142,12 +157,14 @@
             <th style="border-color:white;background:#62b4ff;color:white">День</th>
             <th style="border-color:white;background:#62b4ff;color:white">Неделя</th>
             <th style="border-color:white;background:#62b4ff;color:white">Месяц</th>
+            <th style="border-color:white;background:#62b4ff;color:white">Период</th>
           </tr>
           <tr>
             <th style="max-width:50px !important"></th>
             <th>{{btnDate}}</th>
             <th>{{getPeriudWeek()}}</th>
             <th>{{dateCollection}}</th>
+            <th>------</th>
           </tr>
         </thead>
         <tbody>

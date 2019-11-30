@@ -19,7 +19,10 @@ export class ReportCallComponent implements OnInit {
   @Input() workgroup: IWorkgroup[] = [];
 
   calendarHidden: string = "hidden";
-  btnDate: string = new Date().toLocaleDateString();
+    btnDate: string = new Date().toLocaleDateString();
+    dateStart: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    dateEnd: Date = new Date();
+    btnDate1: string = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
   durationTxt: number = -1;
   manager: number = 0;
   statistickCallModel: any[] = [];
@@ -48,6 +51,7 @@ export class ReportCallComponent implements OnInit {
             this.getcallsDater();
         });
     }
+
 
   sortCall() {
     this.statistickCallModel = [];
@@ -79,6 +83,54 @@ export class ReportCallComponent implements OnInit {
         }, 700);
     }
 
+    sortDateCall(numberSort: number) {
+        this.calendarHidden = "hidden"
+        let date: Date[] = [];
+        if (numberSort == 1) {
+            date.push(new Date(2019, 7, 1));
+            date.push(new Date());
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 2) {
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 3) {
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1, 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 4) {
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7, 0));
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 5) {
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 30, 0));
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 6) {
+            var curr = new Date;
+            var first = curr.getDate() - curr.getDay() + 1;
+            var last = first + 6;
+            var firstday = new Date(curr.setDate(first));
+            var lastday = new Date(curr.setDate(last));
+            date.push(new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate(), 0));
+            date.push(new Date(lastday.getFullYear(), lastday.getMonth(), lastday.getDate(), 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 7) {
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0));
+            date.push(new Date(new Date().getFullYear(), new Date().getMonth(), 31, 0));
+            this.verifyRange1(date)
+        }
+        else if (numberSort == 8) {
+            date.push(new Date(new Date().getFullYear(), 0, 1, 0));
+            date.push(new Date(new Date().getFullYear(), 11, 31, 0));
+            this.verifyRange1(date)
+        }
+    }
+
   applyFilterDuration(filterValue: string) {
     let rep = /[-\.;":'a-zA-Zа-яА-Я]/;
     let temValue = 0;
@@ -100,7 +152,16 @@ export class ReportCallComponent implements OnInit {
       window.setTimeout(() => {
           this.todayLoad = false;
       }, 700);
-  }
+    }
+
+    verifyRange1(dates: Date[]) {
+        if (dates && dates.length != 0) {
+            this.dateStart = dates[0];
+            this.dateEnd = dates[dates.length - 1];
+            this.btnDate1 = this.dateStart.toLocaleDateString() + " - " + this.dateEnd.toLocaleDateString();
+            //this.sortCalls();
+        }
+    }
 
   hiddenCalendar() {
     if (this.calendarHidden == "hidden") {

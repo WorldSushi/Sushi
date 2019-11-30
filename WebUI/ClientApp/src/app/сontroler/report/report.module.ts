@@ -5,14 +5,17 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { ReportCallComponent } from './component/report-call/report-call.component';
-import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     ReportCallComponent,
   ],
   exports: [
-    ReportCallComponent,
+      ReportCallComponent,
+      MatTableModule,
+      MatPaginatorModule,
+      MatSortModule
   ],
   imports: [
     CommonModule,
