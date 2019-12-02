@@ -22,7 +22,7 @@ namespace WebUI.Background
             Schedule(() => new ShahMatReport(applicationContext)).ToRunEvery(1).Days().At(4, 40);
             Schedule(() => new OhvatReport(applicationContext)).ToRunEvery(1).Days().At(4, 50);
             Schedule(() => new SyncCall(applicationContext)).ToRunNow().AndEvery(1).Hours();
-            Schedule(() => new SyncCallAsterics(applicationContext)).ToRunNow().AndEvery(1).Hours();
+            Schedule(() => new SyncCallAsterics(applicationContext)).ToRunEvery(1).Hours();
 
             //Schedule(() => new SyncClient(applicationContext)).ToRunNow().AndEvery(2).Hours();
             //Schedule(() => new OhvatReport(applicationContext)).ToRunNow().AndEvery(2).Hours();

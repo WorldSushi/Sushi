@@ -345,7 +345,7 @@ export class ClientListComponent implements OnInit {
     return Math.round((a + b + c + d) / 4);
   }
 
-  getCurrentMsPlan(weekPlans: IWeekPlan[]) {
+    getCurrentMsPlan(weekPlans: IWeekPlan[]) {
     const numberOfWeek = Math.ceil(new Date().getDate() / 7);
     let weekPlan = (weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
       ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
