@@ -88,13 +88,23 @@ getClientContacts(){
 
   const days = this.daysInMonth(currentMonth, currentYear);
   
-  for(let i = 0; i < days; i++){
-    clientContacts.push({
-      clientId: this.data.clientId,
-      date: this.getDate(i + 1).toString(),
-      MScallType: 0,
-      RMcallType: 0
-    })
+    for (let i = 0; i < days; i++){
+        if (new Date().getDate()-1 != i) {
+            clientContacts.push({
+                clientId: this.data.clientId,
+                date: this.getDate(i + 1).toString(),
+                MScallType: 0,
+                RMcallType: 0
+            })
+        }
+        else {
+            clientContacts.unshift({
+                clientId: this.data.clientId,
+                date: this.getDate(i + 1).toString(),
+                MScallType: 0,
+                RMcallType: 0
+            })
+        }
   }
 
   clientContacts = clientContacts.map(item => {
