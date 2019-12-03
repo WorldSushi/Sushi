@@ -46,7 +46,7 @@ namespace WebUI.ApiControllers.Manager
             var weekPlan = await _context.Set<WeekPlan>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && DateHelper.IsCurrentMonth(x.Date)
-                                          && x.WeekNumber == command.WeekNumber
+                                          && x.WeekNumber == 2
                                           && x.ManagerType == command.ManagerType);
             if (weekPlan != null)
                 return BadRequest("План на эту неделю уже существует");
@@ -99,7 +99,16 @@ namespace WebUI.ApiControllers.Manager
                                           && DateHelper.IsCurrentMonth(x.Date));
 
             if (weekPlan == null)
+            {
                 return BadRequest("План не найден");
+                //_context.Set<WeekPlan>().Add(new WeekPlan(new WeekPlanCreate()
+                //{
+                //    ClientId = command.ClientId,
+                //    ManagerType = command.ManagerType,
+                //    Plan = command.
+                //}));
+            }
+                //return BadRequest("План не найден");
 
             weekPlan.AddFact(command.Fact, command.FactTitle);
 
