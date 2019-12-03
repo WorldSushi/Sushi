@@ -228,7 +228,7 @@ namespace WebUI.Controllers
                 }
                 else if(client.GR_Contragent != "")
                 {
-                    //_context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent).Clients.Add(client1);
+                    _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent).Clients.Add(client1);
                 }
                 _context.SaveChanges();
                 if (client.Manager_ID != null && client.Manager_ID != "")
