@@ -101,6 +101,7 @@ namespace WebUI.Controllers
             return responseOneC;
         }
 
+        private Client client1 = null;  
         private async void ReloadClients(string id)
         {
             await Task.Delay(10000);
@@ -116,6 +117,7 @@ namespace WebUI.Controllers
                     {
                         if (_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId) != null)
                         {
+                            client1 = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
                             _context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId));
                         }
                         if (_context.Set<ClientPhone>().FirstOrDefault(c => c.ClientId == clientInfo.ClientId) != null)
@@ -134,9 +136,6 @@ namespace WebUI.Controllers
                         _context.SaveChanges();
                         clientContacts1 = _context.Set<ClientContact>().ToList();
                         CreateNewClient(client);
-                        //client1.LegalEntity = client.Contragent_NameFull;
-                        //client1.Title = client.Contragent;
-                        //ReloadPhone(client.Phones, client1);
                     }
                     else
                     {
@@ -191,6 +190,14 @@ namespace WebUI.Controllers
                 NumberOfShipments numberOfShipments = client.Periodichnost_Otgruzok == "0" ? NumberOfShipments.WithoutType : client.Periodichnost_Zvonkov == "10" ? NumberOfShipments.OnePerMonth : client.Periodichnost_Zvonkov == "20"
                    ? NumberOfShipments.OnePerTwoWeek : client.Periodichnost_Zvonkov == "30" ? NumberOfShipments.ThreePerMonth : client.Periodichnost_Zvonkov == "40" ? NumberOfShipments.OnePerWeek : client.Periodichnost_Zvonkov == "50" ?
                    NumberOfShipments.FivePerMonth : client.Periodichnost_Zvonkov == "60" ? NumberOfShipments.SixPerMonth : client.Periodichnost_Zvonkov == "90" ? NumberOfShipments.TwoPerWeek : NumberOfShipments.WithoutType;
+                ClientGroup clientGroup = ClientGroup.NewOrReanimated;
+
+                if(this.client1 != null)
+                {
+                    numberOfCalls = this.client1.NumberOfCalls;
+                    numberOfShipments = this.client1.NumberOfShipments;
+                    clientGroup = this.client1.Group;
+                }
 
                 Data.Entities.Clients.Client client1 = _context.Set<Client>()
                                                        .Add(new Client(new ClientCreate()
@@ -200,8 +207,7 @@ namespace WebUI.Controllers
                                                            LegalEntity = client.Contragent_NameFull,
                                                            NumberOfCalls = numberOfCalls,
                                                            NumberOfShipments = numberOfShipments,
-                                                           Group = ClientGroup.NewOrReanimated
-
+                                                           Group = clientGroup
                                                        })).Entity;
                 client1.IsAcctive = true;
                 _context.Set<Client>().Add(client1);
