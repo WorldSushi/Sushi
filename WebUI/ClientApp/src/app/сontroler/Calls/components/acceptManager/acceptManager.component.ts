@@ -12,11 +12,11 @@ import { MatPaginator, MatTableDataSource, MatDialog, MatSort } from '@angular/m
   styleUrls: ['./acceptManager.component.sass']
 })
 export class AcceptManagerComponent implements OnInit {
-
-
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
-
+  totalItems: number = 0;
+  pageSize: number = 10;
+  paginateDataAcept: ClientAccept[] = [];
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
@@ -34,6 +34,7 @@ export class AcceptManagerComponent implements OnInit {
 
   dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) expansionPaginator: MatPaginator;
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
@@ -155,6 +156,8 @@ export class AcceptManagerComponent implements OnInit {
       + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
       + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
         this.cientAccept = data;
+        this.totalItems = data.length;
+        this.paginateDataAcept = data.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
         this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -267,28 +270,31 @@ export class AcceptManagerComponent implements OnInit {
     this.getcallsDater();
   }
 
-  private _display_audio_icon(id) {
+  _display_audio_icon(id) {
     return this.audioPlayId == id ? '../../../../../Icon/pause.png' : '../../../../../Icon/play.png';
   }
 
-  private _filterOpened: boolean = false;
+  _filterOpened: boolean = false;
 
-  private _toggleSidebar() {
+  _toggleSidebar() {
     this._filterOpened = !this._filterOpened;
   }
 
-  private _isMobile() {
-    console.log("IS_____MOB")
+  _isMobile() {
     return window.innerWidth < 820;
   }
 
-  private _getFilterIcon() {
+  _getFilterIcon() {
     return this._filterOpened ? 'Icon/close.png' : 'Icon/filter.png';
+  }
+
+  paginate(event) {
+    const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
+    this.paginateDataAcept = this.cientAccept.slice(offset).slice(0, event.pageSize);
   }
 
   constructor(public dialog: MatDialog,
     private http: HttpClient,
     private cdr: ChangeDetectorRef) {
-
   }
 }
