@@ -1,24 +1,52 @@
+<div class="sidebar-menu-container" [class.opened]="_isMobile() && _opened" *ngIf="_isMobile()">
+  <div class="sidebar-menu">
+    <div class="menu-item" routerLinkActive="active">
+      <span class="item-text"><a href="admin">Админ панель</a></span>
+    </div>
+    <div class="menu-item" routerLink="calls" routerLinkActive="active">
+      <span class="item-text">Звонки</span>
+    </div>
+    <div class="menu-item" routerLink="report" routerLinkActive="active">
+      <span class="item-text">Отчет</span>
+    </div>
+    <div class="menu-item" routerLink="clients" routerLinkActive="active">
+      <span class="item-text">Клиенты</span>
+    </div>
+    <div class="menu-item" routerLink="plan-task" routerLinkActive="active">
+      <span class="item-text">План</span>
+    </div>
+
+    <div class="logout">
+      Выход
+      <i class="fas fa-sign-out-alt" (click)="logout()"></i>
+    </div>
+  </div>
+</div>
+
 <mat-toolbar class="mat-elevation-z2">
   <div class="logo">
     <img height="80" width="80" src="../../Icon/logo.png" />
   </div>
   <nav>
-    <ul>
-      <li><a href="admin" routerLinkActive="active">Админ панель</a></li>
-      <li><a routerLink="calls" routerLinkActive="active">Звонки</a></li>
-      <li><a routerLink="report" routerLinkActive="active">Отчет</a></li>
-      <li><a routerLink="clients" routerLinkActive="active">Клиенты</a></li>
-      <li><a routerLink="plan-task" routerLinkActive="active">План</a></li>
-    </ul>
+    <div><a href="admin" routerLinkActive="active">Админ панель</a></div>
+    <div><a routerLink="calls" routerLinkActive="active">Звонки</a></div>
+    <div><a routerLink="report" routerLinkActive="active">Отчет</a></div>
+    <div><a routerLink="clients" routerLinkActive="active">Клиенты</a></div>
+    <div><a routerLink="plan-task" routerLinkActive="active">План</a></div>
   </nav>
 
   <div class="logout">
     Контролер: {{manager?.login}}
     <i class="fas fa-sign-out-alt" (click)="logout()"></i>
   </div>
+
+  <div class="menu-icon">
+    <img height="30" width="30" [src]="_getMenuIcon()" (click)="_toggleSidebar()">
+  </div>
 </mat-toolbar>
 
+<div class="overlay" [class.opened]="_isMobile() && _opened"></div>
 
 <div class="wrapper">
-  <router-outlet></router-outlet> 
+  <router-outlet></router-outlet>
 </div>

@@ -27,6 +27,20 @@ export class ControlerComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+  
+  private _opened: boolean = false;
+
+  private _toggleSidebar() {
+      this._opened = !this._opened;
   }
 
+  private _isMobile() {
+      return window.innerWidth < 820;
+  }
+
+  private _getMenuIcon() {
+      return this._opened ? '../../Icon/close.png' : '../../Icon/burger.png';
+  }
 }
