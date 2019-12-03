@@ -41,7 +41,8 @@
 
       <ng-container matColumnDef="title">
         <th colspan="4" mat-header-cell *matHeaderCellDef>Название</th>
-        <td colspan="4" mat-cell *matCellDef="let element" style="color: #324A60; max-width: 300px">{{element.title}} </td>
+        <td colspan="4" mat-cell *matCellDef="let element" style="color: #324A60; max-width: 300px">{{element.title}}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="legalEntity">
@@ -51,7 +52,8 @@
 
       <ng-container matColumnDef="countCall">
         <th colspan="2" mat-header-cell *matHeaderCellDef>Звонки</th>
-        <td colspan="2" mat-cell *matCellDef="let element" (click)="goToCall(element.clientAccept)">{{element.clientAccept.length}} </td>
+        <td colspan="2" mat-cell *matCellDef="let element" (click)="goToCall(element.clientAccept)">
+          {{element.clientAccept.length}} </td>
       </ng-container>
 
       <ng-container matColumnDef="planRM">
@@ -75,11 +77,13 @@
       </ng-container>
 
       <ng-container matColumnDef="comentCon">
-        <th colspan="10" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
-        <td colspan="10" mat-cell *matCellDef="let element">
-          <textarea style="width:250px;height:60px;">{{element.callsComments?.comment}}</textarea><br />
-          <button (click)="setNoAccept($event, element.id)" class="btnAccept">Отклонить</button>
-          <button (click)="setAccept($event, element.id)" class="btnAccept">Исправлено</button>
+        <th colspan="12" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
+        <td colspan="12" mat-cell *matCellDef="let element">
+          <textarea style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
+          <div class="btnContainer">
+            <button (click)="setNoAccept($event, element.id)" class="btnAccept btnReject">Отклонить</button>
+            <button (click)="setAccept($event, element.id)" class="btnAccept btnFixed">Исправлено</button>
+          </div>
         </td>
       </ng-container>
 
@@ -93,7 +97,3 @@
     </table>
   </mat-card-content>
 </mat-card>
-
-
-
-
