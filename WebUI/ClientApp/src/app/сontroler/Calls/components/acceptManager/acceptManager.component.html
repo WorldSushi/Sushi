@@ -28,7 +28,7 @@
         <option *ngFor="let elm of managers" [ngValue]=elm.id>{{elm.login}}</option>
       </select>
       <button (click)="hiddenCalendar()">{{btnDate}}</button>
-      <div [hidden]="calendarHidden" class="blockCalendar">
+      <div [hidden]="_isMobile() ? false : calendarHidden" class="blockCalendar">
         <div class="calendar">
           <igx-calendar (onSelection)="verifyRange($event)" selection="range"></igx-calendar>
         </div>
@@ -54,8 +54,9 @@
     </div>
   </div>
 
-  <div class="bodyAll">
-    <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons
+    [length]="totalItems" [pageSize]="pageSize" (page)="paginate($event)"></mat-paginator>
+  <div class="bodyAll" [hidden]="_isMobile()">
     <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="status">
@@ -127,8 +128,8 @@
       <ng-container matColumnDef="refAudio">
         <th class="audio-cell" mat-header-cell *matHeaderCellDef>Аудио запись</th>
         <td class="audio-cell" mat-cell *matCellDef="let element">
-          <img (click)="playAudio($event, element.id, element.referenceAudioVoice)" class="audio-cell-icon"
-            [src]="_display_audio_icon(element.id)" />
+          <img *ngIf="element.contactType != 50" (click)="playAudio($event, element.id, element.referenceAudioVoice)"
+            class="audio-cell-icon" [src]="_display_audio_icon(element.id)" />
           <audio class="audio-cell audio-cell-play" style="height:20px" controls preload="none"
             src="{{element.referenceAudioVoice}}"></audio>
         </td>
@@ -137,5 +138,69 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="openEditClientForm(row)"></tr>
     </table>
+  </div>
+  <div class="bodyAllExpansion" [hidden]="!_isMobile()">
+    <mat-accordion>
+      <ng-container class="table-expansion-element" *ngFor="let element of paginateDataAcept">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <!-- <div style="display:flex">
+                <div style="width: 20px" class="status" [style.background]="setBagroundStatus(element)"></div> -->
+                {{element.titleClient}}
+              <!-- </div> -->
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="table-expansion-element-body">
+            <div class="element-item statusCall">
+              <b>Статус:</b>
+              <div class="action-circle" [style.background]="getActionColor(element)"></div>
+            </div>
+            <div class="element-item direction">
+              <b> Статус звонка:</b>
+              <img src="Icon/yesIncoming.png" height="30" width="30"
+                *ngIf="element.direction == 'Исходящий' && element.durations != 0" />
+              <img src="Icon/yesOutgoing.png" height="30" width="30"
+                *ngIf="element.direction == 'Входящий' && element.durations != 0" />
+              <img src="Icon/noOutgoing.png" height="30" width="30"
+                *ngIf="element.direction == 'Входящий' && element.durations == 0" />
+              <img src="Icon/noIncoming.png" height="30" width="30"
+                *ngIf="element.direction == 'Исходящий' && element.durations == 0" />
+            </div>
+            <div class="element-item title"><b>Название:</b> {{element.titleClient}}</div>
+            <div class="element-item phone"><b>Номер телефона:</b>{{element.phone}}</div>
+            <div class="element-item duration"><b>Время звонка:</b>{{element.durations}} Сек</div>
+            <div class="element-item date"><b>Дата:</b>{{element.date}}</div>
+            <div class="element-item comentCon">
+              <b>Комментарий контролера:</b>
+              <div>
+                <textarea *ngIf="element.contactType != 50"
+                  class="textComment">{{element.callsComments?.comment}}</textarea><br />
+                <div class="btnContainer">
+                  <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId)"
+                    class="btnAccept btnReject">Отклонить</button>
+                  <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)"
+                    class="btnAccept btnFixed">Исправлено</button>
+                </div>
+              </div>
+            </div>
+            <div class="element-item comentCli">
+              <b>Комментарий менеджера:</b>
+              <div>
+                {{element.callsComments?.managerComment}}
+              </div>
+            </div>
+            <div class="element-item refAudio">
+              <b>Аудио запись:</b>
+              <div>
+                <audio class="audio-cell" style="height:20px" controls preload="none"
+                  src="{{element.referenceAudioVoice}}"></audio>
+              </div>
+
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
   </div>
 </mat-card>

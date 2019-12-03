@@ -36,8 +36,10 @@
   </nav>
 
   <div class="logout">
-    Контролер: {{manager?.login}}
-    <i class="fas fa-sign-out-alt" (click)="logout()"></i>
+    <span>Контролер: {{manager?.login}}</span>
+    <span class="logout-icon">
+      <i class="fas fa-sign-out-alt" (click)="logout()"></i>
+    </span>
   </div>
 
   <div class="menu-icon">
