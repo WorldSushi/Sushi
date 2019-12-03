@@ -20,13 +20,19 @@ table
 td
     border-bottom: none
     color: #1C1C1C !important
+    text-overflow: ellipsis
+    overflow: hidden
+    padding-right: 5px !important
 
 th 
     background-color: #62b4ff
     border-bottom: none
     color: white !important
     font-size: 13px
-
+    text-overflow: ellipsis
+    overflow: hidden
+    padding-right: 5px !important
+    line-height: 1.5
 
 .mat-card
     padding: 0px
@@ -86,16 +92,44 @@ th
     background-color: #e7f0f5
     border-radius: 60px
     max-width: 110px
+.textComment 
+    max-width: 300px
+    height: 60px
+    padding: 6px
+    width: 200px
+    margin-top: 15px
+.audio-cell
+    width: 250px
+
 .btnAccept
     background-color: #03a9f4
     color: #fff
     transition: 0.3s
     border-radius: 15px
-    padding: 2px 2px
+    padding: 5px 5px
     border: none
     cursor: pointer
     margin-bottom: 5px
     margin-right: 3px
+    flex-basis: 50%
+    padding-left: 6px
+    padding-right: 6px
+.btnContainer
+    display: flex
+    width: 200px
+    margin-bottom: 8px
+    max-width: 300px
+
+.btnReject
+    background-color: #ff7777  
+.btnFixed
+    background-color: #8bd88b
+    margin-right: 0
+
+.audio-cell-icon
+    display: none
+    height: 38px
+    width: 38px
 
 .filter
     margin: 0 20px
@@ -118,6 +152,40 @@ th
         border: 1px solid #E9F3FF
         margin-bottom: 10px
 
+@media screen and (max-width: 820px)
+  .filter
+    display: flex
+    flex-direction: column
+    margin-top: 20px
+    padding-right: 40px
+    input, select, button
+      width: 250px
+
+@media screen and (max-width: 820px)
+    .filter-container
+      position: absolute
+      right: -300px
+      display: none
+      top: 0
+      height: 100%
+      background: white
+      z-index: 997
+      &.opened
+        right: 0
+        display: block
+        animation: animateright 0.4s
+      
+
+.filter-button
+  background: #62b4ff
+  position: fixed
+  top: 47vh
+  right: 0
+  padding: 10px 5px
+  border-top-left-radius: 6px
+  border-bottom-left-radius: 6px
+  z-index: 998
+
 .blockCalendar
     align-items: center
     display: flex
@@ -133,6 +201,20 @@ th
         border: 1px solid #d4f3ff
     .btnSort:focus 
         background-color: #f2fbff
+
+@media screen and (max-width: 820px)
+  .blockCalendar
+    position: initial
+    display: flex
+    flex-direction: column
+    .calendar
+      width: 250px
+    .sortbloc
+      display: flex
+      flex-wrap: wrap
+      width: 250px
+    .btnSort
+      width: auto
 
 #fountainG
   width: 186px
@@ -290,3 +372,32 @@ th
     width: 15px
     border-radius: 10px
     margin-bottom: 4px
+
+@media screen and (max-width: 1200px)
+  .btnContainer,
+  .textComment
+    width: 100%
+
+  .audio-cell
+    width: 50px
+
+  .audio-cell-play
+    display: none
+
+  .audio-cell-icon
+    display: block !important
+
+  th:hover, 
+  td:hover
+    text-overflow: clip
+    overflow: inherit
+    
+.overlay.opened 
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  overflow: hidden
+  z-index: 996
+  background: rgba(0,0,0,0.8)
