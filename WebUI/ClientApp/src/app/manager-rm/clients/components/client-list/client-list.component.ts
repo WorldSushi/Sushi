@@ -439,7 +439,7 @@ export class ClientListComponent implements OnInit {
       this.clients[i].managerCallsResults.escortLetters = sortClients.length != 0 ? sortClients.filter(c =>
         c.managerType == 10 && c.contactType == 30).length : 0;
 
-      if (this.clients[i].managerCallsResults.escortTotalContacts == 0) {
+        if (this.clients[i].managerCallsResults.escortTotalContacts == 0 || this.clients[i].callPlan.escortManagerCalls == 0) {
         this.clients[i].managerCallsResults.escortRes = '-';
       }
       else if ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100 > 100) {
@@ -449,7 +449,7 @@ export class ClientListComponent implements OnInit {
         this.clients[i].managerCallsResults.escortRes = ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100).toFixed(0) + '%';
       }
 
-      if (this.clients[i].managerCallsResults.regionalTotalContacts == 0) {
+        if (this.clients[i].managerCallsResults.regionalTotalContacts == 0 || this.clients[i].callPlan.regionalManagerCalls == 0) {
         this.clients[i].managerCallsResults.regionalRes = '-';
       }
       else if ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100 > 100) {
