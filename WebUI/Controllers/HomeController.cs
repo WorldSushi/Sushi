@@ -92,9 +92,11 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("Init")]
-        public void Init()
+        public void Init(string id)
         {
-           
+            //_context.Set<ClientInfo>().Remove(_context.Set<ClientInfo>().FirstOrDefault(c => c.ClientId.ToString() == id));
+            //_context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id.ToString() == id));
+            //_context.SaveChanges();
         }
 
         [HttpGet]

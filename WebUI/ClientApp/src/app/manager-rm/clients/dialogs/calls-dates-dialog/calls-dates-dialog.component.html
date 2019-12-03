@@ -19,11 +19,11 @@
   <table mat-table #table [dataSource]="clientContacts">
     <ng-container matColumnDef="day">
       <th mat-header-cell *matHeaderCellDef width="190" style="background: #FFFCDD;">Дата</th>
-      <td mat-cell *matCellDef="let row; let i = index" style="width: 200px">{{row.date}}</td>
+      <td mat-cell *matCellDef="let row; let i = index" style="width: 200px" [style.background]="row.date == currentDate ? '#e6f9ff' : ''">{{row.date}}</td>
     </ng-container>
     <ng-container matColumnDef="EMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #EEFEF6;">МС</th>
-      <td mat-cell *matCellDef="let row" style="text-align: center">
+      <td mat-cell *matCellDef="let row" style="text-align: center" [style.background]="row.date == currentDate ? '#e6f9ff' : ''">
         <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.MScallType" [style.background]="chngeColor(row.MScallType)">
           <mat-option (onSelectionChange)="setidZeroOnAccept(row, 'MScallType')" [value]="40" style="background-color:rgba(76, 255, 0, 0.17)">Звонок - развитие подтверждён</mat-option>
           <mat-option [value]="10" style="background-color:rgba(255, 0, 0, 0.29)">Звонок - развитие не подтверждён</mat-option>
@@ -40,7 +40,7 @@
     </ng-container>
     <ng-container matColumnDef="RMcall">
       <th mat-header-cell *matHeaderCellDef style="text-align: center; background: #F5FEEE;">РМ</th>
-      <td mat-cell *matCellDef="let row; let i = index" style="text-align: center">
+      <td mat-cell *matCellDef="let row; let i = index" style="text-align: center" [style.background]="row.date == currentDate ? '#e6f9ff' : ''">
         <mat-select *ngIf="row.date == currentDate" [(ngModel)]="row.RMcallType" [style.background]="chngeColor(row.RMcallType)">
           <mat-option (onSelectionChange)="setidZeroOnAccept(row, 'RMcallType')" [value]="40" style="background-color:rgba(76, 255, 0, 0.17)">Звонок - развитие подтверждён</mat-option>
           <mat-option [value]="10" style="background-color:rgba(255, 0, 0, 0.29)">Звонок - развитие не подтверждён</mat-option>
