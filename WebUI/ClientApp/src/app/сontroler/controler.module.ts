@@ -11,7 +11,7 @@ import { PlanTaskModule } from './plan-task/plan-task.module';
 
 @NgModule({
   declarations: [
-    ControlerComponent,
+    ControlerComponent
   ],
   imports: [
     CommonModule,

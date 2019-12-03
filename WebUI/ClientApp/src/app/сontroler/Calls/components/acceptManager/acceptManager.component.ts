@@ -9,15 +9,14 @@ import { MatPaginator, MatTableDataSource, MatDialog, MatSort } from '@angular/m
 @Component({
   selector: 'app-Accept-Manager',
   templateUrl: './acceptManager.component.html',
-  styleUrls: ['./acceptManager.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./acceptManager.component.sass']
 })
 export class AcceptManagerComponent implements OnInit {
-
-
   @Input() managers: IManager[] = [];
   @Input() cientAccept: ClientAccept[] = [];
-
+  totalItems: number = 0;
+  pageSize: number = 10;
+  paginateDataAcept: ClientAccept[] = [];
 
   displayedColumns: string[] = ['status', 'statusCall', 'direction', 'title', 'phone', 'duration', 'date', 'comentCon', 'comentCli', 'refAudio']
 
@@ -30,40 +29,43 @@ export class AcceptManagerComponent implements OnInit {
   durationTxt: number = -1;
   selectedManager: number = 0;
   hiddenloader = "hidden";
+  audioPlay;
+  audioPlayId = 0;
 
   dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) expansionPaginator: MatPaginator;
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   ngOnChanges() {
-    }
+  }
 
-    getActionColor(clientAction) {
-        if (!clientAction.statusContact || clientAction.statusContact == 0) {
-            if (clientAction.contactType == 0)
-                return '#e5e5e5';
-            else if (clientAction.contactType == 10)
-                return '#FF1493'
-            else if (clientAction.contactType == 20)
-                return '#B0ECDD'
-            else if (clientAction.contactType == 30)
-                return '#FDE488'
-            else if (clientAction.contactType == 40)
-                return '#00FF7F'
-            else if (clientAction.contactType == 60)
-                return '#58FA82'
-        }
-        else if (clientAction.statusContact == 1) {
-            return 'red'
-        }
-        else if (clientAction.statusContact == 2) {
-            return '#A9A9F5'
-        }
+  getActionColor(clientAction) {
+    if (!clientAction.statusContact || clientAction.statusContact == 0) {
+      if (clientAction.contactType == 0)
+        return '#e5e5e5';
+      else if (clientAction.contactType == 10)
+        return '#FF1493'
+      else if (clientAction.contactType == 20)
+        return '#B0ECDD'
+      else if (clientAction.contactType == 30)
+        return '#FDE488'
+      else if (clientAction.contactType == 40)
+        return '#00FF7F'
+      else if (clientAction.contactType == 60)
+        return '#58FA82'
     }
+    else if (clientAction.statusContact == 1) {
+      return 'red'
+    }
+    else if (clientAction.statusContact == 2) {
+      return '#A9A9F5'
+    }
+  }
 
-    sortDateCall(numberSort: number) {
-        this.calendarHidden = "hidden"
+  sortDateCall(numberSort: number) {
+    this.calendarHidden = "hidden"
     let date: Date[] = [];
     if (numberSort == 1) {
       date.push(new Date(2019, 7, 1));
@@ -75,7 +77,7 @@ export class AcceptManagerComponent implements OnInit {
       this.verifyRange(date)
     }
     else if (numberSort == 3) {
-      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-1, 0));
+      date.push(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1, 0));
       this.verifyRange(date)
     }
     else if (numberSort == 4) {
@@ -89,9 +91,9 @@ export class AcceptManagerComponent implements OnInit {
       this.verifyRange(date)
     }
     else if (numberSort == 6) {
-      var curr = new Date; 
-      var first = curr.getDate() - curr.getDay()+1; 
-      var last = first + 6; 
+      var curr = new Date;
+      var first = curr.getDate() - curr.getDay() + 1;
+      var last = first + 6;
       var firstday = new Date(curr.setDate(first));
       var lastday = new Date(curr.setDate(last));
       date.push(new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate(), 0));
@@ -147,20 +149,22 @@ export class AcceptManagerComponent implements OnInit {
     }
   }
 
-    sortCalls() {
-        this.hiddenloader = "";
-        let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
-        this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart='
-            + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
-            + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
-                this.cientAccept = data;
-                this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-                this.cdr.detectChanges();
-                this.hiddenloader = "hidden";
-            });
-    }
+  sortCalls() {
+    this.hiddenloader = "";
+    let direction = this.direction == 1 ? "Исходящий" : this.direction == 2 ? "Входящий" : "";
+    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/AcceptManager?dateStart='
+      + this.dateStart.toLocaleDateString() + '&dateEnd=' + this.dateEnd.toLocaleDateString() + '&direction=' + direction + '&txtNumber='
+      + this.txtNumber + '&durationTxt=' + this.durationTxt + '&managerId=' + this.selectedManager).subscribe((data: ClientAccept[]) => {
+        this.cientAccept = data;
+        this.totalItems = data.length;
+        this.paginateDataAcept = data.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
+        this.dataSource = new MatTableDataSource<ClientAccept>(this.cientAccept)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.detectChanges();
+        this.hiddenloader = "hidden";
+      });
+  }
 
   hiddenCalendar() {
     if (this.calendarHidden == "hidden") {
@@ -199,48 +203,64 @@ export class AcceptManagerComponent implements OnInit {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     if (comentControler || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-        debugger
-        this.cientAccept.find(c => c.id == callId).statusContact == 1;
-        $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+
+      this.cientAccept.find(c => c.id == callId).statusContact == 1;
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
     }
   }
 
   setAccept($event, callId, clientId) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-      let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
-      cientAcceptOne.statusContact == 0;
-      if (cientAcceptOne.contactType == 0)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#e5e5e5';
-      else if (cientAcceptOne.contactType == 10)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FF1493'
-      else if (cientAcceptOne.contactType == 20)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#B0ECDD'
-      else if (cientAcceptOne.contactType == 30)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FDE488'
-      else if (cientAcceptOne.contactType == 40)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#00FF7F'
-      else if (cientAcceptOne.contactType == 60)
-          $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#58FA82'
+    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+    let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
+    cientAcceptOne.statusContact == 0;
+    if (cientAcceptOne.contactType == 0)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#e5e5e5';
+    else if (cientAcceptOne.contactType == 10)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FF1493'
+    else if (cientAcceptOne.contactType == 20)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#B0ECDD'
+    else if (cientAcceptOne.contactType == 30)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FDE488'
+    else if (cientAcceptOne.contactType == 40)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#00FF7F'
+    else if (cientAcceptOne.contactType == 60)
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#58FA82'
+  }
+
+  playAudio($event, id, audioSrc) {
+    if (this.audioPlayId == id || this.audioPlayId != 0 || this.audioPlay) {
+      this.audioPlay.pause();
+      this.audioPlay = null;
+      this.audioPlayId = 0;
+    }
+    else {
+      if (!audioSrc) {
+        return;
+      }
+
+      this.audioPlay = new Audio(audioSrc);
+      this.audioPlay.play();
+      this.audioPlayId = id;
+    }
   }
 
   setBagroundStatus(element) {
-    console.log(element.contactType);
     if (element.contactType == 50) {
       return "#E0F8EC";
     }
     if (element.callsComments) {
-        if (element.callsComments.acceptControlerCalss == 2) {
-          return element.callsComments.colorPen;
-        }
-        else if (element.callsComments.acceptControlerCalss == 1) {
-          return "#DF013A";
-        }
-        else {
-          return "#FAFAFA";
-        }
+      if (element.callsComments.acceptControlerCalss == 2) {
+        return element.callsComments.colorPen;
+      }
+      else if (element.callsComments.acceptControlerCalss == 1) {
+        return "#DF013A";
+      }
+      else {
+        return "#FAFAFA";
+      }
     }
 
   }
@@ -250,9 +270,31 @@ export class AcceptManagerComponent implements OnInit {
     this.getcallsDater();
   }
 
+  _display_audio_icon(id) {
+    return this.audioPlayId == id ? '../../../../../Icon/pause.png' : '../../../../../Icon/play.png';
+  }
+
+  _filterOpened: boolean = false;
+
+  _toggleSidebar() {
+    this._filterOpened = !this._filterOpened;
+  }
+
+  _isMobile() {
+    return window.innerWidth < 820;
+  }
+
+  _getFilterIcon() {
+    return this._filterOpened ? 'Icon/close.png' : 'Icon/filter.png';
+  }
+
+  paginate(event) {
+    const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
+    this.paginateDataAcept = this.cientAccept.slice(offset).slice(0, event.pageSize);
+  }
+
   constructor(public dialog: MatDialog,
     private http: HttpClient,
     private cdr: ChangeDetectorRef) {
-
   }
 }

@@ -9,7 +9,6 @@ import { ClientGroupTranslatePipe } from 'src/app/store/shared/pipes/client-grou
 import { AcceptManagerComponent } from './components/acceptManager/acceptManager.component';
 import { AcceptComponent } from './containers/accept/accept.component';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgxCalendarModule, IgxDatePickerModule } from 'igniteui-angular';
 import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 
