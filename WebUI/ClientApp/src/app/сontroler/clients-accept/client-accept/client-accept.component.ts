@@ -18,8 +18,11 @@ export class ClientAcceptComponent implements OnInit {
 
   displayedColumns: string[] = ['status', 'title', 'clientType', 'phone', 'legalEntity', 'numberOfCalls', 'numberOfShipments', 'comentCon', 'comentCli']
   workgroupId: number = 0;
-    cliets: IClient[] = [];
-    hiddenloader = "hidden";
+  cliets: IClient[] = [];
+  hiddenloader = "hidden";
+  totalItems: number = 0;
+  pageSize: number = 10;
+  paginateClients: IClient[] = [];
 
 
   dataSource = new MatTableDataSource<IClient>(this.cliets);
@@ -47,25 +50,35 @@ export class ClientAcceptComponent implements OnInit {
 
   }
 
-  setNoAccept($event, clientId) {
+  setNoAccept($event, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     if (comentControler != undefined || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCallClient?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+      if (!this._isMobile()) {
+        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+      } else {
+        const $status = document.getElementsByClassName("status")[index] as any;
+        $status.style.backgroundColor = "#DF013A";
+      }
     }
   }
 
-  setAccept($event, clientId) {
+  setAccept($event, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCallClient?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-    $event.currentTarget.offsetParent.children[0].value = "";
-    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+    if (!this._isMobile()) {
+      $event.currentTarget.offsetParent.children[0].value = "";
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+    } else {
+      const $status = document.getElementsByClassName("status")[index] as any;
+      $status.style.backgroundColor = "#FAFAFA";
+    }
   }
 
-    getClients() {
-        this.hiddenloader = "";
+  getClients() {
+    this.hiddenloader = "";
     this.http.get<IClient[]>('api/conroler/ClientAccept/Clients').subscribe((data: IClient[]) => {
-        this.clietsFull = data;
+      this.clietsFull = data;
       this.getworkgroup();
     });
   }
@@ -84,18 +97,33 @@ export class ClientAcceptComponent implements OnInit {
     }
     else {
       this.cliets = this.clietsFull;
-      }
-
-      this.dataSource = new MatTableDataSource<IClient>(this.cliets)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.hiddenloader = "hidden"
+    }
+    this.totalItems = this.cliets.length;
+    this.paginateClients = this.cliets.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
+    this.dataSource = new MatTableDataSource<IClient>(this.cliets)
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.hiddenloader = "hidden"
     console.log("sortClients");
   }
 
 
   selectedWorkGroupChange() {
     this.sortClients();
+  }
+
+  _filterOpened: boolean = false;
+
+  _toggleSidebar() {
+    this._filterOpened = !this._filterOpened;
+  }
+
+  _isMobile() {
+    return window.innerWidth < 820;
+  }
+
+  _getFilterIcon() {
+    return this._filterOpened ? 'Icon/close.png' : 'Icon/filter.png';
   }
 
   constructor(public dialog: MatDialog,
@@ -108,4 +136,8 @@ export class ClientAcceptComponent implements OnInit {
   ngOnInit() {
   }
 
+  paginate(event) {
+    const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
+    this.paginateClients = this.cliets.slice(offset).slice(0, event.pageSize);
+  }
 }

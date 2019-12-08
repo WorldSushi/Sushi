@@ -141,14 +141,14 @@
   </div>
   <div class="bodyAllExpansion" [hidden]="!_isMobile()">
     <mat-accordion>
-      <ng-container class="table-expansion-element" *ngFor="let element of paginateDataAcept">
+      <ng-container class="table-expansion-element" *ngFor="let element of paginateDataAcept; let i = index">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <!-- <div style="display:flex">
-                <div style="width: 20px" class="status" [style.background]="setBagroundStatus(element)"></div> -->
+              <div class="status" [style.background]="setBagroundStatus(element)"></div>
+              <div>
                 {{element.titleClient}}
-              <!-- </div> -->
+              </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="table-expansion-element-body">
@@ -177,9 +177,9 @@
                 <textarea *ngIf="element.contactType != 50"
                   class="textComment">{{element.callsComments?.comment}}</textarea><br />
                 <div class="btnContainer">
-                  <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId)"
+                  <button *ngIf="element.contactType != 50" (click)="setNoAccept($event, element.id, element.clientId, i)"
                     class="btnAccept btnReject">Отклонить</button>
-                  <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId)"
+                  <button *ngIf="element.contactType != 50" (click)="setAccept($event, element.id, element.clientId, i)"
                     class="btnAccept btnFixed">Исправлено</button>
                 </div>
               </div>

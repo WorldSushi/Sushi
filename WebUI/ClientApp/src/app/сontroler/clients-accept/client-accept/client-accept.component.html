@@ -1,4 +1,5 @@
 <mat-card class="mat-elevation-z1">
+  <div class="overlay" [class.opened]="_isMobile() && _filterOpened"></div>
   <mat-card-header>
     <mat-card-title class="card-title">Проверка Клиента</mat-card-title>
     <div id="fountainG" [hidden]="hiddenloader">
@@ -12,19 +13,30 @@
       <div id="fountainG_8" class="fountainG"></div>
     </div>
   </mat-card-header>
-  <div class="filter clearfix">
-    <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
-      <option [ngValue]=0>Все рабочие групы</option>
-      <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
-        {{wg.title}}
-      </option>
-    </select>
+  <div class="filter-container" [class.opened]="_filterOpened">
+    <div class="filter clearfix">
+      <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
+        <option [ngValue]=0>Все рабочие групы</option>
+        <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
+          {{wg.title}}
+        </option>
+      </select>
+    </div>
   </div>
   <div>
-    <mat-card-content>
 
-      <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons></mat-paginator>
-      <table mat-table [dataSource]="dataSource" MatSort>
+    <div class="filter-button-container" *ngIf="_isMobile()">
+      <div class="filter-button">
+        <button mat-icon-button (click)="_toggleSidebar()">
+          <img [src]="_getFilterIcon()" height="30" width="30" />
+        </button>
+      </div>
+    </div>
+
+    <mat-card-content>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons
+        [length]="totalItems" [pageSize]="pageSize" (page)="paginate($event)"></mat-paginator>
+      <table mat-table [dataSource]="dataSource" MatSort [hidden]="_isMobile()">
 
         <ng-container matColumnDef="status">
           <th colspan="1" mat-header-cell *matHeaderCellDef></th>
@@ -33,7 +45,8 @@
 
         <ng-container matColumnDef="title">
           <th colspan="4" mat-header-cell *matHeaderCellDef>Название</th>
-          <td colspan="4" mat-cell *matCellDef="let element" style="color: #324A60; max-width: 300px">{{element.title}}
+          <td colspan="4" mat-cell *matCellDef="let element" style="color: #324A60; max-width: 300px">
+            {{element.title}}
           </td>
         </ng-container>
 
@@ -65,7 +78,8 @@
         <ng-container matColumnDef="comentCon">
           <th colspan="10" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
           <td colspan="10" mat-cell *matCellDef="let element">
-            <textarea style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
+            <textarea
+              style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
             <div class="btnContainer">
               <button (click)="setNoAccept($event, element.id)" class="btnAccept btnReject">Отклонить</button>
               <button (click)="setAccept($event, element.id)" class="btnAccept btnFixed">Исправлено</button>
@@ -81,6 +95,44 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      <div class="bodyAllExpansion" [hidden]="!_isMobile()">
+        <mat-accordion>
+          <ng-container class="table-expansion-element" *ngFor="let element of paginateClients; let i = index">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="status" [style.background]="setBagroundStatus(element)"></div>
+                  <div>
+                    {{element.title}}
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="table-expansion-element-body">
+                <div class="element-item title"><b>Название:</b> {{element.title}}</div>
+                <div class="element-item phone"><b>Телефон:</b>{{element.phones[0]?.phone}} {{element.contactName}}
+                </div>
+                <div class="element-item clientType"><b>Тип:</b>{{element.clientType}}</div>
+                <div class="element-item legalEntity"><b>Юр. лицо:</b>{{element.legalEntity}}</div>
+                <div class="element-item numberOfCalls"><b>Звонки:</b>{{element.numberOfCalls}}</div>
+                <div class="element-item numberOfShipments"><b>Отгрузки:</b>{{element.numberOfShipments}}</div>
+                <div class="element-item comentCon">
+                  <b>Комментарий контролера:</b>
+                  <div>
+                    <textarea
+                      style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
+                    <div class="btnContainer">
+                      <button (click)="setNoAccept($event, element.id, i)" class="btnAccept btnReject">Отклонить</button>
+                      <button (click)="setAccept($event, element.id, i)" class="btnAccept btnFixed">Исправлено</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="element-item comentCli"><b>Комментарий
+                    менеджера:</b>{{element.callsComments?.managerComment}}</div>
+              </div>
+            </mat-expansion-panel>
+          </ng-container>
+        </mat-accordion>
+      </div>
     </mat-card-content>
   </div>
 </mat-card>

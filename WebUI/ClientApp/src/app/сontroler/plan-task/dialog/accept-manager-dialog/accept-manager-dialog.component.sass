@@ -36,6 +36,8 @@ td
     padding-right: 5px !important
     border-bottom: none
     color: #1C1C1C !important
+    text-overflow: ellipsis
+    overflow: hidden
 
 th 
     padding-left: 15px !important
@@ -43,7 +45,8 @@ th
     background-color: #fcfcfc
     border-bottom: none
     color: #000000 !important
-
+    text-overflow: ellipsis
+    overflow: hidden
 
 .mat-card
     padding: 0px
@@ -59,9 +62,86 @@ th
     cursor: pointer
     margin-bottom: 5px
     margin-right: 3px
+    flex-basis: 50%
+    padding-left: 6px
+    padding-right: 6px
 
 .action-circle 
     height: 15px
     width: 15px
     border-radius: 10px
     margin-bottom: 4px
+
+.btnContainer
+    display: flex
+    margin-bottom: 8px
+
+.btnReject
+    background-color: #ff7777
+
+.btnFixed
+    background-color: #8bd88b
+    margin-right: 0
+
+.audio-cell
+    width: 200px
+
+.audio-cell-icon
+    display: none
+    height: 38px
+    width: 38px
+
+@media screen and (max-width: 1420px)
+  .audio-cell
+    width: 50px
+
+  .audio-cell-play
+    display: none
+
+  .audio-cell-icon
+    display: block !important
+
+  th, td 
+    padding-left: 5px !important
+
+  th:hover, 
+  td:hover
+    text-overflow: clip
+    overflow: inherit
+
+mat-expansion-panel.mat-expanded
+  border-radius: 0
+  mat-expansion-panel-header
+    background: #62b4ff
+    border-radius: 0
+    color: white
+    .mat-expansion-panel-header-title 
+      color: white
+      font-size: 18px
+      .status
+        width: 10px
+        position: absolute
+        left: 0
+        height: 64px
+        margin-top: -19px
+
+.table-expansion-element-body
+  margin-top: 20px
+  .element-item
+    line-height: 30px
+  b
+    margin-right: 10px
+  .statusCall
+    display: flex
+    .action-circle
+      margin-top: 7px
+  .direction b
+    vertical-align: top
+  .refAudio
+    .audio-cell
+      width: 100%
+
+.mat-expansion-panel
+  border: none
+  border-bottom: 1px solid #e6e6e6
+  box-shadow: none

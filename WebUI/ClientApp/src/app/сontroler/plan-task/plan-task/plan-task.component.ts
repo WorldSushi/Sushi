@@ -31,15 +31,19 @@ export class PlanTaskComponent implements OnInit {
   dateCollections: string[] = [];
   dateCollection: string;
   workgroupId: number = 0;
-    clientsData: IClientData[] = [];
-    hiddenloader = "hidden";
+  clientsData: IClientData[] = [];
+  hiddenloader = "hidden";
 
-    dataSource = new MatTableDataSource<IClientData>(this.clientsData);
-    @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-    @ViewChild(MatSort, { static: false }) sort: MatSort;
+  totalItems: number = 0;
+  pageSize: number = 10;
+  paginateClients: IClientData[] = [];
 
-    getClients() {
-        this.hiddenloader = "";
+  dataSource = new MatTableDataSource<IClientData>(this.clientsData);
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+
+  getClients() {
+    this.hiddenloader = "";
     this.http.get<IClientData[]>('api/conroler/ClientAccept/Client').subscribe((data: IClientData[]) => {
       this.clientsDataFull = data
       console.log(this.clientsData);
@@ -64,30 +68,30 @@ export class PlanTaskComponent implements OnInit {
   }
 
   getcallsDater() {
-      this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
-          this.cientAccept = data.filter(c => c.durations >= 150);
+    this.http.get<ClientAccept[]>('api/conroler/ClientAccept/').subscribe((data: ClientAccept[]) => {
+      this.cientAccept = data.filter(c => c.durations >= 150);
       this.setSortWeeplan();
     });
   }
 
   goToCall(clientAccept: ClientAccept[]) {
     if (clientAccept) {
-        const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
-            data: clientAccept
-        })
-        dialogRef.afterClosed().subscribe(res => {
-            if (res) {
-                let cientAccept: ClientAccept[] = res;
-                for (let i = 0; i < cientAccept.length; i++) {
-                    console.log(cientAccept);
-                   this.cientAccept.find(c => c.id == cientAccept[i].id).callsComments = cientAccept[i].callsComments;
-                }
-            }
-        });
+      const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
+        data: clientAccept
+      })
+      dialogRef.afterClosed().subscribe(res => {
+        if (res) {
+          let cientAccept: ClientAccept[] = res;
+          for (let i = 0; i < cientAccept.length; i++) {
+            console.log(cientAccept);
+            this.cientAccept.find(c => c.id == cientAccept[i].id).callsComments = cientAccept[i].callsComments;
+          }
+        }
+      });
     }
   }
 
-    setSortWeeplan() {
+  setSortWeeplan() {
     this.hiddenloader = "";
     this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
     this.clientsData.forEach((item: IClientData) => {
@@ -98,24 +102,27 @@ export class PlanTaskComponent implements OnInit {
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
       item.clientAccept = [];
-        let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * (this.numberWeek + 1));
-        let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
-        dateFirst = new Date(firstDayWeek);
+      let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * (this.numberWeek + 1));
+      let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
+      dateFirst = new Date(firstDayWeek);
       //console.log(this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[2] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[1] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[0]);
       item.clientAccept = this.cientAccept.filter(c => item.id == c.clientId
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= new Date(dateFirst.setDate(dateFirst.getDate() + 6)).getDate()
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
-        //for (var i = dateFirst.getDate(); i <= dateFirst.getDate() + 6; i++) {
-        //  let currDate = new Date(this.numberYear, this.numberMonthe, i);
-        //}
+        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
+        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= new Date(dateFirst.setDate(dateFirst.getDate() + 6)).getDate()
+        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
+        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
+      //for (var i = dateFirst.getDate(); i <= dateFirst.getDate() + 6; i++) {
+      //  let currDate = new Date(this.numberYear, this.numberMonthe, i);
+      //}
     });
-        this.dataSource = new MatTableDataSource<IClientData>(this.clientsData)
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      this.initDateArchiv();
-      this.hiddenloader = "hidden";
+    this.totalItems = this.clientsData.length;
+    this.paginateClients = this.clientsData.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
+
+    this.dataSource = new MatTableDataSource<IClientData>(this.clientsData)
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.initDateArchiv();
+    this.hiddenloader = "hidden";
     console.log(this.clientsData);
   }
 
@@ -169,19 +176,29 @@ export class PlanTaskComponent implements OnInit {
     this.setSortWeeplan();
   }
 
-  setNoAccept($event, clientId) {
+  setNoAccept($event, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     if (comentControler != undefined || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+      if (!this._isMobile()) {
+        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+      } else {
+        const $status = document.getElementsByClassName("status")[index] as any;
+        $status.style.backgroundColor = "#DF013A";
+      }
     }
   }
 
-  setAccept($event, clientId) {
+  setAccept($event, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-    $event.currentTarget.offsetParent.children[0].value = "";
-    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+    if (!this._isMobile()) {
+      $event.currentTarget.offsetParent.children[0].value = "";
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+    } else {
+      const $status = document.getElementsByClassName("status")[index] as any;
+      $status.style.backgroundColor = "#FAFAFA";
+    }
   }
 
   constructor(public dialog: MatDialog,
@@ -189,8 +206,26 @@ export class PlanTaskComponent implements OnInit {
     private cdr: ChangeDetectorRef) {
   }
 
+  _filterOpened: boolean = false;
+
+  _toggleSidebar() {
+    this._filterOpened = !this._filterOpened;
+  }
+
+  _isMobile() {
+    return window.innerWidth < 820;
+  }
+
+  _getFilterIcon() {
+    return this._filterOpened ? 'Icon/close.png' : 'Icon/filter.png';
+  }
+
   ngOnInit() {
     this.getClients();
   }
 
+  paginate(event) {
+    const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
+    this.paginateClients = this.clientsData.slice(offset).slice(0, event.pageSize);
+  }
 }
