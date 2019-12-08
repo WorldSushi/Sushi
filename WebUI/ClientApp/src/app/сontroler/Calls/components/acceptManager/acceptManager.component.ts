@@ -199,35 +199,53 @@ export class AcceptManagerComponent implements OnInit {
     }
   }
 
-  setNoAccept($event, callId, clientId) {
+  setNoAccept($event, callId, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     if (comentControler || comentControler != "") {
       this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-
-      this.cientAccept.find(c => c.id == callId).statusContact == 1;
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
+      if (!this._isMobile()) {
+        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+        $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
+      } else {
+        const $status = document.getElementsByClassName("status")[index] as any;
+        const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
+        $status.style.backgroundColor = "#DF013A";
+        $statusCall.style.backgroundColor = "red";
+      }
     }
   }
 
-  setAccept($event, callId, clientId) {
-    let comentControler = $event.currentTarget.offsetParent.children[0].value;
+  setAccept($event, callId, clientId, index = null) {
+    const comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
-    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+
     let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
     cientAcceptOne.statusContact == 0;
+    let color = '';
+
     if (cientAcceptOne.contactType == 0)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#e5e5e5';
+      color = '#e5e5e5';
     else if (cientAcceptOne.contactType == 10)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FF1493'
+      color = '#FF1493'
     else if (cientAcceptOne.contactType == 20)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#B0ECDD'
+      color = '#B0ECDD'
     else if (cientAcceptOne.contactType == 30)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#FDE488'
+      color = '#FDE488'
     else if (cientAcceptOne.contactType == 40)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#00FF7F'
+      color = '#00FF7F'
     else if (cientAcceptOne.contactType == 60)
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = '#58FA82'
+      color = '#58FA82'
+
+    if (!this._isMobile()) {
+      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = color;
+    } else {
+      const $status = document.getElementsByClassName("status")[index] as any;
+      const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
+
+      $status.style.backgroundColor = "#FAFAFA";
+      $statusCall.style.backgroundColor = color;
+    }
   }
 
   playAudio($event, id, audioSrc) {

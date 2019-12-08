@@ -1,4 +1,5 @@
 <mat-card class="mat-elevation-z1">
+  <div class="overlay" [class.opened]="_isMobile() && _filterOpened"></div>
   <mat-card-header>
     <mat-card-title class="card-title">Проверка План факта</mat-card-title>
     <div id="fountainG" [hidden]="hiddenloader">
@@ -12,27 +13,39 @@
       <div id="fountainG_8" class="fountainG"></div>
     </div>
   </mat-card-header>
-  <div class="filter clearfix">
-    <select [(ngModel)]="numberWeek" (ngModelChange)="changeNumberWeek()">
-      <option [ngValue]=0>Первая неделя</option>
-      <option [ngValue]=1>Вторая неделя</option>
-      <option [ngValue]=2>Третья неделя</option>
-      <option [ngValue]=3>Четвертая неделя</option>
-      <option [ngValue]=4>Пятая неделя</option>
-    </select>
-    <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
-      <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
-    </select>
-    <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
-      <option [ngValue]=0>Все рабочие групы</option>
-      <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
-        {{wg.title}}
-      </option>
-    </select>
+  <div class="filter-container" [class.opened]="_filterOpened">
+    <div class="filter clearfix">
+      <select [(ngModel)]="numberWeek" (ngModelChange)="changeNumberWeek()">
+        <option [ngValue]=0>Первая неделя</option>
+        <option [ngValue]=1>Вторая неделя</option>
+        <option [ngValue]=2>Третья неделя</option>
+        <option [ngValue]=3>Четвертая неделя</option>
+        <option [ngValue]=4>Пятая неделя</option>
+      </select>
+      <select [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+        <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+      </select>
+      <select [(ngModel)]="workgroupId" (change)="selectedWorkGroupChange()">
+        <option [ngValue]=0>Все рабочие групы</option>
+        <option *ngFor="let wg of workgroups; let i = index" [ngValue]=wg.id>
+          {{wg.title}}
+        </option>
+      </select>
+    </div>
   </div>
+
+  <div class="filter-button-container" *ngIf="_isMobile()">
+    <div class="filter-button">
+      <button mat-icon-button (click)="_toggleSidebar()">
+        <img [src]="_getFilterIcon()" height="30" width="30" />
+      </button>
+    </div>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons
+    [length]="totalItems" [pageSize]="pageSize" (page)="paginate($event)"></mat-paginator>
   <mat-card-content>
-    <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]" showFirstLastButtons></mat-paginator>
-    <table mat-table [dataSource]="dataSource" MatSort>
+    <table mat-table [dataSource]="dataSource" MatSort [hidden]="_isMobile()">
 
       <ng-container matColumnDef="status">
         <th colspan="1" mat-header-cell *matHeaderCellDef></th>
@@ -95,5 +108,48 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <div class="bodyAllExpansion" [hidden]="!_isMobile()">
+      <mat-accordion>
+        <ng-container class="table-expansion-element" *ngFor="let element of paginateClients; let idx = index">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="status" [style.background]="setBagroundStatus(element)"></div>
+                <div>
+                  {{element.title}}
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="table-expansion-element-body">
+              <div class="element-item title"><b>Название:</b> {{element.title}}</div>
+              <div class="element-item legalEntity"><b>Юр. лицо:</b> {{element.legalEntity}}</div>
+              <div class="element-item countCall" (click)="goToCall(element.clientAccept)">
+                <b>Звонки:</b>
+                {{element.clientAccept.length}}
+              </div>
+              <div class="element-item planRM"><b>План РМ:</b> {{element.weeklyPlanSRegional?.plan}}</div>
+              <div class="element-item planMC"><b>План MC:</b> {{element.weeklyPlanSEscort?.plan}}</div>
+              <div class="element-item taskRM"><b>Факт РМ:</b> {{element.weeklyPlanSRegional?.fact}}</div>
+              <div class="element-item taskMC"><b>Факт МС:</b> {{element.weeklyPlanSEscort?.fact}}</div>
+              <div class="element-item comentCon">
+                <b>Комментарий контролера:</b>
+                <div>
+                  <textarea
+                    style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
+                  <div class="btnContainer">
+                    <button (click)="setNoAccept($event, element.id, idx)" class="btnAccept btnReject">Отклонить</button>
+                    <button (click)="setAccept($event, element.id, idx)" class="btnAccept btnFixed">Исправлено</button>
+                  </div>
+                </div>
+              </div>
+              <div class="element-item comentCli">
+                <b>Комментарий менеджера:</b>
+                {{element.callsComments?.managerComment}}
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion>
+    </div>
   </mat-card-content>
 </mat-card>
