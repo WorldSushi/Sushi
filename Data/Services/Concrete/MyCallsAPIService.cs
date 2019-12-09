@@ -32,10 +32,15 @@ namespace Data.Services.Concrete
         public void SaveNewCalls()
         {
             //_context.Set<CallLog>().RemoveRange(_context.Set<CallLog>());
+            //_context.SaveChanges();
             //_context.Set<CallInfo>().RemoveRange(_context.Set<CallInfo>());
+            //_context.SaveChanges();
             //_context.Set<ClientContact>().RemoveRange(_context.Set<ClientContact>());
+            //_context.SaveChanges();
             //_context.Set<ContactManager>().RemoveRange(_context.Set<ContactManager>());
+            //_context.SaveChanges();
             //_context.Set<Call>().RemoveRange(_context.Set<Call>());
+            //_context.SaveChanges();
             //_context.Set<MonthCallsInfo>().RemoveRange(_context.Set<MonthCallsInfo>());
             //_context.SaveChanges();
 

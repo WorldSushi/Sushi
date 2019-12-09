@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebUI.Background;
@@ -66,11 +68,13 @@ namespace WebUI
             JobManager.Initialize(new MyRegistry(provider.GetRequiredService<ApplicationContext>()));
             #endregion
 
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
-                builder.AllowAnyHeader()
-                       .AllowAnyMethod()
-                       .AllowAnyOrigin();
-            }));
+            //services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
+            //    builder.AllowAnyHeader()
+            //           .AllowAnyMethod()
+            //           .AllowAnyOrigin();
+            //}));
+
+
 
             services.AddMvc();
 
@@ -81,7 +85,7 @@ namespace WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+            //app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseDeveloperExceptionPage();
 
