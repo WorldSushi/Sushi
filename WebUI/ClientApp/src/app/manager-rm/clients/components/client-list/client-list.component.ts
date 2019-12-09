@@ -231,14 +231,14 @@ export class ClientListComponent implements OnInit {
       this.weekPlanFactAdded.emit(res);
     })
 
-    dialogRef.afterClosed().subscribe(res => {
+      dialogRef.afterClosed().subscribe(res => {
+          debugger
       if(res){
         res.forEach(element => {
           if(element.id == 0)
             this.weekPlanCreated.emit(element);
           else if(element.id > 0)
             this.weekPlanUpdated.emit(element);
-
           sub.unsubscribe();
         });
       }
@@ -350,7 +350,7 @@ export class ClientListComponent implements OnInit {
     let weekPlan = (weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
       ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
       : { plan: '' }).plan;
-    if (weekPlan.length > 150) {
+        if (weekPlan && weekPlan.length > 150) {
       weekPlan = weekPlan.substr(0, 150)
       weekPlan += "...";
     }
@@ -363,7 +363,7 @@ export class ClientListComponent implements OnInit {
     let weekPlan = (weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
       ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
       : { plan: '' }).plan;
-    if (weekPlan.length > 150) {
+      if (weekPlan   && weekPlan.length > 150) {
       weekPlan = weekPlan.substr(0, 150)
       weekPlan += "...";
     }
@@ -575,7 +575,7 @@ export class ClientListComponent implements OnInit {
 
     checkCallForColor(element: IClient) {
         let color = "";
-        if (this.todayCalss.filter(td => td.id == element.id).length != 0) {
+        if (this.todayCalss && this.todayCalss.filter(td => td.id == element.id).length != 0) {
             if (this.todayCalss.find(td => td.id == element.id).clientContacts.filter(c => c.contactType == 40).length != 0) {
                 color = "#e0fee0";
             }

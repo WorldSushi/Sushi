@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Base.Helpers;
 using Data;
@@ -46,17 +47,24 @@ namespace WebUI.ApiControllers.Manager
             var weekPlan = await _context.Set<WeekPlan>()
                 .FirstOrDefaultAsync(x => x.ClientId == command.ClientId
                                           && DateHelper.IsCurrentMonth(x.Date)
-                                          && x.WeekNumber == 2
+                                          && x.WeekNumber == command.WeekNumber
                                           && x.ManagerType == command.ManagerType);
             if (weekPlan != null)
-                return BadRequest("План на эту неделю уже существует");
+            {
+                weekPlan.Plan = command.Plan;
+                weekPlan.PlanTitle = command.PlanTitle;
+            }
+            else
+            {
 
-            var newWeekPlan = await _context.Set<WeekPlan>()
-                .AddAsync(new WeekPlan(command));
+                weekPlan = _context.Set<WeekPlan>()
+                    .Add(new WeekPlan(command)).Entity;
+            }
+
 
             await _context.SaveChangesAsync();
 
-            var result = newWeekPlan.Entity;
+            var result = weekPlan;
 
             return Ok(result);
         }
@@ -100,17 +108,22 @@ namespace WebUI.ApiControllers.Manager
 
             if (weekPlan == null)
             {
-                return BadRequest("План не найден");
-                //_context.Set<WeekPlan>().Add(new WeekPlan(new WeekPlanCreate()
-                //{
-                //    ClientId = command.ClientId,
-                //    ManagerType = command.ManagerType,
-                //    Plan = command.
-                //}));
+                weekPlan = _context.Set<WeekPlan>().Add(new WeekPlan()
+                {
+                    ClientId = command.ClientId,
+                    ManagerType = command.ManagerType,
+                    Fact = command.Fact,
+                    WeekNumber = command.WeekNumber,
+                    FactTitle = command.FactTitle,
+                    Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
+                }).Entity;
             }
-                //return BadRequest("План не найден");
+            else
+            {
+                weekPlan.AddFact(command.Fact, command.FactTitle);
+            }
+            //return BadRequest("План не найден");
 
-            weekPlan.AddFact(command.Fact, command.FactTitle);
 
             await _context.SaveChangesAsync();
 

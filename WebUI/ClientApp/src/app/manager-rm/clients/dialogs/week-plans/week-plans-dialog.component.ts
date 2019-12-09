@@ -32,9 +32,13 @@ export class WeekPlansDialogComponent implements OnInit {
   lastdayFourWeek: any;
 
   firstdayFiveWeek: any;
-  lastdayFiveWeek: any;
+    lastdayFiveWeek: any;
 
-  toMonthDate = new Date().toLocaleDateString().substring(3, new Date().toLocaleDateString().length);
+
+    toMonthDate = new Date().toLocaleDateString().substring(3, new Date().toLocaleDateString().length);
+
+
+    curentDate: string = ""
 
   selectedMSWeek: IWeekPlan = {
     id: 0,
@@ -62,7 +66,8 @@ export class WeekPlansDialogComponent implements OnInit {
 
   initDate() {
     let day = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
-    let tmpDate = new Date(new Date().getFullYear(), new Date().getMonth(), (7 - (7 - day)) + 2);
+      let tmpDate = new Date(new Date().getFullYear(), new Date().getMonth(), (7 - (7 - day)) + 2);
+
     this.firstdayOneWeek = tmpDate.toLocaleDateString();
     tmpDate.setDate(tmpDate.getDate() + 4);
     this.lastdayOneWeek = tmpDate.toLocaleDateString();
@@ -85,11 +90,30 @@ export class WeekPlansDialogComponent implements OnInit {
     tmpDate.setDate(tmpDate.getDate() + 3);
     this.firstdayFiveWeek = tmpDate.toLocaleDateString();
     tmpDate.setDate(tmpDate.getDate() + 4);
-    this.lastdayFiveWeek = tmpDate.toLocaleDateString();
-  }
+      this.lastdayFiveWeek = tmpDate.toLocaleDateString();
+      this.initCurrentDate(this.numberOfWeek);
+    }
 
-  setWeeks(numberOfWeek: number){
+    initCurrentDate(numberWeek: number) {
+        if (numberWeek == 1) {
+            this.curentDate = this.firstdayOneWeek + " - " + this.lastdayOneWeek;
+        }
+        else if (numberWeek == 2) {
+            this.curentDate = this.firstdayTwoWeek + " - " + this.lastdayTwoWeek;
+        }
+        else if (numberWeek == 3) {
+            this.curentDate = this.firstdaythreeWeek + " - " + this.lastdaythreeWeek;
+        }
+        else if (numberWeek == 4) {
+            this.curentDate = this.firstdayFourWeek + " - " + this.lastdayFourWeek;
+        }
+        else if (numberWeek == 5) {
+            this.curentDate = this.firstdayFiveWeek + " - " + this.lastdayFiveWeek;
+        }
+    }
 
+  setWeeks(numberOfWeek: number) {
+        debugger
     if(this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek);
     else
@@ -102,7 +126,8 @@ export class WeekPlansDialogComponent implements OnInit {
       this.selectedRMWeek = {
         id: 0, clientId: this.data.id, managerType: 20, plan: '', fact: '', weekNumber: numberOfWeek, dateTime: ""}
 
-    this.numberOfWeek = numberOfWeek;
+      this.numberOfWeek = numberOfWeek;
+      this.initCurrentDate(this.numberOfWeek);
   }
 
   addNewWeekPlan(addingWeekPlan: IWeekPlan){
@@ -138,7 +163,8 @@ export class WeekPlansDialogComponent implements OnInit {
     return result
   }
 
-  addFactToWeekPlan(weekPlan: IWeekPlan){
+    addFactToWeekPlan(weekPlan: IWeekPlan) {
+        debugger
     this.addFact.emit(weekPlan);
   }
 

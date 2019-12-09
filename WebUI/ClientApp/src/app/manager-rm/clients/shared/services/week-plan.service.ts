@@ -19,10 +19,12 @@ export class WeekPlansService {
     }
 
     createWeekPlan(weekPlan: IWeekPlan): Observable<IWeekPlan> {
+        debugger
         return this.http.post<IWeekPlan>(this.API_URL, weekPlan, this.httpOptions);
     }
 
     editWeekPlan(weekPlan: IWeekPlan): Observable<IWeekPlan> {
+        debugger
         return this.http.put<IWeekPlan>(this.API_URL + weekPlan.id, weekPlan, this.httpOptions);
     }
 

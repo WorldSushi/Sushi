@@ -3,15 +3,14 @@
 </div>
 
 <mat-dialog-content>
-  <span class="numberOfWeek">неделя {{numberOfWeek}}</span>
+  <span class="numberOfWeek">неделя {{numberOfWeek}}/{{curentDate}}</span>
 
   <a class="report" href="ReportClienr?name=Nomll&clientId={{data.id}}">Отчёт Номенклатура</a>
   <a class="report" href="ReportClienr?name=Salle&clientId={{data.id}}">Отчёт Анализ продаж</a>
   <a class="report" href="ReportClienr?name=Opros&clientId={{data.id}}">Отчёт По опросу</a>
   <a class="report" href="ReportClienr?name=Debitory&clientId={{data.id}}">Отчёт По дебиторке</a>
 
-  <button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button>
-
+  <button class="close" (click)="close()"><i class="fas fa-times fa-2x"></i></button><br />
   <div class="dialog-body">
     <div class="dialog-section dialog-left">
       <div class="dialog-section-title">
