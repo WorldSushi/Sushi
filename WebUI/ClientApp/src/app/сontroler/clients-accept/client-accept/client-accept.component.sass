@@ -53,6 +53,26 @@ th
     color: #4d73a4
     font-weight: bold
 
+.filter-button
+  background: #62b4ff
+  position: fixed
+  top: 47vh
+  right: 0
+  padding: 10px 5px
+  border-top-left-radius: 6px
+  border-bottom-left-radius: 6px
+  z-index: 998
+
+.overlay.opened
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  overflow: hidden
+  z-index: 996
+  background: #000000cc
+
 ::ng-deep th.mat-header-cell
     border-bottom: 1px solid #f7f7f7
     color: #b9b9b9
@@ -301,3 +321,67 @@ th
   td:hover
     text-overflow: clip
     overflow: inherit
+
+@media screen and (max-width: 820px)
+  .filter-container
+    overflow-y: scroll
+    position: absolute
+    width: min-content
+    display: none
+    top: 0
+    right: 0
+    height: 100%
+    background: white
+    z-index: 997
+
+  .filter-container.opened
+    right: 0
+    display: block
+    -webkit-animation: animateright 0.4s
+    animation: animateright 0.4
+
+  .filter
+    display: flex
+    flex-direction: column
+    margin-top: 20px
+    padding-right: 40px
+
+.mat-card 
+  min-height: 100vh
+
+mat-expansion-panel.mat-expanded
+  border-radius: 0
+  mat-expansion-panel-header
+    background: #62b4ff
+    border-radius: 0
+    color: white
+    .mat-expansion-panel-header-title 
+      color: white
+      font-size: 18px
+      .status
+        width: 10px
+        position: absolute
+        left: 0
+        height: 64px
+        margin-top: -19px
+
+.table-expansion-element-body
+  margin-top: 20px
+  .element-item
+    line-height: 30px
+  b
+    margin-right: 10px
+  .statusCall
+    display: flex
+    .action-circle
+      margin-top: 7px
+  .comentCon
+    max-width: 300px
+    .btnContainer
+      .btnAccept
+        height: 30px
+
+.mat-expansion-panel
+  border: none
+  border-bottom: 1px solid #e6e6e6
+  box-shadow: none
