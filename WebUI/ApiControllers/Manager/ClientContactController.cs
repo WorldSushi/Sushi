@@ -107,6 +107,20 @@ namespace WebUI.ApiControllers.Manager
                 return Ok(result);
         }
 
+        //private void DeletDublicateCallToDay(List<ClientContactDto> clientDtos)
+        //{
+        //    List<ClientContactDto> clientRemove = new List<ClientContactDto>();
+        //    List<ClientDto> clientRemoveTmp = new List<ClientDto>();
+        //    clientDtos.ForEach((itm) =>
+        //    {
+        //        List<ClientContactDto> clientRemoveTmp = clientDtos.Where(c => Convert.ToDateTime(c.Date).Date == Convert.ToDateTime(itm.Date).Date).ToList();
+        //        if ()
+        //        {
+
+        //        }
+        //    });
+        //}
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientContactCreate command)
         {

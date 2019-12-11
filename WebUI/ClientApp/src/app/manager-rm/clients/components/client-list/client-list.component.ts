@@ -278,7 +278,6 @@ export class ClientListComponent implements OnInit {
         clientContacts: client.clientContacts.filter(item => item.durations >= 150 || (item.contactType == 30 || item.contactType == 20))
       } 
     })
-    console.log(client.clientContacts.filter(item => item.durations >= 150));
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         let newContact = res.find(item => (item.RMclientContactId == 0 && item.RMcallType != 0) || (item.EMclientContactId == 0 && item.MScallType != 0));
@@ -313,7 +312,7 @@ export class ClientListComponent implements OnInit {
                     item.managerId = this.manager.workgroup.regionalManagerId;
                 }
                 if (this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id)) {
-                    this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
+                    //this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
                 }
                 this.callsDateCreated.emit(item);
             }
@@ -408,60 +407,60 @@ export class ClientListComponent implements OnInit {
     this.tripPlanCompletedTypeUpdated.emit(tripPlan);
   }
 
-  sorDataClients(year: number, month: number) {
-    for (let i = 0; i < this.clients.length; i++) {
-      this.clients[i].managerCallsResults.escortCalls = 0;
-      this.clients[i].managerCallsResults.escortTotalContacts = 0;
-      this.clients[i].managerCallsResults.regionalCalls = 0;
-      this.clients[i].managerCallsResults.regionalTotalContacts = 0;
-      let sortClients = this.clients[i].clientContacts.filter(c =>
-        new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
-        && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year);
+    sorDataClients(year: number, month: number) {
+        for (let i = 0; i < this.clients.length; i++) {
+            this.clients[i].managerCallsResults.escortCalls = 0;
+            this.clients[i].managerCallsResults.escortTotalContacts = 0;
+            this.clients[i].managerCallsResults.regionalCalls = 0;
+            this.clients[i].managerCallsResults.regionalTotalContacts = 0;
+            let sortClients = this.clients[i].clientContacts.filter(c =>
+                new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getMonth() == month
+                && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getFullYear() == year);
 
 
-      this.clients[i].managerCallsResults.escortTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.durations > 149 && c.contactType != 50).length : 0;
-      this.clients[i].managerCallsResults.regionalTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.durations > 149 && c.contactType != 50).length : 0;
+            this.clients[i].managerCallsResults.escortTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 10 && c.durations > 149 && c.contactType != 50).length : 0;
+            this.clients[i].managerCallsResults.regionalTotalContacts = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 20 && c.durations > 149 && c.contactType != 50).length : 0;
 
-      this.clients[i].managerCallsResults.regionalCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.contactType == 10 || c.contactType == 40).length : 0;
-      this.clients[i].managerCallsResults.escortCalls = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.contactType == 10 || c.contactType == 40).length : 0;
+            this.clients[i].managerCallsResults.regionalCalls = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 20 && c.contactType == 40).length : 0;
+            this.clients[i].managerCallsResults.escortCalls = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 10 && c.contactType == 40).length : 0;
 
-      this.clients[i].managerCallsResults.regionalMails = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.contactType == 20).length : 0;
-      this.clients[i].managerCallsResults.escortMails = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.contactType == 20).length : 0;
+            this.clients[i].managerCallsResults.regionalMails = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 20 && c.contactType == 20).length : 0;
+            this.clients[i].managerCallsResults.escortMails = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 10 && c.contactType == 20).length : 0;
 
-      this.clients[i].managerCallsResults.regionalLetters = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 20 && c.contactType == 30).length : 0;
-      this.clients[i].managerCallsResults.escortLetters = sortClients.length != 0 ? sortClients.filter(c =>
-        c.managerType == 10 && c.contactType == 30).length : 0;
+            this.clients[i].managerCallsResults.regionalLetters = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 20 && c.contactType == 30).length : 0;
+            this.clients[i].managerCallsResults.escortLetters = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 10 && c.contactType == 30).length : 0;
 
-        if (this.clients[i].managerCallsResults.escortTotalContacts == 0 || this.clients[i].callPlan.escortManagerCalls == 0) {
-        this.clients[i].managerCallsResults.escortRes = '-';
-      }
-      else if ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100 > 100) {
-        this.clients[i].managerCallsResults.escortRes = 100+'%';
-      }
-      else {
-        this.clients[i].managerCallsResults.escortRes = ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100).toFixed(0) + '%';
-      }
+            if (this.clients[i].managerCallsResults.escortTotalContacts == 0 || this.clients[i].callPlan.escortManagerCalls == 0) {
+                this.clients[i].managerCallsResults.escortRes = '-';
+            }
+            else if ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100 > 100) {
+                this.clients[i].managerCallsResults.escortRes = 100 + '%';
+            }
+            else {
+                this.clients[i].managerCallsResults.escortRes = ((this.clients[i].managerCallsResults.escortTotalContacts / this.clients[i].callPlan.escortManagerCalls) * 100).toFixed(0) + '%';
+            }
 
-        if (this.clients[i].managerCallsResults.regionalTotalContacts == 0 || this.clients[i].callPlan.regionalManagerCalls == 0) {
-        this.clients[i].managerCallsResults.regionalRes = '-';
-      }
-      else if ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100 > 100) {
-        this.clients[i].managerCallsResults.regionalRes = 100+'%';
-      }
-      else {
-        this.clients[i].managerCallsResults.regionalRes = ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100).toFixed(0) + '%';
-      }
+            if (this.clients[i].managerCallsResults.regionalTotalContacts == 0 || this.clients[i].callPlan.regionalManagerCalls == 0) {
+                this.clients[i].managerCallsResults.regionalRes = '-';
+            }
+            else if ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100 > 100) {
+                this.clients[i].managerCallsResults.regionalRes = 100 + '%';
+            }
+            else {
+                this.clients[i].managerCallsResults.regionalRes = ((this.clients[i].managerCallsResults.regionalTotalContacts / this.clients[i].callPlan.regionalManagerCalls) * 100).toFixed(0) + '%';
+            }
 
+        }
+        console.log(this.clients);
     }
-    console.log(this.clients);
-  }
 
   initDateArchiv() {
     if (this.clients.length != 0) {
@@ -584,6 +583,55 @@ export class ClientListComponent implements OnInit {
             }
         }
         return color;
+    }
+
+    getCountPlanCall(group: number, typeManatger: number) {
+        let client: IClient[] = this.clients.filter(c => group == -10 || c.group == group)
+        let count: number = 0;
+        if (typeManatger == 10) {
+            client.forEach((item) => {
+                count += Number(item.callPlan.regionalManagerCalls);
+            });
+        }
+        else if (typeManatger == 20) {
+            client.forEach((item) => {
+                count += Number(item.callPlan.escortManagerCalls);
+            });
+        }
+        else {
+            client.forEach((item) => {
+                count += Number(item.callPlan.totalCalls);
+            });
+        }
+        return count;
+    }
+
+    getCountPlanTrip(group: number, type: number) {
+        let client: IClient[] = this.clients.filter(c => group == -10 || c.group == group)
+        let count: number = 0;
+        if (type == 10) {
+            client.forEach((item) => {
+                if (item.tripPlan.completedType == 30) {
+                    count += item.tripPlan.hours * 1;
+                }
+                else if (item.tripPlan.completedType == 20) {
+                    count += item.tripPlan.hours * 0.5;
+                }
+                else if (item.tripPlan.completedType == 10) {
+                    count += item.tripPlan.hours *0.3;
+                }
+                else {
+                    count += item.tripPlan.hours * 0;
+                }
+            });
+        }
+        else {
+            debugger
+            client.forEach((item) => {
+                count += Number(item.tripPlan.hours);
+            });
+        }
+        return count.toFixed(2);
     }
 
 

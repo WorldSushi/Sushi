@@ -113,7 +113,6 @@ export class WeekPlansDialogComponent implements OnInit {
     }
 
   setWeeks(numberOfWeek: number) {
-        debugger
     if(this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek))
       this.selectedMSWeek = this.data.weekPlans.find(item => item.managerType == 10 && item.weekNumber == numberOfWeek);
     else

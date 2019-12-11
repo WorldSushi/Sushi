@@ -23,7 +23,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
@@ -72,7 +71,7 @@ namespace WebUI.Controllers
         }
 
 
-        //"CRM_Contragents"
+        //"CRM_Contragents" api.OneC
         [HttpGet]
         [Route("api.OneC")]
         public ResponseOneCDto GetClientResumeWeek(string updatetable, string id)
@@ -104,7 +103,7 @@ namespace WebUI.Controllers
         private Client client1 = null;  
         private async void ReloadClients(string id)
         {
-            await Task.Delay(10000);
+            //await Task.Delay(10000);
             Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
             _context = new ApplicationContext();
             List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();
@@ -228,7 +227,18 @@ namespace WebUI.Controllers
                 }
                 else if(client.GR_Contragent != "")
                 {
-                    _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent).Clients.Add(client1);
+                    ClientGR clientGR = _context.Set<ClientGR>().FirstOrDefault(c => c.NameGr == client.GR_Contragent);
+                    if(clientGR.Clients != null)
+                    {
+                        clientGR.Clients.Add(client1);
+                    }
+                    else
+                    {
+                        clientGR.Clients = new List<Client>()
+                        {
+                            client1
+                        };
+                    }
                 }
                 _context.SaveChanges();
                 if (client.Manager_ID != null && client.Manager_ID != "")
@@ -479,309 +489,5 @@ namespace WebUI.Controllers
                 .AddRange(clientContacts);
             _context.SaveChanges();
         }
-
-        //private ResponseOneCDto EditPhone(string idContragent, string phone, string oldPhone)
-        //{
-        //    ResponseOneCDto responseOneC = new ResponseOneCDto();
-        //    responseOneC.Status = "OK";
-        //    if(oldPhone != null && oldPhone != "")
-        //    {
-        //        responseOneC.Command = "EditPhone";
-        //        if (idContragent == null && idContragent == "")
-        //        {
-        //            responseOneC.Description = "param idContragent is emty";
-        //            return responseOneC;
-        //        }
-        //        if (phone == null && phone == "")
-        //        {
-        //            responseOneC.Description = "param phone is emty";
-        //            return responseOneC;
-        //        }
-        //        ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == idContragent);
-        //        if (clientInfo != null)
-        //        {
-        //            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-        //            string oldPhoneCurrenr = Regex.Replace(oldPhone, @"[^0-9]", "");
-        //            if (oldPhoneCurrenr.Length == 11)
-        //            {
-        //                oldPhoneCurrenr = oldPhoneCurrenr.Substring(1);
-        //            }
-        //            else if (oldPhoneCurrenr.Length == 12)
-        //            {
-        //                oldPhoneCurrenr = oldPhoneCurrenr.Substring(2);
-        //            }
-        //            ClientPhone clientPhone = _context.Set<ClientPhone>().FirstOrDefault(c => c.Phone == oldPhoneCurrenr);
-        //            if(clientPhone != null)
-        //            {
-        //                string newPhone = Regex.Replace(phone, @"[^0-9]", "");
-        //                if (oldPhoneCurrenr.Length == 11)
-        //                {
-        //                    newPhone = newPhone.Substring(1);
-        //                }
-        //                else if (oldPhoneCurrenr.Length == 12)
-        //                {
-        //                    newPhone = newPhone.Substring(2);
-        //                }
-        //                clientPhone.Phone = newPhone;
-        //                _context.SaveChanges();
-        //            }
-        //            else
-        //            {
-        //                string newPhone = Regex.Replace(phone, @"[^0-9]", "");
-        //                ClientPhone clientPhone1 = null;
-        //                if (newPhone.Length == 10)
-        //                {
-        //                    clientPhone1 = new ClientPhone()
-        //                    {
-        //                        Client = client,
-        //                        Phone = newPhone,
-        //                    };
-        //                }
-        //                else if (newPhone.Length == 11)
-        //                {
-        //                    newPhone = newPhone.Substring(1);
-        //                    clientPhone1 = new ClientPhone()
-        //                    {
-        //                        Client = client,
-        //                        Phone = newPhone,
-        //                    };
-        //                }
-        //                else if (newPhone.Length == 12)
-        //                {
-        //                    newPhone = newPhone.Substring(2);
-        //                    clientPhone1 = new ClientPhone()
-        //                    {
-        //                        Client = client,
-        //                        Phone = newPhone,
-        //                    };
-        //                }
-        //                if (clientPhone1 != null)
-        //                {
-        //                    _context.Set<ClientPhone>().Add(clientPhone1);
-        //                    _context.SaveChanges();
-        //                }
-        //                else
-        //                {
-        //                    responseOneC.Description = "Wrong mobile phone format";
-        //                }
-        //                responseOneC.Description = "There is no such phone, but we got it";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            responseOneC.Description = "There is no such counterparty";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        responseOneC.Command = "NewPhone";
-        //        if (phone == null && phone == "")
-        //        {
-        //            responseOneC.Description = "param phone is emty";
-        //            return responseOneC;
-        //        }
-        //        ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == idContragent);
-        //        if (clientInfo != null)
-        //        {
-        //            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-
-        //            string newPhone = Regex.Replace(phone, @"[^0-9]", "");
-        //            ClientPhone clientPhone1 = null;
-        //            if (newPhone.Length == 10)
-        //            {
-        //                clientPhone1 = new ClientPhone()
-        //                {
-        //                    Client = client,
-        //                    Phone = newPhone,
-        //                };
-        //            }
-        //            else if (newPhone.Length == 11)
-        //            {
-        //                newPhone = newPhone.Substring(1);
-        //                clientPhone1 = new ClientPhone()
-        //                {
-        //                    Client = client,
-        //                    Phone = newPhone,
-        //                };
-        //            }
-        //            else if (newPhone.Length == 12)
-        //            {
-        //                newPhone = newPhone.Substring(2);
-        //                clientPhone1 = new ClientPhone()
-        //                {
-        //                    Client = client,
-        //                    Phone = newPhone,
-        //                };
-        //            }
-        //            if (clientPhone1 != null)
-        //            {
-        //                _context.Set<ClientPhone>().Add(clientPhone1);
-        //                _context.SaveChanges();
-        //            }
-        //            else
-        //            {
-        //                responseOneC.Description = "Wrong mobile phone format";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            responseOneC.Description = "There is no such counterparty";
-        //        }
-        //    }
-        //    return responseOneC;
-        //}
-
-        //private ResponseOneCDto RemoveConteragent(string idContragent)
-        //{
-        //    ResponseOneCDto responseOneC = new ResponseOneCDto();
-        //    if (idContragent != null && idContragent != "")
-        //    {
-        //        ClientInfo clientInfo = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == idContragent);
-        //        if (clientInfo != null)
-        //        {
-        //            Client client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientInfo.ClientId);
-        //            client.IsAcctive = false;
-        //            _context.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            responseOneC.Description = "There is no such counterparty";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        responseOneC.Description = "param idContragent is emty";
-        //    }
-        //    responseOneC.Command = "RemoveConteragent";
-        //    responseOneC.Status = "OK";
-        //    return responseOneC;
-        //}
-
-        //private ResponseOneCDto NewConterAgent()
-        //{
-        //    ResponseOneCDto responseOneC = new ResponseOneCDto();
-        //    responseOneC = new ResponseOneCDto()
-        //    {
-        //        Result = null,
-        //        Command = "NotCommant",
-        //        Description = "Development team",
-        //        Status = "OK",
-        //    };
-        //    return responseOneC;
-        //}
-
-        //private ResponseOneCDto GetCommand()
-        //{
-        //    ResponseOneCDto responseOneC = new ResponseOneCDto();
-        //    responseOneC.Result = new
-        //    {
-        //        apiUrl = "http://hanasyo.ru/api.OneC",
-        //        resurse = new List<object>()
-        //        {
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Resume/",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "GetResume: To All",
-        //                param = new List<string>()
-        //                {
-                            
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Resume?idClient=idClient",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "GetResume: To idClient",
-        //                param = new List<string>()
-        //                {
-        //                    "idClient, Type:string"
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Resume/?year=year&monthe=monthe",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "GetResume: To Monthe and Year",
-        //                param = new List<string>()
-        //                {
-        //                    "year, Type:int",
-        //                    "monthe, Type:int",
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Resume/?idClient=idClient&year=year&monthe=monthe",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "GetResume: To idClient and Monthe and Year",
-        //                param = new List<string>()
-        //                {
-
-        //                    "idClient, Type:string",
-        //                    "year, Type:int",
-        //                    "monthe, Type:int"
-        //                }
-        //            },
-        //            new 
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Clinet/Edit",
-        //                Method = "POST",
-        //                Redy = "NO",
-        //                NameCommand = "NewConterAgent",
-        //                param = new List<string>()
-        //                {
-        //                    "command = NewConterAgent, Type:string",
-        //                    "conteragent, Type:Client"
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Clinet/Edit?command=RemoveConteragent&idContragent=idContragent",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "RemoveConteragent",
-        //                param = new List<string>()
-        //                {
-        //                    "command = RemoveConteragent, Type:string",
-        //                    "idContragent, Type:string"
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Clinet/Edit?command=EditPhone&idContragent=idContragent&phone=phone",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "NewPhone",
-        //                param = new List<string>()
-        //                {
-        //                    "command = EditPhone, Type:string",
-        //                    "idContragent, Type:string",
-        //                    "phone, Type:string",
-        //                }
-        //            },
-        //            new
-        //            {
-        //                Url = "http://hanasyo.ru/api.OneC/Clinet/Edit?command=EditPhone&idContragent=idContragent&phone=phone&oldPhone=oldPhone",
-        //                Method = "GET",
-        //                Redy = "YES",
-        //                NameCommand = "EditPhone",
-        //                param = new List<string>()
-        //                {
-        //                    "command = EditPhone, Type:string",
-        //                    "idClient, Type:string",
-        //                    "oldPhone, Type:string",
-        //                    "phone, Type:string",
-        //                }
-        //            },
-        //        },
-        //    };
-        //    responseOneC.Status = "OK";
-        //    responseOneC.Command = "Help";
-        //    return responseOneC;
-        //}
     }
 }

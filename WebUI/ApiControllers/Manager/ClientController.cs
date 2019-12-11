@@ -114,8 +114,11 @@ namespace WebUI.ApiControllers.Manager
                    .ToListAsync();
                 clientsDto.AddRange(result);
             }
+            
             return Ok(clientsDto);
         }
+
+       
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientCreate command)
