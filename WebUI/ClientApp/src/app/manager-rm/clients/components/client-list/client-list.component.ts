@@ -652,6 +652,8 @@ export class ClientListComponent implements OnInit {
     this.dataSource.data = this.clients;
     this.todayCalss = this.clients.filter(c => c.clientContacts && c.clientContacts.length != 0 && c.clientContacts
         .find(cc => new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getDate() == new Date().getDate()
+            && new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getFullYear() == new Date().getFullYear()
+            && new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getMonth() == new Date().getMonth()
             && cc.durations >= 150 && cc.managerId == this.manager.id));
     this.dataSource.paginator = this.paginator;
       console.log(this.todayCalss);
