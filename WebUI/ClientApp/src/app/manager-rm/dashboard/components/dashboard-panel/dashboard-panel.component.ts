@@ -80,7 +80,6 @@ export class DashboardPanelComponent implements OnInit {
 
 
     setFormatRM() {
-        debugger
         if (!this.performanceChartRM.numberPlan_DevelopmentCalls) {
             this.performanceChartRM.numberPlan_DevelopmentCalls = 0;
         }
@@ -104,7 +103,7 @@ export class DashboardPanelComponent implements OnInit {
         else {
             this.tasksRM = this.getToMonthkRegManager();
         }
-        this.oneBallsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_DevelopmentCalls * this.tasksRM);
+        this.oneBallsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.oneTasksRM1 * this.performanceChartRM.balls_YourShifts);
         if (this.ballsRM != 0) {
             this.fullPrecentRM = this.ballsRM / this.oneBallsRM;
         }

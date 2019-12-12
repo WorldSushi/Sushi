@@ -65,7 +65,7 @@ namespace Data.Services.Concrete
                 monthCallsInfo.ChangeOffset(
                     monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
 
-            callsLog.AddRange(response.Results/*.Where(c => c.Client_number == "+79641619304")*/.Select(x => new CallLog()
+            callsLog.AddRange(response.Results/*.Where(c => c.Client_number == "+79651249686")*/.Select(x => new CallLog()
             {
                 Answer_time = x.Answer_time,
                 Answered = x.Answered,
@@ -96,7 +96,7 @@ namespace Data.Services.Concrete
                     monthCallsInfo.ChangeOffset(
                         monthCallsInfo.Offset + Convert.ToInt32(response.Results_count));
 
-                callsLog.AddRange(response.Results/*.Where(c => c.Client_number.Contains("+79641619304"))*/.Select(x => new CallLog()
+                callsLog.AddRange(response.Results./*Where(c => c.Client_number.Contains("+79651249686")).*/Select(x => new CallLog()
                 {
                     Answer_time = x.Answer_time,
                     Answered = x.Answered,

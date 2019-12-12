@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IClient } from '../../shared/models/client.model';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { CreateClientDialogComponent } from '../../dialogs/create-client-dialog/create-client-dialog.component';
@@ -303,7 +303,6 @@ export class ClientListComponent implements OnInit {
         let newContacts = [...RMcontacts, ...EMcontacts]; 
 
         newContacts.forEach(item => {
-            debugger
             if (item.id != 0 || (item.id == 0 && (item.contactType != 40 && item.contactType != 10))) {
                 if (item.managerType == 10) {
                     item.managerId = this.manager.workgroup.escortManagerId;
@@ -312,15 +311,35 @@ export class ClientListComponent implements OnInit {
                     item.managerId = this.manager.workgroup.regionalManagerId;
                 }
                 if (this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id)) {
-                    //this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
+                    debugger
+                    //console.log(this.clients.find(c => c.id == item.clientId).clientContacts);
+                    //this.clients.find(c => c.id == item.clientId).clientContacts = this.removeContact(this.clients.find(c => c.id == item.clientId).clientContacts, item.id);
+                    //console.log(this.clients.find(c => c.id == item.clientId).clientContacts);
+                    this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
+                    if (item.managerType == 10) {
+                        this.clients.find(c => c.id == item.clientId).managerCallsResults.escortCalls++;
+                    }
+                    else if (item.managerType == 20) {
+                        this.clients.find(c => c.id == item.clientId).managerCallsResults.regionalCalls++;
+                    }
                 }
                 this.callsDateCreated.emit(item);
+                this.cdr.detectChanges();
             }
         });
       }
     })
   }
 
+    removeContact(contact: ICallsDate[], id) {
+        let contactTmp: ICallsDate[] = [];
+        contact.forEach((itm) => {
+            if (itm.id != id) {
+                contactTmp.push(contact.splice(contact.indexOf(itm), 1)[0]);
+            }
+        });
+        return contactTmp;
+    }
 
   OpenCorrectionResponse(idClient, title) {
     if (this.clients.find(r => r.id == idClient).callsComments.length != 0) {
@@ -661,7 +680,8 @@ export class ClientListComponent implements OnInit {
   }
   
   constructor(public dialog: MatDialog,
-    private http: HttpClient) { }
+      private http: HttpClient,
+      private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
   }

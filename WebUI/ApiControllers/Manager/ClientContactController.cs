@@ -156,7 +156,10 @@ namespace WebUI.ApiControllers.Manager
             else
                 return BadRequest("Не указана роль менеджера");
             ClientContact newClientContact = null;
-            if(clientContact != null)
+            ClientContactDto result = null;
+            List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.Type == "Звонок").ToList();
+            List<CallClient> callsClient = _context.Set<CallClient>().ToList();
+            if (clientContact != null)
             {
                 clientContact.Type = command.ContactType;
                 newClientContact = clientContact;
@@ -165,18 +168,18 @@ namespace WebUI.ApiControllers.Manager
             {
                 newClientContact = _context.Set<ClientContact>()
                 .Add(new ClientContact(command)).Entity;
+                result = new ClientContactDto()
+                {
+                    Id = newClientContact.Id,
+                    ClientId = (int)newClientContact.ClientId,
+                    ContactType = newClientContact.Type,
+                    Date = newClientContact.Date.ToString("dd.MM.yyyy"),
+                    ManagerType = newClientContact.ManagerType,
+                   
+                };
             }
 
             await _context.SaveChangesAsync();
-
-            var result = new ClientContactDto()
-            {
-                Id = newClientContact.Id,
-                ClientId = (int)newClientContact.ClientId,
-                ContactType = newClientContact.Type,
-                Date = newClientContact.Date.ToString("dd.MM.yyyy"),
-                ManagerType = newClientContact.ManagerType
-            };
 
             return Ok(result);
         } 
