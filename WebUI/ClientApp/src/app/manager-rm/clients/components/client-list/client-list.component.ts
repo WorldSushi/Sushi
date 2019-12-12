@@ -574,8 +574,12 @@ export class ClientListComponent implements OnInit {
 
     checkCallForColor(element: IClient) {
         let color = "";
+        if (element.id == 3861) {
+            debugger
+        }
         if (this.todayCalss && this.todayCalss.filter(td => td.id == element.id).length != 0) {
-            if (this.todayCalss.find(td => td.id == element.id).clientContacts.filter(c => c.contactType == 40).length != 0) {
+            if (this.todayCalss.find(td => td.id == element.id).clientContacts.filter(c => c.contactType == 40
+                && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getDate() == new Date().getDate()).length != 0) {
                 color = "#e0fee0";
             }
             else {
@@ -626,7 +630,6 @@ export class ClientListComponent implements OnInit {
             });
         }
         else {
-            debugger
             client.forEach((item) => {
                 count += Number(item.tripPlan.hours);
             });
@@ -648,10 +651,11 @@ export class ClientListComponent implements OnInit {
     this.other.data = this.clients.filter(c => c.group == 50);
     this.dataSource.data = this.clients;
     this.todayCalss = this.clients.filter(c => c.clientContacts && c.clientContacts.length != 0 && c.clientContacts
-      .find(cc => new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getDate() == new Date().getDate()
-        && cc.durations >= 150));
+        .find(cc => new Date(cc.date.split(".")[2] + '/' + cc.date.split(".")[1] + '/' + cc.date.split(".")[0]).getDate() == new Date().getDate()
+            && cc.durations >= 150 && cc.managerId == this.manager.id));
     this.dataSource.paginator = this.paginator;
-    console.log(this.todayCalss);
+      console.log(this.todayCalss);
+      console.log(this.manager);
   }
   
   constructor(public dialog: MatDialog,

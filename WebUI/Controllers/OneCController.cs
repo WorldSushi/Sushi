@@ -23,6 +23,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
@@ -103,7 +104,7 @@ namespace WebUI.Controllers
         private Client client1 = null;  
         private async void ReloadClients(string id)
         {
-            //await Task.Delay(10000);
+            await Task.Delay(10000);
             Background.SyncRonService.Model.Contragent.Client client = GetConterAgents(id).FirstOrDefault(c => c.Contragent_ID == id);
             _context = new ApplicationContext();
             List<ClientContact> clientContacts1 = _context.Set<ClientContact>().ToList();

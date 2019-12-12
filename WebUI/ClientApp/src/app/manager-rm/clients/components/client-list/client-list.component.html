@@ -80,12 +80,12 @@
   </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(10, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(10, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="callPlan.MS">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(10, 20)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(10, 20)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -94,12 +94,12 @@
         </ng-container>
 
         <ng-container matColumnDef="callPlan.RM">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(10, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(10, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.planned">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(10, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(10, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -108,7 +108,7 @@
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.fact">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(10, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(10, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -310,12 +310,12 @@
   </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(20, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(20, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="callPlan.MS">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(20, 20)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(20, 20)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -324,12 +324,12 @@
         </ng-container>
 
         <ng-container matColumnDef="callPlan.RM">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(20, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(20, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.planned">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(20, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(20, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -338,7 +338,7 @@
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.fact">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(20, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(20, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -541,12 +541,12 @@
   </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(40, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(40, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="callPlan.MS">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(40, 20)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(40, 20)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -555,12 +555,12 @@
         </ng-container>
 
         <ng-container matColumnDef="callPlan.RM">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(40, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(40, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.planned">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(40, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(40, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -569,7 +569,7 @@
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.fact">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(40, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(40, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -773,12 +773,12 @@
 
 
             <ng-container matColumnDef="callPlan.collective">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(30, 0)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(30, 0)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
             </ng-container>
 
             <ng-container matColumnDef="callPlan.MS">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(30, 20)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(30, 20)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -787,12 +787,12 @@
             </ng-container>
 
             <ng-container matColumnDef="callPlan.RM">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(30, 10)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(30, 10)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
             </ng-container>
 
             <ng-container matColumnDef="tripPlan.planned">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(30, 0)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(30, 0)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -801,7 +801,7 @@
             </ng-container>
 
             <ng-container matColumnDef="tripPlan.fact">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(30, 10)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(30, 10)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -1004,12 +1004,12 @@
   </ng-container>-->
 
             <ng-container matColumnDef="callPlan.collective">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(0, 0)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(0, 0)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
             </ng-container>
 
             <ng-container matColumnDef="callPlan.MS">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(0, 20)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(0, 20)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -1018,12 +1018,12 @@
             </ng-container>
 
             <ng-container matColumnDef="callPlan.RM">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(0, 10)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(0, 10)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
             </ng-container>
 
             <ng-container matColumnDef="tripPlan.planned">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(0, 0)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(0, 0)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -1032,7 +1032,7 @@
             </ng-container>
 
             <ng-container matColumnDef="tripPlan.fact">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(0, 10)}}</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(0, 10)}}</th>
               <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
                 <mat-form-field class="numberInputField">
                   <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -1235,12 +1235,12 @@
   </ng-container>-->
 
         <ng-container matColumnDef="callPlan.collective">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(50, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(50, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="callPlan.MS">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(10, 20)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(10, 20)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -1249,12 +1249,12 @@
         </ng-container>
 
         <ng-container matColumnDef="callPlan.RM">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(50, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(50, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.planned">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(50, 0)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(50, 0)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -1263,7 +1263,7 @@
         </ng-container>
 
         <ng-container matColumnDef="tripPlan.fact">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(50, 10)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(50, 10)}}</th>
           <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
             <mat-form-field class="numberInputField">
               <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">
@@ -1469,12 +1469,12 @@
   </ng-container>-->
 
           <ng-container matColumnDef="callPlan.collective">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План {{getCountPlanCall(-10, 0)}}</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(-10, 0)}}</th>
             <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">{{element.callPlan?.totalCalls}} </td>
           </ng-container>
 
           <ng-container matColumnDef="callPlan.MS">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС {{getCountPlanCall(-10, 20)}}</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">МС<br />{{getCountPlanCall(-10, 20)}}</th>
             <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
               <mat-form-field class="numberInputField">
                 <input matInput [(ngModel)]="element.callPlan.escortManagerCalls" style="font-weight: bold; color: #61717e" (focusout)="updateCallPlan(element.callPlan)" />
@@ -1483,12 +1483,12 @@
           </ng-container>
 
           <ng-container matColumnDef="callPlan.RM">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ {{getCountPlanCall(-10, 10)}}</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #ffeeff">РМ<br />{{getCountPlanCall(-10, 10)}}</th>
             <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element" style="font-weight: bold; color: #61717e">{{element.callPlan?.regionalManagerCalls}} </td>
           </ng-container>
 
           <ng-container matColumnDef="tripPlan.planned">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План {{getCountPlanTrip(-10, 0)}}</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f7f8fd">План<br />{{getCountPlanTrip(-10, 0)}}</th>
             <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
               <mat-form-field class="numberInputField">
                 <input matInput [(ngModel)]="element.tripPlan.hours" (focusout)="updateTripPlanHours(element.tripPlan)" />
@@ -1497,7 +1497,7 @@
           </ng-container>
 
           <ng-container matColumnDef="tripPlan.fact">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт {{getCountPlanTrip(-10, 10)}}</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0f4ff">Факт<br />{{getCountPlanTrip(-10, 10)}}</th>
             <td [style.background]="checkCallForColor(element)" mat-cell *matCellDef="let element">
               <mat-form-field class="numberInputField">
                 <mat-select [(ngModel)]="element.tripPlan.completedType" (selectionChange)="updateTripPlanCompletedType(element.tripPlan)">

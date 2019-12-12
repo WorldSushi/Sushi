@@ -1,16 +1,10 @@
 ﻿using Base.Helpers;
 using Data;
-using Data.Commands.ClientContacts.ClientContact;
 using Data.DTO.Calls;
 using Data.Entities.Calls;
-using Data.Entities.ClientContacts;
-using Data.Entities.Clients;
-using Data.Entities.Users;
-using Data.Enums;
 using FluentScheduler;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
