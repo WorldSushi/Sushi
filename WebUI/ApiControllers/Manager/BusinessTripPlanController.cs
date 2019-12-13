@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Base.Helpers;
@@ -41,6 +42,36 @@ namespace WebUI.ApiControllers.Manager
                 }).ToListAsync();
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("TripFac")]
+        public async Task<IActionResult> GetTripFac(string managerId)
+        {
+            double countHoursTrip = 0;
+            WorkGroup workGroups =  await _context.Set<WorkGroup>()
+                .FirstOrDefaultAsync(wG => wG.EscortManagerId.ToString() == managerId || wG.RegionalManagerId.ToString() == managerId);
+            List<ClientWorkGroup> clientWorkGroups = _context.Set<ClientWorkGroup>()
+                .Where(w => w.WorkGroupId == workGroups.Id)
+                .ToList();
+            List<BusinessTripPlan> businessTripPlans = _context.Set<BusinessTripPlan>()
+                .Where(x => DateHelper.IsCurrentMonth(x.Date) && clientWorkGroups.FirstOrDefault(c => c.ClientId == x.ClientId) != null).ToList();
+            businessTripPlans.ForEach((itm) =>
+            {
+                if(itm.CompletedType == BusinessTripCompletedType.Third)
+                {
+                    countHoursTrip += itm.Hours * 0.3;
+                }
+                else if (itm.CompletedType == BusinessTripCompletedType.Half)
+                {
+                    countHoursTrip += itm.Hours * 0.5;
+                }
+                else if (itm.CompletedType == BusinessTripCompletedType.Complete)
+                {
+                    countHoursTrip += itm.Hours * 1;
+                }
+            });
+            return Ok(countHoursTrip);
         }
 
         [HttpPost]

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+  import { Component, OnInit, Input } from '@angular/core';
 import { ICallsDate } from 'src/app/manager-rm/clients/shared/models/calls-date.model';
 import { IManager } from '../../../../admin/managers/shared/models/manager.model';
 import { IUser } from '../../../../shared/models/user.model';
@@ -43,10 +43,10 @@ export class DashboardPanelComponent implements OnInit {
   oneBallsRM = 0;
   ballsRM = 0;
   discrepancyRM = 0;
-  fullPrecentRM = 0;
+    fullPrecentRM = 0;
+    sumFactTrip: number = 0;
 
     setFormatEC() {
-        debugger
         if (!this.performanceChartMC.numberPlan_DevelopmentCalls) {
             this.performanceChartMC.numberPlan_DevelopmentCalls = 0;
         }
@@ -56,22 +56,27 @@ export class DashboardPanelComponent implements OnInit {
         if (msgCount != 0) {
             let precent = 0;
             if (this.getToMonthkECManager() > 0) {
-                precent = (msgCount / this.getToMonthkECManager()) * 100;
-            }
-            let precent10 = this.getToMonthkECManager() / 0.10;
-            if (precent <= precent10) {
-                this.tasksEC = this.getToMonthkECManager();
+                let countMessgeAndCall = 0;
+                let countCall = this.getToMonthkECManager();
+                countMessgeAndCall = msgCount + countCall;
+                precent = (100 * msgCount) / countMessgeAndCall;
+                if (precent > 10) {
+                    this.tasksEC = countCall + (countMessgeAndCall * 0.10);
+                }
+                else {
+                    this.tasksEC = countMessgeAndCall;
+                }
             }
             else {
-                this.tasksEC = precent;
+                this.tasksEC = 0;
             }
         }
         else {
             this.tasksEC = this.getToMonthkECManager();
         }
-        this.ballsEC = this.tasksEC * this.performanceChartMC.balls_DevelopmentCalls;
+        this.ballsEC = this.performanceChartMC.balls_DevelopmentCalls * this.tasksEC;
         if (this.ballsEC != 0) {
-            this.fullPrecentEC = this.ballsEC / this.oneBallsEC;
+            this.fullPrecentEC = (this.ballsEC / this.oneBallsEC) * 100;
         }
         else {
             this.fullPrecentEC = 0;
@@ -85,27 +90,32 @@ export class DashboardPanelComponent implements OnInit {
         }
         this.oneTasksRM = this.performanceChartRM.numberPlan_YourShifts * this.performanceChartRM.shiftPlan_YourShifts;
         this.oneTasksRM1 = this.performanceChartRM.numberPlan_SubstitutionShifts * this.performanceChartRM.shiftPlan_SubstitutionShifts;
-        this.ballsRM = this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls + this.performanceChartRM.balls_YourShifts * (this.oneTasksRM + this.oneTasksRM1);
+        this.ballsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_YourShifts * this.oneTasksRM1);
         let msgCount = this.getToMonthkMesageReg();
         if (msgCount != 0) {
             let precent = 0;
             if (this.getToMonthkRegManager() > 0) {
-                precent = (msgCount / this.getToMonthkRegManager()) * 100;
-            }
-            let precent10 = this.getToMonthkRegManager() / 0.10;
-            if (precent <= precent10) {
-                this.tasksRM = this.getToMonthkRegManager();
+                let countMessgeAndCall = 0;
+                let countCall = this.getToMonthkRegManager();
+                countMessgeAndCall = msgCount + countCall;
+                precent = (100 * msgCount) / countMessgeAndCall;
+                if (precent > 10) {
+                    this.tasksRM = countCall + (countMessgeAndCall * 0.10);
+                }
+                else {
+                    this.tasksRM = countMessgeAndCall;
+                }
             }
             else {
-                this.tasksRM = precent;
+                this.tasksRM = 0;
             }
         }
         else {
             this.tasksRM = this.getToMonthkRegManager();
         }
-        this.oneBallsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.oneTasksRM1 * this.performanceChartRM.balls_YourShifts);
+        this.oneBallsRM = (this.performanceChartRM.balls_YourShifts * this.tasksRM) + this.sumFactTrip;
         if (this.ballsRM != 0) {
-            this.fullPrecentRM = this.ballsRM / this.oneBallsRM;
+            this.fullPrecentRM = (this.oneBallsRM / this.ballsRM) * 100;
         }
         else {
             this.fullPrecentRM = 0;
@@ -116,17 +126,22 @@ export class DashboardPanelComponent implements OnInit {
     this.http.get<IPerformanceChart>('api/admin/PerformanceChart?managerId=' + this.Managerid.workgroup.escortManagerId).subscribe((data: IPerformanceChart) => {
       this.performanceChartMC = data;
       this.setFormatEC();
-      console.log(this.performanceChartMC);
     });
   }
 
   getPerformanceChartRM() {
     this.http.get<IPerformanceChart>('api/admin/PerformanceChart?managerId=' + this.Managerid.workgroup.regionalManagerId).subscribe((data: IPerformanceChart) => {
       this.performanceChartRM = data;
-      this.setFormatRM();
-      console.log(this.performanceChartRM);
+        this.getTripFactRM();
     });
-  }
+    }
+
+    getTripFactRM() {
+        this.http.get<number>('api/manager/BusinessTripPlan/TripFac?managerId=' + this.Managerid.workgroup.regionalManagerId).subscribe((data: number) => {
+            this.sumFactTrip = data;
+            this.setFormatRM();
+        });
+    }
 
   getToMonthkECManager(): number {
     var curr = new Date();

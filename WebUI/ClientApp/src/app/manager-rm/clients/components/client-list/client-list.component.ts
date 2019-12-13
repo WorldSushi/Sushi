@@ -593,9 +593,6 @@ export class ClientListComponent implements OnInit {
 
     checkCallForColor(element: IClient) {
         let color = "";
-        if (element.id == 3861) {
-            debugger
-        }
         if (this.todayCalss && this.todayCalss.filter(td => td.id == element.id).length != 0) {
             if (this.todayCalss.find(td => td.id == element.id).clientContacts.filter(c => c.contactType == 40
                 && new Date(c.date.split(".")[2] + '/' + c.date.split(".")[1] + '/' + c.date.split(".")[0]).getDate() == new Date().getDate()).length != 0) {
