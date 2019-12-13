@@ -638,7 +638,7 @@ export class ClientListComponent implements OnInit {
                     count += item.tripPlan.hours * 0.5;
                 }
                 else if (item.tripPlan.completedType == 10) {
-                    count += item.tripPlan.hours *0.3;
+                    count += item.tripPlan.hours * 0.3;
                 }
                 else {
                     count += item.tripPlan.hours * 0;
@@ -653,6 +653,136 @@ export class ClientListComponent implements OnInit {
         return count.toFixed(2);
     }
 
+
+    getCountCall(group: number, typeCall: number) {
+        let client: any[] = this.clients.filter(c => group == -10 || c.group == group)
+        let count = 0;
+        if (typeCall == 10) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.escortTotalContacts);
+            });
+        }
+        else if (typeCall == 20) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.regionalTotalContacts);
+            });
+        }
+        else if (typeCall == 30) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.escortCalls);
+            });
+        }
+        else if (typeCall == 40) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.regionalCalls);
+            });
+        }
+        else if (typeCall == 50) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.escortMails);
+            });
+        }
+        else if (typeCall == 60) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.regionalMails);
+            });
+        }
+        else if (typeCall == 70) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.escortLetters);
+            });
+        }
+        else if (typeCall == 80) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.regionalLetters);
+            });
+        }
+        else if (typeCall == 90) {
+            let mail = 0;
+            let WhatsApp = 0;
+            let call = 0;
+            let msgCount = 0;
+            client.forEach((item) => {
+                mail += Number(item.managerCallsResults.escortMails);
+                WhatsApp += Number(item.managerCallsResults.escortLetters);
+                call += Number(item.managerCallsResults.escortTotalContacts);
+            });
+            msgCount = mail + WhatsApp;
+            if (msgCount != 0) {
+                let precent = 0;
+                if (call > 0) {
+                    let countMessgeAndCall = 0;
+                    countMessgeAndCall = msgCount + call;
+                    precent = (100 * msgCount) / countMessgeAndCall;
+                    if (precent > 10) {
+                        count = call + (countMessgeAndCall * 0.10);
+                    }
+                    else {
+                        count = countMessgeAndCall;
+                    }
+                }
+                else {
+                    count = 0;
+                }
+            }
+            else {
+                count = call;
+            }
+            let planCall = this.getCountPlanCall(group, 10);
+            if (count == 0) {
+                count = 0;
+            }
+            else if (count >= planCall) {
+                count = 100;
+            }
+            else {
+                count = (count / planCall) * 100;
+            }
+        }
+        else if (typeCall == 100) {
+            let mail = 0;
+            let WhatsApp = 0;
+            let call = 0;
+            let msgCount = 0;
+            client.forEach((item) => {
+                mail += Number(item.managerCallsResults.regionalMails);
+                WhatsApp += Number(item.managerCallsResults.regionalLetters);
+                call += Number(item.managerCallsResults.regionalTotalContacts);
+            });
+            msgCount = mail + WhatsApp;
+            if (msgCount != 0) {
+                let precent = 0;
+                if (call > 0) {
+                    let countMessgeAndCall = 0;
+                    countMessgeAndCall = msgCount + call;
+                    precent = (100 * msgCount) / countMessgeAndCall;
+                    if (precent > 10) {
+                        count = call + (countMessgeAndCall * 0.10);
+                    }
+                    else {
+                        count = countMessgeAndCall;
+                    }
+                }
+                else {
+                    count = 0;
+                }
+            }
+            else {
+                count = call;
+            }
+            let planCall = this.getCountPlanCall(group, 20);
+            if (count == 0) {
+                count = 0;
+            }
+            else if (count >= planCall) {
+                count = 100;
+            }
+            else {
+                count = (count / planCall) * 100;
+            }
+        }
+        return count;
+    }
 
   ngOnChanges(changes: SimpleChanges): void {
     const toMonth = new Date().getMonth();

@@ -136,70 +136,70 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(10, 10)}}</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(10, 20)}}</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(10, 30)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(10, 30)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(10, 50)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(10, 60)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(10, 70)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(10, 80)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(10, 90).toFixed()}}%</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortRes}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(10, 100).toFixed()}}%</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
           </td>
@@ -366,70 +366,70 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(20, 10)}}</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(20, 20)}}</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(20, 30)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(20, 40)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(20, 50)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(20, 60)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(20, 70)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(20, 80)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(20, 90).toFixed()}}%</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortRes}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(20, 100).toFixed()}}%</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
           </td>
@@ -597,70 +597,70 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(40, 10)}}</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(40, 20)}}</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(40, 30)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(40, 40)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(40, 50)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(40, 60)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(40, 70)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(40, 80)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(40, 90).toFixed()}}%</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortRes}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(40, 100).toFixed()}}%</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
           </td>
@@ -829,70 +829,70 @@
             </ng-container>
 
             <ng-container matColumnDef="MSresults.sum">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(30, 10)}}</th>
               <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortTotalContacts}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.sum">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(30, 20)}}</th>
               <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalTotalContacts}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.call">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(30, 30)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortCalls}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.call">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(30, 40)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalCalls}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.Message">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(30, 50)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortMails}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.Message">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(30, 60)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalMails}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.WhatsApp">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(30, 70)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortLetters}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.WhatsApp">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(30, 80)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalLetters}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.Share">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(30, 90).toFixed()}}%</th>
               <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortRes}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.Share">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(30, 100).toFixed()}}%</th>
               <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalRes}}
               </td>
@@ -1060,70 +1060,70 @@
             </ng-container>
 
             <ng-container matColumnDef="MSresults.sum">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(0, 10)}}</th>
               <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortTotalContacts}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.sum">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(0, 20)}}</th>
               <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalTotalContacts}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.call">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(0, 30)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortCalls}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.call">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(0, 40)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalCalls}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.Message">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(0, 50)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortMails}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.Message">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(0, 60)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalMails}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.WhatsApp">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(0, 70)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortLetters}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.WhatsApp">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(0, 80)}}</th>
               <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalLetters}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MSresults.Share">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(0, 90).toFixed()}}%</th>
               <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.escortRes}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="RMresults.Share">
-              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(0, 100).toFixed()}}%</th>
               <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
                 {{element.managerCallsResults.regionalRes}}
               </td>
@@ -1291,70 +1291,70 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(50, 10)}}</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sum">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(50, 20)}}</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalTotalContacts}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(50, 30)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(50, 40)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(50, 50)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(50, 60)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(50, 70)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(50, 80)}}</th>
           <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(50, 90).toFixed()}}%</th>
           <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.escortRes}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(50, 100).toFixed()}}%</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
           </td>
@@ -1525,14 +1525,14 @@
           </ng-container>
 
           <ng-container matColumnDef="MSresults.sum">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 10)}}</th>
             <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortTotalContacts}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.sum">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 20)}}</th>
             <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalTotalContacts}}
             </td>
@@ -1540,56 +1540,56 @@
 
 
           <ng-container matColumnDef="MSresults.call">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 30)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortCalls}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.call">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 40)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalCalls}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="MSresults.Message">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 50)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortMails}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.Message">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 60)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalMails}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="MSresults.WhatsApp">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 70)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortLetters}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.WhatsApp">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 80)}}</th>
             <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalLetters}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="MSresults.Share">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 90).toFixed()}}%</th>
             <td [style.background]="element.callPlan.escortManagerCalls <= element.managerCallsResults.escortTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.escortRes}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.Share">
-            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
+            <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 100).toFixed()}}%</th>
             <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalRes}}
             </td>
