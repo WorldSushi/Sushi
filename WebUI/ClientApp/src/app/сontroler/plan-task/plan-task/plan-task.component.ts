@@ -24,7 +24,7 @@ export class PlanTaskComponent implements OnInit {
   @Input() cientAccept: ClientAccept[] = [];
 
   displayedColumns: string[] = ['status', 'title', 'legalEntity', 'countCall', 'planRM', 'planMC', 'taskRM', 'taskMC', 'comentCon', 'comentCli']
-  numberWeek: number = 0;
+  numberWeek: number = 1;
   numberMonthe: number = new Date().getMonth();
   numberYear: number = new Date().getFullYear();
   month: string = new Date().toDateString();
@@ -92,28 +92,27 @@ export class PlanTaskComponent implements OnInit {
   }
 
   setSortWeeplan() {
-    this.hiddenloader = "";
+      this.hiddenloader = "";
+      let weekN = this.numberWeek;
     this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
-    this.clientsData.forEach((item: IClientData) => {
-      item.weeklyPlanSRegional = this.weekPlans.find(w => w.managerType == 20 && w.clientId == item.id && w.weekNumber == this.numberWeek
+      this.clientsData.forEach((item: IClientData) => {
+          item.weeklyPlanSRegional = this.weekPlans.find(w => w.managerType == 20 && w.clientId == item.id && w.weekNumber == weekN
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
-      item.weeklyPlanSEscort = this.weekPlans.find(w => w.managerType == 10 && w.clientId == item.id && w.weekNumber == this.numberWeek
+          item.weeklyPlanSEscort = this.weekPlans.find(w => w.managerType == 10 && w.clientId == item.id && w.weekNumber == weekN
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
         && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
-      item.clientAccept = [];
-      let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * (this.numberWeek + 1));
-      let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
-      dateFirst = new Date(firstDayWeek);
-      //console.log(this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[2] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[1] + "/" + this.cientAccept[0].date.slice(0, this.cientAccept[0].date.indexOf(' ')).split('.')[0]);
+          item.clientAccept = [];
+          let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * weekN);
+          let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
+          dateFirst = new Date(firstDayWeek);
+          let firsDayWeekDate = new Date(this.numberYear, this.numberMonthe, dateFirst.getDate() - 5)
+          debugger
       item.clientAccept = this.cientAccept.filter(c => item.id == c.clientId
-        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= dateFirst.getDate()
-        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= new Date(dateFirst.setDate(dateFirst.getDate() + 6)).getDate()
+        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= dateFirst.getDate()
+          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= firsDayWeekDate.getDate()
         && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
         && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
-      //for (var i = dateFirst.getDate(); i <= dateFirst.getDate() + 6; i++) {
-      //  let currDate = new Date(this.numberYear, this.numberMonthe, i);
-      //}
     });
     this.totalItems = this.clientsData.length;
     this.paginateClients = this.clientsData.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
