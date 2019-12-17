@@ -67,7 +67,6 @@ export class ClientAcceptComponent implements OnInit {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCallClient?comment=' + comentControler + "&clientId=" + clientId).subscribe();
     if (!this._isMobile()) {
-      $event.currentTarget.offsetParent.children[0].value = "";
       $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
     } else {
       const $status = document.getElementsByClassName("status")[index] as any;

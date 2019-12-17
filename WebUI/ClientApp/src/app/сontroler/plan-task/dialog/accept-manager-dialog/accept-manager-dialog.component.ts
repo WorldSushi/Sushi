@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ClientAccept } from '../../../../manager-rm/clients/shared/models/client-accep.modelt';
 import { CallsComment } from '../../../Calls/shared/models/сalls-сomment.model';
 import { acceptControlerCalss } from '../../../Calls/shared/enums/accept-controler-calss';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-accept-manager-dialog',
@@ -22,35 +23,38 @@ export class AcceptManagerDialogComponent implements OnInit {
     this.dialogRef.close(this.data);
   }
 
-  getActionColor(clientAction) {
-    if (!clientAction.statusContact || clientAction.statusContact == 0) {
-      if (clientAction.contactType == 0)
-        return '#e5e5e5';
-      else if (clientAction.contactType == 10)
-        return '#FF1493'
-      else if (clientAction.contactType == 20)
-        return '#B0ECDD'
-      else if (clientAction.contactType == 30)
-        return '#FDE488'
-      else if (clientAction.contactType == 40)
-        return '#00FF7F'
-      else if (clientAction.contactType == 60)
-        return '#58FA82'
+    getActionColor(clientAction) {
+        if (!clientAction.statusContact || clientAction.statusContact == 0) {
+            if (clientAction.contactType == 0)
+                return '#e5e5e5';
+            else if (clientAction.contactType == 10)
+                return '#FF1493'
+            else if (clientAction.contactType == 20)
+                return '#B0ECDD'
+            else if (clientAction.contactType == 30)
+                return '#FDE488'
+            else if (clientAction.contactType == 40)
+                return '#00FF7F'
+            else if (clientAction.contactType == 60)
+                return '#58FA82'
+        }
+        else if (clientAction.statusContact == 1) {
+            return 'red'
+        }
+        else if (clientAction.statusContact == 2) {
+            return '#A9A9F5'
+        }
     }
-    else if (clientAction.statusContact == 1) {
-      return 'red'
-    }
-    else if (clientAction.statusContact == 2) {
-      return '#A9A9F5'
-    }
-  }
 
   setNoAccept($event, callId, clientId, index = null) {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/NoAcceptCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
     this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.ControlerNoAccept;
+      this.data.find(c => c.id == callId && c.clientId == clientId).statusContact = 1;
+
     this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = comentControler;
-    this.data.find(c => c.id == callId).statusContact == 1;
+      this.data.find(c => c.id == callId).statusContact == 1;
+
     if (!this._isMobile()) {
       $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
       $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = "red";
@@ -62,43 +66,41 @@ export class AcceptManagerDialogComponent implements OnInit {
     }
   }
 
-  setAccept($event, callId, clientId, index = null) {
-    let comentControler = $event.currentTarget.offsetParent.children[0].value;
+    setAccept($event, callId, clientId, index = null) {
+        let comentControler = $event.currentTarget.offsetParent.children[0].value;
 
-    this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+        this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
 
-    this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
-    this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.comment = "";
+        this.data.find(c => c.id == callId && c.clientId == clientId).callsComments.acceptControlerCalss = acceptControlerCalss.Default;
+        this.data.find(c => c.id == callId && c.clientId == clientId).statusContact = 0;
+        
+        let cientAcceptOne = this.data.find(c => c.id == callId);
+        let color = '';
 
-    let cientAcceptOne = this.data.find(c => c.id == callId);
-    cientAcceptOne.statusContact == 0;
-    let color = '';
+        if (cientAcceptOne.contactType == 0) {
+            color = '#e5e5e5';}
+        else if (cientAcceptOne.contactType == 10)
+            color = '#FF1493'
+        else if (cientAcceptOne.contactType == 20)
+            color = '#B0ECDD'
+        else if (cientAcceptOne.contactType == 30)
+            color = '#FDE488'
+        else if (cientAcceptOne.contactType == 40)
+            color = '#00FF7F'
+        else if (cientAcceptOne.contactType == 60)
+            color = '#58FA82'
 
-    if (cientAcceptOne.contactType == 0)
-      color = '#e5e5e5';
-    else if (cientAcceptOne.contactType == 10)
-      color = '#FF1493'
-    else if (cientAcceptOne.contactType == 20)
-      color = '#B0ECDD'
-    else if (cientAcceptOne.contactType == 30)
-      color = '#FDE488'
-    else if (cientAcceptOne.contactType == 40)
-      color = '#00FF7F'
-    else if (cientAcceptOne.contactType == 60)
-      color = '#58FA82'
+        if (!this._isMobile()) {
+            $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+            $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = color;
+        } else {
+            const $status = document.getElementsByClassName("status")[index] as any;
+            const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
 
-    if (!this._isMobile()) {
-      $event.currentTarget.offsetParent.children[0].value = "";
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = color;
-    } else {
-      const $status = document.getElementsByClassName("status")[index] as any;
-      const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
-
-      $status.style.backgroundColor = "#FAFAFA";
-      $statusCall.style.backgroundColor = color;
+            $status.style.backgroundColor = "#FAFAFA";
+            $statusCall.style.backgroundColor = color;
+        }
     }
-  }
 
   setBagroundStatus(element) {
     if (element.contactType == 50) {

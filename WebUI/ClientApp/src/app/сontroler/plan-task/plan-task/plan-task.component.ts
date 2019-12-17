@@ -74,7 +74,7 @@ export class PlanTaskComponent implements OnInit {
     });
   }
 
-  goToCall(clientAccept: ClientAccept[]) {
+    goToCall(clientAccept: ClientAccept[]) {
     if (clientAccept) {
       const dialogRef = this.dialog.open(AcceptManagerDialogComponent, {
         data: clientAccept
@@ -84,7 +84,9 @@ export class PlanTaskComponent implements OnInit {
           let cientAccept: ClientAccept[] = res;
           for (let i = 0; i < cientAccept.length; i++) {
             console.log(cientAccept);
-            this.cientAccept.find(c => c.id == cientAccept[i].id).callsComments = cientAccept[i].callsComments;
+              this.cientAccept.find(c => c.id == cientAccept[i].id).callsComments = cientAccept[i].callsComments;
+              this.cientAccept.find(c => c.id == cientAccept[i].id).statusContact = cientAccept[i].statusContact;
+              this.cientAccept.find(c => c.id == cientAccept[i].id).contactType = cientAccept[i].contactType;
           }
         }
       });
@@ -192,7 +194,6 @@ export class PlanTaskComponent implements OnInit {
     let comentControler = $event.currentTarget.offsetParent.children[0].value;
     this.http.get('api/conroler/ClientAccept/DefaultCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId).subscribe();
     if (!this._isMobile()) {
-      $event.currentTarget.offsetParent.children[0].value = "";
       $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
     } else {
       const $status = document.getElementsByClassName("status")[index] as any;
