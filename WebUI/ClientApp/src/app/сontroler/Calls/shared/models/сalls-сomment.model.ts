@@ -4,7 +4,7 @@ export interface CallsComment {
     clientId: number,
     contactClientId: number,
     comment: string,
-    maanagerComment: string,
+    managerComment: string,
     acceptControlerCalss: acceptControlerCalss,
     durations: number,
     date: string
