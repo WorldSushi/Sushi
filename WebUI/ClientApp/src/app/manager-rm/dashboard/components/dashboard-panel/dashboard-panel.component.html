@@ -105,7 +105,7 @@
           </thead>
           <tbody>
             <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
-              <td>{{fullPrecentEC.toFixed(1)}}%</td>
+              <td>{{fullPrecentEC.toFixed()}}%</td>
               <td colspan="2">Звонки развития</td>
               <td>{{performanceChartMC.numberPlan_DevelopmentCalls}}</td>
               <td>{{performanceChartMC.shiftPlan_DevelopmentCalls}}</td>
@@ -119,7 +119,7 @@
             </tr>
             
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
-              <td rowspan="3">{{fullPrecentRM.toFixed(1)}}%</td>
+              <td rowspan="3">{{fullPrecentRM.toFixed()}}%</td>
               <td colspan="2">Встречи и командировки развития</td>
               <td>{{performanceChartRM.numberPlan_DevelopmentCalls}}</td>
               <td></td>
@@ -138,7 +138,7 @@
               <td>{{performanceChartRM.shiftPlan_YourShifts}}</td>
               <td rowspan="2">{{performanceChartRM.balls_YourShifts}}</td>
               <td>{{oneTasksRM}}</td>
-              <td rowspan="2">{{tasksRM}}</td>
+              <td rowspan="2">{{tasksRM.toFixed()}}</td>
               <td rowspan="2">{{performanceChartRM.numberPlan_DevelopmentCalls*8}}</td>
               <td rowspan="2">{{performanceChartRM.numberPlan_DevelopmentCalls + getToMonthkRegManager()}}</td>
             </tr>
@@ -146,7 +146,7 @@
               <td>Смены замещения</td>
               <td>{{performanceChartRM.numberPlan_SubstitutionShifts}}</td>
               <td>{{performanceChartRM.shiftPlan_SubstitutionShifts}}</td>
-              <td>{{oneTasksRM1.toFixed(1)}}</td>
+              <td>{{oneTasksRM1.toFixed()}}</td>
             </tr>
           </tbody>
         </table>

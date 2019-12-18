@@ -90,7 +90,7 @@ export class DashboardPanelComponent implements OnInit {
         }
         this.oneTasksRM = this.performanceChartRM.numberPlan_YourShifts * this.performanceChartRM.shiftPlan_YourShifts;
         this.oneTasksRM1 = this.performanceChartRM.numberPlan_SubstitutionShifts * this.performanceChartRM.shiftPlan_SubstitutionShifts;
-        this.ballsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_YourShifts * this.oneTasksRM1);
+        this.ballsRM = (this.performanceChartRM.numberPlan_DevelopmentCalls * this.performanceChartRM.balls_DevelopmentCalls) + (this.performanceChartRM.balls_YourShifts * (this.oneTasksRM + this.oneTasksRM1));
         let msgCount = this.getToMonthkMesageReg();
         if (msgCount != 0) {
             let precent = 0;

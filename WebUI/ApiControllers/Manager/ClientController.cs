@@ -365,7 +365,7 @@ namespace WebUI.ApiControllers.Manager
             List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.ContactClientId.ToString() == idContact && c.Type == "Звонок").ToList();
             foreach (CallsComment callsComment in callsComments)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Звонок").Comment = comment;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Звонок").ManagerComment = comment;
                 _context.SaveChanges();
             }
         }
@@ -377,7 +377,7 @@ namespace WebUI.ApiControllers.Manager
             List<CallsComment> callsComments = _context.Set<CallsComment>().Where(c => c.ClientId.ToString() == idClient && c.Type == "Клиент").ToList();
             foreach (CallsComment callsComment in callsComments)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Клиент").Comment = comment;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "Клиент").ManagerComment = comment;
                 _context.SaveChanges();
             }
         }
