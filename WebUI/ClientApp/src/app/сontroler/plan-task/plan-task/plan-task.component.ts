@@ -9,6 +9,8 @@ import { IClientData } from '../Model/client-data.model';
 import { ClientAccept } from '../../../manager-rm/clients/shared/models/client-accep.modelt';
 import { filter } from 'minimatch';
 import { AcceptManagerDialogComponent } from '../dialog/accept-manager-dialog/accept-manager-dialog.component';
+import { debug } from 'util';
+import { acceptControlerCalss } from '../../Calls/shared/enums/accept-controler-calss';
 
 @Component({
   selector: 'app-plan-task',
@@ -93,53 +95,71 @@ export class PlanTaskComponent implements OnInit {
     }
   }
 
-  setSortWeeplan() {
-      this.hiddenloader = "";
-      let weekN = this.numberWeek;
-    this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
-      this.clientsData.forEach((item: IClientData) => {
-          item.weeklyPlanSRegional = this.weekPlans.find(w => w.managerType == 20 && w.clientId == item.id && w.weekNumber == weekN
-        && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
-        && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
-          item.weeklyPlanSEscort = this.weekPlans.find(w => w.managerType == 10 && w.clientId == item.id && w.weekNumber == weekN
-        && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
-        && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
-          item.clientAccept = [];
-          let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * weekN);
-          let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
-          dateFirst = new Date(firstDayWeek);
-          let firsDayWeekDate = new Date(this.numberYear, this.numberMonthe, dateFirst.getDate() - 5)
-          debugger
-      item.clientAccept = this.cientAccept.filter(c => item.id == c.clientId
-        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= dateFirst.getDate()
-          && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= firsDayWeekDate.getDate()
-        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
-        && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
-    });
-    this.totalItems = this.clientsData.length;
-    this.paginateClients = this.clientsData.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
+    setSortWeeplan() {
+        this.hiddenloader = "";
+        let weekN = this.numberWeek;
+        this.clientsData = this.clientsDataFull.filter(c => this.workgroupId == 0 || this.workgroupId == c.workGroupeId);
+        this.clientsData.forEach((item: IClientData) => {
+            item.weeklyPlanSRegional = this.weekPlans.find(w => w.managerType == 20 && w.clientId == item.id && w.weekNumber == weekN
+                && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
+                && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
+            item.weeklyPlanSEscort = this.weekPlans.find(w => w.managerType == 10 && w.clientId == item.id && w.weekNumber == weekN
+                && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getMonth() == this.numberMonthe
+                && new Date(w.dateTime.split('.')[2] + "/" + w.dateTime.split('.')[1] + "/" + w.dateTime.split('.')[0]).getFullYear() == this.numberYear);
+            item.clientAccept = [];
+            let dateFirst = new Date(this.numberYear, this.numberMonthe, 7 * weekN);
+            let firstDayWeek = dateFirst.setDate(dateFirst.getDate() - (7 - dateFirst.getDay()))
+            dateFirst = new Date(firstDayWeek);
+            let firsDayWeekDate = new Date(this.numberYear, this.numberMonthe, dateFirst.getDate() - 5)
+            item.clientAccept = this.cientAccept.filter(c => item.id == c.clientId
+                && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() <= dateFirst.getDate()
+                && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getDate() >= firsDayWeekDate.getDate()
+                && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getMonth() == dateFirst.getMonth()
+                && new Date(c.date.slice(0, c.date.indexOf(' ')).split('.')[2] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[1] + "/" + c.date.slice(0, c.date.indexOf(' ')).split('.')[0]).getFullYear() == dateFirst.getFullYear());
 
-    this.dataSource = new MatTableDataSource<IClientData>(this.clientsData)
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.initDateArchiv();
-    this.hiddenloader = "hidden";
-    console.log(this.clientsData);
-  }
-
-  setBagroundStatus(element) {
-    if (element.callsComments) {
-      if (element.callsComments.acceptControlerCalss == 2) {
-        return element.callsComments.colorPen;
-      }
-      else if (element.callsComments.acceptControlerCalss == 1) {
-        return "#DF013A";
-      }
-      else {
-        return "#FAFAFA";
-      }
+        });
+        this.totalItems = this.clientsData.length;
+        this.paginateClients = this.clientsData.slice(((0 + 1) - 1) * this.pageSize).slice(0, this.pageSize);
+        this.dataSource = new MatTableDataSource<IClientData>(this.clientsData)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.initDateArchiv();
+        this.hiddenloader = "hidden";
+        console.log(this.clientsData);
     }
-  }
+
+    getComment(element: IClientData) {
+        let planComment = element.callsComments.find(c => c.weekNumber == this.numberWeek);
+        if (planComment && planComment.weekNumber == this.numberWeek) {
+            return planComment.comment;
+        }
+        return "";
+    }
+
+    getManagerComment(element: IClientData) {
+        let planComment = element.callsComments.find(c => c.weekNumber == this.numberWeek);
+        if (planComment && planComment.weekNumber == this.numberWeek) {
+            return planComment.managerComment;
+        }
+        return "";
+    }
+
+    setBagroundStatus(element: IClientData) {
+        if (element.callsComments) {
+            let planComment = element.callsComments.find(c => c.weekNumber == this.numberWeek);
+            if (planComment && planComment.weekNumber == this.numberWeek) {
+                if (planComment.acceptControlerCalss == 2) {
+                    return planComment.colorPen;
+                }
+                else if (planComment.acceptControlerCalss == 1) {
+                    return "#DF013A";
+                }
+                else {
+                    return "#FAFAFA";
+                }
+            }
+        }
+    }
 
   initDateArchiv() {
     if (this.dateCollections.length == 0) {
@@ -177,29 +197,54 @@ export class PlanTaskComponent implements OnInit {
     this.setSortWeeplan();
   }
 
-  setNoAccept($event, clientId, index = null) {
-    let comentControler = $event.currentTarget.offsetParent.children[0].value;
-    if (comentControler != undefined || comentControler != "") {
-      this.http.get('api/conroler/ClientAccept/NoAcceptCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-      if (!this._isMobile()) {
-        $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-      } else {
-        const $status = document.getElementsByClassName("status")[index] as any;
-        $status.style.backgroundColor = "#DF013A";
-      }
-    }
-  }
+    setNoAccept($event, clientId, index = null) {
+        let comentControler = $event.currentTarget.offsetParent.children[0].value;
+        if (comentControler != undefined || comentControler != "") {
+            this.commentReset(clientId, acceptControlerCalss.ControlerNoAccept, comentControler);
+            this.http.get('api/conroler/ClientAccept/NoAcceptCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId + "&weekNumber=" + this.numberWeek).subscribe();
+            //if (!this._isMobile()) {
+            //    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+            //} else {
+            //    const $status = document.getElementsByClassName("status")[index] as any;
+            //    $status.style.backgroundColor = "#DF013A";
+            //}
 
-  setAccept($event, clientId, index = null) {
-    let comentControler = $event.currentTarget.offsetParent.children[0].value;
-    this.http.get('api/conroler/ClientAccept/DefaultCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId).subscribe();
-    if (!this._isMobile()) {
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-    } else {
-      const $status = document.getElementsByClassName("status")[index] as any;
-      $status.style.backgroundColor = "#FAFAFA";
+        }
     }
-  }
+
+    setAccept($event, clientId, index = null) {
+        let comentControler = $event.currentTarget.offsetParent.children[0].value;
+        this.commentReset(clientId, acceptControlerCalss.Default, comentControler);
+        this.http.get('api/conroler/ClientAccept/DefaultCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId + "&weekNumber=" + this.numberWeek).subscribe();
+        //if (!this._isMobile()) {
+        //    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+        //} else {
+        //    const $status = document.getElementsByClassName("status")[index] as any;
+        //    $status.style.backgroundColor = "#FAFAFA";
+        //}
+    }
+
+    commentReset(clientId: number, status: acceptControlerCalss, comment: string) {
+        debugger
+        if (this.clientsDataFull.find(c => c.id == clientId).callsComments.find(c => c.weekNumber == this.numberWeek)) {
+            this.clientsDataFull.find(c => c.id == clientId).callsComments.find(c => c.weekNumber == this.numberWeek).acceptControlerCalss = status;
+            this.clientsDataFull.find(c => c.id == clientId).callsComments.find(c => c.weekNumber == this.numberWeek).comment = comment;
+        }
+        else {
+            this.clientsDataFull.find(c => c.id == clientId).callsComments.push({
+                acceptControlerCalss: status,
+                clientId: clientId,
+                colorPen: "",
+                comment: comment,
+                contactClientId: 0,
+                date: "",
+                durations: 0,
+                maanagerComment: "",
+                type: "План",
+                weekNumber: this.numberWeek
+            });
+        }
+    }
 
   constructor(public dialog: MatDialog,
     private http: HttpClient,

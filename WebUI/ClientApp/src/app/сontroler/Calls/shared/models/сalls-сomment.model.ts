@@ -9,5 +9,6 @@ export interface CallsComment {
     durations: number,
     date: string
     colorPen: string,
-    type: string
+    type: string,
+    weekNumber: number
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Base.Helpers;
 using Data;
 using Data.DTO.Clients;
 using Data.Entities.Calls;
@@ -107,7 +108,7 @@ namespace WebUI.ApiControllers.Controler
                     LegalEntity = x.LegalEntity,
                     WeeklyPlanSRegional = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.RegionalManager).ToList(),
                     WeeklyPlanSEscort = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.EscortManager).ToList()
-                    CallsComments = callsComments.FirstOrDefault(c => c.ClientId == x.Id && c.Type == "План")
+                    CallsComments = callsComments.Where(c => c.ClientId == x.Id && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date)).ToList()
                 }).ToList();
             return Ok(clients);
         }
@@ -144,7 +145,7 @@ namespace WebUI.ApiControllers.Controler
 
         [HttpGet]
         [Route("NoAcceptCallWeekPlan")]
-        public void NoAcceptCallWeekPlan(string comment, string clientId)
+        public void NoAcceptCallWeekPlan(string comment, string clientId, int weekNumber)
         {
             string color = null;
             if (_accountInformationService.CurrentUser() is Data.Entities.Users.Manager)
@@ -161,7 +162,7 @@ namespace WebUI.ApiControllers.Controler
             {
                 color = "black";
             }
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План");
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber == weekNumber);
             if (callsComment != null)
             {
                 callsComment.Comment = comment;
@@ -176,7 +177,9 @@ namespace WebUI.ApiControllers.Controler
                     Comment = comment,
                     ClientId = Convert.ToInt32(clientId),
                     ColorPen = color,
-                    Type = "План"
+                    Type = "План",
+                    WeekNumber = weekNumber,
+                    Date = DateTime.Now
                 }); ;
             }
             _context.SaveChanges();
@@ -185,9 +188,9 @@ namespace WebUI.ApiControllers.Controler
 
         [HttpGet]
         [Route("DefaultCallWeekPlan")]
-        public void DefaultCallWeekPlan(string comment, string clientId)
+        public void DefaultCallWeekPlan(string comment, string clientId, int weekNumber)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План");
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber == weekNumber);
             if (callsComment != null)
             {
                 callsComment.Comment = comment;
@@ -201,7 +204,9 @@ namespace WebUI.ApiControllers.Controler
                     AcceptControlerCalss = AcceptControlerCalss.Default,
                     Comment = comment,
                     ClientId = Convert.ToInt32(clientId),
-                    Type = "План"
+                    Type = "План",
+                    WeekNumber = weekNumber,
+                    Date = DateTime.Now
                 });
             }
             _context.SaveChanges();

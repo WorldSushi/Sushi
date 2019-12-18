@@ -95,6 +95,7 @@ namespace WebUI.ApiControllers.Manager
                        },
                        IsCoverage = x.Client.IsCoverage != null || x.Client.IsCoverage != "" ? Convert.ToBoolean(x.Client.IsCoverage) : false,
                        CallsComments = callsComments.Where(c => c.ClientId == x.ClientId && c.AcceptControlerCalss == AcceptControlerCalss.ControlerNoAccept)
+                       .Where(c => c.Type != "Пала" || (c.Type == "Пала" && DateHelper.IsCurrentMonth(c.Date)))
                        .Select(z => new CallsCommentDto()
                        {
                            AcceptControlerCalss = z.AcceptControlerCalss,
@@ -105,7 +106,8 @@ namespace WebUI.ApiControllers.Manager
                            ManagerComment = z.ManagerComment,
                            Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
                            ColorPen = z.ColorPen,
-                           Type = z.Type
+                           Type = z.Type,
+                           WeekNumber = z.WeekNumber
 
                        }).ToList()
                    })
@@ -348,12 +350,24 @@ namespace WebUI.ApiControllers.Manager
 
         [HttpGet]
         [Route("CorectPlan")]
-        public void AcceptManagerPlan(string idClient)
+        public void AcceptManagerPlan(string idClient, string weekNumber)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План");
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber);
             if (callsComment != null)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.Id == callsComment.Id && c.Type == "План").AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        [Route("CommentPlan")]
+        public void SetCommentPlan(string idClient, string weekNumber, string comment)
+        {
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber);
+            if (callsComment != null)
+            {
+                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber).ManagerComment = comment;
                 _context.SaveChanges();
             }
         }

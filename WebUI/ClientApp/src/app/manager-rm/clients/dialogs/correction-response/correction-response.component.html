@@ -64,8 +64,8 @@
       <tr *ngFor="let elm of PlanAccept">
         <td colspan="1" [style.background]="elm.colorPen"></td>
         <td colspan="10">{{elm.comment}}</td>
-        <td colspan="10"> <textarea (focusout)="comment1(elm.clientId, $event)" style="border:none;margin:1px;padding:10px;width:80%;height:60px" value="">{{elm.maanagerComment}}</textarea></td>
-        <td colspan="2"><button class="btnAccept" (click)="corect2(elm.clientId, $event)">Испралено</button></td>
+        <td colspan="10"> <textarea (focusout)="comment2(elm.clientId, $event, elm.weekNumber)" style="border:none;margin:1px;padding:10px;width:80%;height:60px" value="">{{elm.maanagerComment}}</textarea></td>
+        <td colspan="2"><button class="btnAccept" (click)="corect2(elm.clientId, $event, elm.weekNumber)">Испралено</button></td>
       </tr>
     </tbody>
   </table>

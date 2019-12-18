@@ -24,10 +24,15 @@ export class CorrectionResponseComponent implements OnInit {
     this.http.get('api/manager/Client/Comment?idClient=' + idClient + "&idContact=" + idContact + "&comment=" + comment).subscribe();
   }
 
-  comment1(idClient, $event) {
-    let comment = $event.currentTarget.value;
-    this.http.get('api/manager/Client/CommentClient?idClient=' + idClient + "&comment=" + comment).subscribe();
-  }
+    comment1(idClient, $event) {
+        let comment = $event.currentTarget.value;
+        this.http.get('api/manager/Client/CommentClient?idClient=' + idClient + "&comment=" + comment).subscribe();
+    }
+
+    comment2(idClient, $event, weekNumber) {
+        let comment = $event.currentTarget.value;
+        this.http.get('api/manager/Client/CommentPlan?idClient=' + idClient + "&weekNumber=" + weekNumber + "&comment=" + comment).subscribe();
+    }
 
   corect(idClient, idContact, $event) {
     document.getElementById("tbodyId").removeChild($event.currentTarget.parentElement.parentElement);
@@ -39,9 +44,9 @@ export class CorrectionResponseComponent implements OnInit {
     this.http.get('api/manager/Client/CorectCliet?idClient=' + idClient).subscribe();
   }
 
-  corect2(idClient, $event) {
+  corect2(idClient, $event, weekNumber) {
     document.getElementById("tbodyId1").removeChild($event.currentTarget.parentElement.parentElement);
-    this.http.get('api/manager/Client/CorectPlan?idClient=' + idClient).subscribe();
+      this.http.get('api/manager/Client/CorectPlan?idClient=' + idClient + "&weekNumber=" + weekNumber).subscribe();
   }
 
   constructor(public dialogRef: MatDialogRef<CorrectionResponseComponent>,
