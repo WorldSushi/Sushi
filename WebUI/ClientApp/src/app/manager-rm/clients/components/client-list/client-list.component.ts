@@ -89,7 +89,9 @@ export class ClientListComponent implements OnInit {
     'tripPlan.planned',
     'tripPlan.fact',
     'MSplanned',
-    'RMplanned',
+      'RMplanned',
+      'MSresults.sumAndMsg',
+      'RMresults.sumAndMsg',
     'MSresults.sum',
     'RMresults.sum',
     'MSresults.call',
@@ -364,7 +366,6 @@ export class ClientListComponent implements OnInit {
   }
 
     getCurrentMsPlan(weekPlans: IWeekPlan[]) {
-        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
         let managerType = this.getTypeManager();
         const numberOfWeek = Math.ceil(new Date().getDate() / 7);
         let countChar = 0;
@@ -379,7 +380,6 @@ export class ClientListComponent implements OnInit {
     }
 
     getCurrentRmPlan(weekPlans: IWeekPlan[]) {
-        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
         let managerType = this.getTypeManager();
         const numberOfWeek = Math.ceil(new Date().getDate() / 7);
         let countChar = 0;
@@ -394,12 +394,12 @@ export class ClientListComponent implements OnInit {
     }
 
     getTypeManager() {
-        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
+        let curWorkGroup = this.workgroup.find(w => w && w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
         let managerType = 0;
-        if (curWorkGroup.regionalManagerId == this.manager.id) {
+        if (curWorkGroup && curWorkGroup.regionalManagerId == this.manager.id) {
             managerType = 20;
         }
-        else if (curWorkGroup.escortManagerId == this.manager.id) {
+        else if (curWorkGroup && curWorkGroup.escortManagerId == this.manager.id) {
             managerType = 10;
         }
         return managerType;
@@ -460,6 +460,12 @@ export class ClientListComponent implements OnInit {
                 c.managerType == 20 && c.contactType == 30).length : 0;
             this.clients[i].managerCallsResults.escortLetters = sortClients.length != 0 ? sortClients.filter(c =>
                 c.managerType == 10 && c.contactType == 30).length : 0;
+
+            this.clients[i].managerCallsResults.regionalResAndMsg = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 20 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && (c.contactType == 40 || c.contactType == 10))  )).length : 0;
+            this.clients[i].managerCallsResults.escortResAndMsg = sortClients.length != 0 ? sortClients.filter(c =>
+                c.managerType == 10 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && (c.contactType == 40 || c.contactType == 10)))).length : 0;
+
 
             if (this.clients[i].managerCallsResults.escortCalls == 0 || this.clients[i].callPlan.escortManagerCalls == 0) {
                 this.clients[i].managerCallsResults.escortRes = '-';
@@ -699,6 +705,16 @@ export class ClientListComponent implements OnInit {
         else if (typeCall == 80) {
             client.forEach((item) => {
                 count += Number(item.managerCallsResults.regionalLetters);
+            });
+        }
+        else if (typeCall == 110) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.escortResAndMsg);
+            });
+        }
+        else if (typeCall == 120) {
+            client.forEach((item) => {
+                count += Number(item.managerCallsResults.regionalResAndMsg);
             });
         }
         else if (typeCall == 90) {
