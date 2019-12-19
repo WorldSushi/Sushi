@@ -313,10 +313,6 @@ export class ClientListComponent implements OnInit {
                     item.managerId = this.manager.workgroup.regionalManagerId;
                 }
                 if (this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id)) {
-                    debugger
-                    //console.log(this.clients.find(c => c.id == item.clientId).clientContacts);
-                    //this.clients.find(c => c.id == item.clientId).clientContacts = this.removeContact(this.clients.find(c => c.id == item.clientId).clientContacts, item.id);
-                    //console.log(this.clients.find(c => c.id == item.clientId).clientContacts);
                     this.clients.find(c => c.id == item.clientId).clientContacts.find(c => c.id == item.id).contactType = item.contactType;
                     if (item.managerType == 10) {
                         this.clients.find(c => c.id == item.clientId).managerCallsResults.escortCalls++;
@@ -385,7 +381,7 @@ export class ClientListComponent implements OnInit {
         let countChar = 0;
         let weekPlan = (weekPlans.find(item => item.managerType == managerType && numberOfWeek == item.weekNumber)
             ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
-            : { plan: '' }).fact;
+            : { fact: '' }).fact;
         if (weekPlan && weekPlan.length > 150) {
             weekPlan = weekPlan.substr(0, 150)
             weekPlan += "...";

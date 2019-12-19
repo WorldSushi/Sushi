@@ -31,33 +31,33 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{fullPrecentEC.toFixed(1)}}%</td>
+            <td>{{fullPrecentEC.toFixed(0)}}%</td>
             <td colspan="2">Звонки развития</td>
             <td><input type="number" (focusout)="setNumberPlan_DevelopmentCallsMC($event.currentTarget.value)" value="{{performanceChartMC.numberPlan_DevelopmentCalls}}"/></td>
             <td><input type="number" (focusout)="setShiftPlan_DevelopmentCallsMC($event.currentTarget.value)" value="{{performanceChartMC.shiftPlan_DevelopmentCalls}}" /></td>
             <td><input type="number" (focusout)="setBalls_DevelopmentCallsMC($event.currentTarget.value)" value="{{performanceChartMC.balls_DevelopmentCalls}}" /></td>
-            <td>{{oneTasksEC}}</td>
-            <td>{{oneBallsEC}}</td>
-            <td>{{tasksEC}}</td>
+            <td>{{oneTasksEC.toFixed(0)}}</td>
+            <td>{{oneBallsEC.toFixed(0)}}</td>
+            <td>{{tasksEC.toFixed(0)}}</td>
             <td>{{performanceChartMC.numberPlan_DevelopmentCalls*8}}</td>
             <td>{{performanceChartMC.numberPlan_DevelopmentCalls + data.callEsc.length}}</td>
-            <td>{{ballsEC.toFixed(1)}}</td>
+            <td>{{ballsEC.toFixed(0)}}</td>
           </tr>
           <tr>
             <th colspan="12">Региональный менеджер</th>
           </tr>
           <tr>
-            <td rowspan="3">{{fullPrecentRM.toFixed(1)}}%</td>
+            <td rowspan="3">{{fullPrecentRM.toFixed(0)}}%</td>
             <td colspan="2">Встречи и командировки развития</td>
             <td><input type="number" (focusout)="setNumberPlan_DevelopmentCallsRM($event.currentTarget.value)" value="{{performanceChartRM.numberPlan_DevelopmentCalls}}" /></td>
             <td>-</td>
             <td><input type="number" (focusout)="setBalls_DevelopmentCallsRM($event.currentTarget.value)" value="{{performanceChartRM.balls_DevelopmentCalls}}" /></td>
             <td></td>
-            <td rowspan="3">{{ballsRM}}</td>
-            <td>{{sumFactTrip}}</td>
+            <td rowspan="3">{{ballsRM.toFixed(0)}}</td>
+            <td>{{sumFactTrip.toFixed(0)}}</td>
             <td>-</td>  
             <td>-</td>
-            <td rowspan="3">{{oneBallsRM}}</td>
+            <td rowspan="3">{{oneBallsRM.toFixed(0)}}</td>
           </tr>
           <tr>
             <td rowspan="2">Звонки</td>
@@ -65,8 +65,8 @@
             <td><input type="number" (focusout)="setNumberPlan_YourShiftsRM($event.currentTarget.value)" value="{{performanceChartRM.numberPlan_YourShifts}}" /></td>
             <td><input type="number" (focusout)="setShiftPlan_YourShiftsRM($event.currentTarget.value)" value="{{performanceChartRM.shiftPlan_YourShifts}}" /></td>
             <td rowspan="2"><input type="number" (focusout)="setBalls_YourShiftsShiftsRM($event.currentTarget.value)" value="{{performanceChartRM.balls_YourShifts}}" /></td>
-            <td>{{oneTasksRM}}</td>
-            <td rowspan="2">{{tasksRM}}</td>
+            <td>{{oneTasksRM.toFixed(0)}}</td>
+            <td rowspan="2">{{tasksRM.toFixed(0)}}</td>
             <td rowspan="2">{{performanceChartRM.numberPlan_DevelopmentCalls*8}}</td>
             <td rowspan="2">{{(performanceChartRM.numberPlan_DevelopmentCalls) + data.callReg.length}}</td>
           </tr>
@@ -74,7 +74,7 @@
             <td>Смены замещения</td>
             <td><input type="number" (focusout)="setNumberPlan_SubstitutionShiftsRM($event.currentTarget.value)" value="{{performanceChartRM.numberPlan_SubstitutionShifts}}" /></td>
             <td><input type="number" (focusout)="setShiftPlan_SubstitutionShiftsRM($event.currentTarget.value)" value="{{performanceChartRM.shiftPlan_SubstitutionShifts}}" /></td>
-            <td>{{oneTasksRM01.toFixed(1)}}</td>
+            <td>{{oneTasksRM01.toFixed(0)}}</td>
           </tr>
         </tbody>
       </table>

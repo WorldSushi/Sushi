@@ -5,10 +5,12 @@ export interface IManagerCallsResult {
   escortLetters: number,
   escortTotalContacts: number,
   escortRes: number,
+    escortResAndMsg: number,
   regionalCalls: number,
   regionalMails: number,
   regionalLetters: number,
   regionalTotalContacts: number,
   regionalRes: number,
+    regionalResAndMsg: number,
   clientId: number
 }

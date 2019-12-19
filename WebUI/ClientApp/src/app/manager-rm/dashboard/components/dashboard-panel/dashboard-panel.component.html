@@ -105,17 +105,17 @@
           </thead>
           <tbody>
             <tr *ngIf="Managerid.id == Managerid.workgroup.escortManagerId">
-              <td>{{fullPrecentEC.toFixed()}}%</td>
+              <td>{{fullPrecentEC.toFixed(0)}}%</td>
               <td colspan="2">Звонки развития</td>
               <td>{{performanceChartMC.numberPlan_DevelopmentCalls}}</td>
               <td>{{performanceChartMC.shiftPlan_DevelopmentCalls}}</td>
               <td>{{performanceChartMC.balls_DevelopmentCalls}}</td>
-              <td>{{oneTasksEC}}</td>
-              <td>{{oneBallsEC}}</td>
-              <td>{{tasksEC}}</td>
+              <td>{{oneTasksEC.toFixed(0)}}</td>
+              <td>{{oneBallsEC.toFixed(0)}}</td>
+              <td>{{tasksEC.toFixed(0)}}</td>
               <td>{{performanceChartMC.numberPlan_DevelopmentCalls*8}}</td>
               <td>{{performanceChartMC.numberPlan_DevelopmentCalls + getToMonthkECManager()}}</td>
-              <td>{{ballsEC.toFixed(1)}}</td>
+              <td>{{ballsEC.toFixed(0)}}</td>
             </tr>
             
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
@@ -125,11 +125,11 @@
               <td></td>
               <td>{{performanceChartRM.balls_DevelopmentCalls}}</td>
               <td></td>
-              <td rowspan="3">{{ballsRM}} </td>
-              <td>{{sumFactTrip}}</td>
+              <td rowspan="3">{{ballsRM.toFixed(0)}} </td>
+              <td>{{sumFactTrip.toFixed(0)}}</td>
               <td>-</td>
               <td>-</td>
-              <td rowspan="3">{{oneBallsRM}}</td>
+              <td rowspan="3">{{oneBallsRM.toFixed(0)}}</td>
             </tr>
             <tr *ngIf="Managerid.id == Managerid.workgroup.regionalManagerId">
               <td rowspan="2">Звонки</td>
@@ -137,7 +137,7 @@
               <td>{{performanceChartRM.numberPlan_YourShifts}}</td>
               <td>{{performanceChartRM.shiftPlan_YourShifts}}</td>
               <td rowspan="2">{{performanceChartRM.balls_YourShifts}}</td>
-              <td>{{oneTasksRM}}</td>
+              <td>{{oneTasksRM.toFixed(0)}}</td>
               <td rowspan="2">{{tasksRM.toFixed()}}</td>
               <td rowspan="2">{{performanceChartRM.numberPlan_DevelopmentCalls*8}}</td>
               <td rowspan="2">{{performanceChartRM.numberPlan_DevelopmentCalls + getToMonthkRegManager()}}</td>
@@ -146,7 +146,7 @@
               <td>Смены замещения</td>
               <td>{{performanceChartRM.numberPlan_SubstitutionShifts}}</td>
               <td>{{performanceChartRM.shiftPlan_SubstitutionShifts}}</td>
-              <td>{{oneTasksRM1.toFixed()}}</td>
+              <td>{{oneTasksRM1.toFixed(0)}}</td>
             </tr>
           </tbody>
         </table>
