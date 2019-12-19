@@ -95,14 +95,14 @@ namespace WebUI.ApiControllers.Manager
                        },
                        IsCoverage = x.Client.IsCoverage != null || x.Client.IsCoverage != "" ? Convert.ToBoolean(x.Client.IsCoverage) : false,
                        CallsComments = callsComments.Where(c => c.ClientId == x.ClientId && c.AcceptControlerCalss == AcceptControlerCalss.ControlerNoAccept)
-                       .Where(c => c.Type != "Пала" || (c.Type == "Пала" && DateHelper.IsCurrentMonth(c.Date)))
+                       .Where(c => c.Type != "Пала" || (c.Type == "Пала" /*&& DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date))*/))
                        .Select(z => new CallsCommentDto()
                        {
                            AcceptControlerCalss = z.AcceptControlerCalss,
                            ClientId = x.ClientId,
                            Comment = z.Comment,
                            ContactClientId = z.ContactClientId,
-                           Date = clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId) != null ? clientContacts.FirstOrDefault(c => c.ClientId == x.ClientId && c.Id == z.ContactClientId).Date.ToString("dd.MM.yyyy hh:mm") : "",
+                           Date = z.Date,
                            ManagerComment = z.ManagerComment,
                            Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
                            ColorPen = z.ColorPen,
@@ -352,10 +352,10 @@ namespace WebUI.ApiControllers.Manager
         [Route("CorectPlan")]
         public void AcceptManagerPlan(string idClient, string weekNumber)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber.ToString() == weekNumber);
             if (callsComment != null)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber.ToString() == weekNumber).AcceptControlerCalss = AcceptControlerCalss.ManagerAccept;
                 _context.SaveChanges();
             }
         }
@@ -364,10 +364,10 @@ namespace WebUI.ApiControllers.Manager
         [Route("CommentPlan")]
         public void SetCommentPlan(string idClient, string weekNumber, string comment)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber.ToString() == weekNumber);
             if (callsComment != null)
             {
-                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber.ToString() == weekNumber).ManagerComment = comment;
+                _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == idClient && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber.ToString() == weekNumber).ManagerComment = comment;
                 _context.SaveChanges();
             }
         }

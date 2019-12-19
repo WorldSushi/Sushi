@@ -12,7 +12,7 @@ namespace Data.Entities.Calls
         public string ManagerComment { get; set; }
         public string ColorPen { get; set; }
         public int WeekNumber { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public string Type { get; set; }
         public AcceptControlerCalss AcceptControlerCalss { get; set; }
     }

@@ -239,7 +239,7 @@ export class PlanTaskComponent implements OnInit {
                 contactClientId: 0,
                 date: "",
                 durations: 0,
-                maanagerComment: "",
+                managerComment: "",
                 type: "План",
                 weekNumber: this.numberWeek
             });

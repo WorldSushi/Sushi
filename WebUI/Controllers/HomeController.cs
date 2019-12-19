@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Data;
 using Data.Commands.ClientContacts.WorkGroup;
 using Data.Commands.Clients;
+using Data.DTO.Calls;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
@@ -92,13 +93,35 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("Init")]
-        public void Init(string id)
+        public IActionResult Init(string id)
         {
             //_context.Set<CallsComment>().RemoveRange(_context.Set<CallsComment>().ToList());
 
             //_context.Set<ClientInfo>().Remove(_context.Set<ClientInfo>().FirstOrDefault(c => c.ClientId.ToString() == id));
             //_context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id.ToString() == id));
             //_context.SaveChanges();
+            try
+            {
+                _context.Set<CallsComment>().Select(z => new CallsCommentDto()
+                {
+                    AcceptControlerCalss = z.AcceptControlerCalss,
+                    //ClientId = x.ClientId,
+                    Comment = z.Comment,
+                    ContactClientId = z.ContactClientId,
+                    Date = z.Date,
+                    ManagerComment = z.ManagerComment,
+                    //Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+                    ColorPen = z.ColorPen,
+                    Type = z.Type,
+                    WeekNumber = z.WeekNumber
+
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message);
+            }
+            return Ok(_context.Set<CallsComment>().ToList());
         }
 
         [HttpGet]

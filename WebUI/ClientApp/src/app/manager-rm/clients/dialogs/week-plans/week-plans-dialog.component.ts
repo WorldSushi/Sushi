@@ -148,24 +148,23 @@ export class WeekPlansDialogComponent implements OnInit {
     return result
   }
 
-  getRMWeekPlans(weekPlans: IWeekPlan[]){
-    let result = [];
-    weekPlans = this.data.weekPlans.filter(item => item.managerType == 20);
+    getRMWeekPlans(weekPlans: IWeekPlan[]) {
+        let result = [];
+        weekPlans = this.data.weekPlans.filter(item => item.managerType == 20);
 
-    for(let i = 1; i <= 5; i++){
-      if(weekPlans.find(item => item.weekNumber == i))
-        result.push(this.data.weekPlans.find(item => item.weekNumber == i))
-      else
-        result.push({ id: 0, plan: '', clientId: this.data.id, managerType: 20, fact: '', weekNumber: i  })
+        for (let i = 1; i <= 5; i++) {
+            if (weekPlans.find(item => item.weekNumber == i))
+                result.push(this.data.weekPlans.find(item => item.weekNumber == i))
+            else
+                result.push({ id: 0, plan: '', clientId: this.data.id, managerType: 20, fact: '', weekNumber: i })
+        }
+
+        return result
     }
 
-    return result
-  }
-
     addFactToWeekPlan(weekPlan: IWeekPlan) {
-        debugger
-    this.addFact.emit(weekPlan);
-  }
+        this.addFact.emit(weekPlan);
+    }
 
   addResume(element) {
     this.http.get('api/manager/Client/AddResume?idClient=' + this.data.id + '&strResume=' + element.target.value).subscribe();

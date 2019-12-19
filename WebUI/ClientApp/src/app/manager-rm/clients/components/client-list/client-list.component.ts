@@ -364,42 +364,46 @@ export class ClientListComponent implements OnInit {
   }
 
     getCurrentMsPlan(weekPlans: IWeekPlan[]) {
-    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
-    let weekPlan = (weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
-      ? weekPlans.find(item => item.managerType == 10 && numberOfWeek == item.weekNumber)
-      : { plan: '' }).plan;
+        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
+        let managerType = this.getTypeManager();
+        const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+        let countChar = 0;
+        let weekPlan = (weekPlans.find(item => item.managerType == managerType && numberOfWeek == item.weekNumber)
+            ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+            : { plan: '' }).plan;
         if (weekPlan && weekPlan.length > 150) {
-      weekPlan = weekPlan.substr(0, 150)
-      weekPlan += "...";
+            weekPlan = weekPlan.substr(0, 150)
+            weekPlan += "...";
+        }
+        return weekPlan;
     }
-    return weekPlan;
-  }
 
-  getCurrentRmPlan(weekPlans: IWeekPlan[]){
-    const numberOfWeek = Math.ceil(new Date().getDate() / 7);
-    let countChar = 0;
-    let weekPlan = (weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
-      ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
-      : { plan: '' }).plan;
-      if (weekPlan   && weekPlan.length > 150) {
-      weekPlan = weekPlan.substr(0, 150)
-      weekPlan += "...";
+    getCurrentRmPlan(weekPlans: IWeekPlan[]) {
+        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
+        let managerType = this.getTypeManager();
+        const numberOfWeek = Math.ceil(new Date().getDate() / 7);
+        let countChar = 0;
+        let weekPlan = (weekPlans.find(item => item.managerType == managerType && numberOfWeek == item.weekNumber)
+            ? weekPlans.find(item => item.managerType == 20 && numberOfWeek == item.weekNumber)
+            : { plan: '' }).fact;
+        if (weekPlan && weekPlan.length > 150) {
+            weekPlan = weekPlan.substr(0, 150)
+            weekPlan += "...";
+        }
+        return weekPlan;
     }
-    //if (weekPlan.length > 40) {
-    //  for (let i = 0; i < weekPlan.length / 40; i++) {
-    //    for (let j = (i + 1) * 40; j < ((i + 1) * 40) + 40; j++) {
-    //      if (weekPlan[j] == " ") {
-    //        countChar++;
-    //        if (countChar == 11) {
-    //          countChar = 0;
-    //          weekPlan[j] == " "
-    //        }
-    //      }
-    //    }
-    //  }
-    //}
-    return weekPlan;
-  }
+
+    getTypeManager() {
+        let curWorkGroup = this.workgroup.find(w => w.regionalManagerId == this.manager.id || w.escortManagerId == this.manager.id)
+        let managerType = 0;
+        if (curWorkGroup.regionalManagerId == this.manager.id) {
+            managerType = 20;
+        }
+        else if (curWorkGroup.escortManagerId == this.manager.id) {
+            managerType = 10;
+        }
+        return managerType;
+    }
 
   getSumOfCallsDates(callsDates: ICallsDate[]){
     return callsDates.filter(item => item.contactType > 0).length;
@@ -729,7 +733,6 @@ export class ClientListComponent implements OnInit {
                 count = call;
             }
             count = Number(count.toFixed(0));
-            debugger
             let planCall = this.getCountPlanCall(group, 20);
             if (count == 0) {
                 count = 0;
@@ -773,7 +776,6 @@ export class ClientListComponent implements OnInit {
                 count = call;
             }
             count = Number(count.toFixed(0));
-            debugger
             let planCall = this.getCountPlanCall(group, 10);
             if (count == 0) {
                 count = 0;

@@ -108,7 +108,7 @@ namespace WebUI.ApiControllers.Controler
                     LegalEntity = x.LegalEntity,
                     WeeklyPlanSRegional = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.RegionalManager).ToList(),
                     WeeklyPlanSEscort = new { }, //weekPlans.Where(w => w.ClientId == x.Id && w.ManagerType == ManagerType.EscortManager).ToList()
-                    CallsComments = callsComments.Where(c => c.ClientId == x.Id && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date)).ToList()
+                    CallsComments = callsComments.Where(c => c.ClientId == x.Id && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date))).ToList()
                 }).ToList();
             return Ok(clients);
         }
@@ -162,7 +162,7 @@ namespace WebUI.ApiControllers.Controler
             {
                 color = "black";
             }
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber == weekNumber);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber == weekNumber );
             if (callsComment != null)
             {
                 callsComment.Comment = comment;
@@ -179,8 +179,8 @@ namespace WebUI.ApiControllers.Controler
                     ColorPen = color,
                     Type = "План",
                     WeekNumber = weekNumber,
-                    Date = DateTime.Now
-                }); ;
+                    Date = DateTime.Now.ToString()
+                });
             }
             _context.SaveChanges();
         }
@@ -190,7 +190,7 @@ namespace WebUI.ApiControllers.Controler
         [Route("DefaultCallWeekPlan")]
         public void DefaultCallWeekPlan(string comment, string clientId, int weekNumber)
         {
-            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(c.Date) && c.WeekNumber == weekNumber);
+            CallsComment callsComment = _context.Set<CallsComment>().FirstOrDefault(c => c.ClientId.ToString() == clientId && c.Type == "План" && DateHelper.IsCurrentMonth(Convert.ToDateTime(c.Date)) && c.WeekNumber == weekNumber);
             if (callsComment != null)
             {
                 callsComment.Comment = comment;
@@ -206,7 +206,7 @@ namespace WebUI.ApiControllers.Controler
                     ClientId = Convert.ToInt32(clientId),
                     Type = "План",
                     WeekNumber = weekNumber,
-                    Date = DateTime.Now
+                    Date = DateTime.Now.ToString()
                 });
             }
             _context.SaveChanges();

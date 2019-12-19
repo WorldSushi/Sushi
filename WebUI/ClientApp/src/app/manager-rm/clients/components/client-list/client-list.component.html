@@ -303,14 +303,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -332,42 +332,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br /></th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -402,7 +402,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}} </th>
         </ng-container>
 
 
@@ -533,14 +533,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Палан</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -562,42 +562,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)"  style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)"  style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -632,7 +632,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
         </ng-container>
 
 
@@ -764,14 +764,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -793,42 +793,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -863,7 +863,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
         </ng-container>
 
 
@@ -996,14 +996,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -1025,42 +1025,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -1095,7 +1095,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
         </ng-container>
 
 
@@ -1227,14 +1227,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -1256,42 +1256,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -1326,7 +1326,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
         </ng-container>
 
 
@@ -1458,14 +1458,14 @@
         </ng-container>
 
         <ng-container matColumnDef="MSplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentMsPlan(element.weekPlans)}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMplanned">
-          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+          <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
           <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
             {{getCurrentRmPlan(element.weekPlans)}}
           </td>
@@ -1487,42 +1487,42 @@
 
         <ng-container matColumnDef="MSresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.call">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalCalls}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Message">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalMails}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
             {{element.managerCallsResults.escortLetters}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.WhatsApp">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
             {{element.managerCallsResults.regionalLetters}}
           </td>
         </ng-container>
@@ -1557,7 +1557,7 @@
         </ng-container>
 
         <ng-container matColumnDef="todos">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
         </ng-container>
 
 
@@ -1692,14 +1692,14 @@
           </ng-container>
 
           <ng-container matColumnDef="MSplanned">
-            <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">Теущий МС</th>
+            <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #f0fbff">План</th>
             <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
               {{getCurrentMsPlan(element.weekPlans)}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMplanned">
-            <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Текущий РМ </th>
+            <th colspan="5" mat-header-cell *matHeaderCellDef style="background-color: #e3f7ff">Факт</th>
             <td [style.background]="checkCallForColor(element)" colspan="5" mat-cell *matCellDef="let element" (click)="openWeekPlans(element)">
               {{getCurrentRmPlan(element.weekPlans)}}
             </td>
@@ -1722,42 +1722,42 @@
 
           <ng-container matColumnDef="MSresults.call">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
               {{element.managerCallsResults.escortCalls}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.call">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
               {{element.managerCallsResults.regionalCalls}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="MSresults.Message">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
               {{element.managerCallsResults.escortMails}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.Message">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
               {{element.managerCallsResults.regionalMails}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="MSresults.WhatsApp">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f0fdf4">
               {{element.managerCallsResults.escortLetters}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="RMresults.WhatsApp">
             <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+            <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)" style="background-color: #f5fdf0">
               {{element.managerCallsResults.regionalLetters}}
             </td>
           </ng-container>
@@ -1792,7 +1792,7 @@
           </ng-container>
 
           <ng-container matColumnDef="todos">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План по задачам </th>
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="10" style="text-align: center; background-color: #d7f5ff; color: #94c3cb">План и факт по задачам - {{getTypeManager() == 10 ? "МС" : getTypeManager() == 20 ? "РМ"  : "--"}} - {{manager.login}}</th>
           </ng-container>
 
 
