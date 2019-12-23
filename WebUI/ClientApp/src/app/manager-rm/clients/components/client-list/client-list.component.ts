@@ -234,7 +234,6 @@ export class ClientListComponent implements OnInit {
     })
 
       dialogRef.afterClosed().subscribe(res => {
-          debugger
       if(res){
         res.forEach(element => {
           if(element.id == 0)
@@ -458,9 +457,9 @@ export class ClientListComponent implements OnInit {
                 c.managerType == 10 && c.contactType == 30).length : 0;
 
             this.clients[i].managerCallsResults.regionalResAndMsg = sortClients.length != 0 ? sortClients.filter(c =>
-                c.managerType == 20 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && (c.contactType == 40 || c.contactType == 10))  )).length : 0;
+                c.managerType == 20 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && c.contactType == 40))).length : 0;
             this.clients[i].managerCallsResults.escortResAndMsg = sortClients.length != 0 ? sortClients.filter(c =>
-                c.managerType == 10 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && (c.contactType == 40 || c.contactType == 10)))).length : 0;
+                c.managerType == 10 && (c.contactType == 30 || c.contactType == 20 || (c.durations >= 150 && c.contactType == 40))).length : 0;
 
 
             if (this.clients[i].managerCallsResults.escortCalls == 0 || this.clients[i].callPlan.escortManagerCalls == 0) {

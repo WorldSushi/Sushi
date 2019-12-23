@@ -52,7 +52,7 @@
     </div>
     <div class="dialog-section-body">
       <div class="planned">
-        <textarea (focusout)="addResume($event)" matInput placeholder="Резюме"></textarea>
+        <textarea (focusout)="addResume($event)" matInput placeholder="Резюме">{{getResumeToMonthe()}}</textarea>
       </div>
     </div>
   </div>
@@ -90,11 +90,14 @@
   </div>
   <div class="dialog-Resume">
     <div class="dialog-section-title">
-      Резюме за {{toMonthDate}}
+      Резюме за
+      <select style="background:#E2F7FF;font-size: 18px;color:#557B91;border:none;" [(ngModel)]="dateCollection" (ngModelChange)="toFormatDate(dateCollection)">
+        <option *ngFor="let dateCollection of dateCollections">{{dateCollection}}</option>
+      </select>
     </div>
     <div class="dialog-section-body">
       <div class="planned">
-        {{clientResumeWeeks.resume}}
+        {{resumeSelect}}
       </div>
     </div>
   </div>

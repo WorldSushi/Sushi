@@ -52,7 +52,7 @@ namespace WebUI.Controllers
                 .Select(x => new ClientResumeWeekDto()
                 {
                     ClientId = _context.Set<ClientInfo>().FirstOrDefault(c => c.OneCId.ToString() == idClient).OneCId.ToString(),
-                    Date = x.Date,
+                    Date = Convert.ToDateTime(x.Date),
                     Resume = x.Resume
                 }).ToList();
             if (idClient != null && idClient != "")
@@ -63,7 +63,7 @@ namespace WebUI.Controllers
             int monthNumber;
             if (int.TryParse(year, out yearNumber) && int.TryParse(monthe, out monthNumber))
             {
-                clientResumeWeeks = clientResumeWeeks.Where(c => DateTime.Parse(c.Date).Year == yearNumber && DateTime.Parse(c.Date).Month == monthNumber).ToList();
+                clientResumeWeeks = clientResumeWeeks.Where(c => c.Date.Year == yearNumber && c.Date.Month == monthNumber).ToList();
             }
             responseOneC.Result = clientResumeWeeks;
             responseOneC.Command = "GetResume";
@@ -71,8 +71,6 @@ namespace WebUI.Controllers
             return responseOneC;
         }
 
-
-        //"CRM_Contragents" api.OneC
         [HttpGet]
         [Route("api.OneC")]
         public ResponseOneCDto GetClientResumeWeek(string updatetable, string id)

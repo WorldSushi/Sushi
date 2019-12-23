@@ -108,12 +108,12 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sumAndMsg">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 120)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 110)}}</th>
           <td mat-cell ></td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sumAndMsg">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 110)}}</th>
+          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 120)}}</th>
           <td mat-cell ></td>
         </ng-container>
 
@@ -158,12 +158,12 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 90).toFixed()}}%</th>
+          <th mat-header-cell *matHeaderCellDef ><!--МС<br />{{getCountCall(-10, 90).toFixed()}}%--></th>
           <td mat-cell></td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 100).toFixed()}}%</th>
+          <th mat-header-cell *matHeaderCellDef ><!--РМ<br />{{getCountCall(-10, 100).toFixed()}}%--></th>
           <td mat-cell></td>
         </ng-container>
 
@@ -206,7 +206,7 @@
         </ng-container>
 
         <ng-container matColumnDef="Share">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Доля %</th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" ><!--Доля %--></th>
         </ng-container>
 
         <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResultsAndMsg', 'allResults', 'calls', 'Message', 'WhatsApp', 'Share']" style="height: 30px"></tr>

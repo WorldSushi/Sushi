@@ -1,5 +1,5 @@
 export interface ClientResumeWeek {
   clientId: number,
-  resume: string,
-  date: string
+    resume: string,
+    date: Date
 }

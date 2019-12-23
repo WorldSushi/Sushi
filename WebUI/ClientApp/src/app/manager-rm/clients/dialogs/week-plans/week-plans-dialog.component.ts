@@ -13,32 +13,23 @@ import { ClientResumeWeek } from '../../shared/models/client-resume-week.model';
 export class WeekPlansDialogComponent implements OnInit {
 
   @Output() addFact: EventEmitter<IWeekPlan> = new EventEmitter<IWeekPlan>();
-
-  clientResumeWeeks: ClientResumeWeek;
-
+  clientResumeWeeks: ClientResumeWeek[] = [];
   displayedColumns: string[] = ['Number', 'MSplanned', 'RMplanned', 'MSfact', 'RMfact'];
-
-
+    dateCollection: string;
   firstdayOneWeek: any;
   lastdayOneWeek: any;
-
   firstdayTwoWeek: any;
   lastdayTwoWeek: any;
-
   firstdaythreeWeek: any;
   lastdaythreeWeek: any;
-
   firstdayFourWeek: any;
   lastdayFourWeek: any;
-
   firstdayFiveWeek: any;
     lastdayFiveWeek: any;
-
-
+    dateCollections: string[] = [];
     toMonthDate = new Date().toLocaleDateString().substring(3, new Date().toLocaleDateString().length);
-
-
     curentDate: string = ""
+    resumeSelect: string = "";
 
   selectedMSWeek: IWeekPlan = {
     id: 0,
@@ -166,17 +157,67 @@ export class WeekPlansDialogComponent implements OnInit {
         this.addFact.emit(weekPlan);
     }
 
-  addResume(element) {
-    this.http.get('api/manager/Client/AddResume?idClient=' + this.data.id + '&strResume=' + element.target.value).subscribe();
-  }
+    addResume(element) {
+        this.http.get('api/manager/Client/AddResume?idClient=' + this.data.id + '&strResume=' + element.target.value).subscribe();
+        if (this.clientResumeWeeks.find(c => c.date && new Date(c.date).getMonth() == new Date().getMonth() && new Date(c.date).getFullYear() == new Date().getFullYear())) {
+            this.clientResumeWeeks.find(c => new Date(c.date).getMonth() == new Date().getMonth() && new Date(c.date).getFullYear() == new Date().getFullYear()).resume = element.target.value;
+        }
+        else {
+            this.clientResumeWeeks.unshift({
+                clientId: this.data.id,
+                date: new Date(),
+                resume: element.target.value
+            });
+        }
+        this.initDateArchiv();
+    }
 
-  getResume() {
-    this.http.get<ClientResumeWeek>('api/manager/Client/Resume?idClient=' + this.data.id).subscribe((data: ClientResumeWeek) =>
-    {
-      this.clientResumeWeeks = data;
-      this.cdr.detectChanges();
-    });
-  }
+    getResume() {
+        this.http.get<ClientResumeWeek[]>('api/manager/Client/Resume?idClient=' + this.data.id).subscribe((data: ClientResumeWeek[]) => {
+            this.clientResumeWeeks = data;
+            this.initDateArchiv();
+            this.cdr.detectChanges();
+        });
+    }
+
+    initDateArchiv() {
+        if (this.clientResumeWeeks.length != 0) {
+            this.dateCollections = [];
+            let firstDate = new Date();
+            for (let i = 0; i < this.clientResumeWeeks.length; i++) {
+                if (firstDate > this.clientResumeWeeks[i].date) {
+                    firstDate = this.clientResumeWeeks[i].date;
+                }
+            }
+            for (let i = firstDate.getFullYear(); i <= new Date().getFullYear(); i++) {
+                for (let j = firstDate.getMonth(); j <= new Date().getMonth(); j++) {
+                    let date = new Date(i + "/0" + (j + 1));
+                    this.dateCollections.unshift(new Date(i + "/0" + (j + 1)).toLocaleDateString().substring(3, date.toLocaleDateString().length));
+                }
+            }
+            this.dateCollection = this.dateCollections[0];
+            this.toFormatDate(this.dateCollection);
+        }
+    }
+
+    getResumeToMonthe() {
+        let resume: string = "";
+        if (this.clientResumeWeeks.find(c => c.date && new Date(c.date).getMonth() == new Date().getMonth() && new Date(c.date).getFullYear() == new Date().getFullYear())) {
+            resume = this.clientResumeWeeks.find(c => new Date(c.date).getMonth() == new Date().getMonth() && new Date(c.date).getFullYear() == new Date().getFullYear()).resume;
+        }
+        return resume;
+    }
+
+    toFormatDate(dateSelect) {
+        let partDate = dateSelect.split('.');
+        let date = new Date(partDate[1] + "/" + partDate[0]);
+        if (this.clientResumeWeeks.find(c => c.date && new Date(c.date).getMonth() == date.getMonth() && new Date(c.date).getFullYear() == date.getFullYear())) {
+            this.resumeSelect = this.clientResumeWeeks.find(c => date.getMonth() == new Date().getMonth() && date.getFullYear() == date.getFullYear()).resume;
+        }
+        //this.numberMonthe = date.getMonth();
+        //this.numberYear = date.getFullYear();
+        //this.sorDataClients(date.getFullYear(), date.getMonth());
+    }
 
   save(){
     this.dialogRef.close(this.data.weekPlans);

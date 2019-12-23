@@ -303,24 +303,24 @@ namespace WebUI.ApiControllers.Manager
         [Route("Resume")]
         public IActionResult GetResume(string idClient)
         {
-            ClientResumeWeek clientResumeWeek = null;
+            List<ClientResumeWeek> clientResumeWeeks = null;
             if (idClient != null && idClient != "")
             {
-                clientResumeWeek = _context.Set<ClientResumeWeek>()
-                    .FirstOrDefault(c => c.ClientId.ToString() == idClient && (DateTime.Parse(c.Date).Year == DateTime.Now.Year && DateTime.Parse(c.Date).Month == DateTime.Now.Month));
+                clientResumeWeeks = _context.Set<ClientResumeWeek>()
+                    .Where(c => c.ClientId.ToString() == idClient).ToList();
             }
-            if(clientResumeWeek != null)
+            if(clientResumeWeeks != null)
             {
-                return Ok(new ClientResumeWeekDto()
+                return Ok(clientResumeWeeks.Select(z => new ClientResumeWeekDto()
                 {
-                    ClientId = clientResumeWeek.ClientId.ToString(),
-                    Date = clientResumeWeek.Date,
-                    Resume = clientResumeWeek.Resume
-                });
+                    ClientId = z.ClientId.ToString(),
+                    Date = Convert.ToDateTime(z.Date),
+                    Resume = z.Resume
+                }));
             }
             else
             {
-                return Ok(new ClientResumeWeekDto() { });
+                return Ok(new List<ClientResumeWeekDto>() { });
             }
         }
 
