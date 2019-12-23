@@ -98,7 +98,7 @@
 
       <ng-container matColumnDef="duration">
         <th colspan="4" mat-header-cell *matHeaderCellDef>Время звонка</th>
-        <td colspan="4" mat-cell *matCellDef="let element" style="max-width: 300px">{{element.durations}} Сек</td>
+        <td colspan="4" mat-cell *matCellDef="let element" style="max-width: 300px">{{msToTime(element.durations)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="date">
@@ -169,7 +169,7 @@
             </div>
             <div class="element-item title"><b>Название:</b> {{element.titleClient}}</div>
             <div class="element-item phone"><b>Номер телефона:</b>{{element.phone}}</div>
-            <div class="element-item duration"><b>Время звонка:</b>{{element.durations}} Сек</div>
+            <div class="element-item duration"><b>Время звонка:</b>{{msToTime(element.durations)}} Сек</div>
             <div class="element-item date"><b>Дата:</b>{{element.date}}</div>
             <div class="element-item comentCon">
               <b>Комментарий контролера:</b>

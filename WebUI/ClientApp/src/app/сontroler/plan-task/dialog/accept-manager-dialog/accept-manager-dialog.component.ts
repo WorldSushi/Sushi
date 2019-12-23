@@ -25,7 +25,7 @@ export class AcceptManagerDialogComponent implements OnInit {
 
     getActionColor(clientAction) {
         if (!clientAction.statusContact || clientAction.statusContact == 0) {
-            if (clientAction.contactType == 0)
+            if (clientAction.contactType == 0 || (clientAction.durations < 150 && clientAction.contactType == 10))
                 return '#e5e5e5';
             else if (clientAction.contactType == 10)
                 return '#FF1493'
@@ -102,22 +102,35 @@ export class AcceptManagerDialogComponent implements OnInit {
         }
     }
 
-  setBagroundStatus(element) {
-    if (element.contactType == 50) {
-      return "#E0F8EC";
+    setBagroundStatus(element) {
+        if (element.contactType == 50) {
+            return "#E0F8EC";
+        }
+        if (element.callsComments) {
+            if (element.callsComments.acceptControlerCalss == 2) {
+                return element.callsComments.colorPen;
+            }
+            else if (element.callsComments.acceptControlerCalss == 1) {
+                return "#DF013A";
+            }
+            else {
+                return "#FAFAFA";
+            }
+        }
     }
-    if (element.callsComments) {
-      if (element.callsComments.acceptControlerCalss == 2) {
-        return element.callsComments.colorPen;
-      }
-      else if (element.callsComments.acceptControlerCalss == 1) {
-        return "#DF013A";
-      }
-      else {
-        return "#FAFAFA";
-      }
+
+    msToTime(duration) {
+        var d, h, m, s;
+        s = duration;
+        m = Math.floor(s / 60);
+        s = s % 60;
+        h = Math.floor(m / 60);
+        m = m % 60;
+        d = Math.floor(h / 24);
+        h = h % 24;
+        h += d * 24;
+        return h + ':' + m + ':' + s;
     }
-  }
 
   playAudio($event, id, audioSrc) {
     if (this.audioPlayId == id || this.audioPlayId != 0 || this.audioPlay) {

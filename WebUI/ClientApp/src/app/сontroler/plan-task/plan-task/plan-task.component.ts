@@ -129,6 +129,9 @@ export class PlanTaskComponent implements OnInit {
     }
 
     getComment(element: IClientData) {
+        if (element.id == "3766") {
+            debugger
+        }
         let planComment = element.callsComments.find(c => c.weekNumber == this.numberWeek);
         if (planComment && planComment.weekNumber == this.numberWeek) {
             return planComment.comment;
@@ -202,12 +205,12 @@ export class PlanTaskComponent implements OnInit {
         if (comentControler != undefined || comentControler != "") {
             this.commentReset(clientId, acceptControlerCalss.ControlerNoAccept, comentControler);
             this.http.get('api/conroler/ClientAccept/NoAcceptCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId + "&weekNumber=" + this.numberWeek).subscribe();
-            //if (!this._isMobile()) {
-            //    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
-            //} else {
-            //    const $status = document.getElementsByClassName("status")[index] as any;
-            //    $status.style.backgroundColor = "#DF013A";
-            //}
+            if (!this._isMobile()) {
+                $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#DF013A";
+            } else {
+                const $status = document.getElementsByClassName("status")[index] as any;
+                $status.style.backgroundColor = "#DF013A";
+            }
 
         }
     }
@@ -216,12 +219,12 @@ export class PlanTaskComponent implements OnInit {
         let comentControler = $event.currentTarget.offsetParent.children[0].value;
         this.commentReset(clientId, acceptControlerCalss.Default, comentControler);
         this.http.get('api/conroler/ClientAccept/DefaultCallWeekPlan?comment=' + comentControler + "&clientId=" + clientId + "&weekNumber=" + this.numberWeek).subscribe();
-        //if (!this._isMobile()) {
-        //    $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-        //} else {
-        //    const $status = document.getElementsByClassName("status")[index] as any;
-        //    $status.style.backgroundColor = "#FAFAFA";
-        //}
+        if (!this._isMobile()) {
+            $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+        } else {
+            const $status = document.getElementsByClassName("status")[index] as any;
+            $status.style.backgroundColor = "#FAFAFA";
+        }
     }
 
     commentReset(clientId: number, status: acceptControlerCalss, comment: string) {

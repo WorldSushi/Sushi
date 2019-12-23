@@ -41,28 +41,28 @@ export class AcceptManagerComponent implements OnInit {
   ngOnChanges() {
   }
 
-  getActionColor(clientAction) {
-    if (!clientAction.statusContact || clientAction.statusContact == 0) {
-      if (clientAction.contactType == 0)
-        return '#e5e5e5';
-      else if (clientAction.contactType == 10)
-        return '#FF1493'
-      else if (clientAction.contactType == 20)
-        return '#B0ECDD'
-      else if (clientAction.contactType == 30)
-        return '#FDE488'
-      else if (clientAction.contactType == 40)
-        return '#00FF7F'
-      else if (clientAction.contactType == 60)
-        return '#58FA82'
+    getActionColor(clientAction: ClientAccept) {
+        if (!clientAction.statusContact || clientAction.statusContact == 0) {
+            if (clientAction.contactType == 0 || (clientAction.durations < 150 && clientAction.contactType == 10))
+                return '#e5e5e5';
+            else if (clientAction.contactType == 10)
+                return '#FF1493'
+            else if (clientAction.contactType == 20)
+                return '#B0ECDD'
+            else if (clientAction.contactType == 30)
+                return '#FDE488'
+            else if (clientAction.contactType == 40)
+                return '#00FF7F'
+            else if (clientAction.contactType == 60)
+                return '#58FA82'
+        }
+        else if (clientAction.statusContact == 1) {
+            return 'red'
+        }
+        else if (clientAction.statusContact == 2) {
+            return '#A9A9F5'
+        }
     }
-    else if (clientAction.statusContact == 1) {
-      return 'red'
-    }
-    else if (clientAction.statusContact == 2) {
-      return '#A9A9F5'
-    }
-  }
 
   sortDateCall(numberSort: number) {
     this.calendarHidden = "hidden"
@@ -215,38 +215,38 @@ export class AcceptManagerComponent implements OnInit {
     }
   }
 
-  setAccept($event, callId, clientId, index = null) {
-    const comentControler = $event.currentTarget.offsetParent.children[0].value;
-    this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
+    setAccept($event, callId, clientId, index = null) {
+        const comentControler = $event.currentTarget.offsetParent.children[0].value;
+        this.http.get('api/conroler/ClientAccept/DefaultCall?comment=' + comentControler + "&callId=" + callId + "&clientId=" + clientId).subscribe();
 
-    let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
-    cientAcceptOne.statusContact == 0;
-    let color = '';
+        let cientAcceptOne = this.cientAccept.find(c => c.id == callId);
+        cientAcceptOne.statusContact == 0;
+        let color = '';
 
-    if (cientAcceptOne.contactType == 0)
-      color = '#e5e5e5';
-    else if (cientAcceptOne.contactType == 10)
-      color = '#FF1493'
-    else if (cientAcceptOne.contactType == 20)
-      color = '#B0ECDD'
-    else if (cientAcceptOne.contactType == 30)
-      color = '#FDE488'
-    else if (cientAcceptOne.contactType == 40)
-      color = '#00FF7F'
-    else if (cientAcceptOne.contactType == 60)
-      color = '#58FA82'
+        if (cientAcceptOne.contactType == 0 || (cientAcceptOne.durations < 150 && cientAcceptOne.contactType == 10))
+            color = '#e5e5e5';
+        else if (cientAcceptOne.contactType == 10)
+            color = '#FF1493'
+        else if (cientAcceptOne.contactType == 20)
+            color = '#B0ECDD'
+        else if (cientAcceptOne.contactType == 30)
+            color = '#FDE488'
+        else if (cientAcceptOne.contactType == 40)
+            color = '#00FF7F'
+        else if (cientAcceptOne.contactType == 60)
+            color = '#58FA82'
 
-    if (!this._isMobile()) {
-      $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
-      $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = color;
-    } else {
-      const $status = document.getElementsByClassName("status")[index] as any;
-      const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
+        if (!this._isMobile()) {
+            $event.currentTarget.offsetParent.parentElement.children[0].style.backgroundColor = "#FAFAFA";
+            $event.currentTarget.offsetParent.parentElement.children[1].children[0].style.backgroundColor = color;
+        } else {
+            const $status = document.getElementsByClassName("status")[index] as any;
+            const $statusCall = document.getElementsByClassName("statusCall")[index].getElementsByClassName("action-circle")[0] as any;
 
-      $status.style.backgroundColor = "#FAFAFA";
-      $statusCall.style.backgroundColor = color;
+            $status.style.backgroundColor = "#FAFAFA";
+            $statusCall.style.backgroundColor = color;
+        }
     }
-  }
 
   playAudio($event, id, audioSrc) {
     if (this.audioPlayId == id || this.audioPlayId != 0 || this.audioPlay) {
@@ -265,23 +265,36 @@ export class AcceptManagerComponent implements OnInit {
     }
   }
 
-  setBagroundStatus(element) {
-    if (element.contactType == 50) {
-      return "#E0F8EC";
-    }
-    if (element.callsComments) {
-      if (element.callsComments.acceptControlerCalss == 2) {
-        return element.callsComments.colorPen;
-      }
-      else if (element.callsComments.acceptControlerCalss == 1) {
-        return "#DF013A";
-      }
-      else {
-        return "#FAFAFA";
-      }
+    setBagroundStatus(element) {
+        if (element.contactType == 50) {
+            return "#E0F8EC";
+        }
+        if (element.callsComments) {
+            if (element.callsComments.acceptControlerCalss == 2) {
+                return element.callsComments.colorPen;
+            }
+            else if (element.callsComments.acceptControlerCalss == 1) {
+                return "#DF013A";
+            }
+            else {
+                return "#FAFAFA";
+            }
+        }
     }
 
-  }
+
+    msToTime(duration) {
+        var d, h, m, s;
+        s = duration;
+        m = Math.floor(s / 60);
+        s = s % 60;
+        h = Math.floor(m / 60);
+        m = m % 60;
+        d = Math.floor(h / 24);
+        h = h % 24;
+        h += d * 24;
+        return h + ':' + m + ':' + s;
+    }
 
   ngOnInit() {
     this.getManager();

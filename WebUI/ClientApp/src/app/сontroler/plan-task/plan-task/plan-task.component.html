@@ -92,7 +92,7 @@
       <ng-container matColumnDef="comentCon">
         <th colspan="12" mat-header-cell *matHeaderCellDef>Комментарий контролера</th>
         <td colspan="12" mat-cell *matCellDef="let element">
-          <textarea style="width:100%;height:60px;margin-top: 15px">{{getComment(element)}}</textarea><br />
+          <textarea style="width:100%;height:60px;margin-top: 15px" value="{{getComment(element)}}"></textarea><br />
           <div class="btnContainer">
             <button (click)="setNoAccept($event, element.id)" class="btnAccept btnReject">Отклонить</button>
             <button (click)="setAccept($event, element.id)" class="btnAccept btnFixed">Исправлено</button>
@@ -134,8 +134,7 @@
               <div class="element-item comentCon">
                 <b>Комментарий контролера:</b>
                 <div>
-                  <textarea
-                    style="width:100%;height:60px;margin-top: 15px">{{element.callsComments?.comment}}</textarea><br />
+                  <textarea style="width:100%;height:60px;margin-top: 15px" value="{{getComment(element)}}" ></textarea><br />
                   <div class="btnContainer">
                     <button (click)="setNoAccept($event, element.id, idx)" class="btnAccept btnReject">Отклонить</button>
                     <button (click)="setAccept($event, element.id, idx)" class="btnAccept btnFixed">Исправлено</button>
