@@ -9,11 +9,11 @@ namespace Data.Entities.ClientContacts
     {
         public string Title { get; protected set; }
 
-        public int? EscortManagerId { get; protected set; }
-        public Manager EscortManager { get; protected set; }
+        public int? EscortManagerId { get; set; }
+        public Manager EscortManager { get;  set; }
 
-        public int? RegionalManagerId { get; protected set; }
-        public Manager RegionalManager { get; protected set; }
+        public int? RegionalManagerId { get; set; }
+        public Manager RegionalManager { get; set; }
 
         public ICollection<ClientWorkGroup> Clients { get; protected set; } = new HashSet<ClientWorkGroup>(); 
 

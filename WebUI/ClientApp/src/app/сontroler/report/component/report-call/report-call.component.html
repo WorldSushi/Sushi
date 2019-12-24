@@ -46,17 +46,17 @@
     <div class="workgroup-item" *ngFor="let workgroup of statistickCallModel">
       <div class="workgroup-title clearfix">
         <span>
-          <h3> Регион: {{workgroup.title}}</h3>
+          <h3> Регион: {{workgroup.workgroupTitle}}</h3>
         </span>
         <br />
         <span>
           <h5> МС ⟹ {{workgroup.escortManagerName}}</h5>
         </span><br />
                <span>
-                 Начало работы: {{getStartWorkManager(workgroup.escortManagerId, workgroup.workgroupId)}}
+                 Начало работы: {{workgroup.callStatistiMCDTO?.startWork}}
                </span><br />
                       <span>
-                        Конец работы: {{getEndWorkManager(workgroup.escortManagerId, workgroup.workgroupId)}}
+                        Конец работы: {{workgroup.callStatistiMCDTO?.endWork}}
                       </span>
       </div>
       <table>
@@ -79,73 +79,73 @@
         <tbody>
           <tr>
             <th style="max-width:100px !important">Все звонки</th>
-            <td>{{getToDayAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodAllCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallAllToday}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallAllWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallAllMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallAllPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Более 2,5 мин</th>
-            <td>{{getToDayMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodoreMore2and5Call(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallMore2and5ToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallMore2and5Week}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallMore2and5Monthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallMore2and5Period}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Менее 2.5 мин, более 10 сек</th>
-            <td>{{getToDaySmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekSmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthSmaller2and5AndMore10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodoreSmale2More10sCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale2and5More10sToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale2and5More10sWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale2and5More10sMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale2and5More10sPerio}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Менее 10 сек</th>
-            <td>{{getToDaySmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodSmaller10SCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale10sToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale10sWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale10sMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallSmale10sPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Звонки развития</th>
-            <td>{{getToDayDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthDevelopmentCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodDevelall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDevelopmentToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDevelopmentWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDevelopmentsMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDevelopmentPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Звонки коллегам</th>
-            <td>{{getToDayToColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekToColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodColleaguesCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallColleaguesToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallColleaguestWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallColleaguesMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallColleaguesPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Исходящие</th>
-            <td>{{getToDayOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodOutgoingCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallOutgoingToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallOutgoingWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallOutgoingMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallOutgoingPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Входящие</th>
-            <td>{{getToDayInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodInboxCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallInboxToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallInboxWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallInboxMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallInboxPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Неотвеченные</th>
-            <td>{{getToDayUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthUnansweredCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodUnanswereCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallUnansweredToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallUnansweredWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallUnansweredMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallUnansweredPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Длительность</th>
-            <td>{{getToDayDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodDurationsCall(workgroup.escortManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDurationToDay}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDurationWeek}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDurationMonthe}}</td>
+            <td>{{workgroup.callStatistiMCDTO.countCallDurationPeriod}}</td>
           </tr>
         </tbody>
       </table>
@@ -154,10 +154,10 @@
           <h5>РМ ⟹ {{workgroup.regionalManagerName}}</h5>
         </span><br />
                <span>
-                 Начало работы: {{getStartWorkManager(workgroup.regionalManagerId, workgroup.workgroupId)}}
+                 Начало работы: {{workgroup.callStatistiMCDTO?.startWork}}
                </span><br />
                       <span>
-                        Конец работы: {{getEndWorkManager(workgroup.regionalManagerId, workgroup.workgroupId)}}
+                        Конец работы: {{workgroup.callStatistiMCDTO?.endWork}}
                       </span>
       </div>
       <table>
@@ -180,73 +180,73 @@
         <tbody>
           <tr>
             <th style="max-width:100px !important">Все звонки</th>
-            <td>{{getToDayAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodAllCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallAllToday}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallAllWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallAllMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallAllPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Более 2,5 мин</th>
-            <td>{{getToDayMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodoreMore2and5Call(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallMore2and5ToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallMore2and5Week}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallMore2and5Monthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallMore2and5Period}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Менее 2.5 мин, более 10 сек</th>
-            <td>{{getToDaySmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekSmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthSmaller2and5AndMore10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodoreSmale2More10sCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale2and5More10sToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale2and5More10sWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale2and5More10sMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale2and5More10sPerio}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Менее 10 сек</th>
-            <td>{{getToDaySmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodSmaller10SCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale10sToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale10sWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale10sMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallSmale10sPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Звонки развития</th>
-            <td>{{getToDayDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthDevelopmentCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodDevelall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDevelopmentToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDevelopmentWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDevelopmentsMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDevelopmentPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Звонки коллегам</th>
-            <td>{{getToDayToColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekToColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodColleaguesCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallColleaguesToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallColleaguestWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallColleaguesMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallColleaguesPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Исходящие</th>
-            <td>{{getToDayOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodOutgoingCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallOutgoingToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallOutgoingWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallOutgoingMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallOutgoingPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Входящие</th>
-            <td>{{getToDayInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodInboxCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallInboxToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallInboxWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallInboxMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallInboxPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Неотвеченные</th>
-            <td>{{getToDayUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthUnansweredCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodUnanswereCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallUnansweredToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallUnansweredWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallUnansweredMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallUnansweredPeriod}}</td>
           </tr>
           <tr>
             <th style="max-width:100px !important">Длительность</th>
-            <td>{{getToDayDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getWeekDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getMonthDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
-            <td>{{getPeriodDurationsCall(workgroup.regionalManagerId, workgroup.workgroupId)}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDurationToDay}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDurationWeek}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDurationMonthe}}</td>
+            <td>{{workgroup.callStatistRMDTO.countCallDurationPeriod}}</td>
           </tr>
         </tbody>
       </table>

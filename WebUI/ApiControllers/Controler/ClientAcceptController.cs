@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Base.Helpers;
 using Data;
 using Data.DTO.Clients;
+using Data.DTO.Users;
 using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
@@ -61,11 +62,47 @@ namespace WebUI.ApiControllers.Controler
             return Ok(colleCallsDate);
         }
 
+        //[HttpGet]
+        //[Route("StatistickCall")]
+        //public IActionResult GetStatistickCall()
+        //{
+        //    List<object> StatistickCalls = new List<object>();
+        //    List<WorkGroup> workGroups = _context.Set<WorkGroup>().ToList();
+        //    List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
+        //    List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
+        //    List<Call> calls = _context.Set<Call>().ToList();
+        //    List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
+        //    List<Client> clients = _context.Set<Client>().ToList();
+        //    List<AcceptCallsDto> clientContacts = GetAcceptCalls();
+        //    foreach (WorkGroup workGroup in workGroups)
+        //    {
+        //        List<AcceptCallsDto> clientContacts1 = clientContacts
+        //            .Where(c => c.ManagerId == workGroup.RegionalManagerId || c.ManagerId == workGroup.EscortManagerId).ToList();
+        //        StatistickCalls.Add(new
+        //        {
+        //            WorkgroupId = workGroup.Id,
+        //            Title = workGroup.Title,
+        //            EscortManagerId = workGroup.EscortManagerId,
+        //            EscortManagerName = managers.First(m => m.Id == workGroup.EscortManagerId).Login,
+        //            RegionalManagerId = workGroup.RegionalManagerId,
+        //            RegionalManagerName = managers.First(m => m.Id == workGroup.RegionalManagerId).Login,
+        //            ClientAccepts = clientContacts1
+        //        });
+        //    }
+        //    return Ok(StatistickCalls);
+        //}
+
         [HttpGet]
         [Route("StatistickCall")]
-        public IActionResult GetStatistickCall()
+        public IActionResult GetStatistickCall1(string dayData, string year, string monthe, string week, string startDate, string endDate)
         {
-            List<object> StatistickCalls = new List<object>();
+            int yearNum = Convert.ToInt32(year);
+            int montheNum = Convert.ToInt32(monthe) + 1;
+            int weekNum = Convert.ToInt32(week);
+            DateTime dateDay = Convert.ToDateTime(dayData);
+            DateTime dateStart = Convert.ToDateTime(startDate);
+            DateTime dateEnd = Convert.ToDateTime(endDate);
+            List<ManagerStatistikDTO> StatistickCalls = new List<ManagerStatistikDTO>();
             List<WorkGroup> workGroups = _context.Set<WorkGroup>().ToList();
             List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
             List<CallsComment> callsComments = _context.Set<CallsComment>().ToList();
@@ -75,22 +112,245 @@ namespace WebUI.ApiControllers.Controler
             List<AcceptCallsDto> clientContacts = GetAcceptCalls();
             foreach (WorkGroup workGroup in workGroups)
             {
-                List<AcceptCallsDto> clientContacts1 = clientContacts
-                    .Where(c => c.ManagerId == workGroup.RegionalManagerId || c.ManagerId == workGroup.EscortManagerId).ToList();
-                StatistickCalls.Add(new
+                StatistickCalls.Add(new ManagerStatistikDTO()
                 {
                     WorkgroupId = workGroup.Id,
-                    Title = workGroup.Title,
+                    WorkgroupTitle = workGroup.Title,
                     EscortManagerId = workGroup.EscortManagerId,
                     EscortManagerName = managers.First(m => m.Id == workGroup.EscortManagerId).Login,
                     RegionalManagerId = workGroup.RegionalManagerId,
                     RegionalManagerName = managers.First(m => m.Id == workGroup.RegionalManagerId).Login,
-                    ClientAccepts = clientContacts1
+                    CallStatistRMDTO = new CallStatisticDTO()
+                    {
+                        StartWork = GetStartWorkManager(clientContacts.Where(c => Convert.ToDateTime(c.Date).Date == dateDay.Date && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && c.ManagerId == workGroup.RegionalManagerId 
+                        && (c.Direction == "Исходящий" || (c.Direction == "Входящий" && c.Durations > 0))).ToList()),
+                        EndWork = GetEndWorkManager(clientContacts.Where(c => Convert.ToDateTime(c.Date).Date == dateDay.Date && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && c.ManagerId == workGroup.RegionalManagerId
+                        && (c.Direction == "Исходящий" || (c.Direction == "Входящий" && c.Durations > 0))).ToList()),
+
+                        CountCallAllToday = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallAllWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum 
+                        && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallAllMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallAllPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallMore2and5ToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail 
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Week = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Monthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Period = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations >= 150).Count().ToString(),
+
+                        CountCallSmale2and5More10sToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sPerio = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+
+                        CountCallSmale10sToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations <= 10).Count().ToString(),
+
+                        CountCallDevelopmentToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallDevelopmentWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallDevelopmentsMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallDevelopmentPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallColleaguesToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallColleaguestWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallColleaguesMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallColleaguesPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallOutgoingToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId &&  c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum &&  c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Входящий").Count().ToString(),
+
+                        CountCallInboxToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId  && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Исходящий").Count().ToString(),
+
+                        CountCallUnansweredToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations == 0).Count().ToString(),
+
+                        CountCallDurationToDay = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationWeek = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationMonthe = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationPeriod = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart)
+                        .Select(x => x.Durations).Sum()).ToString(),
+
+                    },
+                    
+                    CallStatistiMCDTO = new CallStatisticDTO()
+                    {
+                        StartWork = GetStartWorkManager(clientContacts.Where(c => Convert.ToDateTime(c.Date).Date == dateDay.Date && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && c.ManagerId == workGroup.EscortManagerId
+                        && (c.Direction == "Исходящий" || (c.Direction == "Входящий" && c.Durations > 0))).ToList()),
+                        EndWork = GetEndWorkManager(clientContacts.Where(c => Convert.ToDateTime(c.Date).Date == dateDay.Date && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && c.ManagerId == workGroup.EscortManagerId
+                        && (c.Direction == "Исходящий" || (c.Direction == "Входящий" && c.Durations > 0))).ToList()),
+
+                        CountCallAllToday = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallAllWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum
+                        && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallAllMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallAllPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallMore2and5ToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Week = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Monthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations >= 150).Count().ToString(),
+                        CountCallMore2and5Period = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations >= 150).Count().ToString(),
+
+                        CountCallSmale2and5More10sToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+                        CountCallSmale2and5More10sPerio = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations <= 150 && c.Durations >= 10).Count().ToString(),
+
+                        CountCallSmale10sToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations <= 10).Count().ToString(),
+                        CountCallSmale10sPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.ManagerCall && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations <= 10).Count().ToString(),
+
+                        CountCallDevelopmentToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallDevelopmentWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallDevelopmentsMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallDevelopmentPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.AcceptCall && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallColleaguesToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Date == dateDay.Date).Count().ToString(),
+                        CountCallColleaguestWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum).Count().ToString(),
+                        CountCallColleaguesMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum).Count().ToString(),
+                        CountCallColleaguesPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
+
+                        CountCallOutgoingToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Входящий").Count().ToString(),
+                        CountCallOutgoingPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Входящий").Count().ToString(),
+
+                        CountCallInboxToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Исходящий").Count().ToString(),
+                        CountCallInboxPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Исходящий").Count().ToString(),
+
+                        CountCallUnansweredToDay = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredWeek = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredMonthe = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Durations == 0).Count().ToString(),
+                        CountCallUnansweredPeriod = clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Durations == 0).Count().ToString(),
+
+                        CountCallDurationToDay = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationWeek = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationMonthe = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                        CountCallDurationPeriod = TimeSpan.FromSeconds(clientContacts.Where(c => c.ManagerId == workGroup.EscortManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart)
+                        .Select(x => x.Durations).Sum()).ToString(),
+                    }
                 });
             }
+
             return Ok(StatistickCalls);
         }
 
+        private string GetEndWorkManager(List<AcceptCallsDto> acceptCallsDtos)
+        {
+            string endWork = "---------";
+            if(acceptCallsDtos != null && acceptCallsDtos.Count != 0)
+            {
+                DateTime tmpData = Convert.ToDateTime(acceptCallsDtos[0].Date);
+                foreach(AcceptCallsDto acceptCallsDto in acceptCallsDtos)
+                {
+                    if(tmpData < Convert.ToDateTime(acceptCallsDto.Date))
+                    {
+                        tmpData = Convert.ToDateTime(acceptCallsDto.Date);
+                    }
+                }
+                endWork = tmpData.ToString();
+            }
+            return endWork;
+        }
+
+        private string GetStartWorkManager(List<AcceptCallsDto> acceptCallsDtos)
+        {
+            string startWork = "---------";
+            if (acceptCallsDtos != null && acceptCallsDtos.Count != 0)
+            {
+                DateTime tmpData = Convert.ToDateTime(acceptCallsDtos[0].Date);
+                foreach (AcceptCallsDto acceptCallsDto in acceptCallsDtos)
+                {
+                    if (tmpData > Convert.ToDateTime(acceptCallsDto.Date))
+                    {
+                        tmpData = Convert.ToDateTime(acceptCallsDto.Date);
+                    }
+                }
+                startWork = tmpData.ToString();
+            }
+            return startWork;
+        }
+
+        private int GetWeekOfMonth(DateTime date)
+        {
+            DateTime beginningOfMonth = new DateTime(date.Year, date.Month, 1);
+            while (date.Date.AddDays(1).DayOfWeek != System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek)
+                date = date.AddDays(1);
+            return (int)Math.Truncate((double)date.Subtract(beginningOfMonth).TotalDays / 7f);
+        }
 
         [HttpGet]
         [Route("Client")]
@@ -351,7 +611,6 @@ namespace WebUI.ApiControllers.Controler
             List<Client> clients = _context.Set<Client>().ToList();
             List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
             var result = _context.Set<ClientContact>()
-                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new AcceptCallsDto()
                 {
                     Id = x.Id,
@@ -371,7 +630,6 @@ namespace WebUI.ApiControllers.Controler
                        : 0
                 }).ToList();
             result.AddRange(_context.Set<ContactManager>()
-                //.Where(x => DateHelper.IsCurrentMonth(x.Date))
                 .Select(x => new AcceptCallsDto()
                 {
                     Id = x.Id,

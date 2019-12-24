@@ -129,9 +129,6 @@ export class PlanTaskComponent implements OnInit {
     }
 
     getComment(element: IClientData) {
-        if (element.id == "3766") {
-            debugger
-        }
         let planComment = element.callsComments.find(c => c.weekNumber == this.numberWeek);
         if (planComment && planComment.weekNumber == this.numberWeek) {
             return planComment.comment;
