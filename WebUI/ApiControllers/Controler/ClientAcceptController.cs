@@ -171,22 +171,22 @@ namespace WebUI.ApiControllers.Controler
                         CountCallColleaguesPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType == ClientContactType.ManagerCall && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart).Count().ToString(),
 
                         CountCallOutgoingToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId &&  c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Входящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Исходящий").Count().ToString(),
                         CountCallOutgoingWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum &&  c.Direction == "Входящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum &&  c.Direction == "Исходящий").Count().ToString(),
                         CountCallOutgoingMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Входящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Исходящий").Count().ToString(),
                         CountCallOutgoingPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Входящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Исходящий").Count().ToString(),
 
                         CountCallInboxToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Исходящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Direction == "Входящий").Count().ToString(),
                         CountCallInboxWeek = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Direction == "Исходящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && GetWeekOfMonth(Convert.ToDateTime(c.Date)) == weekNum && c.Direction == "Входящий").Count().ToString(),
                         CountCallInboxMonthe = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId  && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Исходящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date).Year == yearNum && Convert.ToDateTime(c.Date).Month == montheNum && c.Direction == "Входящий").Count().ToString(),
                         CountCallInboxPeriod = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
-                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Исходящий").Count().ToString(),
+                        && Convert.ToDateTime(c.Date) <= dateEnd && Convert.ToDateTime(c.Date) >= dateStart && c.Direction == "Входящий").Count().ToString(),
 
                         CountCallUnansweredToDay = clientContacts.Where(c => c.ManagerId == workGroup.RegionalManagerId && c.ContactType != ClientContactType.WhatsUp && c.ContactType != ClientContactType.Mail
                         && Convert.ToDateTime(c.Date).Date == dateDay.Date && c.Durations == 0).Count().ToString(),
@@ -610,6 +610,9 @@ namespace WebUI.ApiControllers.Controler
             List<ClientPhone> clientPhones = _context.Set<ClientPhone>().ToList();
             List<Client> clients = _context.Set<Client>().ToList();
             List<Data.Entities.Users.Manager> managers = _context.Set<Data.Entities.Users.Manager>().ToList();
+
+            var result1 = _context.Set<ClientContact>().ToList();
+
             var result = _context.Set<ClientContact>()
                 .Select(x => new AcceptCallsDto()
                 {
@@ -642,7 +645,7 @@ namespace WebUI.ApiControllers.Controler
                     ReferenceAudioVoice = calls.FirstOrDefault(c => c.Id == x.CallId) != null ? ((CallManager)calls.FirstOrDefault(c => c.Id == x.CallId)).Recording : "",
                     TitleClient = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Login : "",
                     Phone = managers.FirstOrDefault(m => m.Id == x.ManagerIdC) != null ? managers.FirstOrDefault(m => m.Id == x.ManagerIdC).Phone : "",
-                    Direction = x.Direction == "0" ? "Входящий" : x.Direction == "1" ? "Исходящий" : "Неизвестно"
+                    Direction = x.Direction == "1" ? "Входящий" : x.Direction == "0" ? "Исходящий" : "Неизвестно"
                 }).ToList());
             result = result.OrderBy(r => Convert.ToDateTime(r.Date)).ToList();
             return result;

@@ -419,7 +419,7 @@ namespace WebUI.Controllers
                 ? managersPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.SrcNumber))
                   && clientPhone.Select(z => PhoneHelper.ConvertToPhone(z.Phone)).Contains(PhoneHelper.ConvertToPhone(x.ClientNumber))
                 : false).ToList();
-            var dt = new DateTime(1970, 1, 1);
+            var dt = new DateTime(1970, 1, 1).AddHours(3);
             var clientContacts = new List<ClientContact>();
             var workGroups = _context.Set<WorkGroup>().ToList();
             var calls = new List<CallInfo>();

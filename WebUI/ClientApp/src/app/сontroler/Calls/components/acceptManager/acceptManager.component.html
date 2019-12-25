@@ -75,9 +75,9 @@
       <ng-container matColumnDef="direction">
         <th colspan="4" mat-header-cell *matHeaderCellDef>Статус звонка</th>
         <td colspan="4" mat-cell *matCellDef="let element">
-          <img src="Icon/yesIncoming.png" height="40" width="40"
-            *ngIf="element.direction == 'Исходящий' && element.durations != 0" />
           <img src="Icon/yesOutgoing.png" height="40" width="40"
+            *ngIf="element.direction == 'Исходящий' && element.durations != 0" />
+          <img src="Icon/yesIncoming.png" height="40" width="40"
             *ngIf="element.direction == 'Входящий' && element.durations != 0" />
           <img src="Icon/noOutgoing.png" height="40" width="40"
             *ngIf="element.direction == 'Входящий' && element.durations == 0" />

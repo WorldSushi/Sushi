@@ -2,6 +2,7 @@
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
+using Data.Entities.Table;
 using Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -62,6 +63,12 @@ namespace Data
             modelBuilder.Entity<UserInfo>();
             modelBuilder.Entity<ClientInfo>();
             modelBuilder.Entity<ContactName>();
+
+            modelBuilder.Entity<TableContact>();
+            modelBuilder.Entity<CellContact>();
+            modelBuilder.Entity<CellNumber>();
+            modelBuilder.Entity<CellSelect>();
+            modelBuilder.Entity<CellStr>();
         }
     }
 }
