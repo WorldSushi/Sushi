@@ -8,6 +8,7 @@ import { ClientsModule } from './clients/clients.module';
 import { ManagersModule } from './managers/managers.module';
 import { WorkgroupsModule } from './workgroups/workgroups.module';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { DirctoryModule } from './dirctory/dirctory.module';
 
 
 
@@ -19,7 +20,8 @@ import { AdminGuard } from '../shared/guards/admin.guard';
     MaterialModule,
     ClientsModule,
     ManagersModule,
-    WorkgroupsModule
+      WorkgroupsModule,
+      DirctoryModule
   ],
   providers: [AdminGuard]
 })

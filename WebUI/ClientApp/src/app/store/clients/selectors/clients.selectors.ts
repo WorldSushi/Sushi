@@ -68,7 +68,8 @@ export const selectClients = createSelector(
                         clientId: client.id
                     },
                     weekPlans: weekPlans.filter(item => item.clientId == client.id) ? weekPlans.filter(item => item.clientId == client.id) : [],
-                    clientContacts: callsDates.filter(item => item.clientId == client.id) ? callsDates.filter(item => item.clientId == client.id) : []
+                    clientContacts: callsDates.filter(item => item.clientId == client.id) ? callsDates.filter(item => item.clientId == client.id) : [],
+                    directions: []
                 }
             })
         } 

@@ -11,5 +11,6 @@ namespace Data.Entities.Table
         public DateTime Date { get; set; }
         public TypeDirectory TypeDirectory { get; set; }
         public List<CellContact> CellContacts { get; set; } 
+        public string Optins { get; set; }
     }
 }

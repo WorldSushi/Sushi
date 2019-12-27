@@ -7,12 +7,14 @@ import { WorkgroupsComponent } from './workgroups/containers/workgroups/workgrou
 import { WorkgroupsCallsComponent } from './workgroups/containers/workgroups-calls/workgroups-calls.component';
 import { WorkgroupPlansComponent } from './workgroups/containers/workgroups-plans/workgroup-plans.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { DirectoryComponent } from './dirctory/component/directory/directory.component';
 
 const adminRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'clients' },
   { path: 'clients', component: ClientsComponent },
   { path: 'managers', component: ManagersComponent },
   { path: 'workgroups', component: WorkgroupsComponent },
+    { path: 'directory', component: DirectoryComponent },
   { path: 'workgroups/calls/:id', component: WorkgroupsCallsComponent },
   { path: 'workgroups/plans/:id', component: WorkgroupPlansComponent }
 ]

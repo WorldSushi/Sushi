@@ -19,6 +19,7 @@ import { CorrectionResponseComponent } from '../../dialogs/correction-response/c
 import { last } from 'rxjs/operators';
 import { debug } from 'util';
 import { IUser } from '../../../../shared/models/user.model';
+import { IColummn } from '../../../../admin/dirctory/shared/models/colummn.model';
 
 @Component({
   selector: 'app-client-list',
@@ -75,8 +76,9 @@ export class ClientListComponent implements OnInit {
   dateCollections: string[] = [];
   numberMonthe: number = 0;
   numberYear: number = 0;
+    dateCollection: string;
 
-  dateCollection: string;
+    colummns: IColummn[] = [];
 
   displayedColumns: string[] = [
     'status',
@@ -101,7 +103,10 @@ export class ClientListComponent implements OnInit {
     'MSresults.WhatsApp',
     'RMresults.WhatsApp',
     'MSresults.Share',
-    'RMresults.Share' 
+    'RMresults.Share', 
+      'colum1',
+      'colum2',
+      'colum3'
   ];
 
   clientsTmp: IClient[] = [];
@@ -482,8 +487,55 @@ export class ClientListComponent implements OnInit {
                 this.clients[i].managerCallsResults.regionalRes = ((this.clients[i].managerCallsResults.regionalCalls / this.clients[i].callPlan.regionalManagerCalls) * 100).toFixed(0) + '%';
             }
 
+            if (this.colummns) {
+                if (this.colummns[0].cellContacts && this.colummns[1].cellContacts && this.colummns[2].cellContacts) {
+                    this.clients[i].directions = {
+                        table1: this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table1Id: this.colummns[0].id,
+                        table1Type: this.colummns[0].typeDirectory,
+                        table1Optins: this.colummns[0].optins.split(','),
+                        table1Optin: this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                        table2: this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table2Id: this.colummns[1].id,
+                        table2Type: this.colummns[1].typeDirectory,
+                        table2Optins: this.colummns[1].optins.split(','),
+                        table2Optin: this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                        table3: this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table3Id: this.colummns[2].id,
+                        table3Type: this.colummns[2].typeDirectory,
+                        table3Optins: this.colummns[2].optins.split(','),
+                        table3Optin: this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                    }
+                }
+                else {
+                    this.colummns[0].cellContacts = []; 
+                    this.colummns[1].cellContacts = []; 
+                    this.colummns[2].cellContacts = []; 
+                    this.clients[i].directions = {
+                        table1: this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table1Id: this.colummns[0].id,
+                        table1Type: this.colummns[0].typeDirectory,
+                        table1Optins: this.colummns[0].optins.split(','),
+                        table1Optin: this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[0].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                        table2: this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table2Id: this.colummns[1].id,
+                        table2Type: this.colummns[1].typeDirectory,
+                        table2Optins: this.colummns[1].optins.split(','),
+                        table2Optin: this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[1].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                        table3: this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id).data : "",
+                        table3Id: this.colummns[2].id,
+                        table3Type: this.colummns[2].typeDirectory,
+                        table3Optins: this.colummns[2].optins.split(','),
+                        table3Optin: this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id) ? this.colummns[2].cellContacts.find(c => c.clientId == this.clients[i].id).data : 0,
+                    }
+                }
+            }
         }
         console.log(this.clients);
+    }
+
+    getTableName(numberTable) {
+        return this.colummns[numberTable].nameTable;
     }
 
   initDateArchiv() {
@@ -801,7 +853,18 @@ export class ClientListComponent implements OnInit {
         return count;
     }
 
-  ngOnChanges(changes: SimpleChanges): void {
+    getColummns() {
+        this.http.get<IColummn[]>('api/admin/Directory/Directory/').subscribe((data: IColummn[]) => {
+            this.colummns = data;
+            console.log(this.colummns);
+        });
+    }
+
+    setData(data: string, id: number, cluentId: number) {
+        this.http.get('api/admin/Directory/data?idTable=' + id + "&clientId=" + cluentId + "&data=" + data).subscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
     const toMonth = new Date().getMonth();
     const toYear = new Date().getFullYear();
     this.sorDataClients(toYear, toMonth);
@@ -827,7 +890,8 @@ export class ClientListComponent implements OnInit {
       private http: HttpClient,
       private cdr: ChangeDetectorRef) { }
 
-  ngOnInit() {
+    ngOnInit() {
+        this.getColummns();
   }
 
 }

@@ -7,19 +7,22 @@ import { CreateManagerDialogComponent } from './dialogs/create-manager-dialog/cr
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailManagerDialogComponent } from './dialogs/detail-manager-dialog/detail-manager-dialog.component';
 import { EditManagerDialogComponent } from './dialogs/edit-manager-dialog/edit-manager-dialog.component';
+import { MatCardModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     ManagersComponent, 
     ManagersListComponent, 
     CreateManagerDialogComponent, 
-    DetailManagerDialogComponent, EditManagerDialogComponent
+        DetailManagerDialogComponent,
+        EditManagerDialogComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+      ReactiveFormsModule,
+      MatCardModule
   ],
   exports: [
     ManagersComponent,

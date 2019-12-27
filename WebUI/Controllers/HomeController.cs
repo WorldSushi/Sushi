@@ -12,6 +12,7 @@ using Data.Entities.Calls;
 using Data.Entities.ClientContacts;
 using Data.Entities.Clients;
 using Data.Entities.OneCInfo;
+using Data.Entities.Table;
 using Data.Entities.Users;
 using Data.Enums;
 using Data.Services.Abstract;
@@ -93,35 +94,44 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("Init")]
-        public IActionResult Init(string id)
+        public IActionResult Init()
         {
             //_context.Set<CallsComment>().RemoveRange(_context.Set<CallsComment>().ToList());
 
             //_context.Set<ClientInfo>().Remove(_context.Set<ClientInfo>().FirstOrDefault(c => c.ClientId.ToString() == id));
             //_context.Set<Client>().Remove(_context.Set<Client>().FirstOrDefault(c => c.Id.ToString() == id));
             //_context.SaveChanges();
-            try
-            {
-                _context.Set<CallsComment>().Select(z => new CallsCommentDto()
-                {
-                    AcceptControlerCalss = z.AcceptControlerCalss,
-                    //ClientId = x.ClientId,
-                    Comment = z.Comment,
-                    ContactClientId = z.ContactClientId,
-                    Date = z.Date,
-                    ManagerComment = z.ManagerComment,
-                    //Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
-                    ColorPen = z.ColorPen,
-                    Type = z.Type,
-                    WeekNumber = z.WeekNumber
+            //try
+            //{
+            //    _context.Set<CallsComment>().Select(z => new CallsCommentDto()
+            //    {
+            //        AcceptControlerCalss = z.AcceptControlerCalss,
+            //        //ClientId = x.ClientId,
+            //        Comment = z.Comment,
+            //        ContactClientId = z.ContactClientId,
+            //        Date = z.Date,
+            //        ManagerComment = z.ManagerComment,
+            //        //Durations = calls.FirstOrDefault(c => c.ClientId == x.ClientId) != null ? calls.FirstOrDefault(c => c.ClientId == x.ClientId).Duration : 0,
+            //        ColorPen = z.ColorPen,
+            //        Type = z.Type,
+            //        WeekNumber = z.WeekNumber
 
-                }).ToList();
-            }
-            catch (Exception e)
-            {
-                return Ok(e.Message);
-            }
-            return Ok(_context.Set<CallsComment>().ToList());
+            //    }).ToList();
+            //}
+            //catch (Exception e)
+            //{
+            //    return Ok(e.Message);
+            //}
+            //return Ok(_context.Set<CallsComment>().ToList());
+            //_context.Set<TableContact>().Add(new TableContact()
+            //{
+            //    NameTable = "Table",
+            //    Date = DateTime.Now,
+            //    TypeDirectory = TypeDirectory.Select,
+            //    Optins = "0,1,1.5,2,2.5,3"
+            //});
+            //_context.SaveChanges();
+            return Ok(_context.Set<TableContact>().ToList());
         }
 
         [HttpGet]

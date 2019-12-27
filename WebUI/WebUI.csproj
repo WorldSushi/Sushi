@@ -41,8 +41,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\3rdpartylicenses.txt" />
+    <None Include="wwwroot\6.b3ce45a38594c2b764ad.js" />
+    <None Include="wwwroot\7.ea374b3e6b9c48f96681.js" />
+    <None Include="wwwroot\8.80dab22bd3e9888c5c3d.js" />
+    <None Include="wwwroot\9.f7106ec0ab4dcdfd6cf2.js" />
     <None Include="wwwroot\assets\logo.jpg" />
+    <None Include="wwwroot\common.a89bc12bb1a259a4fe2b.js" />
     <None Include="wwwroot\Icon\noIncoming.png" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\main.2ec4f9ff47c600200ec4.js" />
+    <None Include="wwwroot\polyfills-es5.f2d86d4910a60a141149.js" />
+    <None Include="wwwroot\polyfills.0a1f7db38f338842d03b.js" />
+    <None Include="wwwroot\runtime.6f1dc33044502765d0b8.js" />
+    <None Include="wwwroot\styles.ef961c0b094e421f3676.css" />
   </ItemGroup>
 
   <ItemGroup>

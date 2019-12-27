@@ -7,6 +7,7 @@ import { IWeekPlan } from './week-plan.model';
 import { IManagerCallsResult } from './Manager-calls-result.model';
 import { ICallsDate } from './calls-date.model';
 import { CallsComment } from '../../../../сontroler/Calls/shared/models/сalls-сomment.model';
+import { IColummn } from '../../../../admin/dirctory/shared/models/colummn.model';
 
 export interface IClient {
   id: number,
@@ -27,5 +28,6 @@ export interface IClient {
   phones: any[],
   contactName: string,
   isCoverage: boolean,
-  callsComments: CallsComment[]
+    callsComments: CallsComment[],
+    directions: any
 }

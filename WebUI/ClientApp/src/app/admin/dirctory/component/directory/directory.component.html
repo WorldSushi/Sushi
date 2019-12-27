@@ -1,0 +1,40 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-header>
+    <mat-card-title class="card-title">Справочники</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="workgroups-wrapper">
+      <div class="workgroup-item" *ngFor="let colummn of colummns">
+        <div class="workgroup-title clearfix">
+          <span style="cursor: pointer">
+            {{colummn.nameTable}}
+          </span>
+        </div>
+        <div class="workgroup-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Имя Таблици</th>
+                <th>Тип Ячеек</th>
+                <th *ngIf="colummn.typeDirectory == 1">Опции Ячейки</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input style="border:none;background:none;" type="text" [value]="colummn.nameTable" (focusout)="setNameTable($event.currentTarget.value, colummn.id)"/></td>
+                <td>
+                  <select style="border:none;background:none;" [(ngModel)]="colummn.typeDirectory" (ngModelChange)="setType(colummn.typeDirectory, colummn.id)">
+                    <option value="0">Строка</option>
+                    <option value="1">Выборка</option>
+                  </select>
+                </td>
+                <td *ngIf="colummn.typeDirectory == 1"><input style="border:none;background:none;" type="text" [value]="colummn.optins" (focusout)="setOptions($event.currentTarget.value, colummn.id)"/></td>
+                <td><input type="button" value="Сохранить"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

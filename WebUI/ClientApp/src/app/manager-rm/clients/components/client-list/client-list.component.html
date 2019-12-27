@@ -55,23 +55,6 @@
           <td colspan="2"></td>
         </ng-container>
 
-        <!--<ng-container matColumnDef="revenueAnalysis">
-    <th mat-header-cell *matHeaderCellDef>Выручка</th>
-    <td mat-cell *matCellDef="let element"
-    (click)="openRevenueAnalysis(element)">
-    <div class="bar-shadow">
-        <div class="bar"
-        [style.background-color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).background"
-        [style.color]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).font"
-        [style.width.px]="getAnalysisProps(getAvgAnalysis(element.revenueAnalysis)).width">
-          <b>
-            {{getAvgAnalysis(element.revenueAnalysis)}}%
-          </b>
-        </div>
-    </div>
-  </td>
-  </ng-container>-->
-
         <ng-container matColumnDef="callPlan.collective">
           <th mat-header-cell *matHeaderCellDef style="background-color: #fdf6fd">План<br />{{getCountPlanCall(-10, 0)}}</th>
           <td mat-cell></td>
@@ -109,12 +92,12 @@
 
         <ng-container matColumnDef="MSresults.sumAndMsg">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f0fdf4">МС<br />{{getCountCall(-10, 110)}}</th>
-          <td mat-cell ></td>
+          <td mat-cell></td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.sumAndMsg">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br />{{getCountCall(-10, 120)}}</th>
-          <td mat-cell ></td>
+          <td mat-cell></td>
         </ng-container>
 
         <ng-container matColumnDef="MSresults.sum">
@@ -158,13 +141,31 @@
         </ng-container>
 
         <ng-container matColumnDef="MSresults.Share">
-          <th mat-header-cell *matHeaderCellDef ><!--МС<br />{{getCountCall(-10, 90).toFixed()}}%--></th>
+          <th mat-header-cell *matHeaderCellDef><!--МС<br />{{getCountCall(-10, 90).toFixed()}}%--></th>
           <td mat-cell></td>
         </ng-container>
 
         <ng-container matColumnDef="RMresults.Share">
-          <th mat-header-cell *matHeaderCellDef ><!--РМ<br />{{getCountCall(-10, 100).toFixed()}}%--></th>
+          <th mat-header-cell *matHeaderCellDef><!--РМ<br />{{getCountCall(-10, 100).toFixed()}}%--></th>
           <td mat-cell></td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef  colspan="4"></th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef  colspan="4"></th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef  colspan="4"></th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="filler">
@@ -206,7 +207,7 @@
         </ng-container>
 
         <ng-container matColumnDef="Share">
-          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" ><!--Доля %--></th>
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"><!--Доля %--></th>
         </ng-container>
 
         <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResultsAndMsg', 'allResults', 'calls', 'Message', 'WhatsApp', 'Share']" style="height: 30px"></tr>
@@ -338,7 +339,7 @@
 
         <ng-container matColumnDef="RMresults.sumAndMsg">
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
-          <td  mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
+          <td mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalResAndMsg}}
           </td>
         </ng-container>
@@ -410,6 +411,39 @@
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ<br /></th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3" >
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
           </td>
         </ng-container>
 
@@ -703,6 +737,39 @@
           <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center; background-color: #e9fff2; color: #8db39a">Доля %</th>
         </ng-container>
 
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
         <tr class="sub-header" mat-header-row *matHeaderRowDef="['filler', 'allCalls', 'trips', 'todos', 'allResultsAndMsg', 'allResults', 'calls', 'Message', 'WhatsApp', 'Share']" style="height: 30px"></tr>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -905,6 +972,39 @@
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option style="width:auto;border:none;background:none;" *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
           </td>
         </ng-container>
 
@@ -1157,6 +1257,39 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
@@ -1405,6 +1538,39 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="filler">
           <th mat-header-cell *matHeaderCellDef
               [style.text-align]="center"
@@ -1650,6 +1816,39 @@
           <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
           <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
             {{element.managerCallsResults.regionalRes}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum1">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+              <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum2">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+              <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="colum3">
+          <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+          <td mat-cell *matCellDef="let element" colspan="4">
+            <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+            <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+              <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+            </select>
           </td>
         </ng-container>
 
@@ -1902,6 +2101,39 @@
             <th mat-header-cell *matHeaderCellDef style="background-color: #f5fdf0">РМ</th>
             <td [style.background]="element.callPlan.regionalManagerCalls <= element.managerCallsResults.regionalTotalContacts ? '#b2fab4' : 'transparent'" mat-cell *matCellDef="let element" (click)="openCallsDates(element)">
               {{element.managerCallsResults.regionalRes}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="colum1">
+            <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(0)}}</th>
+            <td mat-cell *matCellDef="let element" colspan="4">
+              <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type != 1" [value]="element.directions.table1" (focusout)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)"></textarea>
+
+              <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table1Type == 1" [(ngModel)]="element.directions.table1Optin" (change)="setData($event.currentTarget.value,  element.directions.table1Id, element.id)">
+                <option *ngFor="let table1Optin of element.directions.table1Optins; let i = index" [value]="i">{{table1Optin}}</option>
+              </select>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="colum2">
+            <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(1)}}</th>
+            <td mat-cell *matCellDef="let element" colspan="4">
+              <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type != 1" [value]="element.directions.table2" (focusout)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)"></textarea>
+
+              <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table2Type == 1" [(ngModel)]="element.directions.table2Optin" (change)="setData($event.currentTarget.value,  element.directions.table2Id, element.id)">
+                <option *ngFor="let table2Optin of element.directions.table2Optins; let i = index" [value]="i">{{table2Optin}}</option>
+              </select>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="colum3">
+            <th mat-header-cell *matHeaderCellDef colspan="4">{{getTableName(2)}}</th>
+            <td mat-cell *matCellDef="let element" colspan="4">
+              <textarea style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type != 1" [value]="element.directions.table3" (focusout)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)"></textarea>
+
+              <select style="width:auto;border:none;background:none;" *ngIf="element.directions.table3Type == 1" [(ngModel)]="element.directions.table3Optin" (change)="setData($event.currentTarget.value,  element.directions.table3Id, element.id)">
+                <option *ngFor="let table3Optin of element.directions.table3Optins; let i = index" [value]="i">{{table3Optin}}</option>
+              </select>
             </td>
           </ng-container>
 

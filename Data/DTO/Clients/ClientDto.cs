@@ -1,4 +1,5 @@
 ﻿using Data.DTO.Calls;
+using Data.Entities.Table;
 using Data.Enums;
 using System.Collections.Generic;
 

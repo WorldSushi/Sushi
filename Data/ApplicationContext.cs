@@ -66,9 +66,6 @@ namespace Data
 
             modelBuilder.Entity<TableContact>();
             modelBuilder.Entity<CellContact>();
-            modelBuilder.Entity<CellNumber>();
-            modelBuilder.Entity<CellSelect>();
-            modelBuilder.Entity<CellStr>();
         }
     }
 }
