@@ -146,5 +146,107 @@ namespace WebUI.ApiControllers.Manager
                 _context.SaveChanges();
             }
         }
+
+        [HttpGet]
+        [Route("SavePhones")]
+        public void SavePhones(string idClient, string strPhones)
+        {
+            if ((idClient != null || idClient != ""))
+            {
+                int clientId;
+                if (int.TryParse(idClient, out clientId))
+                {
+                    var clientPhones = _context.Set<ClientPhone>().Where(z => z.ClientId == clientId).ToList();
+                    var client = _context.Set<Client>().FirstOrDefault(c => c.Id == clientId);
+                    var phonesArray = strPhones?.Split(',').ToList() ?? new List<string>() { "", "" };
+
+                    if (clientPhones.Count() != 0)
+                    {
+                        var minCount = clientPhones.Count() >= phonesArray.Count() ? phonesArray.Count() : clientPhones.Count();
+
+                        for (int i = 0; i < minCount; i++)
+                        {
+                            clientPhones[i].Phone = phonesArray[i];
+                        }
+
+                        if (clientPhones.Count() < phonesArray.Count())
+                        {
+                            List<ClientPhone> addPhones = new List<ClientPhone>();
+
+                            for (int i = minCount; i < phonesArray.Count(); i++)
+                            {
+                                addPhones.Add(new ClientPhone() { ClientId = clientId, Phone = phonesArray[i], Client = client });
+                            }
+
+                            _context.Set<ClientPhone>().AddRange(addPhones);
+                        }
+                        //else if (clientPhones.Count() > phonesArray.Count())
+                        //{
+                        //    List<ClientPhone> deletedPhones = new List<ClientPhone>();
+
+                        //    for (int i = minCount; i < clientPhones.Count(); i++)
+                        //    {
+                        //        deletedPhones.Add(clientPhones[i]);
+                        //    }
+                        //    _context.Set<ClientPhone>().RemoveRange(deletedPhones);
+                        //}                                              
+                    }
+                    else
+                    {
+                        List<ClientPhone> addPhones = new List<ClientPhone>();
+                        foreach (var phone in phonesArray)
+                        {
+                            addPhones.Add(new ClientPhone()
+                            {
+                                ClientId = clientId,
+                                Client = client,
+                                Phone = phone
+                            });
+                        }
+                        _context.Set<ClientPhone>().AddRange(addPhones);
+                    }
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        [HttpGet]
+        [Route("SavePositions")]
+        public void SavePositions(string idClient, string strPositions)
+        {
+            if ((idClient != null || idClient != ""))
+            {
+                int clientId;
+                if (int.TryParse(idClient, out clientId))
+                {
+                    var phonesArray = strPositions?.Split(',').ToList() ?? new List<string>() { "", "" };
+
+                    string name, position = string.Empty;
+
+                    switch (phonesArray.Count())
+                    {
+                        case 0: name = string.Empty; position = string.Empty; break;
+                        case 1: name = phonesArray[0]; position = string.Empty; break;
+                        case 2: name = phonesArray[0]; position = phonesArray[1]; break;
+                        default: name = phonesArray[0]; position = phonesArray[1]; break;
+                    }
+
+                    ContactName contactName = _context.Set<ContactName>().FirstOrDefault(c => c.ClientId == clientId);
+
+                    if (contactName != null)
+                    {
+                        contactName.Name = name;
+                        contactName.Position = position;
+
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        _context.Set<ContactName>().Add(new ContactName() { ClientId = clientId, Name = name, Position = position });
+                    }
+                    _context.SaveChanges();
+                }
+            }
+        }
     }
 }

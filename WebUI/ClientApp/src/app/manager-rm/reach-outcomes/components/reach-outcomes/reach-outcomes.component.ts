@@ -38,6 +38,18 @@ export class ReachOutcomesComponent implements OnInit {
     this.http.get('api/manager/ReachOutcomes/AddFocusProduct?idClient=' + clientId + '&strfocusProduct=' + element.target.value).subscribe();
   }
 
+  saveChangesPhones(element, previousValue, clientId) {
+    if (previousValue != element.target.value) {
+      this.http.get('api/manager/ReachOutcomes/SavePhones?idClient=' + clientId + '&strPhones=' + element.target.value).subscribe();
+    }
+  }
+
+  saveChangesPosition(element, previousValue, clientId) {
+    if (previousValue != element.target.value) {
+      this.http.get('api/manager/ReachOutcomes/SavePositions?idClient=' + clientId + '&strPositions=' + element.target.value).subscribe();
+    }
+  }
+
   OpenDialogResult(idClient) {
     const dialogRef = this.dialog.open(DialogBodyComponent, {
       width: '1500px',

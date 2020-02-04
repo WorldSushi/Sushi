@@ -16,16 +16,20 @@ export class DialogBodyComponent implements OnInit {
   }
 
   initDate() {
-    let day = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
-    let tmpDate = new Date(new Date().getFullYear(), new Date().getMonth(), ((7 - (7 - day)) + 2) - 28);
+    var d = new Date(new Date().getTime());
+    var diff = d.getDate() - d.getDay() + 1;
+    if (d.getDay() == 0)
+      diff -= 7;
+    diff += 4;
+    let tmpDate = new Date(d.setDate(diff));
 
     for (let i = 0; i < 8; i++) {
       let datastr = this.data.resultFridays.find(r => r.dataFriday == tmpDate.toLocaleDateString()) ? this.data.resultFridays.find(r => r.dataFriday == tmpDate.toLocaleDateString()).resumeFriday : "";
       this.date.push(
-      {
+        {
           datee: tmpDate.toLocaleDateString(),
           resume: datastr
-      });
+        });
       tmpDate = new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate() + 7)
     }
   }
@@ -43,8 +47,7 @@ export class DialogBodyComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogBodyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ReachOutcomes,
-    private http: HttpClient)
-  {
+    private http: HttpClient) {
     console.log(data);
   }
 
