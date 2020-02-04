@@ -8,24 +8,24 @@ namespace Data.Entities.ClientContacts
 {
     public class WeekPlan : Entity
     {
-        public int ClientId { get; protected set; }
-        public Client Client { get; protected set; }
+        public int ClientId { get;  set; }
+        public Client Client { get;  set; }
 
-        public DateTime Date { get; protected set; }
+        public DateTime Date { get;  set; }
 
-        public int WeekNumber { get; protected set; }
+        public int WeekNumber { get;  set; }
 
-        public string Plan { get; protected set; }
+        public string Plan { get;  set; }
 
-        public string PlanTitle { get; protected set; }
+        public string PlanTitle { get;  set; }
 
-        public string Fact { get; protected set; }
+        public string Fact { get;  set; }
 
-        public string FactTitle { get; protected set; }
+        public string FactTitle { get;  set; }
 
-        public ManagerType ManagerType { get; protected set; }
+        public ManagerType ManagerType { get;  set; }
 
-        private WeekPlan()
+        public WeekPlan()
         {
 
         }

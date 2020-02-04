@@ -29,7 +29,11 @@ namespace Data.Services.Concrete
         public void SaveNewCalls()
         {
             var monthCallsInfo = GetCurrentMonthCallsInfo();
-
+            //if (monthCallsInfo.LastRequestDate.AddHours(1) <= DateTime.Now && monthCallsInfo.Loading)
+            //{
+            //    monthCallsInfo.Loading = false;
+            //    _context.SaveChanges();
+            //}
             if (monthCallsInfo.Loading)
                 return;
 
@@ -236,25 +240,25 @@ namespace Data.Services.Concrete
             {
                 //string s = dateFrom.ToString("Y-m-d H:i:s");
 
-                HttpWebRequest request = null;
-                if (idLastCall == 0)
-                {
-                    request = (HttpWebRequest)WebRequest.Create($"http://95.181.199.172/stream/gethistory.php?StartDate={dateFrom.ToString("yyyy-MM-dd hh:mm:ss")}&EndDate={dateFor.ToString("yyyy-MM-dd hh:mm:ss")}");
-                }
-                else
-                {
-                    request = (HttpWebRequest)WebRequest.Create($"http://95.181.199.172/stream/gethistory.php?LastID={idLastCall}");
-                }
-                request.Method = "GET";
-                request.ContentType = "application/json";
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    res = reader.ReadToEnd();
-                }
                 try
                 {
+                    HttpWebRequest request = null;
+                    if (idLastCall == 0)
+                    {
+                        request = (HttpWebRequest)WebRequest.Create($"http://95.181.199.172/stream/gethistory.php?StartDate={dateFrom.ToString("yyyy-MM-dd hh:mm:ss")}&EndDate={dateFor.ToString("yyyy-MM-dd hh:mm:ss")}");
+                    }
+                    else
+                    {
+                        request = (HttpWebRequest)WebRequest.Create($"http://95.181.199.172/stream/gethistory.php?LastID={idLastCall}");
+                    }
+                    request.Method = "GET";
+                    request.ContentType = "application/json";
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        res = reader.ReadToEnd();
+                    }
                     List<CallDTOAsterics> callDTOAsterics = JsonConvert.DeserializeObject<List<CallDTOAsterics>>(res);
                     if (callDTOAsterics.Count != 0)
                     {
@@ -269,7 +273,7 @@ namespace Data.Services.Concrete
                 }
                 catch (Exception e)
                 {
-
+                    throw new Exception();
                 }
             }
             return callsDTOAstrics;

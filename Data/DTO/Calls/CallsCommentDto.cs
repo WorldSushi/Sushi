@@ -13,5 +13,6 @@ namespace Data.DTO.Calls
         public string ColorPen { get; set; }
         public string Type { get; set; }
         public AcceptControlerCalss AcceptControlerCalss { get; set; }
+        public int? WeekNumber { get; set; }
     }
 }
